@@ -3,7 +3,7 @@
 # Define accompanying passwords/secrets in group_vars/development/vault.yml
 
 wordpress_sites:
-  camisetaecoisaseria.com:
+  camisetaecoisaseria.com.br:
     site_hosts:
       - canonical: camisetaecoisaseria.test
         redirects:
