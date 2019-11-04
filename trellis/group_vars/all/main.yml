@@ -16,6 +16,7 @@ php_extensions_custom:
 
 php_post_max_size: 200M
 php_upload_max_filesize: 200M
+open_basedir: none
 
 # Values of raw_vars will be wrapped in `{% raw %}` to avoid templating problems if values include `{%` and `{{`.
 # Will recurse dicts/lists. `*` is wildcard for one or more dict keys, list indices, or strings. Example:

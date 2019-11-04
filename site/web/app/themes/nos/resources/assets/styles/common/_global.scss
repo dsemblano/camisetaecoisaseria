@@ -20,3 +20,11 @@ a {
     @apply border-primary;
   }
 }
+
+ul {
+  list-style: none;
+}
+
+.last-products {
+  @apply border-dashed border-r;
+}
