@@ -1,5 +1,5 @@
 <header class="banner bg-black">
-  <h1 class="container">
+  <h1 class="container mx-auto">
     <a class="brand" href="{{ home_url('/') }}">
       <span>NÓS</span>
       <span>CAMISETA É COISA SÉRIA</span>
