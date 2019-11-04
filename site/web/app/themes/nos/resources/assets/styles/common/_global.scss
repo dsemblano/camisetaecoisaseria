@@ -32,3 +32,33 @@ ul {
 span {
   @apply text-grey-darker;
 }
+
+@mixin titulos($color: black, $size: 1rem) {
+  color: $color;
+  font: $size "NICOLAUNegrito", serif;
+}
+
+//Fonts
+@font-face {
+  font-family: "NICOLAUNegrito";
+  src: //url('myfont.woff2') format('woff2'),
+    //url('myfont.woff') format('woff'),
+    url("../fonts/NICOLAUNegrito.ttf") format("truetype");
+}
+
+.banner {
+  h1 {
+    padding: 50px 0 0 0;
+
+    span {
+      @include titulos($color: white, $size: 0.8rem);
+
+      display: block;
+      line-height: 40px;
+
+      &:first-child {
+        font-size: 5rem;
+      }
+    }
+  }
+}
