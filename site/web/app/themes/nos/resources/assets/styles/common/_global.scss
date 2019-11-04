@@ -4,15 +4,15 @@ h3,
 h4,
 h5,
 h6 {
-  @apply mb-2 leading-tight;
+  @apply mb-2 leading-tight text-grey-darkest;
 }
 
 p {
-  @apply mb-3 leading-normal;
+  @apply mb-3 leading-normal text-grey-darker;
 }
 
 a {
-  @apply text-primary no-underline border-b border-transparent;
+  @apply text-primary no-underline border-b border-transparent text-grey-darkest;
 
   transition: 0.2s ease;
 
@@ -27,4 +27,8 @@ ul {
 
 .last-products {
   @apply border-dashed border-r;
+}
+
+span {
+  @apply text-grey-darker;
 }
