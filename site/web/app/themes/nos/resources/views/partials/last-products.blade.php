@@ -5,5 +5,6 @@
         <a href={{$product->get_permalink( )}}>{{$product->get_title()}}</a>
     </h2>
     {{$product->get_regular_price()}}
+    @php do_action( 'woocommerce_after_shop_loop_item' ) @endphp
   </li>
 @endforeach
