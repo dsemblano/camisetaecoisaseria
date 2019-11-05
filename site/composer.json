@@ -48,7 +48,8 @@
     "wpackagist-plugin/woocommerce-multilingual":">=4.6.7",
     "wpackagist-plugin/woocommerce-pagseguro":">=2.14.0",
     "wpackagist-plugin/regenerate-thumbnails":">=3.1.1",
-    "wpackagist-plugin/super-socializer":">=7.12.37"
+    "wpackagist-plugin/super-socializer":">=7.12.37",
+    "wpackagist-plugin/wps-hide-login":">=1.5.4.2"
   },
   "require-dev": {
     "squizlabs/php_codesniffer": "^3.4.2",
