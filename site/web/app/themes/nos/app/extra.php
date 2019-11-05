@@ -65,7 +65,11 @@ function change_rp_text($translated, $text, $domain)
 
 add_filter('woocommerce_product_add_to_cart_text', function ($text) {
     if ('Read more' == $text) {
-        $text = esc_html__('Mais', 'woocommerce');
+        $text = esc_html__('Ver detalhes', 'woocommerce');
+    }
+
+    if ('Add to cart' == $text) {
+        $text = esc_html__('Comprar', 'woocommerce');
     }
 
     return $text;

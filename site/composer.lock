@@ -566,15 +566,15 @@
         },
         {
             "name": "wpackagist-plugin/woocommerce",
-            "version": "3.7.1",
+            "version": "3.8.0",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/woocommerce/",
-                "reference": "tags/3.7.1"
+                "reference": "tags/3.8.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/woocommerce.3.7.1.zip"
+                "url": "https://downloads.wordpress.org/plugin/woocommerce.3.8.0.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -656,15 +656,15 @@
         },
         {
             "name": "wpackagist-plugin/woocommerce-multilingual",
-            "version": "4.6.7",
+            "version": "4.7.3",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/woocommerce-multilingual/",
-                "reference": "tags/4.6.7"
+                "reference": "tags/4.7.3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/woocommerce-multilingual.4.6.7.zip"
+                "url": "https://downloads.wordpress.org/plugin/woocommerce-multilingual.4.7.3.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
