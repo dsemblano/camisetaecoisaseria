@@ -1,8 +1,8 @@
 // Mixins
-@mixin titulos($color: black, $size: 1rem) {
-  color: $color;
-  font: $size "NICOLAUNegrito", serif;
-}
+// @mixin titulos($color: black, $size: 1rem) {
+//   color: $color;
+//   font: $size "NICOLAUNegrito", serif;
+// }
 
 h1,
 h2,
@@ -12,7 +12,7 @@ h5,
 h6 {
   @apply mb-2 leading-tight text-grey-darkest;
 
-  @include titulos;
+  // @include titulos;
 }
 
 p {
@@ -42,28 +42,28 @@ span {
 }
 
 //Fonts
-@font-face {
-  font-family: "NICOLAUNegrito";
-  src: //url('myfont.woff2') format('woff2'),
-    //url('myfont.woff') format('woff'),
-    url("../fonts/NICOLAUNegrito.ttf") format("truetype");
-}
+// @font-face {
+//   font-family: "NICOLAUNegrito";
+//   src: //url('myfont.woff2') format('woff2'),
+//     //url('myfont.woff') format('woff'),
+//     url("../fonts/NICOLAUNegrito.ttf") format("truetype");
+// }
 
-.banner {
-  h1 {
-    @include titulos;
+// .banner {
+//   h1 {
+//     // @include titulos;
 
-    padding: 50px 0 0 0;
+//     // padding: 50px 0 0 0;
 
-    span {
-      color: white;
-      font-size: 0.8rem;
-      display: block;
-      line-height: 40px;
+//     span {
+//       color: white;
+//       font-size: 0.8rem;
+//       display: block;
+//       line-height: 40px;
 
-      &:first-child {
-        font-size: 5rem;
-      }
-    }
-  }
-}
+//       &:first-child {
+//         font-size: 5rem;
+//       }
+//     }
+//   }
+// }
