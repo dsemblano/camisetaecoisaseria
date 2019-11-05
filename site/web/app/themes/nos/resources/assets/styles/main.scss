@@ -11,6 +11,14 @@
  */
 @tailwind preflight;
 
+//Fonts
+@font-face {
+  font-family: "NICOLAUNegrito";
+  src: //url('myfont.woff2') format('woff2'),
+    //url('myfont.woff') format('woff'),
+    url("../fonts/NICOLAUNegrito.ttf") format("truetype");
+}
+
 /** Import variables */
 @import "common/variables";
 
