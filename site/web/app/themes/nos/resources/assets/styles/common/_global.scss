@@ -4,6 +4,15 @@
 //   font: $size "NICOLAUNegrito", serif;
 // }
 
+@mixin texto-fonte($size: 1rem, $line-height: 25.6px) {
+  font: $size "open_sans", sans-serif;
+  line-height: $line-height;
+}
+
+@mixin titulo-fonte() {
+  font-family: "open_sans_bold", sans-serif;
+}
+
 h1,
 h2,
 h3,
@@ -12,11 +21,15 @@ h5,
 h6 {
   @apply mb-2 leading-tight text-grey-darkest;
 
+  @include titulo-fonte;
+
   // @include titulos;
 }
 
 p {
   @apply mb-3 leading-normal text-grey-darker;
+
+  @include texto-fonte;
 }
 
 a {
@@ -39,6 +52,33 @@ ul {
 
 span {
   @apply text-grey-darker;
+}
+
+@font-face {
+  font-family: "open_sans";
+  src: url("../fonts/opensans-regular-webfont.eot");
+  src: url("../fonts/opensans-regular-webfont.eot?#iefix") format("embedded-opentype"), url("../fonts/opensans-regular-webfont.woff2") format("woff2"), url("../fonts/opensans-regular-webfont.woff") format("woff"), url("../fonts/opensans-regular-webfont.ttf") format("truetype"), url("../fonts/opensans-regular-webfont.svg#open_sansregular") format("svg");
+  font-display: swap;
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "open_sans_italic";
+  src: url("../fonts/opensans-italic-webfont.eot");
+  src: url("../fonts/opensans-italic-webfont.eot?#iefix") format("embedded-opentype"), url("../fonts/opensans-italic-webfont.woff2") format("woff2"), url("../fonts/opensans-italic-webfont.woff") format("woff"), url("../fonts/opensans-italic-webfont.svg#open_sansitalic") format("svg");
+  font-display: swap;
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "open_sans_bold";
+  src: url("../fonts/opensans-bold-webfont.eot");
+  src: url("../fonts/opensans-bold-webfont.eot?#iefix") format("embedded-opentype"), url("../fonts/opensans-bold-webfont.woff2") format("woff2"), url("../fonts/opensans-bold-webfont.woff") format("woff"), url("../fonts/opensans-bold-webfont.svg#open_sansbold") format("svg");
+  font-display: swap;
+  font-weight: bold;
+  font-style: normal;
 }
 
 //Fonts
