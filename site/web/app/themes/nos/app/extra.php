@@ -106,9 +106,6 @@ function my_text_strings($translated_text, $text, $domain)
         case 'Cart totals':
             $translated_text = esc_html_e('Total carrinho', 'woocommerce');
             break;
-        case 'Shipping':
-            $translated_text = esc_html_e('Frete', 'woocommerce');
-            break;
         case 'Calculate shipping':
             $translated_text = esc_html_e('Calcular frete', 'woocommerce');
             break;
