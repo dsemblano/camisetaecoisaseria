@@ -47,6 +47,7 @@
     "wpackagist-plugin/woocommerce-correios":">=3.8.0",
     "wpackagist-plugin/woocommerce-multilingual":">=4.6.7",
     "wpackagist-plugin/woocommerce-pagseguro":">=2.14.0",
+    "wpackagist-plugin/woo-shipping-gateway":">=2.1.6",
     "wpackagist-plugin/regenerate-thumbnails":">=3.1.1",
     "wpackagist-plugin/super-socializer":">=7.12.37",
     "wpackagist-plugin/wps-hide-login":">=1.5.4.2"
