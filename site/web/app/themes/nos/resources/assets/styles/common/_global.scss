@@ -13,6 +13,14 @@
   font-family: "open_sans_bold", sans-serif;
 }
 
+@mixin texto-maven() {
+  font-family: "MavenProRegular", sans-serif;
+}
+
+@mixin titulo-maven() {
+  font-family: "MavenProBold", sans-serif;
+}
+
 h1,
 h2,
 h3,
@@ -21,7 +29,7 @@ h5,
 h6 {
   @apply mb-2 leading-tight text-grey-darkest;
 
-  @include titulo-fonte;
+  @include titulo-maven;
 
   // @include titulos;
 }
@@ -29,11 +37,13 @@ h6 {
 p {
   @apply mb-3 leading-normal text-grey-darker;
 
-  @include texto-fonte;
+  @include texto-maven;
 }
 
 a {
   @apply text-primary no-underline border-b border-transparent text-grey-darkest;
+
+  @include texto-maven;
 
   transition: 0.2s ease;
 
@@ -50,8 +60,27 @@ ul {
   @apply border-dashed border-r;
 }
 
+nav,
 span {
   @apply text-grey-darker;
+
+  @include texto-maven;
+}
+
+@font-face {
+  font-family: "MavenProRegular";
+  src: url("../fonts/MavenPro-Regular.ttf") format("truetype");
+  font-display: swap;
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "MavenProBold";
+  src: url("../fonts/MavenPro-Bold.ttf") format("truetype");
+  font-display: swap;
+  font-weight: normal;
+  font-style: normal;
 }
 
 @font-face {
