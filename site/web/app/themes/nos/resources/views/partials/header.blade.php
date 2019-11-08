@@ -12,7 +12,7 @@
       </h1>
     </div>
     <nav
-      class="nav-primary inline-block align-bottom overflow-hidden overflow-hidden sm:px-1 sm:w-1/3 md:px-1 md:w-2/3 lg:px-1 lg:w-2/3 xl:px-1 xl:w-2/3">
+      class="nav-primary overflow-hidden overflow-hidden sm:px-1 sm:w-1/3 md:px-1 md:w-2/3 lg:px-1 lg:w-2/3 xl:px-1 xl:w-2/3">
       @if (has_nav_menu('primary_navigation'))
       {!! wp_nav_menu(['theme_location' => 'primary_navigation', 'menu_class' => 'nav']) !!}
       @endif

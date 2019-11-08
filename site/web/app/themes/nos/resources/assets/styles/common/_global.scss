@@ -119,11 +119,23 @@ span {
 // }
 
 .banner {
-  nav {
-    ul li a {
-      color: white;
-      font-size: 1.5rem;
-      font-weight: bolder;
+  h1 {
+    margin-bottom: 0;
+  }
+
+  .nav-primary {
+    position: relative;
+
+    .menu-menu-container {
+      position: absolute;
+      bottom: 15px;
+      left: 0;
+
+      ul li a {
+        color: white;
+        font-size: 1.5rem;
+        font-weight: bolder;
+      }
     }
   }
 }
