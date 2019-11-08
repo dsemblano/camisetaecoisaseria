@@ -118,21 +118,12 @@ span {
 //     url("../fonts/NICOLAUNegrito.ttf") format("truetype");
 // }
 
-// .banner {
-//   h1 {
-//     // @include titulos;
-
-//     // padding: 50px 0 0 0;
-
-//     span {
-//       color: white;
-//       font-size: 0.8rem;
-//       display: block;
-//       line-height: 40px;
-
-//       &:first-child {
-//         font-size: 5rem;
-//       }
-//     }
-//   }
-// }
+.banner {
+  nav {
+    ul li a {
+      color: white;
+      font-size: 1.5rem;
+      font-weight: bolder;
+    }
+  }
+}
