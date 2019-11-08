@@ -4,7 +4,17 @@
     <h2 class="text-xl">
         <a href={{$product->get_permalink( )}}>{{$product->get_title()}}</a>
     </h2>
-    {{$product->get_regular_price()}}
+      @if ($product->get_price())
+        <span>R${{$product->get_price()}}</span>
+        <span>{{$product->add_to_cart_url()}}</span>
+        @php
+          $html = '<form action="' . esc_url( $product->add_to_cart_url() ) . '" class="cart" method="post" enctype="multipart/form-data">';
+          $html .= woocommerce_quantity_input( array(), $product, false );
+          $html .= '<button type="submit" class="button alt">' . esc_html( $product->add_to_cart_text() ) . '</button>';
+          $html .= '</form>';
+          echo $html;
+        @endphp
+      @endif
     @php do_action( 'woocommerce_after_shop_loop_item' ) @endphp
   </li>
 @endforeach
