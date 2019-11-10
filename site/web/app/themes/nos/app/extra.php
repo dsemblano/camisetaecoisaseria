@@ -69,7 +69,7 @@ add_filter('woocommerce_product_add_to_cart_text', function ($text) {
     }
 
     if ('Add to cart' == $text) {
-        $text = esc_html__('Comprar', 'woocommerce');
+        $text = esc_html__('Adicionar', 'woocommerce');
     }
 
     return $text;
@@ -128,8 +128,8 @@ function my_text_strings($translated_text, $text, $domain)
 // });
 
 // Change 'add to cart' text archieve, template custom pages
-add_filter('woocommerce_product_add_to_cart_text', 'bryce_add_to_cart_text');
-function bryce_add_to_cart_text()
-{
-    return __('Adicionar', 'woocommerce');
-}
+// add_filter('woocommerce_product_add_to_cart_text', 'bryce_add_to_cart_text');
+// function bryce_add_to_cart_text()
+// {
+//     return __('Adicionar', 'woocommerce');
+// }
