@@ -6,11 +6,11 @@
     </h2>
       @if ($product->get_price())
         <span>R${{$product->get_price()}}</span>
-        <span>{{$product->add_to_cart_url()}}</span>
         @php
           $html = '<form action="' . esc_url( $product->add_to_cart_url() ) . '" class="cart" method="post" enctype="multipart/form-data">';
-          $html .= woocommerce_quantity_input( array(), $product, false );
-          $html .= '<button type="submit" class="button alt">' . esc_html( $product->add_to_cart_text() ) . '</button>';
+          // $html .= woocommerce_quantity_input( array(), $product, false );
+          $html .= '<button type="submit" class="bg-green-nos hover:bg-green-nos-light text-grey-darkest font-bold py-2 px-4 rounded">' . '<i class="fas fa-cart-plus mr-2"></i>' . esc_html( $product->add_to_cart_text() ) . '</button>';
+          // $html .= '<i class="fas fa-cart-plus"></i>';
           $html .= '</form>';
           echo $html;
         @endphp

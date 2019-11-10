@@ -89,6 +89,8 @@ let colors = {
   'green-light': '#51d88a',
   'green-lighter': '#a2f5bf',
   'green-lightest': '#e3fcec',
+  'green-nos': '#A0CBD3',
+  'green-nos-light': '#3fc7ba',
 
   'teal-darkest': '#0d3331',
   'teal-darker': '#20504f',

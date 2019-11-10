@@ -126,3 +126,10 @@ function my_text_strings($translated_text, $text, $domain)
 
 //     return $text;
 // });
+
+// Change 'add to cart' text archieve, template custom pages
+add_filter('woocommerce_product_add_to_cart_text', 'bryce_add_to_cart_text');
+function bryce_add_to_cart_text()
+{
+    return __('Adicionar', 'woocommerce');
+}
