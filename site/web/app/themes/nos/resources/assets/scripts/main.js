@@ -23,11 +23,11 @@ const routes = new Router({
 // Load Events
 jQuery(document).ready(() => routes.loadEvents());
 
-import { library, dom } from '@fortawesome/fontawesome-svg-core';
+import { config, library, dom } from '@fortawesome/fontawesome-svg-core';
 import { faFacebook, faTwitter } from '@fortawesome/free-brands-svg-icons';
 import { faCartPlus } from '@fortawesome/free-solid-svg-icons';
+config.searchPseudoElements=true;
 // add the imported icons to the library
 library.add(faFacebook, faTwitter, faCartPlus);
-
 // tell FontAwesome to watch the DOM and add the SVGs when it detects icon markup
 dom.watch();

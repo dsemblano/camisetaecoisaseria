@@ -131,10 +131,37 @@ span {
       bottom: 15px;
       left: 0;
 
-      ul li a {
-        color: white;
-        font-size: 1.5rem;
-        font-weight: bolder;
+      ul li {
+        .fa-cart-plus {
+          color: $grey-light;
+          position: relative;
+          left: 10px;
+          bottom: 1px;
+          font-size: 1.3rem;
+        }
+
+        &.cart {
+          visibility: visible;
+          font-size: 1.3rem;
+
+          &::before {
+            display: inline-block;
+            font-style: normal;
+            font-variant: normal;
+            text-rendering: auto;
+            visibility: hidden;
+            font-family: "Font Awesome 5 Free", serif;
+            font-weight: 900;
+            content: "\f217";
+            -webkit-font-smoothing: antialiased;
+          }
+        }
+
+        a {
+          color: $grey-light;
+          font-size: 1.5rem;
+          font-weight: bolder;
+        }
       }
     }
   }
