@@ -58,6 +58,10 @@ ul {
 
 .last-products {
   @apply border-dashed border-r;
+
+  &:nth-of-type(4n) {
+    border-right: none;
+  }
 }
 
 nav,
