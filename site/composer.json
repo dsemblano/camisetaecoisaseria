@@ -50,6 +50,7 @@
     "wpackagist-plugin/woo-shipping-gateway":">=2.1.6",
     "wpackagist-plugin/regenerate-thumbnails":">=3.1.1",
     "wpackagist-plugin/super-socializer":">=7.12.37",
+    "wpackagist-plugin/side-cart-woocommerce":">=1.0.2",
     "wpackagist-plugin/wps-hide-login":">=1.5.4.2"
   },
   "require-dev": {
