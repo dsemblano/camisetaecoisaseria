@@ -6,26 +6,29 @@ use Sober\Controller\Controller;
 
 class FrontPage extends Controller
 {
-
     public function slideshow()
     {
         if (is_front_page()) {
-            $tax_query[] = array(
-                'taxonomy' => 'product_visibility',
-                'field'    => 'name',
-                'terms'    => 'featured',
-                'operator' => 'IN', // or 'NOT IN' to exclude feature products
-            );
+            $args = array(
+                //'orderby' => 'featured-checkbox',
+                'order' => 'DESC',
+                'posts_per_page'=> 10,
+                'tax_query' => array(
+                    'taxonomy' => 'product_visibility',
+                    'field'    => 'name',
+                    'terms'    => 'featured',
+                    'operator' => 'IN', // or 'NOT IN' to exclude feature products
+                ),
+                'meta_query' => array(
+                                array(
+                                'key' => 'featured-checkbox',
+                                'value' => 'yes'
+                        )
+                    )
+             );
 
-            $query = new \WP_Query( array(
-                'post_type'           => 'product',
-                'post_status'         => 'publish',
-                'ignore_sticky_posts' => 1,
-                'order'               => 'asc',
-                'tax_query'           => $tax_query // <===
-            ) );
-
-            return $query;
+            $featured_query = new \WP_Query($args);
+            return $featured_query;
         }
     }
 
