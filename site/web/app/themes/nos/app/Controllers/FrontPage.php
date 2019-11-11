@@ -6,6 +6,46 @@ use Sober\Controller\Controller;
 
 class FrontPage extends Controller
 {
+
+    public function slideshow()
+    {
+        if (is_front_page()) {
+            $tax_query[] = array(
+                'taxonomy' => 'product_visibility',
+                'field'    => 'name',
+                'terms'    => 'featured',
+                'operator' => 'IN', // or 'NOT IN' to exclude feature products
+            );
+
+            $query = new \WP_Query( array(
+                'post_type'           => 'product',
+                'post_status'         => 'publish',
+                'ignore_sticky_posts' => 1,
+                'order'               => 'asc',
+                'tax_query'           => $tax_query // <===
+            ) );
+
+            return $query;
+        }
+    }
+
+    public static function slideshowExcerpt()
+    {
+        $slideshow = (new self)->slideshow();
+        while ($slideshow->have_posts()) {
+            if (has_excerpt()) {
+                return substr(get_the_excerpt(), 0, 450);
+            } else {
+                $content = apply_filters('get_the_content', get_the_content());
+                $content = strip_tags($content);
+                $content = mb_strimwidth($content, 0, 500, ' ...');
+                $content = strip_shortcodes($content);
+                return $content;
+            }
+            wp_reset_postdata();
+        }
+    }
+
     // Camisetas destaques home
     public function destaques()
     {

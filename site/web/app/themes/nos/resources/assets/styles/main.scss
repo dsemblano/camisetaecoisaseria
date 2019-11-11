@@ -46,6 +46,10 @@
 @import "layouts/pages";
 @import "layouts/posts";
 @import "layouts/tinymce";
+@import "components/slideshow";
+
+// Import flickity
+@import "~flickity/dist/flickity.min.css";
 
 /**
  * This injects all of Tailwind's utility classes, generated based on your
