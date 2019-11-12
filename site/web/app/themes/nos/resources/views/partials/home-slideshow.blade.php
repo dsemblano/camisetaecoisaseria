@@ -1,13 +1,13 @@
-<section id="carousel" class="main-carousel mt-5 mb-20" data-flickity='{ "cellAlign": "left", "contain": true, "wrapAround": true, "lazyLoad": true, "setGallerySize": false, "autoPlay": true, "dragThreshold": 20 }'>
+<section id="carousel" class="main-carousel h-screen mt-5 mb-20" data-flickity='{ "cellAlign": "left", "contain": true, "wrapAround": true, "lazyLoad": true, "setGallerySize": false, "autoPlay": true, "dragThreshold": 20 }'>
   @if ($slideshow->have_posts())
     @while ($slideshow->have_posts()) @php $slideshow->the_post() @endphp
-        <div class="carousel-cell">
+        <div class="carousel-cell w-full">
             <a href={{ the_permalink() }}>
               {{ the_post_thumbnail('slideshow') }}
-              <header>
+              {{-- <header>
                 <h2>{{ the_title() }}</h2>
                 <p>{{ FrontPage::slideshowExcerpt() }}</p>
-              </header>
+              </header> --}}
             </a>
         </div>
     @endwhile
