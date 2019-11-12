@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d8d73fbd3fca97f44fbc533d6c254000",
+    "content-hash": "e32ae7619e47db37201b5e8c224e75f0",
     "packages": [
         {
             "name": "composer/installers",
@@ -797,6 +797,24 @@
             },
             "type": "wordpress-plugin",
             "homepage": "https://wordpress.org/plugins/wp-all-import/"
+        },
+        {
+            "name": "wpackagist-plugin/wp-enable-webp",
+            "version": "1.0",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/wp-enable-webp/",
+                "reference": "trunk"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/wp-enable-webp.zip?timestamp=1568640254"
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/wp-enable-webp/"
         },
         {
             "name": "wpackagist-plugin/wps-hide-login",

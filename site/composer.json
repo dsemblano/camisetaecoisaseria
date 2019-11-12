@@ -52,6 +52,7 @@
     "wpackagist-plugin/super-socializer":">=7.12.37",
     "wpackagist-plugin/side-cart-woocommerce":">=1.0.2",
     "wpackagist-plugin/woocommerce-extra-checkout-fields-for-brazil":">=3.7.2",
+    "wpackagist-plugin/wp-enable-webp":">=1.0",
     "wpackagist-plugin/wps-hide-login":">=1.5.4.2"
   },
   "require-dev": {
