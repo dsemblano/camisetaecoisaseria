@@ -1,5 +1,12 @@
 .main-carousel {
+  height: 24rem;
+  background-color: green;
+
+  .flickity-button {
+    top: 11em;
+  }
+
   .flickity-page-dots {
-    bottom: 2rem;
+    top: 25em;
   }
 }
