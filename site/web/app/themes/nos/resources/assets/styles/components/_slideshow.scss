@@ -10,6 +10,7 @@
     }
 
     @include media(">tablet", "<950px") {
+      background-color: violet;
       top: 8rem;
     }
 
@@ -22,11 +23,16 @@
     top: 7rem;
 
     @include media(">phone", "<tablet") {
-      // background-color: yellowgreen;
+      background-color: yellowgreen;
     }
 
+    // @include media(">phone", "<=tablet") {
+    //   background-color: orange;
+    //   top: 8rem;
+    // }
+
     @include media(">tablet", "<950px") {
-      // background-color: violet;
+      background-color: violet;
       top: 15rem;
     }
 

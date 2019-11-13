@@ -20,3 +20,39 @@
     @apply bg-grey-light;
   }
 }
+
+// Cart
+.woocommerce {
+  table.shop_table {
+    border: 1px solid $green-nos;
+
+    tbody tr td {
+      border-top: 1px solid $green-nos;
+    }
+
+    input#coupon_code {
+      width: auto;
+      text-align: center;
+    }
+  }
+
+  .cart-collaterals {
+    .woocommerce-shipping-calculator {
+      input {
+        border: 1px solid #d3ced2;
+        padding: 5px;
+        border-radius: 5px;
+      }
+    }
+
+    .wc-proceed-to-checkout {
+      .checkout-button {
+        background-color: $green-nos-light;
+
+        &:hover {
+          background-color: $green;
+        }
+      }
+    }
+  }
+}
