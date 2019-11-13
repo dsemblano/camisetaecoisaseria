@@ -3,10 +3,35 @@
   // background-color: green;
 
   .flickity-button {
-    top: 11em;
+    top: 7rem;
+
+    @include media(">phone", "<tablet") {
+      top: 5rem;
+    }
+
+    @include media(">tablet", "<950px") {
+      top: 8rem;
+    }
+
+    @include media(">950px") {
+      top: 12rem;
+    }
   }
 
   .flickity-page-dots {
-    top: 25em;
+    top: 7rem;
+
+    @include media(">phone", "<tablet") {
+      // background-color: yellowgreen;
+    }
+
+    @include media(">tablet", "<950px") {
+      // background-color: violet;
+      top: 15rem;
+    }
+
+    @include media(">950px") {
+      top: 24rem;
+    }
   }
 }

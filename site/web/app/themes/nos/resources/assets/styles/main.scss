@@ -34,6 +34,9 @@
  */
 @tailwind components;
 
+// include-media sass
+@import "~include-media/dist/_include-media.scss";
+
 /** Import theme styles */
 @import "common/global";
 @import "components/buttons";
