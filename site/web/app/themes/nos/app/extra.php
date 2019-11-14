@@ -98,7 +98,10 @@ function my_text_strings($translated_text, $text, $domain)
             $translated_text = __('Quantidade', 'woocommerce');
             break;
         case 'Apply coupon':
-            $translated_text = __('Cupom de desconto', 'woocommerce');
+            $translated_text = __('Aplicar', 'woocommerce');
+            break;
+        case 'Coupon code':
+            $translated_text = __('Cupom desconto', 'woocommerce');
             break;
         case 'Update cart':
             $translated_text = __('Atualizar carrinho', 'woocommerce');

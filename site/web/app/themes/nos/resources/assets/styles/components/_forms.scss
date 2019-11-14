@@ -31,15 +31,23 @@
     }
 
     input#coupon_code {
+      border: 1px solid $green-nos;
       width: auto;
       text-align: center;
+      padding: 7px 0 8px 0;
+      border-radius: 4px;
     }
   }
 
   .cart-collaterals {
     .woocommerce-shipping-calculator {
+      border: 1px solid $green-nos;
+      border-radius: 4px;
+      padding: 0 0 7px 10px;
+      text-align: left;
+
       input {
-        border: 1px solid #d3ced2;
+        border: 1px solid $green-nos;
         padding: 5px;
         border-radius: 5px;
       }
@@ -54,5 +62,11 @@
         }
       }
     }
+  }
+
+  .quantity .qty {
+    border: 1px solid $green-nos;
+    padding: 5px 0 5px 10px;
+    border-radius: 4px;
   }
 }
