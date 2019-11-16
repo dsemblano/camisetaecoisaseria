@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-11-15 17:32+0000\n"
-"PO-Revision-Date: 2019-11-15 22:17+0000\n"
+"PO-Revision-Date: 2019-11-16 21:42+0000\n"
 "Last-Translator: admin <admin@example.test>\n"
 "Language-Team: Português do Brasil\n"
 "Language: pt_BR\n"
@@ -1791,7 +1791,7 @@ msgstr "Alagoas"
 
 #: i18n/states.php:189
 msgid "Amap&aacute;"
-msgstr "Amap"
+msgstr "Amapá"
 
 #: i18n/states.php:190 i18n/states.php:889
 msgid "Amazonas"
@@ -1843,7 +1843,7 @@ msgstr "Para"
 
 #: i18n/states.php:202
 msgid "Paran&aacute;"
-msgstr "Paran"
+msgstr "Paraná"
 
 #: i18n/states.php:203
 msgid "Pernambuco"
@@ -2175,11 +2175,11 @@ msgstr ""
 
 #: i18n/states.php:297
 msgid "A Coru&ntilde;a"
-msgstr "Um Coru"
+msgstr "A Coruña"
 
 #: i18n/states.php:298
 msgid "Araba/&Aacute;lava"
-msgstr "Araba/"
+msgstr "Araba/&Aacute;lava"
 
 #: i18n/states.php:299
 msgid "Albacete"
@@ -2199,7 +2199,7 @@ msgstr "Astúrias"
 
 #: i18n/states.php:303
 msgid "&Aacute;vila"
-msgstr ""
+msgstr "&Aacute;vila"
 
 #: i18n/states.php:304
 msgid "Badajoz"
@@ -2667,7 +2667,7 @@ msgstr "Clare"
 
 #: i18n/states.php:436
 msgid "Cork"
-msgstr "A cortiça"
+msgstr "Cork"
 
 #: i18n/states.php:437
 msgid "Donegal"
@@ -3795,7 +3795,7 @@ msgstr "Nisporeni"
 
 #: i18n/states.php:744
 msgid "Ocni&#539;a"
-msgstr ""
+msgstr "Ocni&#539;a"
 
 #: i18n/states.php:745
 msgid "Orhei"
@@ -4791,7 +4791,7 @@ msgstr "Paraguar"
 
 #: i18n/states.php:1025
 msgid "Alto Paran&aacute;"
-msgstr "Alto Paran"
+msgstr "Alto Paraná"
 
 #: i18n/states.php:1026 i18n/states.php:1491
 msgid "Central"
@@ -19456,7 +19456,7 @@ msgstr ""
 
 #: includes/emails/class-wc-email-cancelled-order.php:59
 msgid "[{site_title}]: Order #{order_number} has been cancelled"
-msgstr ""
+msgstr "[{site_title}]: Pedido #{order_number} foi cancelado"
 
 #: includes/emails/class-wc-email-cancelled-order.php:69
 msgid "Order Cancelled: #{order_number}"
@@ -19781,7 +19781,7 @@ msgstr ""
 
 #: includes/emails/class-wc-email-failed-order.php:58
 msgid "[{site_title}]: Order #{order_number} has failed"
-msgstr ""
+msgstr "[{site_title}]: Pedido #{order_number} falhou"
 
 #: includes/emails/class-wc-email-failed-order.php:68
 msgid "Order Failed: #{order_number}"
