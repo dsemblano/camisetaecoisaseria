@@ -79,46 +79,46 @@ add_filter('woocommerce_product_add_to_cart_text', function ($text) {
 * Change View cart text
 *
 */
-function my_text_strings($translated_text, $text, $domain)
-{
-    switch ($translated_text) {
-        case 'View cart':
-            $translated_text = __('Ir para o carrinho', 'woocommerce');
-            break;
-        case 'Cart':
-            $translated_text = __('Carrinho', 'woocommerce');
-            break;
-        case 'Product':
-            $translated_text = __('Produtos', 'woocommerce');
-            break;
-        case 'Price':
-            $translated_text = __('Preço', 'woocommerce');
-            break;
-        case 'Quantity':
-            $translated_text = __('Quantidade', 'woocommerce');
-            break;
-        case 'Apply coupon':
-            $translated_text = __('Aplicar', 'woocommerce');
-            break;
-        case 'Coupon code':
-            $translated_text = __('Cupom desconto', 'woocommerce');
-            break;
-        case 'Update cart':
-            $translated_text = __('Atualizar carrinho', 'woocommerce');
-            break;
-        case 'Cart totals':
-            $translated_text = esc_html_e('Total carrinho', 'woocommerce');
-            break;
-        case 'Calculate shipping':
-            $translated_text = esc_html_e('Calcular frete', 'woocommerce');
-            break;
-        case 'Proceed to checkout':
-            $translated_text = esc_html_e('Finalizar compra', 'woocommerce');
-            break;
-    }
-    return $translated_text;
-}
-    add_filter('gettext', 'my_text_strings', 20, 3);
+// function my_text_strings($translated_text, $text, $domain)
+// {
+//     switch ($translated_text) {
+//         case 'View cart':
+//             $translated_text = __('Ir para o carrinho', 'woocommerce');
+//             break;
+//         case 'Cart':
+//             $translated_text = __('Carrinho', 'woocommerce');
+//             break;
+//         case 'Product':
+//             $translated_text = __('Produtos', 'woocommerce');
+//             break;
+//         case 'Price':
+//             $translated_text = __('Preço', 'woocommerce');
+//             break;
+//         case 'Quantity':
+//             $translated_text = __('Quantidade', 'woocommerce');
+//             break;
+//         case 'Apply coupon':
+//             $translated_text = __('Aplicar', 'woocommerce');
+//             break;
+//         case 'Coupon code':
+//             $translated_text = __('Cupom desconto', 'woocommerce');
+//             break;
+//         case 'Update cart':
+//             $translated_text = __('Atualizar carrinho', 'woocommerce');
+//             break;
+//         case 'Cart totals':
+//             $translated_text = esc_html_e('Total carrinho', 'woocommerce');
+//             break;
+//         case 'Calculate shipping':
+//             $translated_text = esc_html_e('Calcular frete', 'woocommerce');
+//             break;
+//         case 'Proceed to checkout':
+//             $translated_text = esc_html_e('Finalizar compra', 'woocommerce');
+//             break;
+//     }
+//     return $translated_text;
+// }
+//     add_filter('gettext', 'my_text_strings', 20, 3);
 
 
 // // something
@@ -136,3 +136,5 @@ function my_text_strings($translated_text, $text, $domain)
 // {
 //     return __('Adicionar', 'woocommerce');
 // }
+
+return ! wp_is_file_mod_allowed(apply_filters('loco_file_mod_allowed_context', 'download_language_pack'));
