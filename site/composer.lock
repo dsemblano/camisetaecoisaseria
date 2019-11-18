@@ -854,15 +854,15 @@
         },
         {
             "name": "wpackagist-plugin/wp-smushit",
-            "version": "3.3.1",
+            "version": "3.3.2",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/wp-smushit/",
-                "reference": "tags/3.3.1"
+                "reference": "tags/3.3.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/wp-smushit.3.3.1.zip"
+                "url": "https://downloads.wordpress.org/plugin/wp-smushit.3.3.2.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
