@@ -46,7 +46,7 @@ class FrontPage extends Controller
             $args = array(
                 'limit' => 8,
                 'status'=> 'publish',
-                'post_type' => 'products',
+                'post_type' => 'product',
             );
             return $products = wc_get_products($args);
             // foreach ($products as $product) {
