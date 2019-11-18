@@ -7,7 +7,7 @@
 @section('content')
   @while(have_posts()) @php the_post() @endphp
     {{-- @include('partials.page-header') --}}
-    @include('partials.home-slideshow')
+    {{-- @include('partials.home-slideshow') --}}
     <div class="text-center flex flex-wrap mt-10">
       @include('partials.main-menu')
     </div>
@@ -16,5 +16,6 @@
       @include('partials.last-products')
     </ul>
     @include('partials.content-page')
+    {!! do_shortcode('[smartslider3 slider=2]') !!}
   @endwhile
 @endsection

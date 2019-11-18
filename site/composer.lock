@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ad3307dba66d24161429bf37d74dabc6",
+    "content-hash": "53018a796ee1c807ecc243b26b52d648",
     "packages": [
         {
             "name": "composer/installers",
@@ -599,6 +599,24 @@
             },
             "type": "wordpress-plugin",
             "homepage": "https://wordpress.org/plugins/side-cart-woocommerce/"
+        },
+        {
+            "name": "wpackagist-plugin/smart-slider-3",
+            "version": "3.3.24",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/smart-slider-3/",
+                "reference": "tags/3.3.24"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/smart-slider-3.3.3.24.zip"
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/smart-slider-3/"
         },
         {
             "name": "wpackagist-plugin/super-socializer",
