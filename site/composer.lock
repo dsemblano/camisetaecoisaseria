@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4caca67b0c4494bfc392920d357f1ae3",
+    "content-hash": "10e810d8057711537ab488060af9c989",
     "packages": [
         {
             "name": "composer/installers",
@@ -223,16 +223,16 @@
         },
         {
             "name": "roots/wordpress",
-            "version": "5.2.3",
+            "version": "5.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/WordPress/WordPress.git",
-                "reference": "5.2.3"
+                "reference": "5.3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/WordPress/WordPress/zipball/5.2.3",
-                "reference": "5.2.3"
+                "url": "https://api.github.com/repos/WordPress/WordPress/zipball/5.3",
+                "reference": "5.3"
             },
             "require": {
                 "php": ">=5.3.2",
@@ -256,7 +256,7 @@
                 "cms",
                 "wordpress"
             ],
-            "time": "2019-09-04T22:41:56+00:00"
+            "time": "2019-11-12T20:34:22+00:00"
         },
         {
             "name": "roots/wordpress-core-installer",
@@ -619,24 +619,6 @@
             "homepage": "https://wordpress.org/plugins/slider-video/"
         },
         {
-            "name": "wpackagist-plugin/slider-wd",
-            "version": "1.2.29",
-            "source": {
-                "type": "svn",
-                "url": "https://plugins.svn.wordpress.org/slider-wd/",
-                "reference": "tags/1.2.29"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/slider-wd.1.2.29.zip"
-            },
-            "require": {
-                "composer/installers": "~1.0"
-            },
-            "type": "wordpress-plugin",
-            "homepage": "https://wordpress.org/plugins/slider-wd/"
-        },
-        {
             "name": "wpackagist-plugin/smart-slider-3",
             "version": "3.3.24",
             "source": {
@@ -950,12 +932,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "261562a9c048aa10932e5e1d596da6c761cf95bb"
+                "reference": "40fb2c205dd261ab6bb42ec29545934f0db7026f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/261562a9c048aa10932e5e1d596da6c761cf95bb",
-                "reference": "261562a9c048aa10932e5e1d596da6c761cf95bb",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/40fb2c205dd261ab6bb42ec29545934f0db7026f",
+                "reference": "40fb2c205dd261ab6bb42ec29545934f0db7026f",
                 "shasum": ""
             },
             "conflict": {
@@ -1023,7 +1005,7 @@
                 "league/commonmark": "<0.18.3",
                 "magento/magento1ce": "<1.9.4.3",
                 "magento/magento1ee": ">=1,<1.14.4.3",
-                "magento/product-community-edition": ">=2,<2.2.10|>=2.3,<2.3.3",
+                "magento/product-community-edition": ">=2,<2.2.10|>=2.3,<2.3.2",
                 "monolog/monolog": ">=1.8,<1.12",
                 "namshi/jose": "<2.2",
                 "onelogin/php-saml": "<2.10.4",
@@ -1160,7 +1142,7 @@
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
-            "time": "2019-11-15T09:15:43+00:00"
+            "time": "2019-11-19T14:18:57+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",
