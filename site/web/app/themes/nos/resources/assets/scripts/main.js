@@ -26,9 +26,9 @@ jQuery(document).ready(() => routes.loadEvents());
 
 import { config, library, dom } from '@fortawesome/fontawesome-svg-core';
 import { faFacebook, faTwitter } from '@fortawesome/free-brands-svg-icons';
-import { faCartPlus } from '@fortawesome/free-solid-svg-icons';
+import { faCartPlus, faHome  } from '@fortawesome/free-solid-svg-icons';
 config.searchPseudoElements=true;
 // add the imported icons to the library
-library.add(faFacebook, faTwitter, faCartPlus);
+library.add(faFacebook, faTwitter, faCartPlus, faHome);
 // tell FontAwesome to watch the DOM and add the SVGs when it detects icon markup
 dom.watch();

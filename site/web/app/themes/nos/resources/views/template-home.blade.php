@@ -8,7 +8,7 @@
   @while(have_posts()) @php the_post() @endphp
     {{-- @include('partials.page-header') --}}
     @include('partials.home-block1')
-    @include('partials.nav')
+    @include('partials.home-block2')
     <div class="text-center flex flex-wrap mt-10">
       @include('partials.main-menu')
     </div>
