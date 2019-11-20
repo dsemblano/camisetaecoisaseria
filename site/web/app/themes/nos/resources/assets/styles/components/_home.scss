@@ -1,0 +1,22 @@
+.blockhome-1 {
+  background-image: url("../images/home/block1-bg.jpg");
+  background-size: cover;
+
+  // .blockhome-1-container {
+  //   top: 0;
+  // }
+
+  button {
+    @include font-light;
+  }
+
+  .block1-left {
+    @include font-bold;
+  }
+
+  .block1-down {
+    @include font-regular;
+
+    // bottom: 0;
+  }
+}

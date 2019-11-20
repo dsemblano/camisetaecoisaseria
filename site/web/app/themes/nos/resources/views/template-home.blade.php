@@ -7,7 +7,8 @@
 @section('content')
   @while(have_posts()) @php the_post() @endphp
     {{-- @include('partials.page-header') --}}
-    {{-- @include('partials.home-slideshow') --}}
+    @include('partials.home-block1')
+    @include('partials.nav')
     <div class="text-center flex flex-wrap mt-10">
       @include('partials.main-menu')
     </div>

@@ -49,6 +49,7 @@ let colors = {
   'transparent': 'transparent',
 
   'black': '#22292f',
+  'pureblack': '#000000',
   'grey-darkest': '#3d4852',
   'grey-darker': '#606f7b',
   'grey-dark': '#8795a1',
@@ -91,6 +92,7 @@ let colors = {
   'green-lightest': '#e3fcec',
   'green-nos': '#A0CBD3',
   'green-nos-light': '#3fc7ba',
+  'green-nos-button': '#1ebe85',
 
   'teal-darkest': '#0d3331',
   'teal-darker': '#20504f',
@@ -309,7 +311,7 @@ module.exports = {
     'none': 1,
     'tight': 1.25,
     'normal': 1.5,
-    'loose': 2,
+    'loose': 1.9,
   },
 
 
@@ -328,7 +330,9 @@ module.exports = {
   tracking: {
     'tight': '-0.05em',
     'normal': '0',
-    'wide': '0.05em',
+    'wide': '0.025em',
+    'wider': '0.05em',
+    'widest': '0.1em',
   },
 
 
@@ -400,6 +404,7 @@ module.exports = {
   borderWidths: {
     default: '1px',
     '0': '0',
+    '1': '1px',
     '2': '2px',
     '4': '4px',
     '8': '8px',

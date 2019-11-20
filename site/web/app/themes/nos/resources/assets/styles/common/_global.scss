@@ -4,22 +4,30 @@
 //   font: $size "NICOLAUNegrito", serif;
 // }
 
-@mixin texto-fonte($size: 1rem, $line-height: 25.6px) {
-  font: $size "open_sans", sans-serif;
-  line-height: $line-height;
+// @mixin texto-fonte($size: 1rem, $line-height: 25.6px) {
+//   font: $size "open_sans", sans-serif;
+//   line-height: $line-height;
+// }
+
+// @mixin titulo-fonte() {
+//   font-family: "open_sans_bold", sans-serif;
+// }
+
+@mixin font-regular() {
+  font-family: "clearsans_regular", sans-serif;
 }
 
-@mixin titulo-fonte() {
-  font-family: "open_sans_bold", sans-serif;
+@mixin font-bold() {
+  font-family: "clearsans_bold", sans-serif;
 }
 
-@mixin texto-maven() {
-  font-family: "MavenProRegular", sans-serif;
+@mixin font-light() {
+  font-family: "clearsans_thin", sans-serif;
 }
 
-@mixin titulo-maven() {
-  font-family: "MavenProBold", sans-serif;
-}
+// @mixin titulo-font() {
+//   font-family: "MavenProBold", sans-serif;
+// }
 
 h1,
 h2,
@@ -29,21 +37,19 @@ h5,
 h6 {
   @apply mb-2 leading-tight text-grey-darkest;
 
-  @include titulo-maven;
+  @include font-bold;
 
   // @include titulos;
 }
 
-p {
-  @apply mb-3 leading-normal text-grey-darker;
+// p {
+//   // @apply mb-3 leading-normal text-grey-darker;
 
-  @include texto-maven;
-}
+//   @include font-bold;
+// }
 
 a {
   @apply text-primary no-underline border-b border-transparent text-grey-darkest;
-
-  @include texto-maven;
 
   transition: 0.2s ease;
 
@@ -64,105 +70,76 @@ ul {
   }
 }
 
-nav,
-span {
-  @apply text-grey-darker;
+// .nav-primary {
+//   position: relative;
 
-  @include texto-maven;
-}
+//   .menu-menu-container {
+//     position: absolute;
+//     bottom: 15px;
+//     left: 0;
 
-@font-face {
-  font-family: "MavenProRegular";
-  src: url("../fonts/MavenPro-Regular.ttf") format("truetype");
-  font-display: swap;
-  font-weight: normal;
-  font-style: normal;
-}
+//     ul li {
+//       .fa-cart-plus {
+//         color: $grey-light;
+//         position: relative;
+//         left: 10px;
+//         bottom: 1px;
+//         font-size: 1.3rem;
+//       }
 
-@font-face {
-  font-family: "MavenProBold";
-  src: url("../fonts/MavenPro-Bold.ttf") format("truetype");
-  font-display: swap;
-  font-weight: normal;
-  font-style: normal;
-}
+//       &.cart {
+//         visibility: visible;
+//         font-size: 1.3rem;
 
-@font-face {
-  font-family: "open_sans";
-  src: url("../fonts/opensans-regular-webfont.eot");
-  src: url("../fonts/opensans-regular-webfont.eot?#iefix") format("embedded-opentype"), url("../fonts/opensans-regular-webfont.woff2") format("woff2"), url("../fonts/opensans-regular-webfont.woff") format("woff"), url("../fonts/opensans-regular-webfont.ttf") format("truetype");
-  font-display: swap;
-  font-weight: normal;
-  font-style: normal;
-}
+//         &::before {
+//           display: inline-block;
+//           font-style: normal;
+//           font-variant: normal;
+//           text-rendering: auto;
+//           visibility: hidden;
+//           font-family: "Font Awesome 5 Free", serif;
+//           font-weight: 900;
+//           content: "\f217";
+//           -webkit-font-smoothing: antialiased;
+//         }
+//       }
 
-@font-face {
-  font-family: "open_sans_italic";
-  src: url("../fonts/opensans-italic-webfont.eot");
-  src: url("../fonts/opensans-italic-webfont.eot?#iefix") format("embedded-opentype"), url("../fonts/opensans-italic-webfont.woff2") format("woff2"), url("../fonts/opensans-italic-webfont.woff");
-  font-display: swap;
-  font-weight: normal;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: "open_sans_bold";
-  src: url("../fonts/opensans-bold-webfont.eot");
-  src: url("../fonts/opensans-bold-webfont.eot?#iefix") format("embedded-opentype"), url("../fonts/opensans-bold-webfont.woff2") format("woff2"), url("../fonts/opensans-bold-webfont.woff");
-  font-display: swap;
-  font-weight: bold;
-  font-style: normal;
-}
-
-//Fonts
-// @font-face {
-//   font-family: "NICOLAUNegrito";
-//   src: //url('myfont.woff2') format('woff2'),
-//     //url('myfont.woff') format('woff'),
-//     url("../fonts/NICOLAUNegrito.ttf") format("truetype");
+//       a {
+//         color: $grey-light;
+//         font-size: 1.5rem;
+//         font-weight: bolder;
+//       }
+//     }
+//   }
 // }
 
-.banner {
-  .nav-primary {
-    position: relative;
+// Font face
+@font-face {
+  font-family: "clear_sansregular";
+  src: url("../fonts/clearsans/clearsans_regular/ClearSans-Regular-webfont.eot");
+  src:
+    url("../fonts/clearsans/clearsans_regular/ClearSans-Regular-webfont.eot?#iefix") format("embedded-opentype"),
+    url("../fonts/clearsans/clearsans_regular/ClearSans-Regular-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
 
-    .menu-menu-container {
-      position: absolute;
-      bottom: 15px;
-      left: 0;
+@font-face {
+  font-family: "clearsans_bold";
+  src: url("../fonts/clearsans/clearsans_bold/ClearSans-Bold-webfont.eot");
+  src:
+    url("../fonts/clearsans/clearsans_bold/ClearSans-Bold-webfont.eot?#iefix") format("embedded-opentype"),
+    url("../fonts/clearsans/clearsans_bold/ClearSans-Bold-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
 
-      ul li {
-        .fa-cart-plus {
-          color: $grey-light;
-          position: relative;
-          left: 10px;
-          bottom: 1px;
-          font-size: 1.3rem;
-        }
-
-        &.cart {
-          visibility: visible;
-          font-size: 1.3rem;
-
-          &::before {
-            display: inline-block;
-            font-style: normal;
-            font-variant: normal;
-            text-rendering: auto;
-            visibility: hidden;
-            font-family: "Font Awesome 5 Free", serif;
-            font-weight: 900;
-            content: "\f217";
-            -webkit-font-smoothing: antialiased;
-          }
-        }
-
-        a {
-          color: $grey-light;
-          font-size: 1.5rem;
-          font-weight: bolder;
-        }
-      }
-    }
-  }
+@font-face {
+  font-family: "clearsans_thin";
+  src: url("../fonts/clearsans/clearsans_thin/ClearSans-Thin-webfont.eot");
+  src:
+    url("../fonts/clearsans/clearsans_thin/ClearSans-Thin-webfont.eot?#iefix") format("embedded-opentype"),
+    url("../fonts/clearsans/clearsans_thin/ClearSans-Thin-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
 }
