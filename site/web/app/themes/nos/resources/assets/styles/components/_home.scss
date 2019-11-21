@@ -6,17 +6,13 @@
   //   top: 0;
   // }
 
-  button {
-    @include font-light;
-  }
-
   .block1-left {
     @include font-bold;
   }
 
-  .block1-down {
-    @include font-regular;
+  // .block1-down {
+  //   @include font-regular;
 
-    // bottom: 0;
-  }
+  //   // bottom: 0;
+  // }
 }

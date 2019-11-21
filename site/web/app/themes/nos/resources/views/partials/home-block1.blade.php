@@ -7,7 +7,7 @@
       <p>INVENTE</p>
       <p>IMPRIMA</p>
     </div>
-    <button class="bg-green-nos-button py-4 px-4 rounded"><a href="/design-editor/">ESTÚDIO DE CRIAÇÃO</a></button>
+    <button class="btn-estudio"><a href="/design-editor/">ESTÚDIO DE CRIAÇÃO</a></button>
   </div>
 
   <div class="block1-down border-solid border-black border-t-1 tracking-widest w-full">

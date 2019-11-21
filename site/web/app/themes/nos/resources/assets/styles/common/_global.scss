@@ -79,6 +79,12 @@ ul {
   }
 }
 
+.btn-estudio {
+  @apply bg-green-nos-button py-4 px-4 rounded;
+
+  @include font-light;
+}
+
 .menu-menu-container {
   width: 100%;
 
