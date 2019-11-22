@@ -133,6 +133,8 @@ let colors = {
   'pink-light': '#fa7ea8',
   'pink-lighter': '#ffbbca',
   'pink-lightest': '#ffebef',
+
+  'gray-alpha': 'rgba(211,211,211,0.7)',
 }
 
 module.exports = {
