@@ -10,7 +10,7 @@
     @include('partials.home-block1')
     @include('partials.home-block2')
     @include('partials.home-block3')
-    <div class="text-center flex flex-wrap mt-10">
+    {{-- <div class="text-center flex flex-wrap mt-10">
       @include('partials.main-menu')
     </div>
     <hr class="block h-1 border-0 border-t-2 border-green-nos my-4 p-0">
@@ -18,6 +18,6 @@
       @include('partials.last-products')
     </ul>
     @include('partials.content-page')
-    {!! do_shortcode('[smartslider3 slider=2]') !!}
+    {!! do_shortcode('[smartslider3 slider=2]') !!} --}}
   @endwhile
 @endsection

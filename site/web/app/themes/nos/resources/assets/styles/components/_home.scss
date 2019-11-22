@@ -16,3 +16,9 @@
   //   // bottom: 0;
   // }
 }
+
+.blockhome-3 {
+  p {
+    @include font-light;
+  }
+}
