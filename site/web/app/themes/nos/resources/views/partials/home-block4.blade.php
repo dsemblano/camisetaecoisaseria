@@ -1,6 +1,6 @@
 <section class="blockhome-4 mt-12">
   <h2 class="text-6xl text-center text-pureblack border-solid border-black border-b-1">NÓS - SERVIÇOS</h2>
-  <ul class="inline-flex flex-row items-center justify-between items-center text-center p-0">
+  <ul class="inline-flex flex-row items-center justify-between items-center text-center p-0 mb-32">
     <li class="w-1/25">
       <div class="img-container">
 
@@ -38,4 +38,6 @@
       </div>
     </li>
   </ul>
+
+  <p class="py-4 text-3xl text-pureblack text-center bg-grey-dark">100% ALGODÃO ORGÂNICO CERTIFICADO</p>
 </section>
