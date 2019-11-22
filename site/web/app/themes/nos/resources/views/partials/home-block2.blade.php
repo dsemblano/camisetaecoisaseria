@@ -1,4 +1,4 @@
-<section class="tracking-widest py-5 text-1xl">
+<section class="tracking-widest py-5 text-1xl text-base md:text-1xl">
   <p class="container text-center">SEM LIMITE DE CORES  | SEM PEDIDO MÍNIMO | PRODUTOS À PRONTA ENTREGA</p>
 </section>
 

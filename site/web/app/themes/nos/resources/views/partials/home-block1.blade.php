@@ -11,7 +11,7 @@
   </div>
 
   <div class="block1-down border-solid border-black border-t-1 tracking-widest w-full">
-    <div class="container flex justify-between py-5 text-2xl">
+    <div class="container flex flex-col md:flex-row justify-between py-5 text-1xl md:text-2xl">
       <span class="text-white">IMPRESSÃO DIGITAL EM ALGODÃO</span>
       <span class="text-black">CAMISETA É COISA SÉRIA</span>
     </div>
