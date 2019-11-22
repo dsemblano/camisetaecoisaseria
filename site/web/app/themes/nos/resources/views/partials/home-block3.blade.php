@@ -1,4 +1,4 @@
-<section class="blockhome-3 flex justify-between mt-12">
+<section class="blockhome-3 flex flex-col md:flex-row justify-between mt-12">
   <div class="blockhome-3-left self-center order-1 m-auto pt-16 pb-2 text-center leading-loose">
       <h2 class="text-6xl text-pureblack">FAÇA SUA NÓS</h2>
       <p class="text-2xl mb-6">crie e customize todos os produtos</p>

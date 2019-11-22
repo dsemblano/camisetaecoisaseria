@@ -1,7 +1,7 @@
 <section class="blockhome-4 mt-12">
   <h2 class="text-6xl text-center text-pureblack border-solid border-black border-b-1">NÓS - SERVIÇOS</h2>
-  <ul class="inline-flex flex-row items-center justify-between items-center text-center p-0 mb-32">
-    <li class="w-1/25">
+  <ul class="inline-flex flex-col md:flex-row items-center justify-between items-center text-center p-0 mb-32">
+    <li class="w-full md:w-1/25">
       <div class="img-container">
 
         <img src="@asset('images/home/blusabranca.png')" alt="blusa 1" class="blockhome4-img">
@@ -13,7 +13,7 @@
 
       </div>
     </li>
-    <li class="w-1/25">
+    <li class="w-full md:w-1/25">
       <div class="img-container">
 
         <img src="@asset('images/home/blusabranca.png')" alt="blusa 1" class="blockhome4-img">
@@ -25,7 +25,7 @@
 
       </div>
     </li>
-    <li class="w-1/25">
+    <li class="w-full md:w-1/25">
       <div class="img-container">
 
         <img src="@asset('images/home/blusabranca.png')" alt="blusa 1" class="blockhome4-img">
