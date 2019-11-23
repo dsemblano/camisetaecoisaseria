@@ -1,6 +1,15 @@
 footer.content-info {
   .footer-up {
     @include font-light;
+
+    nav {
+      padding: 3em 1em 1em 0;
+    }
+
+    .widget_text {
+      width: 50%;
+      padding: 0 2em 1em 1em;
+    }
   }
 
   .footer-down {

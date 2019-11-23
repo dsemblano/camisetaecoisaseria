@@ -1,11 +1,11 @@
 <footer class="content-info">
-  <div class="footer-up leading-normal text-2xl flex flex-row content-between justify-between">
-    <nav class="nav-footer1 border-r-2 border-solid border-black flex-grow">
+  <div class="footer-up leading-normal text-2xl flex flex-row items-stretch content-between justify-between">
+    <nav class="nav-footer1 border-r-2 border-solid border-black flex-grow w-1/3">
       @if (has_nav_menu('secondaryfooter1_navigation'))
       {!! wp_nav_menu(['theme_location' => 'secondaryfooter1_navigation', 'menu_class' => 'nav']) !!}
       @endif
     </nav>
-    <nav class="nav-footer2 border-r-2 border-solid border-black flex-grow">
+    <nav class="nav-footer2 border-r-2 border-solid border-black flex-grow w-3/4">
       @if (has_nav_menu('secondaryfooter2_navigation'))
       {!! wp_nav_menu(['theme_location' => 'secondaryfooter2_navigation', 'menu_class' => 'nav']) !!}
       @endif
