@@ -1,5 +1,11 @@
-footer.content-info .footer-down {
-  .widget_text {
-    @apply text-center text-white;
+footer.content-info {
+  .footer-up {
+    @include font-light;
+  }
+
+  .footer-down {
+    .widget_text {
+      @apply text-center text-white;
+    }
   }
 }
