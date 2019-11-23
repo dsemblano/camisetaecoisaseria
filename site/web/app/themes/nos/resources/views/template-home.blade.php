@@ -12,6 +12,7 @@
     @include('partials.home-block3')
     @include('partials.home-block4')
     @include('partials.home-slideshow')
+    {!! do_shortcode('[insta-gallery id="1"]') !!}
     {{-- <div class="text-center flex flex-wrap mt-10">
       @include('partials.main-menu')
     </div>
