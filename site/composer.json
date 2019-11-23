@@ -58,6 +58,7 @@
     "wpackagist-plugin/wp-smushit":">=3.3.1",
     "wpackagist-plugin/smart-slider-3":">=3.3.24",
     "wpackagist-plugin/slider-video":">=1.2.9",
+    "wpackagist-plugin/insta-gallery":">=2.6.1",
     "wpackagist-plugin/wps-hide-login":">=1.5.4.2"
   },
   "require-dev": {

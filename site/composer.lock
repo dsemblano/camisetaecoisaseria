@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "10e810d8057711537ab488060af9c989",
+    "content-hash": "4885f43e09e1ea4c6b24b2600de9832f",
     "packages": [
         {
             "name": "composer/installers",
@@ -545,6 +545,24 @@
             },
             "type": "wordpress-plugin",
             "homepage": "https://wordpress.org/plugins/automatic-translator-addon-for-loco-translate/"
+        },
+        {
+            "name": "wpackagist-plugin/insta-gallery",
+            "version": "2.6.1",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/insta-gallery/",
+                "reference": "tags/2.6.1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/insta-gallery.2.6.1.zip"
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/insta-gallery/"
         },
         {
             "name": "wpackagist-plugin/loco-translate",

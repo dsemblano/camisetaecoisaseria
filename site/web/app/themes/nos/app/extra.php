@@ -135,6 +135,6 @@ add_filter('woocommerce_product_add_to_cart_text', function ($text) {
 // function bryce_add_to_cart_text()
 // {
 //     return __('Adicionar', 'woocommerce');
-// }
+// // }
 
-return ! wp_is_file_mod_allowed(apply_filters('loco_file_mod_allowed_context', 'download_language_pack'));
+// return ! wp_is_file_mod_allowed(apply_filters('loco_file_mod_allowed_context', 'download_language_pack'));
