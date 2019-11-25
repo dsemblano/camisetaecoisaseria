@@ -13,6 +13,11 @@ footer.content-info {
   }
 
   .footer-down {
+    .nav-secondary ul li {
+      /* background-color: green; */
+      margin-right: 3em;
+    }
+
     .widget_text {
       @apply text-center text-white;
     }
