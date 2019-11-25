@@ -1,17 +1,4 @@
 // Mixins
-// @mixin titulos($color: black, $size: 1rem) {
-//   color: $color;
-//   font: $size "NICOLAUNegrito", serif;
-// }
-
-// @mixin texto-fonte($size: 1rem, $line-height: 25.6px) {
-//   font: $size "open_sans", sans-serif;
-//   line-height: $line-height;
-// }
-
-// @mixin titulo-fonte() {
-//   font-family: "open_sans_bold", sans-serif;
-// }
 
 @mixin font-regular() {
   font-family: "clearsans_regular", sans-serif;
@@ -25,10 +12,6 @@
   font-family: "clearsans_thin", sans-serif;
 }
 
-// @mixin titulo-font() {
-//   font-family: "MavenProBold", sans-serif;
-// }
-
 h1,
 h2,
 h3,
@@ -38,8 +21,6 @@ h6 {
   @apply mb-2 leading-tight text-pureblack;
 
   @include font-bold;
-
-  // @include titulos;
 }
 
 // p {
@@ -73,6 +54,15 @@ ul {
 
 hr {
   border-top: 1px solid #8c8b8b;
+  width: 75%;
+  position: absolute;
+  top: 4em;
+  left: 0;
+}
+
+.title-insta {
+  right: 0;
+  width: 25%;
 }
 
 .last-products {
@@ -121,49 +111,6 @@ hr {
     }
   }
 }
-
-// .nav-primary {
-//   position: relative;
-
-//   .menu-menu-container {
-//     position: absolute;
-//     bottom: 15px;
-//     left: 0;
-
-//     ul li {
-//       .fa-cart-plus {
-//         color: $grey-light;
-//         position: relative;
-//         left: 10px;
-//         bottom: 1px;
-//         font-size: 1.3rem;
-//       }
-
-//       &.cart {
-//         visibility: visible;
-//         font-size: 1.3rem;
-
-//         &::before {
-//           display: inline-block;
-//           font-style: normal;
-//           font-variant: normal;
-//           text-rendering: auto;
-//           visibility: hidden;
-//           font-family: "Font Awesome 5 Free", serif;
-//           font-weight: 900;
-//           content: "\f217";
-//           -webkit-font-smoothing: antialiased;
-//         }
-//       }
-
-//       a {
-//         color: $grey-light;
-//         font-size: 1.5rem;
-//         font-weight: bolder;
-//       }
-//     }
-//   }
-// }
 
 // Font face
 @font-face {
