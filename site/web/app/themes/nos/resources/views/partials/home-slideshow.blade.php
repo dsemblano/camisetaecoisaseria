@@ -1,4 +1,4 @@
-<section id="carousel" class="main-carousel container h-32 mt-20 mb-40 sm:h-40 md:h-57 lg:h-slidexl" data-flickity='{ "cellAlign": "left", "contain": true, "wrapAround": true, "lazyLoad": true, "setGallerySize": false, "autoPlay": false, "dragThreshold": 20 }'>
+<section id="carousel" class="main-carousel container h-32 my-20 sm:h-40 md:h-57 lg:h-slidexl" data-flickity='{ "cellAlign": "left", "contain": true, "wrapAround": true, "lazyLoad": true, "setGallerySize": false, "autoPlay": false, "dragThreshold": 20 }'>
   {{-- @if ($slideshow->have_posts())
     @while ($slideshow->have_posts()) @php $slideshow->the_post() @endphp
         <div class="carousel-cell w-full">
