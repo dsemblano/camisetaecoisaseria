@@ -1,4 +1,4 @@
-<footer class="content-info">
+<footer class="content-info mt-32">
   <div class="footer-up leading-normal text-2xl flex flex-col md:flex-row items-stretch content-between justify-between">
     <nav class="nav-footer1 border-b-2 md:border-r-2 border-solid border-black flex-grow md:w-1/3">
       @if (has_nav_menu('secondaryfooter1_navigation'))

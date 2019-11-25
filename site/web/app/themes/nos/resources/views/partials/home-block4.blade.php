@@ -39,5 +39,5 @@
     </li>
   </ul>
 
-  <p class="py-4 text-3xl text-pureblack text-center bg-grey-dark">100% ALGODÃO ORGÂNICO CERTIFICADO</p>
+  <p class="py-4 text-2xl text-pureblack text-center bg-grey-nos">100% ALGODÃO ORGÂNICO CERTIFICADO</p>
 </section>
