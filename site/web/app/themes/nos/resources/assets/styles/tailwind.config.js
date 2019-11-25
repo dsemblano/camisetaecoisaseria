@@ -552,7 +552,7 @@ module.exports = {
     'slidemd': '14.6rem',
     '64': '16rem',
     'slidelg': '23.1rem',
-    'slidexl': '27',
+    'slidexl': '27rem',
     'full': '100%',
     'full': '100%',
     'screen': '100vh'
