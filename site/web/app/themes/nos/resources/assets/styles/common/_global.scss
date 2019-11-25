@@ -71,6 +71,10 @@ ul {
   list-style: none;
 }
 
+hr {
+  border-top: 1px solid #8c8b8b;
+}
+
 .last-products {
   @apply border-dashed border-r;
 
