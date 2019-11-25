@@ -1,6 +1,7 @@
 .blockhome-1 {
   background-image: url("../images/home/block1-bg.jpg");
   background-size: cover;
+  background-position: right;
 
   // .blockhome-1-container {
   //   top: 0;
@@ -10,11 +11,9 @@
     @include font-bold;
   }
 
-  // .block1-down {
-  //   @include font-regular;
-
-  //   // bottom: 0;
-  // }
+  .block1-down .container {
+    padding: 1em 4em 1em 0.8em;
+  }
 }
 
 .blockhome-3 {
