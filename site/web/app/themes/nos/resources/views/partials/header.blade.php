@@ -1,4 +1,4 @@
-<header class="banner bg-pureblack">
+<header class="banner bg-pureblack h-32">
   <div class="container text-center">
       <h1 class="pt-5 mb-0 flex items-center justify-between">
         <a class="brand" href="{{ home_url('/') }}">
