@@ -61,7 +61,7 @@ ul {
 }
 
 .btn-estudio {
-  @apply bg-green-nos-button py-4 px-4 rounded;
+  @apply bg-green-nos-button py-4 px-4 rounded-lg text-white;
 
   @include font-bold;
 }
