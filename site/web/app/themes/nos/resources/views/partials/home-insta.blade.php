@@ -1,6 +1,6 @@
 <div class="insta border-solid border-black pt-8 border-t-2 mb-12 h-56 md:h-40 flex flex-col relative">
   <form class="email-input md:w-1/3 absolute">
-    <h3>RECEBA NOSSAS PROMOÇÕES</h3>
+    <h3>Receba nossas promoções</h3>
     <div class="flex border-pureblack border-solid border-8">
       <input class="w-full border-none text-grey-dark mr-3 py-1 pl-4 tracking-widest text-xl focus:outline-none"
         type="text" placeholder="seuemail@exemplo.com.br" aria-label="Email">
