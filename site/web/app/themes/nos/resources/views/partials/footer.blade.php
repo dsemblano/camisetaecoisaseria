@@ -21,7 +21,7 @@
         {!! wp_nav_menu(['theme_location' => 'secondary_navigation', 'menu_class' => 'nav flex flex-col md:flex-row text-white py-5 text-2xl capitalize']) !!}
         @endif
       </nav>
-      @php echo do_shortcode('[TheChamp-Sharing]') @endphp
+      @php echo do_shortcode('[Sassy_Social_Share]') @endphp
     </div>
     @php dynamic_sidebar('sidebar-footer') @endphp
   </div>

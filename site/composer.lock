@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b34cf8900496e0231f56ab2b11fed392",
+    "content-hash": "90b010e1f8a996d8706efbb05a98929f",
     "packages": [
         {
             "name": "composer/installers",
@@ -548,15 +548,15 @@
         },
         {
             "name": "wpackagist-plugin/insta-gallery",
-            "version": "2.6.1",
+            "version": "2.6.2",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/insta-gallery/",
-                "reference": "tags/2.6.1"
+                "reference": "tags/2.6.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/insta-gallery.2.6.1.zip"
+                "url": "https://downloads.wordpress.org/plugin/insta-gallery.2.6.2.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -599,6 +599,24 @@
             },
             "type": "wordpress-plugin",
             "homepage": "https://wordpress.org/plugins/regenerate-thumbnails/"
+        },
+        {
+            "name": "wpackagist-plugin/sassy-social-share",
+            "version": "3.3.4",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/sassy-social-share/",
+                "reference": "trunk"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/sassy-social-share.zip?timestamp=1573687627"
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/sassy-social-share/"
         },
         {
             "name": "wpackagist-plugin/side-cart-woocommerce",
@@ -692,15 +710,15 @@
         },
         {
             "name": "wpackagist-plugin/woocommerce-abandoned-cart",
-            "version": "5.6.1",
+            "version": "5.6.2",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/woocommerce-abandoned-cart/",
-                "reference": "tags/5.6.1"
+                "reference": "tags/5.6.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/woocommerce-abandoned-cart.5.6.1.zip"
+                "url": "https://downloads.wordpress.org/plugin/woocommerce-abandoned-cart.5.6.2.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
