@@ -18,7 +18,7 @@
       <img src="@asset('images/footer.png')" alt="image footer" class="footer-img w-1/4">
       <nav class="nav-secondary bg-pureblack">
         @if (has_nav_menu('secondary_navigation'))
-        {!! wp_nav_menu(['theme_location' => 'secondary_navigation', 'menu_class' => 'nav flex flex-col md:flex-row text-white py-5 text-2xl uppercase']) !!}
+        {!! wp_nav_menu(['theme_location' => 'secondary_navigation', 'menu_class' => 'nav flex flex-col md:flex-row text-white py-5 text-2xl capitalize']) !!}
         @endif
       </nav>
       @php echo do_shortcode('[TheChamp-Sharing]') @endphp
