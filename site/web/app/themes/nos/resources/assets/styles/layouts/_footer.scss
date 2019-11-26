@@ -7,7 +7,14 @@ footer.content-info {
     }
 
     .widget_text {
-      width: 50%;
+      @include media(">phone", "<tablet") {
+        width: 100%;
+      }
+
+      @include media(">950px") {
+        width: 40%;
+      }
+
       padding: 0 2em 1em 1em;
     }
   }
@@ -20,6 +27,8 @@ footer.content-info {
 
     .widget_text {
       @apply text-center text-white;
+
+      padding: 2rem 2rem 2rem 3rem;
     }
   }
 }
