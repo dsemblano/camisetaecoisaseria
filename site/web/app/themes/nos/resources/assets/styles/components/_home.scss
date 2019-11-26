@@ -38,23 +38,33 @@
   }
 }
 
-.insta-hr {
-  border-top: 1px solid #8c8b8b;
-  width: 72%;
-  position: absolute;
-  top: 8em;
-  left: 0;
-}
-
-.title-insta {
-  right: 1em;
+.sigainsta {
   top: 2em;
-  width: 25%;
+  right: 0;
+  width: 100%;
+
+  .insta-hr {
+    border-top: 1px solid #8c8b8b;
+    width: 80%;
+    position: absolute;
+    top: 7.5em;
+    left: 0;
+  }
+
+  .title-insta {
+    right: 1em;
+    top: 2em;
+    width: 25%;
+
+    img {
+      width: 70%;
+    }
+  }
 }
 
 .blockhome-4 {
   p {
-    @include font-regular;
+    @include font-bold;
   }
 
   ul {

@@ -1,5 +1,5 @@
 <section class="blockhome-4 my-16">
-  <h2 class="text-4xl mb-20 pb-4 md:text-6xl text-center text-pureblack border-solid border-black border-b-1">NÓS - SERVIÇOS</h2>
+  <h2 class="text-4xl mb-8 pt-8 md:text-5xl text-center text-pureblack border-solid border-black border-t-2">NÓS - SERVIÇOS</h2>
   <ul class="inline-flex flex-col md:flex-row items-center justify-between items-center text-center p-0 mb-0">
     <li class="w-full mb-8 md:w-1/25">
       <div class="img-container">
@@ -39,5 +39,5 @@
     </li>
   </ul>
 
-  <p class="py-4 text-2xl text-pureblack text-center bg-grey-nos">100% ALGODÃO ORGÂNICO CERTIFICADO</p>
+  <p class="py-3 text-2xl text-pureblack text-center bg-grey-nos">100% ALGODÃO ORGÂNICO CERTIFICADO</p>
 </section>

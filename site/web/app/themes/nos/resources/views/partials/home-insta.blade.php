@@ -1,4 +1,4 @@
-<div class="insta mb-16 h-40 flex flex-col relative">
+<div class="insta border-solid border-black pt-8 border-t-2 mb-12 h-40 flex flex-col relative">
   <form class="email-input w-1/3 absolute">
     <h3>RECEBA NOSSAS PROMOÇÕES</h3>
     <div class="flex border-pureblack border-solid border-8">
@@ -9,8 +9,10 @@
       </button>
     </div>
   </form>
-  <hr class="insta-hr">
-  <h2 class="title-insta text-right text-pureblack text-3xl container absolute">Siga nosso <br><img
-      src="@asset('images/instalogo.png')" alt="instagram logo" class="img-insta w-56"></h2>
+  <div class="sigainsta absolute">
+    <hr class="insta-hr">
+    <h2 class="title-insta text-right text-pureblack text-3xl container absolute">Siga nosso <br><img
+        src="@asset('images/instalogo.png')" alt="instagram logo" class="img-insta w-56"></h2>
+  </div>
 </div>
 {!! do_shortcode('[insta-gallery id="1"]') !!}
