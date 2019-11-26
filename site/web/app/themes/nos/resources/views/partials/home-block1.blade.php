@@ -1,7 +1,7 @@
 <section class="blockhome-1 h-screen flex flex-col flex-no-wrap justify-between">
 
   <div class="blockhome-1-container container pt-16 pb-2">
-    <div class="block1-left text-white text-3xl mb-2 tracking-widest leading-loose">
+    <div class="block1-left text-white text-2xl mb-2 tracking-widest leading-loose">
       <p>IMAGINE</p>
       <p>CRIE</p>
       <p>INVENTE</p>
