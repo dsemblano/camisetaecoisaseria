@@ -11,8 +11,8 @@
     @include('partials.home-block2')
     @include('partials.home-block3')
     @include('partials.home-block4')
-    @include('partials.home-slideshow')
-    @include('partials.home-insta')
+    {{-- @include('partials.home-slideshow') --}}
+    {{-- @include('partials.home-insta') --}}
 
     {{-- <div class="text-center flex flex-wrap mt-10">
       @include('partials.main-menu')
