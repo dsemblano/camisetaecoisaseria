@@ -75,9 +75,14 @@
 
     @include media(">phone") {
       display: block;
-      width: 75%;
+      width: 100%;
       top: 7.5em;
       text-align: right;
+    }
+
+    @include media(">950px") {
+      top: 5.5em;
+      width: 75%;
     }
   }
 
