@@ -19,11 +19,11 @@
   {{-- <div class="carousel-cell w-full">
     <video src="@asset('images/camisanos.mp4')" autoplay loop muted class="slideshow-item w-full lg:h-slidelg"></video>
   </div> --}}
-  <div class="carousel-cell w-full">
-    <video src="@asset('images/Joren_Falls_Izu_Jap.mp4')" autoplay loop muted class="slideshow-item w-full"></video>
+  <div class="carousel-cell flex w-full">
+    <video src="@asset('images/home/personalize.mp4')" autoplay loop muted class="slideshow-item m-auto"></video>
   </div>
   <div class="carousel-cell w-full">
-    <img src="@asset('images/home/block1-bg.jpg')" alt="slideshow" class="slideshow-item w-full">
+    <img src="@asset('images/home/block1-hdbg.jpg')" alt="slideshow" class="slideshow-item w-full">
   </div>
   <div class="carousel-cell w-full">
     <img src="@asset('images/home/customise.jpeg')" alt="slideshow" class="slideshow-item w-full">
