@@ -20,7 +20,7 @@
   </a>
   <div class="px-6 py-4">
     <h2 class="text-2xl mb-2">
-      <a href="/design-editor">Faça sua Nós</a>
+      <a href="/design-editor">Faça sua NÓS</a>
     </h2>
     <p class="text-gray-700 text-xl">
       <a href="/design-editor">Customize sua camisa</a>

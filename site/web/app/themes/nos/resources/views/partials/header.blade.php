@@ -5,7 +5,7 @@
           {{-- <span>NÓS</span>
               <span>CAMISETA É COISA SÉRIA</span> --}}
           {{-- {{ get_bloginfo('name', 'display') }} --}}
-          <img class="text-center" src="@asset('images/imprimanos.png')" alt="Nós camisetas" />
+          <img class="text-center" src="@asset('images/imprimanos.png')" alt="NÓS camisetas" />
         </a>
         @php echo do_shortcode('[Sassy_Social_Share]') @endphp
       </h1>
