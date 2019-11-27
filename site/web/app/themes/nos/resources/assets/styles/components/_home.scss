@@ -12,7 +12,12 @@
   }
 
   .block1-down .container {
-    padding: 1em 4em 1em 0.8em;
+    padding: 10px 0 10px 0;
+    line-height: 30px;
+
+    @include media(">phone") {
+      padding: 1em 4em 1em 0.8em;
+    }
   }
 }
 
@@ -31,6 +36,18 @@
     font-style: italic;
   }
 
+  div.flex {
+    width: 95%;
+
+    input {
+      width: 75%;
+    }
+
+    button {
+      width: 25%;
+    }
+  }
+
   h3 {
     @include font-regular;
 
@@ -39,7 +56,7 @@
 }
 
 .sigainsta {
-  top: 7em;
+  top: 11em;
   right: 0;
   width: 100%;
 
@@ -63,8 +80,8 @@
   }
 
   .title-insta {
-    right: 1em;
-    top: 2em;
+    right: 0;
+    text-align: center;
     width: 100%;
 
     @include media(">phone") {
@@ -89,31 +106,31 @@
 }
 
 // Newsletter
-.hustle-form {
-  border: 8px solid black;
-  height: 3.5rem;
+// .hustle-form {
+//   border: 8px solid black;
+//   height: 3.5rem;
 
-  .hustle-form-fields {
-    display: flex !important;
-    flex-direction: row;
-    height: 100%;
-    justify-content: space-between;
+//   .hustle-form-fields {
+//     display: flex !important;
+//     flex-direction: row;
+//     height: 100%;
+//     justify-content: space-between;
 
-    label {
-      width: 85%;
-      margin: 0 !important;
-    }
+//     label {
+//       width: 85%;
+//       margin: 0 !important;
+//     }
 
-    button {
-      width: 10% !important;
-      margin: 0 !important;
-      min-width: 0 !important;
-      font-size: 1.5rem !important;
-      height: 100% !important;
-      padding: 0 !important;
-    }
-  }
-}
+//     button {
+//       width: 10% !important;
+//       margin: 0 !important;
+//       min-width: 0 !important;
+//       font-size: 1.5rem !important;
+//       height: 100% !important;
+//       padding: 0 !important;
+//     }
+//   }
+// }
 
 .blockhome-4 {
   p {
