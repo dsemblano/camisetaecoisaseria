@@ -61,7 +61,7 @@
   width: 100%;
 
   @include media(">phone") {
-    top: 2em;
+    top: 6em;
   }
 
   .insta-hr {
@@ -71,8 +71,10 @@
     top: 6em;
     left: 0;
     text-align: center;
+    display: none;
 
     @include media(">phone") {
+      display: block;
       width: 75%;
       top: 7.5em;
       text-align: right;
@@ -80,19 +82,19 @@
   }
 
   .title-insta {
-    right: 0;
     text-align: center;
-    width: 100%;
+    width: auto;
+    right: 0;
+    top: 4em;
 
     @include media(">phone") {
       right: 1em;
       top: 2em;
-      width: 25%;
     }
 
-    img {
-      width: 70%;
-    }
+    // img {
+    //   width: 70%;
+    // }
   }
 }
 

@@ -12,13 +12,13 @@
   </form>
   <div class="sigainsta absolute">
     <hr class="insta-hr">
-    <h2 class="title-insta text-right text-pureblack text-3xl container absolute">
-      <img
-        src="@asset('images/instalogo.png')" alt="instagram logo" class="img-insta w-56"></h2>
+    <h2 class="title-insta text-right text-pureblack md:w-1/4 text-3xl container absolute">
+      <img src="@asset('images/instalogo.png')" alt="instagram logo" class="img-insta">
+    </h2>
   </div>
 </div>
 
-<section class="instagram container mt-40 sm:mt-20">
+<section class="instagram container mt-56 sm:mt-20">
     {!! do_shortcode('[insta-gallery id="1"]') !!}
 </section>
 
