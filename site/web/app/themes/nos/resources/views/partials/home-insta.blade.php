@@ -12,8 +12,13 @@
   </form>
   <div class="sigainsta absolute">
     <hr class="insta-hr">
-    <h2 class="title-insta text-right text-pureblack text-3xl container absolute">Siga nosso <br><img
+    <h2 class="title-insta text-right text-pureblack text-3xl container absolute">
+      <img
         src="@asset('images/instalogo.png')" alt="instagram logo" class="img-insta w-56"></h2>
   </div>
 </div>
-{!! do_shortcode('[insta-gallery id="1"]') !!}
+
+<section class="instagram container">
+    {!! do_shortcode('[insta-gallery id="1"]') !!}
+</section>
+
