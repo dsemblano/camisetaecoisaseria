@@ -39,25 +39,69 @@
 }
 
 .sigainsta {
-  top: 2em;
+  top: 7em;
   right: 0;
   width: 100%;
 
+  @include media(">phone") {
+    top: 2em;
+  }
+
   .insta-hr {
     border-top: 1px solid #8c8b8b;
-    width: 80%;
+    width: 100%;
     position: absolute;
-    top: 7.5em;
+    top: 10em;
     left: 0;
+    text-align: center;
+
+    @include media(">phone") {
+      width: 80%;
+      top: 7.5em;
+      text-align: right;
+    }
   }
 
   .title-insta {
     right: 1em;
     top: 2em;
-    width: 25%;
+    width: 100%;
+
+    @include media(">phone") {
+      right: 1em;
+      top: 2em;
+      width: 25%;
+    }
 
     img {
       width: 70%;
+    }
+  }
+}
+
+// Newsletter
+.hustle-form {
+  border: 8px solid black;
+  height: 3.5rem;
+
+  .hustle-form-fields {
+    display: flex !important;
+    flex-direction: row;
+    height: 100%;
+    justify-content: space-between;
+
+    label {
+      width: 85%;
+      margin: 0 !important;
+    }
+
+    button {
+      width: 10% !important;
+      margin: 0 !important;
+      min-width: 0 !important;
+      font-size: 1.5rem !important;
+      height: 100% !important;
+      padding: 0 !important;
     }
   }
 }
