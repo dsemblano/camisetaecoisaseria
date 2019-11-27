@@ -68,12 +68,12 @@
     border-top: 1px solid #8c8b8b;
     width: 100%;
     position: absolute;
-    top: 10em;
+    top: 6em;
     left: 0;
     text-align: center;
 
     @include media(">phone") {
-      width: 80%;
+      width: 75%;
       top: 7.5em;
       text-align: right;
     }

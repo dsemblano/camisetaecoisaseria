@@ -1,4 +1,4 @@
-<section class="blockhome-4 my-16">
+<section class="blockhome-4 md:my-16">
   <h2 class="text-4xl mb-8 pt-8 md:text-5xl text-center text-pureblack border-solid border-black border-t-2">Nós - Serviços</h2>
   <ul class="inline-flex flex-col md:flex-row items-center justify-between items-center text-center p-0 mb-0">
     <li class="w-full mb-8 md:w-1/25">

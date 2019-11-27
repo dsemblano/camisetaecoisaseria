@@ -3,7 +3,11 @@ footer.content-info {
     @include font-light;
 
     nav {
-      padding: 3em 1em 1em 0;
+      padding: 1em 1em 1em 0;
+
+      @include media(">phone") {
+        padding: 3em 1em 1em 0;
+      }
     }
 
     .widget_text {
