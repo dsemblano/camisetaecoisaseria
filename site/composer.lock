@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "90b010e1f8a996d8706efbb05a98929f",
+    "content-hash": "9d9dbc3bbc295dcb2a6f8c3c0ec73768",
     "packages": [
         {
             "name": "composer/installers",
@@ -869,6 +869,24 @@
             },
             "type": "wordpress-plugin",
             "homepage": "https://wordpress.org/plugins/woocommerce-xml-csv-product-import/"
+        },
+        {
+            "name": "wpackagist-plugin/wordpress-popup",
+            "version": "7.0.3",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/wordpress-popup/",
+                "reference": "tags/7.0.3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/wordpress-popup.7.0.3.zip"
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/wordpress-popup/"
         },
         {
             "name": "wpackagist-plugin/wp-all-import",
