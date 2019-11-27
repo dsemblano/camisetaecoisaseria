@@ -11,7 +11,8 @@
     @include('partials.home-block2')
     @include('partials.home-block3')
     @include('partials.home-block4')
-    @include('partials.home-slideshow')
+    {{-- @include('partials.home-slideshow') --}}
+    {!! do_shortcode('[smartslider3 slider=4]') !!}
     @include('partials.home-insta')
 
     {{-- <div class="text-center flex flex-wrap mt-10">
