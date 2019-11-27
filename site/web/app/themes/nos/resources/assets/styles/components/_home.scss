@@ -79,6 +79,15 @@
   }
 }
 
+// Galeria Instagram
+.insta-gallery-feed {
+  margin-top: 18rem;
+
+  @include media(">phone") {
+    margin-top: 2rem;
+  }
+}
+
 // Newsletter
 .hustle-form {
   border: 8px solid black;
