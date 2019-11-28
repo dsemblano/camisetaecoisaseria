@@ -555,7 +555,7 @@ module.exports = {
     'slidemd': '14.6rem',
     '64': '16rem',
     'slidelg': '23.1rem',
-    'slide1-sm': '24.5rem',
+    'slide1-sm': '25.5rem',
     'slidexl': '27rem',
     'slide1-xl': '35rem',
     'full': '100%',
