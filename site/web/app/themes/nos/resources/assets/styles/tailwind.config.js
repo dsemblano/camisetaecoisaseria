@@ -557,7 +557,7 @@ module.exports = {
     'slidelg': '23.1rem',
     'slide1-sm': '25.5rem',
     'slidexl': '27rem',
-    'slide1-xl': '35rem',
+    'slide1-xl': '33rem',
     'full': '100%',
     'full': '100%',
     'screen': '100vh'

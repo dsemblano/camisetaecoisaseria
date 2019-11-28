@@ -3,7 +3,7 @@
 </section>
 
 <nav
-class="nav-primary bg-pureblack">
+class="nav-primary bg-pureblack mb-8">
 @if (has_nav_menu('primary_navigation'))
 {!! wp_nav_menu(['theme_location' => 'primary_navigation', 'menu_class' => 'nav flex flex-row flex-wrap content-between justify-between container text-white py-5 text-2xl']) !!}
 @endif
