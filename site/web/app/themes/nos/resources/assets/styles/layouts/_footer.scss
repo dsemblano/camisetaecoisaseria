@@ -6,10 +6,10 @@ footer.content-info {
       padding: 1em 1em 1em 0;
 
       @include media(">phone", "<tablet") {
-        padding: 0 1em 1em 0;
+        padding: 1em 1em 1em 0;
       }
 
-      @include media(">phone") {
+      @include media(">=tablet") {
         padding: 3em 1em 1em 0;
       }
     }
