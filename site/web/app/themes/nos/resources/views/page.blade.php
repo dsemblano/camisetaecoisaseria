@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
+@include('partials.home-block1')
+@include('partials.home-block2')
 <div class="content container">
   @while(have_posts()) @php the_post() @endphp
     @include('partials.page-header')
