@@ -1,0 +1,9 @@
+.page-template-default {
+  main {
+    p {
+      @apply mb-3 leading-normal text-black;
+
+      @include font-regular;
+    }
+  }
+}
