@@ -5,6 +5,10 @@ footer.content-info {
     nav {
       padding: 1em 1em 1em 0;
 
+      @include media(">phone", "<tablet") {
+        padding: 0 1em 1em 0;
+      }
+
       @include media(">phone") {
         padding: 3em 1em 1em 0;
       }
