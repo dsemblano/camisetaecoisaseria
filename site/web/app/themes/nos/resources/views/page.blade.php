@@ -9,4 +9,6 @@
     @include('partials.content-page')
   @endwhile
 </div>
+@include('partials.ribbon-algodao')
+@include('partials.slideinsta')
 @endsection

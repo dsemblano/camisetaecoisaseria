@@ -7,7 +7,7 @@
           {{-- {{ get_bloginfo('name', 'display') }} --}}
           <img class="text-center" src="@asset('images/imprimanos.png')" alt="NÓS camisetas" />
         </a>
-        @php echo do_shortcode('[Sassy_Social_Share]') @endphp
+        {{!! do_shortcode('[Sassy_Social_Share]') !!}}
       </h1>
     </div>
 </header>
