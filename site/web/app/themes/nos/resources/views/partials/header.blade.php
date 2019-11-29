@@ -7,7 +7,7 @@
           {{-- {{ get_bloginfo('name', 'display') }} --}}
           <img class="text-center" src="@asset('images/imprimanos.png')" alt="NÓS camisetas" />
         </a>
-        {{!! do_shortcode('[Sassy_Social_Share]') !!}}
+        @include('partials.socialshare')
       </h1>
     </div>
 </header>
