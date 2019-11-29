@@ -1,5 +1,5 @@
 <footer class="content-info md:mt-20">
-  <div class="footer-up leading-normal text-2xl flex flex-col md:flex-row">
+  <div class="footer-up container leading-normal text-2xl flex flex-col md:flex-row">
     <nav class="nav-footer1 border-b-2 md:border-r-2 md:border-b-0 border-solid border-black w-full md:w-20">
       @if (has_nav_menu('secondaryfooter1_navigation'))
       {!! wp_nav_menu(['theme_location' => 'secondaryfooter1_navigation', 'menu_class' => 'nav']) !!}
@@ -13,10 +13,10 @@
       @php dynamic_sidebar('sidebar-footerup') @endphp
   </div>
 
-  <div class="footer-down bg-pureblack w-full">
+  <div class="footer-down bg-pureblack w-full pt-4">
     <div class="container flex flex-col md:flex-row items-center justify-between">
       <a class="brand" href="{{ home_url('/') }}">
-        <img src="@asset('images/footer.png')" alt="image footer" class="footer-img w-1/4">
+        <img src="@asset('images/footer.png')" alt="image footer" class="footer-img">
       </a>
       <nav class="nav-secondary bg-pureblack">
         @if (has_nav_menu('secondary_navigation'))
