@@ -34,9 +34,9 @@ footer.content-info {
     }
 
     .widget_text {
-      @apply text-center text-white;
+      @apply text-center text-white text-xs tracking-wider;
 
-      padding: 2rem 2rem 2rem 3rem;
+      padding-bottom: 1rem;
     }
   }
 }

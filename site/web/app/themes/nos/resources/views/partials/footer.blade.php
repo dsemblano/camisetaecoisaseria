@@ -13,7 +13,7 @@
       @php dynamic_sidebar('sidebar-footerup') @endphp
   </div>
 
-  <div class="footer-down bg-pureblack w-full py-6">
+  <div class="footer-down bg-pureblack w-full">
     <div class="container flex flex-col md:flex-row items-center justify-between">
       <a class="brand" href="{{ home_url('/') }}">
         <img src="@asset('images/footer.png')" alt="image footer" class="footer-img w-1/4">
