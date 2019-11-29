@@ -163,3 +163,57 @@ class My_Text_Widget extends WP_Widget_Text
         echo $after_widget;
     }
 }
+
+//Disable gutenberg style in Front
+function wps_deregister_styles()
+{
+    wp_dequeue_style('wp-block-library');
+}
+add_action('wp_print_styles', 'wps_deregister_styles', 100);
+
+// Disable wp-embed.js
+function my_deregister_scripts()
+{
+    wp_deregister_script('wp-embed');
+}
+add_action('wp_footer', 'my_deregister_scripts');
+
+//removing WP version
+remove_action('wp_head', 'wp_generator');
+
+// removing WP version from RSS
+function remove_wp_version_rss()
+{
+    return'';
+}
+add_filter('the_generator', 'remove_wp_version_rss');
+
+// REMOVE WP EMOJI
+remove_action('wp_head', 'print_emoji_detection_script', 7);
+remove_action('wp_print_styles', 'print_emoji_styles');
+
+remove_action('admin_print_scripts', 'print_emoji_detection_script');
+remove_action('admin_print_styles', 'print_emoji_styles');
+
+function my_login_logo_one()
+{
+    $imgpath = \App\asset_path('images/brand.png');
+    $img_custom = <<<HTML
+  <style type="text/css">
+    body.login div#login h1 a {
+    background-image:url($imgpath);
+    width: 100%;
+    padding: 0;
+    background-size: cover;
+    height: 295px;
+    }
+  </style>
+HTML;
+    echo $img_custom;
+} add_action('login_enqueue_scripts', 'my_login_logo_one');
+
+function the_url($url)
+{
+    return get_bloginfo('url');
+}
+add_filter('login_headerurl', 'the_url');
