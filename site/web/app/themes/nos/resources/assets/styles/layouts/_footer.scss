@@ -3,8 +3,10 @@ footer.content-info {
     @include font-light;
 
     nav {
-      &:first-child ul {
-        padding: 0;
+      @include media(">=tablet") {
+        &:first-child ul {
+          padding: 0;
+        }
       }
 
       padding: 1em 1em 1em 0;
