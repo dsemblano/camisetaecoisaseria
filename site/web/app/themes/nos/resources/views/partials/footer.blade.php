@@ -1,5 +1,5 @@
 <footer class="content-info md:mt-20">
-  <div class="footer-up container leading-normal text-2xl flex flex-col md:flex-row">
+  <div class="footer-up container leading-relaxed text-base flex flex-col md:flex-row">
     <nav class="nav-footer1 border-b-2 md:border-r-2 md:border-b-0 border-solid border-black w-full md:w-20">
       @if (has_nav_menu('secondaryfooter1_navigation'))
       {!! wp_nav_menu(['theme_location' => 'secondaryfooter1_navigation', 'menu_class' => 'nav']) !!}
