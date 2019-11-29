@@ -75,11 +75,13 @@ ul {
 
   @include font-bold;
 
-  ul li {
-    padding-bottom: 2rem;
+  @include media(">=phone", "<tablet") {
+    ul li {
+      padding-bottom: 2rem;
 
-    &:first-child {
-      padding-top: 1rem;
+      &:first-child {
+        padding-top: 1rem;
+      }
     }
   }
 
