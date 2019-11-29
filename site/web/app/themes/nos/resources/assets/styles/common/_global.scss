@@ -75,6 +75,14 @@ ul {
 
   @include font-bold;
 
+  ul li {
+    padding-bottom: 2rem;
+
+    &:first-child {
+      padding-top: 1rem;
+    }
+  }
+
   // ul {
   //   .icon {
   //     &::before {
