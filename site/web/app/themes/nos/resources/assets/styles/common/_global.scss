@@ -75,33 +75,33 @@ ul {
 
   @include font-bold;
 
-  ul {
-    .icon {
-      &::before {
-        display: inline-block;
-        font-style: normal;
-        font-variant: normal;
-        text-rendering: auto;
-        -webkit-font-smoothing: antialiased;
-      }
-    }
+  // ul {
+  //   .icon {
+  //     &::before {
+  //       display: inline-block;
+  //       font-style: normal;
+  //       font-variant: normal;
+  //       text-rendering: auto;
+  //       -webkit-font-smoothing: antialiased;
+  //     }
+  //   }
 
-    .fa-home {
-      visibility: visible;
-      font-size: 1.3rem;
+  //   .fa-home {
+  //     visibility: visible;
+  //     font-size: 1.3rem;
 
-      &::before {
-        font-family: "Font Awesome 5 Free", serif;
-        font-weight: 900;
-        visibility: hidden;
-        display: inline-block;
-        font-style: normal;
-        font-variant: normal;
-        text-rendering: auto;
-        content: "\f015";
-      }
-    }
-  }
+  //     &::before {
+  //       font-family: "Font Awesome 5 Free", serif;
+  //       font-weight: 900;
+  //       visibility: hidden;
+  //       display: inline-block;
+  //       font-style: normal;
+  //       font-variant: normal;
+  //       text-rendering: auto;
+  //       content: "\f015";
+  //     }
+  //   }
+  // }
 
   // ul li {
   //   .fa-home {
