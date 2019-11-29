@@ -226,3 +226,14 @@ function bs_dequeue_dashicons()
         wp_deregister_style('dashicons');
     }
 }
+
+// allow_file_mod
+add_filter('file_mod_allowed', 'allow_file_mod_language_folder', 10, 2);
+function allow_file_mod_language_folder($allow_file_mod, $context)
+{
+    if ('download_language_pack' === $context) {
+        return true;
+    } else {
+        return $allow_file_mod;
+    }
+}
