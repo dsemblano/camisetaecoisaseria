@@ -19,3 +19,7 @@
   </div>
 
 </section>
+
+<section class="tracking-widest py-5 text-1xl text-base md:text-1xl">
+  <p class="container text-center">Sem limite de cores | Sem pedido mínimo | Produtos à pronta entrega</p>
+</section>
