@@ -4,7 +4,7 @@
       <a class="brand" href="{{ home_url('/') }}">
         <img class="text-center" src="@asset('images/imprimanos.png')" alt="NÓS camisetas" />
       </a>
-      @include('partials.socialshare')
+      @include('partials/components.socialshare')
     </h1>
   </div>
 </header>

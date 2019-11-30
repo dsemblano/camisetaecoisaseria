@@ -23,7 +23,7 @@
         {!! wp_nav_menu(['theme_location' => 'secondary_navigation', 'menu_class' => 'nav flex flex-col md:flex-row text-white py-5 text-2xl capitalize']) !!}
         @endif
       </nav>
-      @include('partials.socialshare')
+      @include('partials/components.socialshare')
     </div>
     @php dynamic_sidebar('sidebar-footer') @endphp
   </div>

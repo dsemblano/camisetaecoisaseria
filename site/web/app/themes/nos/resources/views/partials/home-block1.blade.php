@@ -8,10 +8,10 @@
       <p>Imprima</p>
     </div>
     <br>
-    <button class="btn-estudio"><a href="/design-editor/">Estúdio de criação</a></button>
+    @include('partials/components.btn-customize')
   </div>
 
-  <div class="block1-down border-solid border-black border-t-1 tracking-widest w-full">
+  <div class="block1-down border-solid border-white border-t-1 tracking-widest w-full">
     <div class="container flex flex-col text-center md:text-right md:flex-row justify-between text-1xl md:text-2xl">
       <span class="text-white">Impressão digital em algodão</span>
       <span class="text-white md:text-pureblack">Camiseta é coisa séria</span>
@@ -21,5 +21,5 @@
 </section>
 
 <section class="tracking-widest py-5 text-1xl text-base md:text-1xl">
-  <p class="container text-center">Sem limite de cores | Sem pedido mínimo | Produtos à pronta entrega</p>
+  <p class="container text-center">SEM limite de cores | SEM pedido mínimo | Produtos à pronta entrega</p>
 </section>

@@ -2,7 +2,7 @@
   <div class="blockhome-3-left mb-8 self-center order-1 m-auto pt-0 md:pt-16 pb-2 text-center leading-loose">
       <h2 class="text-4xl text-pureblack">Faça sua NÓS</h2>
       <p class="text-2xl mb-6">crie e customize todos os produtos</p>
-      <button class="btn-estudio"><a href="/design-editor/">Estúdio De Criação</a></button>
+      @include('partials/components.btn-customize')
   </div>
   <figure class="blockhome3-right order-2 items-end">
     <img src="@asset('images/home/blusabranca.png')" alt="blusa branca" class="c">
