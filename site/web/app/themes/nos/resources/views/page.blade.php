@@ -16,13 +16,12 @@
 
 @else
 
-  @include('partials.home-block2')
-    <div class="content container">
-      @while(have_posts()) @php the_post() @endphp
-        @include('partials.page-header')
-        @include('partials.content-page')
-      @endwhile
-    </div>
+  <div class="content container">
+    @while(have_posts()) @php the_post() @endphp
+      @include('partials.page-header')
+      @include('partials.content-page')
+    @endwhile
+  </div>
 
 @endif
 
