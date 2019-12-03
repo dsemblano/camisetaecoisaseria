@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - WooCommerce - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2019-12-03 20:48+0000\n"
+"PO-Revision-Date: 2019-12-03 20:20+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -23585,7 +23585,7 @@ msgstr[1] "Avaliado como %1$s de 5, com baseado em %2$s avaliações de clientes
 
 #: includes/wc-template-functions.php:3497
 msgid "Your cart is currently empty."
-msgstr "Seu carrinho está vazio"
+msgstr "Seu carrinho está vazio."
 
 #: includes/wc-term-functions.php:234
 #: includes/widgets/class-wc-widget-product-categories.php:266
