@@ -45,7 +45,6 @@
     "wpackagist-plugin/woocommerce-xml-csv-product-import":">=1.4.3",
     "wpackagist-plugin/woocommerce-abandoned-cart":">=5.6.1",
     "wpackagist-plugin/woocommerce-correios":">=3.8.0",
-    "wpackagist-plugin/woocommerce-multilingual":">=4.6.7",
     "wpackagist-plugin/woocommerce-pagseguro":">=2.14.0",
     "wpackagist-plugin/woo-shipping-gateway":">=2.1.6",
     "wpackagist-plugin/regenerate-thumbnails":">=3.1.1",
