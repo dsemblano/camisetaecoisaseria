@@ -1,6 +1,6 @@
 <nav id="navigation" class="nav-primary bg-pureblack mb-8">
   <div class="container flex flex-col md:flex-row items-center justify-between">
-    <button class="hamburger hamburger--vortex bg-white" type="button" aria-label="Menu" aria-controls="navigation">
+    <button class="hamburger hamburger--vortex" type="button" aria-label="Menu" aria-controls="navigation">
       <span class="hamburger-box">
         <span class="hamburger-inner"></span>
       </span>
