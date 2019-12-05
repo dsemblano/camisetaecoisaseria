@@ -13,3 +13,40 @@
 .the_champ_horizontal_sharing .theChampSharing {
   background-color: white;
 }
+
+// .hamburger {
+//   display: none;
+// }
+
+@include media(">=phone","<tablet") {
+  #navigation {
+    height: 2rem;
+    padding: 1rem 0 2rem 0;
+
+    #navigation .hamburger {
+      display: inline-block;
+    }
+
+    .menu-menu-container {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 300ms;
+      // background-color: lawngreen;
+    }
+
+    &.is-active {
+      height: 100%;
+
+      .menu-menu-container {
+        opacity: 1;
+        pointer-events: auto;
+      }
+    }
+  }
+}
+
+@include media(">=tablet") {
+  #navigation .hamburger {
+    display: none;
+  }
+}
