@@ -1,24 +1,24 @@
 # Documentation: https://roots.io/trellis/docs/vault/
-vault_mysql_root_password: productionpw
+vault_mysql_root_password: zfIYcItGEXb9N9h^TjkX^2IN5g@Cd$x
 
 # Documentation: https://roots.io/trellis/docs/security/
 vault_users:
   - name: "{{ admin_user }}"
-    password: example_password
-    salt: "generateme"
+    password: i1K14EquXkE2F@5g$x4HbxQiJdXCh9a
+    salt: "vo_g85Hd"
 
 # Variables to accompany `group_vars/production/wordpress_sites.yml`
 # Note: the site name (`example.com`) must match up with the site name in the above file.
 vault_wordpress_sites:
   example.com:
     env:
-      db_password: example_dbpassword
+      db_password: llY@TlMgJum6&tv%9EJc76WsFohO13P
       # Generate your keys here: https://roots.io/salts.html
-      auth_key: "generateme"
-      secure_auth_key: "generateme"
-      logged_in_key: "generateme"
-      nonce_key: "generateme"
-      auth_salt: "generateme"
-      secure_auth_salt: "generateme"
-      logged_in_salt: "generateme"
-      nonce_salt: "generateme"
+      auth_key: "LY7c$z&bt/_3S$h=q$N}UQ@B(hkT?H0*j<{Anv`V8aq&6Q|AX#83RDED&j9SeILI"
+      secure_auth_key: "p,YC0=kSZ{d6tb!vc]-Lpy$,J6zTp,h?1D=iDOIoNymBxgxP&o;/!-,5MF5tFl`t"
+      logged_in_key: "Wl}]nLD{i|]6X)xx{l?93AnCXE:vwD9$V%(rU?^xL/]gh+*wheq1<u_c0u<c??K)"
+      nonce_key: "*<kmXy.miBEwI-LEoik(*D(OY?vo_g85Hd=s^r%!Q}Z(bqdMp+|le.VFnVm%%M]a"
+      auth_salt: "@_K[Eez/|``rEu,vn%/7asLE,:MWp!TXw&4S@l+sp,ZSR:5kW=Tao%=KjsZ/u`<,"
+      secure_auth_salt: "wEp}o]kzEn8D3`!:Xd.pb4sg?&FEWqyY{n`>(;<QiZUU5yOn!}D7;isD2EwO).3R"
+      logged_in_salt: "NhnlMg.N%|-UvR&p3*(}6lK[}woji+8<$!|!}F7(1+Cn*)Z$lau?kvNxB}RX`NWM"
+      nonce_salt: "R,InH`rcWx#.I`uz9i2WoFn_i&@l%,{nh+<EF4D0dRx5VoiL73{dWdZ.J;h:*)am"
