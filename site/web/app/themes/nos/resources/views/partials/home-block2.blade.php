@@ -9,7 +9,7 @@
       {!! wp_nav_menu(['theme_location' => 'primary_navigation', 'menu_class' => 'nav flex flex-col content-center
       items-center md:flex-row md:flex-wrap
       md:content-between md:justify-between container text-white py-5 text-2xl']) !!}
-      @include('partials/components.socialshare')
+      {{-- @include('partials/components.socialshare') --}}
     @endif
   </div>
 </nav>
