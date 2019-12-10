@@ -45,6 +45,18 @@
 }
 
 @include media(">=phone","<tablet") {
+  .heateor_sss_sharing_container {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 300ms;
+
+    &.is-active {
+      height: 100%;
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+
   #navigation {
     height: 2rem;
     padding: 1rem 0 2rem 0;
@@ -62,6 +74,7 @@
 
     &.is-active {
       height: 100%;
+      z-index: 999999;
 
       .menu-menu-container {
         opacity: 1;

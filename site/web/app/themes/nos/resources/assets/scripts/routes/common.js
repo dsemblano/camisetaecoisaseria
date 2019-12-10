@@ -4,6 +4,7 @@ export default {
     $('.hamburger').click(function() {
       $(this).toggleClass('is-active');
       $('#navigation').toggleClass('is-active');
+      $('.heateor_sss_sharing_container').toggleClass('is-active');
     });
   },
   finalize() {
