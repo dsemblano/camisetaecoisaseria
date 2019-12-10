@@ -1,12 +1,12 @@
 <section class="blockhome-1 h-slide1-sm md:h-slide1-xl flex flex-col flex-no-wrap justify-between">
 
   <div class="blockhome-1-container container pr-12 md:w-full pt-16 pb-2">
-    <div class="block1-left flex flex-col items-end md:block text-white text-2xl mb-2 tracking-widest leading-loose">
+    {{-- <div class="block1-left flex flex-col items-end md:block text-white text-2xl mb-2 tracking-widest leading-loose">
       <p>Imagine</p>
       <p>Crie</p>
       <p>Invente</p>
       <p>Imprima</p>
-    </div>
+    </div> --}}
     <br>
     @include('partials/components.btn-customize')
   </div>
