@@ -16,60 +16,72 @@
   background-color: white;
 }
 
-.nav-primary {
-  .menu-menu-container {
-    // width: 80%;
+// .nav-primary {
+//   .menu-menu-container {
+//     // width: 80%;
 
-    @include font-bold;
+//     @include font-bold;
 
-    @include media(">=phone", "<tablet") {
-      ul li {
-        padding-bottom: 2rem;
+//     @include media(">=phone", "<tablet") {
+//       ul li {
+//         padding-bottom: 2rem;
 
-        &:first-child {
-          padding-top: 1rem;
-        }
-      }
-    }
-  }
+//         &:first-child {
+//           padding-top: 1rem;
+//         }
+//       }
+//     }
+//   }
 
-  .heateor_sss_sharing_container {
-    // width: 20%;
+//   .heateor_sss_sharing_container {
+//     // width: 20%;
 
-    ul {
-      /* background-color: green; */
-      display: flex;
-      justify-content: flex-end;
-    }
-  }
-}
+//     ul {
+//       /* background-color: green; */
+//       display: flex;
+//       justify-content: flex-end;
+//     }
+//   }
+// }
 
 @include media(">=phone","<tablet") {
-  .heateor_sss_sharing_container {
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 300ms;
-
-    &.is-active {
-      height: 100%;
-      opacity: 1;
-      pointer-events: auto;
-    }
-  }
-
-  #navigation {
+  .nav-primary {
     height: 2rem;
     padding: 1rem 0 2rem 0;
+    // width: 100%;
+    // position: absolute;
+    // left: 18em;
+    // top: 2em;
 
-    #navigation .hamburger {
-      display: inline-block;
+    .hamburger {
+      // position: absolute;
+      // right: 5em;
+      // width: 3em;
     }
 
     .menu-menu-container {
       opacity: 0;
       pointer-events: none;
       transition: opacity 300ms;
+      // position: relative;
+      // right: 18em;
+      // top: 2em;
       // background-color: lawngreen;
+    }
+
+    .heateor_sss_sharing_container {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 300ms;
+
+      &.is-active {
+        // height: 100%;
+        opacity: 1;
+        pointer-events: auto;
+        // position: absolute;
+        // top: 21em;
+        // right: 5em;
+      }
     }
 
     &.is-active {
