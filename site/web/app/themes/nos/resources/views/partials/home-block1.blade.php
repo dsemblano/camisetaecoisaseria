@@ -7,7 +7,6 @@
       <p>Invente</p>
       <p>Imprima</p>
     </div> --}}
-    <br>
     @include('partials/components.btn-customize')
   </div>
 

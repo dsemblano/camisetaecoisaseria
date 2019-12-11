@@ -91,7 +91,7 @@ let colors = {
   'green-light': '#51d88a',
   'green-lighter': '#a2f5bf',
   'green-lightest': '#e3fcec',
-  'green-nos': '#A0CBD3',
+  'green-nos': '#7ed957',
   'green-nos-light': '#3fc7ba',
   'green-nos-button': '#1ebe85',
 
@@ -512,6 +512,7 @@ module.exports = {
     '1/6': '16.66667%',
     '5/6': '83.33333%',
     'full': '100%',
+    '15': '15%',
     '20': '20%',
     '35': '35%',
     '45': '45%',
