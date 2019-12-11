@@ -4,7 +4,7 @@
     <li class="w-full mb-8 md:w-1/25">
       <div class="img-container">
 
-        <img src="@asset('images/home/blusabranca.png')" alt="blusa 1" class="blockhome4-img">
+        <img src="@asset('images/home/camisa1.jpg')" alt="blusa 1" class="blockhome4-img">
 
         <div class="text-over">
           <h3>Outsourcing</h3>
@@ -16,7 +16,7 @@
     <li class="w-full mb-8 md:w-1/25">
       <div class="img-container">
 
-        <img src="@asset('images/home/blusabranca.png')" alt="blusa 1" class="blockhome4-img">
+        <img src="@asset('images/home/camisa2.jpg')" alt="blusa 1" class="blockhome4-img">
 
         <div class="text-over">
           <h3>Dropshipping</h3>
@@ -28,7 +28,7 @@
     <li class="w-full mb-8 md:w-1/25">
       <div class="img-container">
 
-        <img src="@asset('images/home/blusabranca.png')" alt="blusa 1" class="blockhome4-img">
+        <img src="@asset('images/home/camisa3.jpg')" alt="blusa 1" class="blockhome4-img">
 
         <div class="text-over">
           <h3>Impressão digital avulsa em algodão</h3>
