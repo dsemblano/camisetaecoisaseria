@@ -3,3 +3,7 @@
 
   transition: 0.2s ease;
 }
+
+.imprima-button h2 {
+  @include font-light;
+}

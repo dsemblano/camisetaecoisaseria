@@ -1,3 +1,7 @@
-<a href="/design-editor/">
-  <img src="@asset('images/home/btn-cria.png')" alt="botao criar camisa" class="btn-cria w-3/5 md:w-15">
-</a>
+<div class="imprima-button text-center">
+  <h2 class="text-white">IMPRIMA SUA</h2>
+    <a href="/design-editor/">
+      <img src="@asset('images/home/btn-cria.png')" alt="botao criar camisa" class="btn-cria">
+    </a>
+  <h2 class="text-white">CAMISETA</h2>
+</div>
