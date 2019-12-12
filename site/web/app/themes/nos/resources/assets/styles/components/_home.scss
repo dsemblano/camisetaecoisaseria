@@ -39,7 +39,7 @@
   background-size: cover;
   background-position: 15% center;
 
-  @include media(">phone", "<tablet") {
+  @include media(">=phone", "<tablet") {
     .blockhome-1-container {
       position: relative;
 
