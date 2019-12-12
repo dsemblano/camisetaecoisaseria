@@ -13,16 +13,14 @@
       @php dynamic_sidebar('sidebar-footerup') @endphp
   </div>
 
-  <div class="footer-down bg-pureblack w-full pt-4">
+  <div class="footer-down bg-pureblack w-full pt-2">
     <div class="container flex flex-col md:flex-row items-center justify-between">
-      <a class="brand" href="{{ home_url('/') }}">
-        <img src="@asset('images/footer.png')" alt="image footer" class="footer-img">
-      </a>
-      <nav class="nav-secondary bg-pureblack">
+      @include('partials/components.logo')
+      {{-- <nav class="nav-secondary bg-pureblack">
         @if (has_nav_menu('secondary_navigation'))
         {!! wp_nav_menu(['theme_location' => 'secondary_navigation', 'menu_class' => 'nav flex flex-col md:flex-row text-white py-5 text-2xl capitalize']) !!}
         @endif
-      </nav>
+      </nav> --}}
       @include('partials/components.socialshare')
     </div>
     @php dynamic_sidebar('sidebar-footer') @endphp

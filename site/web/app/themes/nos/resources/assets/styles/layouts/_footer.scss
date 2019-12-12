@@ -34,16 +34,22 @@ footer.content-info {
   }
 
   .footer-down {
-    .nav-secondary ul li {
-      @include font-light;
+    // background-color: red;
 
-      margin-right: 3em;
+    .brand img {
+      width: 40%;
     }
+
+    // .nav-secondary ul li {
+    //   @include font-light;
+
+    //   margin-right: 3em;
+    // }
 
     .widget_text {
       @apply text-center text-white text-xs tracking-wider;
 
-      padding-bottom: 1rem;
+      padding-bottom: 0.5em;
     }
   }
 }

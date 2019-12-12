@@ -1,4 +1,4 @@
-<section class="instagram border-solid border-black border-t-2 ">
+<section class="instagram border-solid border-gray border-b-1 ">
   <div class="insta container pt-8 mb-12 h-56 md:h-40 flex flex-col relative">
     <form class="email-input md:w-1/3 absolute">
       {{-- <h3>Receba nossas promoções</h3> --}}
