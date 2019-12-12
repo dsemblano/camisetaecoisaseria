@@ -37,11 +37,19 @@
 .blockhome-1 {
   background-image: url("../images/home/block1-hdbg.jpg");
   background-size: cover;
-  background-position: left;
+  background-position: 15% center;
 
-  // .blockhome-1-container {
-  //   top: 0;blockhome-1-container
-  // }
+  @include media(">phone", "<tablet") {
+    .blockhome-1-container {
+      position: relative;
+
+      .dtg-button {
+        position: absolute;
+        right: 1em;
+        bottom: 0;
+      }
+    }
+  }
 
   // .blockhome-1-container {
   //   .btn-estudio {
