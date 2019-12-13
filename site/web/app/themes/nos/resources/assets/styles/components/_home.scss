@@ -130,11 +130,12 @@
 // }
 
 .sigainsta {
-  top: 5em;
+  top: 8em;
   left: 0;
+  width: 100%;
 
   @include media(">phone") {
-    top: 6em;
+    top: 3em;
     width: 100%;
   }
 
