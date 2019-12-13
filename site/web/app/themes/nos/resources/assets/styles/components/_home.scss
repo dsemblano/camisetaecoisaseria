@@ -113,67 +113,71 @@
   }
 }
 
-.insta {
-  // background-color: pink;
+// .insta {
+//   // background-color: pink;
 
-  // @include media(">phone", "<tablet") {
-  //   background-color: lawngreen;
-  // }
+//   // @include media(">phone", "<tablet") {
+//   //   background-color: lawngreen;
+//   // }
 
-  // @include media(">=tablet") {
-  //   background-color: red;
-  // }
+//   // @include media(">=tablet") {
+//   //   background-color: red;
+//   // }
 
-  // @include media(">desktop") {
-  //   background-color: orange;
-  // }
+//   // @include media(">desktop") {
+//   //   background-color: orange;
+//   // }
+// }
 
-  .sigainsta {
-    top: 4em;
-    right: 1em;
+.sigainsta {
+  top: 5em;
+  left: 0;
+
+  @include media(">phone") {
+    top: 6em;
     width: 100%;
+  }
+
+  .insta-hr {
+    border-top: 1px solid #dae1e7;
+    width: 100%;
+    position: absolute;
+    top: 6em;
+    left: 0;
+    text-align: center;
+    display: none;
 
     @include media(">phone") {
-      top: 6em;
-    }
-
-    .insta-hr {
-      border-top: 1px solid #8c8b8b;
+      display: block;
       width: 100%;
-      position: absolute;
-      top: 6em;
-      left: 0;
-      text-align: center;
-      display: none;
-
-      @include media(">phone") {
-        display: block;
-        width: 100%;
-        top: 7.5em;
-        text-align: right;
-      }
-
-      @include media(">950px") {
-        top: 5.5em;
-        width: 75%;
-      }
+      top: 7.5em;
+      text-align: right;
     }
 
-    .title-insta {
-      text-align: center;
-      width: auto;
-      right: 0;
-      top: 4em;
-
-      @include media(">phone") {
-        right: 1em;
-        top: 2em;
-      }
-
-      // img {
-      //   width: 70%;
-      // }
+    @include media(">950px") {
+      top: 4.5em;
+      width: 73%;
     }
+  }
+
+  .title-insta {
+    text-align: center;
+    width: auto;
+    right: 0;
+    top: 4em;
+
+    img {
+      width: 35%;
+    }
+
+    @include media(">phone") {
+      right: 1em;
+      top: 2em;
+    }
+
+    // img {
+    //   width: 70%;
+    // }
   }
 }
 

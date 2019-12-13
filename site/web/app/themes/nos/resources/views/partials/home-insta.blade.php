@@ -1,4 +1,4 @@
-<section class="instagram border-solid border-gray border-b-1 ">
+<section class="instagram relative border-solid border-gray border-b-1 ">
   <div class="insta container pt-8 mb-12 h-56 md:h-40 flex flex-col relative">
     <form class="email-input md:w-1/3 absolute">
       {{-- <h3>Receba nossas promoções</h3> --}}
@@ -11,14 +11,13 @@
         </button>
       </div>
     </form>
-    <div class="sigainsta absolute">
-      <hr class="insta-hr">
-      <h2 class="title-insta text-right text-pureblack md:w-1/4 text-3xl container absolute">
-        <img src="@asset('images/instalogo.png')" alt="instagram logo" class="img-insta">
-      </h2>
-    </div>
   </div>
-
+  <div class="sigainsta absolute">
+    <hr class="insta-hr">
+    <h2 class="title-insta text-right text-pureblack md:w-1/4 text-3xl container absolute">
+      <img src="@asset('images/s1.svg')" alt="instagram logo" class="img-insta">
+    </h2>
+  </div>
   @include('partials.slideinsta')
 
 </section>
