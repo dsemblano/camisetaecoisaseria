@@ -1,7 +1,7 @@
 <section class="slideshow border-b-1 border-solid border-black">
   <div class="container">
     {!! do_shortcode('[smartslider3 slider=4]') !!}
-    <div class="newsletter mt-20 md:h-40 flex flex-col justify-center items-baseline md:flex-row relative">
+    <div class="newsletter mb-20 md:mb-1 mt-20 md:h-40 flex flex-col justify-center items-baseline md:flex-row relative">
       <h3 class="mr-12">UM EMAIL POR MÊS E NADA MAIS</h3>
       <form class="email-input md:w-1/3">
         {{-- <h3>Receba nossas promoções</h3> --}}
