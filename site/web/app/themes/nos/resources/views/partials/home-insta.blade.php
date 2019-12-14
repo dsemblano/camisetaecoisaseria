@@ -1,4 +1,4 @@
-<section class="instagram relative border-solid border-gray border-b-1 pb-4">
+<section class="instagram border-solid border-gray border-b-1 pb-4">
   <div class="sigainsta relative">
     <hr class="insta-hr absolute">
     <h2 class="title-insta text-right text-pureblack md:w-1/4 text-3xl container absolute">
