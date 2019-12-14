@@ -1,6 +1,7 @@
 <section class="instagram relative border-solid border-gray border-b-1 pb-4">
-  <div class="insta container md:h-40 flex flex-col relative">
-    <form class="email-input md:w-1/3 absolute">
+  <div class="insta container md:h-40 flex flex-col justify-center items-baseline md:flex-row relative">
+    <h3 class="mr-12">UM EMAIL POR MÊS E NADA MAIS</h3>
+    <form class="email-input md:w-1/3">
       {{-- <h3>Receba nossas promoções</h3> --}}
       {{-- {!! do_shortcode('[wd_hustle id="Newsletter" type="embedded"/]') !!} --}}
       <div class="flex border-pureblack border-solid border-8">
