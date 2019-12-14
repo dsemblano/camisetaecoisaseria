@@ -134,8 +134,8 @@
 // }
 
 .sigainsta {
-  top: 8em;
-  left: 0;
+  top: 0;
+  height: 5rem;
   width: 100%;
 
   @include media(">phone") {
@@ -160,7 +160,7 @@
     }
 
     @include media(">950px") {
-      top: 4.5em;
+      top: 4.5rem;
       width: 73%;
     }
   }
