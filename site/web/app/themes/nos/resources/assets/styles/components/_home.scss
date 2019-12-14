@@ -134,12 +134,11 @@
 // }
 
 .sigainsta {
-  top: 0;
-  height: 5rem;
+  height: 1rem;
   width: 100%;
 
   @include media(">phone") {
-    top: -8em;
+    top: -10em;
     width: 100%;
   }
 
@@ -178,6 +177,10 @@
     @include media(">=phone", "<tablet") {
       right: 1em;
       top: 6em;
+
+      img {
+        width: 65%;
+      }
     }
 
     @include media(">=tablet") {
