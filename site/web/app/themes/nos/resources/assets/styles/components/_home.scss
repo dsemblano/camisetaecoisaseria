@@ -168,14 +168,19 @@
   .title-insta {
     text-align: center;
     width: auto;
-    right: 0;
-    top: 4em;
+    right: 1em;
+    top: 6em;
 
     img {
       width: 35%;
     }
 
-    @include media(">phone") {
+    @include media(">=phone", "<tablet") {
+      right: 1em;
+      top: 6em;
+    }
+
+    @include media(">=tablet") {
       right: 1em;
       top: 2em;
     }
