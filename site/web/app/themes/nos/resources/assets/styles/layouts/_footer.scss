@@ -3,6 +3,10 @@ footer.content-info {
     @include font-light;
 
     nav {
+      ul li a:hover {
+        color: #676767;
+      }
+
       @include media(">=tablet") {
         &:first-child ul {
           padding: 0;
