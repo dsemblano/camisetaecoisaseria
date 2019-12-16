@@ -12,6 +12,12 @@
   }
 }
 
+.banner {
+  position: sticky;
+  top: 0;
+  z-index: 99999;
+}
+
 .the_champ_horizontal_sharing .theChampSharing {
   background-color: white;
 }
