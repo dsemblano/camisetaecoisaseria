@@ -1,6 +1,6 @@
 <section class="blockhome-1 h-screen flex flex-col flex-no-wrap justify-between">
 
-  <div class="blockhome-1-container container flex justify-between items-center pt-16 pb-2">
+  <div class="blockhome-1-container container flex justify-between items-center pt-8 md:pt-16 pb-16 md:pb-2">
     @include('partials/components.btn-customize')
     @include('partials/components.dtg')
   </div>
