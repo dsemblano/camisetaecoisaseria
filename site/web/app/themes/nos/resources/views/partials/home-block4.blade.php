@@ -38,4 +38,5 @@
     </li>
 
   </ul>
+  @include('partials/components.ribbon-algodao')
 </section>

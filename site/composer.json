@@ -60,6 +60,7 @@
     "wpackagist-plugin/sassy-social-share":">=3.3.4",
     "wpackagist-plugin/wordpress-popup":">=7.0.3",
     "wpackagist-plugin/flexible-checkout-fields":">=2.2.1",
+    "wpackagist-plugin/wp-multi-step-checkout":">=2.6",
     "wpackagist-plugin/wps-hide-login":">=1.5.4.2"
   },
   "require-dev": {
