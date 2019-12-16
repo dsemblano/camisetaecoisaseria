@@ -39,21 +39,21 @@
   background-size: cover;
   background-position: 15% center;
 
-  @include media(">=phone", "<tablet") {
-    .blockhome-1-container {
-      position: relative;
+  // @include media(">=phone", "<tablet") {
+  //   .blockhome-1-container {
+  //     position: relative;
 
-      .imprima-button {
-        width: 50%;
-      }
+  //     .imprima-button {
+  //       width: 50%;
+  //     }
 
-      .dtg-button {
-        position: absolute;
-        right: 1em;
-        bottom: 0;
-      }
-    }
-  }
+  //     // .dtg-button {
+  //     //   position: absolute;
+  //     //   right: 1em;
+  //     //   bottom: 0;
+  //     // }
+  //   }
+  // }
 
   .block1-left {
     @include font-bold;
@@ -78,6 +78,10 @@
     @include font-light;
 
     letter-spacing: 0.7em;
+
+    @include media("<=tablet") {
+      padding: 1em 0 1em 1em;
+    }
 
     .block1-down-logos {
       padding: 0.4rem 0 0.2rem 0;
