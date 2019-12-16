@@ -51,6 +51,15 @@
         padding: 5px;
         border-radius: 5px;
       }
+
+      .form-row:not(#calc_shipping_postcode_field) {
+        display: none;
+      }
+
+      #calc_shipping_postcode_field {
+        display: block;
+        background-color: red;
+      }
     }
 
     .wc-proceed-to-checkout {
