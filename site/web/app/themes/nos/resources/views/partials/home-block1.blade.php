@@ -14,9 +14,9 @@
     </div>
   </div>
 
-  <div class="citacao py-5 text-1xl text-base md:text-1xl text-white bg-pureblack text-xl">
+  <div class="citacao text-1xl text-base md:text-1xl text-white bg-pureblack text-xl">
     <div class="container flex flex-col md:flex-row justify-between items-center">
-      <span>IMAGINE | CRIE | INVENTE | IMPRIMA</span>
+      <span class="text-center mb-4 md:mb-0 leading-relaxed">IMAGINE | CRIE | INVENTE | IMPRIMA</span>
       <div class="block1-down-logos">
         <a href="/design-editor/">
           <img src="@asset('images/home/dtgimprima.png')" alt="DTG imprima imagem" class="btn-dtgimprima">

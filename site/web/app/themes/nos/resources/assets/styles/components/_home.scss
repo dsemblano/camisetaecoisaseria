@@ -70,6 +70,11 @@
     @include media(">=tablet") {
       padding: 1em 4em 1em 0.8em;
     }
+
+    .block1-down-logos {
+      padding-top: 0.4rem;
+      padding-bottom: 0.1rem;
+    }
   }
 
   .citacao {
