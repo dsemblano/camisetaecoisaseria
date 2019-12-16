@@ -162,6 +162,20 @@
 //   // }
 // }
 
+// fix for iphone 5 and less resolution
+@include media("<=phone") {
+  .instagram {
+    margin-bottom: 0;
+    height: 25rem;
+    padding-bottom: 0;
+
+    .instagram-container {
+      position: relative;
+      bottom: 13em;
+    }
+  }
+}
+
 .sigainsta {
   height: 1rem;
   width: 100%;
