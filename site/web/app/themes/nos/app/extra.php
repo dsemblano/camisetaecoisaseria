@@ -240,11 +240,10 @@ function allow_file_mod_language_folder($allow_file_mod, $context)
 
 
 // campo cep antes
-add_filter( 'woocommerce_default_address_fields', 'woocommerce_default_address_fields_reorder' );
-
-function woocommerce_default_address_fields_reorder( $fields ) {
-    $fields['postcode']['priority'] = 50; // antes era o address_1 que ocupava esta prioridade baseado no padrão WooCommerce de prioridades.
-    $fields['address_1']['priority'] = 55;
-
+add_filter( 'woocommerce_checkout_fields', 'woocommerce_checkout_fields_order' );
+function woocommerce_checkout_fields_order( $fields ) {
+    $fields['billing']['billing_postcode']['priority'] = 8;
+    $fields['billing']['billing_address_1']['priority'] = 9;
+    $fields['billing']['billing_numero']['priority'] = 10;
     return $fields;
 }
