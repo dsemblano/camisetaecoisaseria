@@ -5,7 +5,7 @@
       {!! wp_nav_menu(['theme_location' => 'secondaryfooter1_navigation', 'menu_class' => 'nav']) !!}
       @endif
     </nav>
-    <nav class="nav-footer2 w-full md:w-35">
+    <nav class="nav-footer2 border-b-2 md:border-r-2 md:border-b-0 border-solid border-gray w-full md:w-35">
       @if (has_nav_menu('secondaryfooter2_navigation'))
       {!! wp_nav_menu(['theme_location' => 'secondaryfooter2_navigation', 'menu_class' => 'nav']) !!}
       @endif
