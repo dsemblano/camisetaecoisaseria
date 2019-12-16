@@ -40,7 +40,7 @@
   background-position: 15% center;
 
   @include media("<=phone") {
-    height: 30rem;
+    height: 30rem !important;
     // h2 {
     //   background-color: red;
     // }
