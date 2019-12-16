@@ -42,13 +42,17 @@
   @include media("<=phone") {
     height: 30rem !important;
 
-    .blockhome-1-container > div {
-      width: 50%;
-      margin: 0 2em 0 1em;
-    }
+    .blockhome-1-container {
+      height: 240px;
 
-    .imprima-button h2 {
-      font-size: 1rem;
+      > div {
+        width: 50%;
+        margin: 0 2em 0 1em;
+      }
+
+      .imprima-button h2 {
+        font-size: 1rem;
+      }
     }
     // h2 {
     //   background-color: red;
