@@ -55,31 +55,27 @@
     }
   }
 
-  // .blockhome-1-container {
-  //   .btn-estudio {
-  //     float: right;
-
-  //     @include media(">=tablet") {
-  //       float: none;
-  //     }
-  //   }
-  // }
-
   .block1-left {
     @include font-bold;
   }
 
   .block1-down .container {
-    padding: 10px 0 10px 0;
     line-height: 30px;
+    padding: 1em 0 1em 0;
 
     span {
       @include font-light;
     }
 
-    @include media(">phone") {
+    @include media(">=tablet") {
       padding: 1em 4em 1em 0.8em;
     }
+  }
+
+  .citacao {
+    @include font-light;
+
+    letter-spacing: 0.5em;
   }
 }
 
