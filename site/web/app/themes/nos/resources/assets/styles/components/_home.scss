@@ -98,6 +98,10 @@
 
     letter-spacing: 0.7em;
 
+    .citacao-container .hidden {
+      padding: 0 1.5rem 0 2rem;
+    }
+
     @include media("<=tablet") {
       padding: 1em 0 1em 1em;
     }
