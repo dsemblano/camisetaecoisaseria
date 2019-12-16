@@ -39,6 +39,13 @@
   background-size: cover;
   background-position: 15% center;
 
+  @include media("<=phone") {
+    height: 30rem;
+    // h2 {
+    //   background-color: red;
+    // }
+  }
+
   // @include media(">=phone", "<tablet") {
   //   .blockhome-1-container {
   //     position: relative;
