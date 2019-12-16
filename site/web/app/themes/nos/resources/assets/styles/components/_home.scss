@@ -273,6 +273,10 @@
           max-height: 20em;
           transition: 0.5s ease;
           backface-visibility: hidden;
+
+          @include media("<=tablet") {
+            opacity: 0.3;
+          }
         }
 
         .text-over {
@@ -285,6 +289,10 @@
           transform: translate(-50%, -50%);
           -ms-transform: translate(-50%, -50%);
           text-align: center;
+
+          @include media("<=tablet") {
+            opacity: 1;
+          }
         }
 
         &:hover .blockhome4-img {
