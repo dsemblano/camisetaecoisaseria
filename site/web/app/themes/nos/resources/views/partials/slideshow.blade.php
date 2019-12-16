@@ -2,8 +2,8 @@
   <div class="container">
     {!! do_shortcode('[smartslider3 slider=4]') !!}
     <div class="newsletter mb-20 md:mb-1 mt-20 md:h-40 flex flex-col justify-center items-baseline md:flex-row relative">
-      <h3 class="mr-12">UM EMAIL POR MÊS E NADA MAIS</h3>
-      <form class="email-input md:w-1/3">
+      <h3 class="mb-4 md:mr-12">UM EMAIL POR MÊS E NADA MAIS</h3>
+      <form class="email-input w-full md:w-2/5">
         {{-- <h3>Receba nossas promoções</h3> --}}
         {{-- {!! do_shortcode('[wd_hustle id="Newsletter" type="embedded"/]') !!} --}}
         <div class="flex border-pureblack border-solid border-8">

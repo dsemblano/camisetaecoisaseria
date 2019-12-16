@@ -98,17 +98,17 @@
     font-style: italic;
   }
 
-  div.flex {
-    width: 95%;
+  // div.flex {
+  //   width: 95%;
 
-    input {
-      width: 75%;
-    }
+  //   input {
+  //     width: 75%;
+  //   }
 
-    button {
-      width: 25%;
-    }
-  }
+  //   button {
+  //     width: 25%;
+  //   }
+  // }
 
   h3 {
     @include font-regular;
@@ -159,7 +159,7 @@
 
     @include media(">950px") {
       top: 4.5rem;
-      width: 73%;
+      width: 80%;
     }
   }
 
@@ -183,8 +183,9 @@
     }
 
     @include media(">=tablet") {
-      right: 1em;
+      right: 3em;
       top: 2em;
+      text-align: right;
     }
   }
 }
