@@ -237,3 +237,14 @@ function allow_file_mod_language_folder($allow_file_mod, $context)
         return $allow_file_mod;
     }
 }
+
+
+// campo cep antes
+add_filter( 'woocommerce_default_address_fields', 'woocommerce_default_address_fields_reorder' );
+
+function woocommerce_default_address_fields_reorder( $fields ) {
+    $fields['postcode']['priority'] = 50; // antes era o address_1 que ocupava esta prioridade baseado no padrão WooCommerce de prioridades.
+    $fields['address_1']['priority'] = 55;
+
+    return $fields;
+}
