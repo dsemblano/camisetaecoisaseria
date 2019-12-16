@@ -39,22 +39,23 @@ footer.content-info {
   }
 
   .footer-down {
-    // background-color: red;
+    .container {
+      .brand {
+        @include media(">=phone", "<tablet") {
+          width: 30%;
+        }
 
-    .brand img {
-      width: 40%;
+        @include media(">=tablet") {
+          width: 10%;
+        }
+      }
     }
 
-    // .nav-secondary ul li {
-    //   @include font-light;
-
-    //   margin-right: 3em;
-    // }
-
     .widget_text {
-      @apply text-center text-white text-xs tracking-wider;
+      @apply text-center text-white tracking-wider;
 
       padding-bottom: 0.5em;
+      font-size: 0.7rem;
     }
   }
 }
