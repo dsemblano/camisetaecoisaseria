@@ -1,4 +1,4 @@
-<section class="blockhome-1 md:h-slide1-xl flex flex-col align-center justify-between">
+<section class="blockhome-1 md:h-slide1-xl flex flex-col justify-between">
 
   <div class="blockhome-1-container container flex justify-between items-center pt-8 md:pt-16 pb-16 md:pb-2">
     @include('partials/components.btn-customize')
@@ -7,12 +7,24 @@
 
   <div class="block1-down-container">
     <div class="block1-down border-solid border-pureblack border-t-1 w-full">
-      <div class="container flex flex-col text-center md:text-left md:flex-row justify-between text-1xl md:text-2xl text-white">
-        <span>SEM limite de cores</span>
-        <span>SEM pedido mínimo</span>
-        <span>100% algodão certificado</span>
-        <span>Produtos à pronta entrega</span>
-      </div>
+      <ul class="container flex flex-col text-center md:text-left md:flex-row justify-between text-1xl md:text-2xl text-white">
+        <li class="flex items-center">
+          <img src="@asset('images/home/block1/cores.png')" alt="ícone sem limite cores" />
+          <span><p>SEM</p><p>limite de cores</p></span>
+        </li>
+        <li class="flex items-center">
+          <img src="@asset('images/home/block1/sempedido.png')" alt="ícone sem pedido" />
+          <span><p>SEM</p><p>pedido mínimo</p></span>
+        </li>
+        <li class="flex items-center">
+          <img src="@asset('images/home/block1/algodao.png')" alt=" ícone 100% algodão certificado" />
+          <span><p>100% algodão</p><p>orgânico</p><p>certificado</p></span>
+        </li>
+        <li class="flex items-center">
+          <img src="@asset('images/home/block1/produtosprontaentrega.png')" alt="ícone produtos pronta entrega.png" />
+          <span><p>Produtos à</p><p>pronta entrega</p></span>
+        </li>
+      </ul>
     </div>
 
     <div class="citacao text-1xl text-base md:text-1xl text-white bg-pureblack text-xl">
