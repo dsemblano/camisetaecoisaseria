@@ -10272,16 +10272,15 @@ jQuery(document).ready(function($) {
 				
 				let stages = lumise.ops.product_data.stages,
 					vari_data = {
-						name: lumise.ops.product_data.name,
-						description: lumise.ops.product_data.description,
-						price: lumise.ops.product_data.price,
-						printings: $.extend(true, [], lumise.ops.product_data.printings),
-						attributes: $.extend(true, {}, lumise.ops.product_data.attributes),
-						stages: $.extend(true, {}, stages.stages ? stages.stages : stages),
-						printing: lumise.cart.printing.current // active print, if not the first will be actived
+						variation	: null,
+						name		: lumise.ops.product_data.name,
+						description	: lumise.ops.product_data.description,
+						price		: lumise.ops.product_data.price,
+						printings	: $.extend(true, [], lumise.ops.product_data.printings),
+						attributes	: $.extend(true, {}, lumise.ops.product_data.attributes),
+						stages		: $.extend(true, {}, stages.stages ? stages.stages : stages),
+						printing	: lumise.cart.printing.current // active print, if not the first will be actived
 					};
-				
-				vari_data.variation = null;
 				
 				// Set default form values	
 				if (values !== null && typeof values == 'object') {
@@ -14924,7 +14923,7 @@ jQuery(document).ready(function($) {
 					
 					if (attr.id === undefined)	
 						attr.id = lumise.cart.slug(attr.name);
-						
+					
 					wrp.append(lumise.cart.fields.render(attr));
 					
 				});
@@ -15134,31 +15133,29 @@ jQuery(document).ready(function($) {
 					
 					let values = data.values;
 					
-					if (typeof data.values == 'string')
+					if (typeof data.values == 'string') {
 						try {values = JSON.parse(data.values);}catch (ex) {};
+					};
 					
 					if (data.use_variation === true) {
 						data.required = true;
 						data.values = {options: [{value: '', title: lumise.i(178), price: ''}]};
-					} else data.values = {options: []};
+					};
 					
 					if (
+						data.use_variation === true &&
+						typeof data.allows == 'object' && 
 						typeof values == 'object' && 
 						typeof values.options == 'object' && 
 						values.options.length > 0
 					) {
+						data.values.options = [];
 						values.options.map(function(op) {
-							
 							if (
-								typeof data.allows == 'object' && 
-								data.allows.indexOf(op.value) === -1
-							) return;
-							
-							data.values.options.push(op);
-						
+								data.allows.indexOf(op.value) > -1
+							) data.values.options.push(op);
 						});
 					};
-
 					
 					if (data.id === undefined)
 						data.id = encodeURIComponent(data.name);

@@ -151,7 +151,48 @@
 	);
 
 	$lumise_pagination->init($config);
+	
+	if (isset($_GET['fix-attributes'])) {
+		$_products = $lumise_admin->get_rows('products', array(), $orderby, $ordering, 10000, 0);
 
+		foreach ($_products['rows'] as $p) {
+			
+			$attrs = @json_decode(urldecode(base64_decode($p['attributes'])), true);
+			$istrik = false; 
+			
+			foreach ($attrs as $i => $attr) {
+				
+				if (is_string($attr['values']))
+					$v = @json_decode($attr['values'], true);
+				else $v = (Array)$attr['values'];
+				
+				if (
+					is_array($v) && 
+					isset($v['options']) &&
+					is_array($v['options']) &&
+					isset($v['options'][0]['title']) &&
+					!empty($v['options'][0]['title'])
+				) {
+					$_v = @json_decode($v['options'][0]['title'], true);
+					if (is_array($_v) && isset($_v['options'])) {
+						$attrs[$i]['values'] = $v['options'][0]['title'];
+						$istrik = true;
+					}
+				}
+			}
+			
+			if ($istrik === true) {
+				$attrs = $lumise->lib->enjson($attrs);
+				$lumise_admin->edit_row( $p['id'], array(
+					"attributes" => $attrs
+				), 'products' );
+				echo '<p>Fixed product #'.$p['id'].'</p>';
+			}
+		}
+		echo '<p>All done!</p>';
+		exit; 
+	}
+	
 ?>
 
 <div class="lumise_wrapper">

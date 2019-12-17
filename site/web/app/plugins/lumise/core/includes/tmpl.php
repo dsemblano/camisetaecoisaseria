@@ -767,7 +767,7 @@ EOF;
 		global $lumise;
 		
 		return <<<EOF
-					
+			
 			if (typeof data.values != 'object')
 				data.values = {type: 'standard', min_qty: '', max_qty: ''};
 			
