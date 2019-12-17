@@ -2,7 +2,7 @@
 
   <div class="blockhome-1-container container flex justify-between items-center pt-8 md:pt-16 pb-16 md:pb-2">
     @include('partials/components.btn-customize')
-    @include('partials/components.dtg')
+    {{-- @include('partials/components.dtg') --}}
   </div>
 
   <div class="block1-down-container">
