@@ -239,14 +239,9 @@ function allow_file_mod_language_folder($allow_file_mod, $context)
 }
 
 
-// campo cep antes
-add_filter( 'woocommerce_form_field', 'woocommerce_checkout_fields_order' );
-function woocommerce_checkout_fields_order( $fields ) {
-    $fields['destination']['country']['priority'] = 8;
-    $fields['destination']['state']['priority'] = 9;
-    $fields['destination']['postcode']['priority'] = 10;
-    $fields['destination']['city']['priority'] = 10;
-    $fields['destination']['address']['priority'] = 10;
 
-    return $fields;
-}
+// 1 Disable State
+add_filter( 'woocommerce_shipping_calculator_enable_state', '__return_false' );
+add_filter( 'woocommerce_shipping_calculator_enable_country', '__return_false' );
+// 2 Disable City
+add_filter( 'woocommerce_shipping_calculator_enable_city', '__return_false' );
