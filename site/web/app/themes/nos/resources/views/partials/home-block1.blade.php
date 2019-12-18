@@ -7,7 +7,7 @@
 
   <div class="block1-down-container">
     <div class="block1-down border-solid border-pureblack border-t-1 w-full">
-      <ul class="container flex flex-col font-bold items-end text-left md:text-left md:flex-row justify-between text-2xl md:text-xl text-white">
+      <ul class="container flex flex-col items-end md:flex-row justify-between text-sm md:text-xl text-left text-white font-bold">
         <li class="flex items-center py-2 md:py-0 leading-tight w-85">
           <img src="@asset('images/home/block1/cores.png')" alt="ícone sem limite cores" />
           <span class="ml-4"><p>SEM</p><p>limite de cores</p></span>
