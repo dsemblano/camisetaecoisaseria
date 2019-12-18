@@ -338,6 +338,8 @@ module.exports = {
     'wide': '0.025em',
     'wider': '0.05em',
     'widest': '0.1em',
+    'sm': '0.2em',
+    'xl': '1.2em',
   },
 
 

@@ -196,19 +196,17 @@
   .citacao {
     @include font-light;
 
-    letter-spacing: 0.7em;
+    // .citacao-container .hidden {
+    //   padding: 0 1.5rem 0 2rem;
+    // }
 
-    .citacao-container .hidden {
-      padding: 0 1.5rem 0 2rem;
-    }
+    // @include media("<=tablet") {
+    //   padding: 1em 0 1em 1em;
+    // }
 
-    @include media("<=tablet") {
-      padding: 1em 0 1em 1em;
-    }
-
-    .block1-down-logos {
-      padding: 0.4rem 0 0.2rem 0;
-    }
+    // .block1-down-logos {
+    //   padding: 0.4rem 0 0.2rem 0;
+    // }
   }
 }
 

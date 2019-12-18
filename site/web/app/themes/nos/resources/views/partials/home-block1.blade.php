@@ -27,14 +27,8 @@
       </ul>
     </div>
 
-    <div class="citacao text-1xl text-base md:text-1xl text-white bg-pureblack text-xl">
-      <div class="container flex flex-col md:flex-row justify-between items-center">
-        <div class="citacao-container text-base text-center flex flex-col md:flex-row mb-4 md:mb-0 leading-relaxed">
-          <span>IMAGINE<span class="hidden md:inline-block"> | </span></span>
-          <span>INVENTE<span class="hidden md:inline-block"> | </span></span>
-          <span>IMPRIMA</span>
-        </div>
-      </div>
+    <div class="citacao text-center tracking-sm md:tracking-xl py-4 text-sm md:text-1xl text-white bg-pureblack">
+      <span>IMAGINE - INVENTE - IMPRIMA </span>
     </div>
   </div>
 
