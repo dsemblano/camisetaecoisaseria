@@ -31,14 +31,8 @@
       <div class="container flex flex-col md:flex-row justify-between items-center">
         <div class="citacao-container text-base text-center flex flex-col md:flex-row mb-4 md:mb-0 leading-relaxed">
           <span>IMAGINE<span class="hidden md:inline-block"> | </span></span>
-          <span>CRIE<span class="hidden md:inline-block"> | </span></span>
           <span>INVENTE<span class="hidden md:inline-block"> | </span></span>
           <span>IMPRIMA</span>
-        </div>
-        <div class="block1-down-logos">
-          <a href="/design-editor/">
-            <img src="@asset('images/home/dtgimprima.png')" alt="DTG imprima imagem" class="btn-dtgimprima">
-          </a>
         </div>
       </div>
     </div>
