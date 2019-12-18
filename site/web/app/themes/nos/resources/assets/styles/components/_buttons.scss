@@ -7,3 +7,13 @@
 .imprima-button h2 {
   @include font-light;
 }
+
+.btn-estudio {
+  @apply bg-green-nos-button py-4 px-4 rounded-lg text-white;
+
+  &:hover {
+    @apply bg-green;
+  }
+
+  @include font-bold;
+}
