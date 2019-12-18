@@ -52,6 +52,23 @@
         border-radius: 5px;
       }
 
+      .shipping-calculator-form {
+        position: relative;
+        height: 3em;
+
+        #calc_shipping_postcode_field {
+          position: absolute;
+          top: 0;
+          left: 0;
+      }
+
+        #calc_shipping_country_field,
+        #calc_shipping_state_field,
+        #calc_shipping_city_field {
+          visibility: hidden;
+        }
+      }
+
       // .form-row:not(#calc_shipping_postcode_field) {
       //   display: none;
       // }
