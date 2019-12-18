@@ -240,10 +240,13 @@ function allow_file_mod_language_folder($allow_file_mod, $context)
 
 
 // campo cep antes
-add_filter( 'woocommerce_checkout_fields', 'woocommerce_checkout_fields_order' );
+add_filter( 'woocommerce_form_field', 'woocommerce_checkout_fields_order' );
 function woocommerce_checkout_fields_order( $fields ) {
-    $fields['billing']['billing_postcode']['priority'] = 8;
-    $fields['billing']['billing_address_1']['priority'] = 9;
-    $fields['billing']['billing_numero']['priority'] = 10;
+    $fields['destination']['country']['priority'] = 8;
+    $fields['destination']['state']['priority'] = 9;
+    $fields['destination']['postcode']['priority'] = 10;
+    $fields['destination']['city']['priority'] = 10;
+    $fields['destination']['address']['priority'] = 10;
+
     return $fields;
 }
