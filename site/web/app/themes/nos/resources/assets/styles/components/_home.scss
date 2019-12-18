@@ -1,125 +1,3 @@
-// .circle-customize {
-//   width: 12%;
-//   height: 0;
-//   font-size: 20px;
-//   color: black;
-//   text-align: center;
-//   line-height: 0;
-//   padding: 6% 0;
-//   border-radius: 50%;
-//   background: $green-nos;
-// }
-
-.res-circle {
-  width: 12%;
-  border-radius: 50%;
-  line-height: 0;
-  background: $green-nos;
-  position: relative;
-
-  &::after {
-    content: "";
-    display: block;
-    padding-bottom: 100%;
-  }
-
-  .circle-txt {
-    position: absolute;
-    bottom: 50%;
-    width: 100%;
-    text-align: center;
-    font-family: arial, sans-serif;
-    font-size: 2em;
-    font-weight: bold;
-  }
-}
-
-.blockhome-1 {
-  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("../images/home/block1-hdbg.jpg");
-  background-size: cover;
-  background-position: 30% center;
-
-  // @include media("<=phone") {
-  //   height: 30rem !important;
-
-  //   .blockhome-1-container {
-  //     height: 400px;
-  //     margin: 5em 0 10em 0;
-  //     background-color: red;
-
-  //     > div {
-  //       width: 50%;
-  //       margin: 0 2em 0 1em;
-  //     }
-
-  //     .imprima-button h2 {
-  //       font-size: 1rem;
-  //     }
-  //   }
-  // }
-
-  // @include media(">=phone", "<tablet") {
-  //   .blockhome-1-container {
-  //     position: relative;
-
-  //     .imprima-button {
-  //       width: 50%;
-  //     }
-
-  //     // .dtg-button {
-  //     //   position: absolute;
-  //     //   right: 1em;
-  //     //   bottom: 0;
-  //     // }
-  //   }
-  // }
-
-  .block1-left {
-    @include font-bold;
-  }
-
-  .block1-down {
-    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7));
-
-    .container {
-      line-height: 30px;
-      padding: 1em 0 1em 0;
-
-      span {
-        @include font-light;
-      }
-
-      @include media(">=tablet") {
-        padding: 1rem 4rem 1rem 0;
-      }
-    }
-  }
-
-  .citacao {
-    @include font-light;
-
-    letter-spacing: 0.7em;
-
-    .citacao-container .hidden {
-      padding: 0 1.5rem 0 2rem;
-    }
-
-    @include media("<=tablet") {
-      padding: 1em 0 1em 1em;
-    }
-
-    .block1-down-logos {
-      padding: 0.4rem 0 0.2rem 0;
-    }
-  }
-}
-
-.blockhome-3 {
-  p {
-    @include font-light;
-  }
-}
-
 .email-input {
   left: 1em;
 
@@ -129,147 +7,12 @@
     font-style: italic;
   }
 
-  // div.flex {
-  //   width: 95%;
-
-  //   input {
-  //     width: 75%;
-  //   }
-
-  //   button {
-  //     width: 25%;
-  //   }
-  // }
-
   h3 {
     @include font-regular;
 
     letter-spacing: 0.2rem;
   }
 }
-
-// .insta {
-//   // background-color: pink;
-
-//   // @include media(">phone", "<tablet") {
-//   //   background-color: lawngreen;
-//   // }
-
-//   // @include media(">=tablet") {
-//   //   background-color: red;
-//   // }
-
-//   // @include media(">desktop") {
-//   //   background-color: orange;
-//   // }
-// }
-
-// fix for iphone 5 and less resolution
-@include media("<=phone") {
-  .instagram {
-    margin-bottom: 0;
-    height: 25rem;
-    padding-bottom: 0;
-
-    .instagram-container {
-      position: relative;
-      bottom: 13em;
-    }
-  }
-}
-
-.sigainsta {
-  height: 1rem;
-  width: 100%;
-
-  @include media(">phone", "<tablet") {
-    height: 5rem;
-  }
-
-  @include media(">=tablet") {
-    top: -2em;
-  }
-
-  .insta-hr {
-    @include media("<tablet") {
-      display: none;
-    }
-
-    border-top: 1px solid #dae1e7;
-    width: 100%;
-    position: absolute;
-    top: 6em;
-    left: 0;
-    text-align: center;
-
-    @include media(">950px") {
-      top: 4.5rem;
-      width: 80%;
-    }
-  }
-
-  .title-insta {
-    text-align: center;
-    width: auto;
-    right: 1em;
-    top: 6em;
-
-    img {
-      width: 35%;
-    }
-
-    @include media("<tablet") {
-      top: 1em;
-      right: 0;
-
-      img {
-        width: 65%;
-      }
-    }
-
-    @include media(">=tablet") {
-      right: 3em;
-      top: 2em;
-      text-align: right;
-    }
-  }
-}
-
-// Galeria Instagram
-.insta-gallery-feed {
-  margin-top: 18rem;
-
-  @include media(">phone") {
-    margin-top: 2rem;
-  }
-}
-
-// Newsletter
-// .hustle-form {
-//   border: 8px solid black;
-//   height: 3.5rem;
-
-//   .hustle-form-fields {
-//     display: flex !important;
-//     flex-direction: row;
-//     height: 100%;
-//     justify-content: space-between;
-
-//     label {
-//       width: 85%;
-//       margin: 0 !important;
-//     }
-
-//     button {
-//       width: 10% !important;
-//       margin: 0 !important;
-//       min-width: 0 !important;
-//       font-size: 1.5rem !important;
-//       height: 100% !important;
-//       padding: 0 !important;
-//     }
-//   }
-// }
 
 .blockhome-4 {
   p {
@@ -332,5 +75,168 @@
         font-size: 1.9rem;
       }
     }
+  }
+}
+
+.res-circle {
+  width: 12%;
+  border-radius: 50%;
+  line-height: 0;
+  background: $green-nos;
+  position: relative;
+
+  &::after {
+    content: "";
+    display: block;
+    padding-bottom: 100%;
+  }
+
+  .circle-txt {
+    position: absolute;
+    bottom: 50%;
+    width: 100%;
+    text-align: center;
+    font-family: arial, sans-serif;
+    font-size: 2em;
+    font-weight: bold;
+  }
+}
+
+.sigainsta {
+  height: 1rem;
+  width: 100%;
+
+  @include media(">phone", "<tablet") {
+    height: 5rem;
+  }
+
+  @include media(">=tablet") {
+    top: -2em;
+  }
+
+  .insta-hr {
+    @include media("<tablet") {
+      display: none;
+    }
+
+    border-top: 1px solid #dae1e7;
+    width: 100%;
+    position: absolute;
+    top: 6em;
+    left: 0;
+    text-align: center;
+
+    @include media(">950px") {
+      top: 4.5rem;
+      width: 80%;
+    }
+  }
+
+  .title-insta {
+    text-align: center;
+    width: auto;
+    right: 1em;
+    top: 6em;
+
+    img {
+      width: 35%;
+    }
+
+    @include media("<tablet") {
+      top: 1em;
+      right: 0;
+
+      img {
+        width: 65%;
+      }
+    }
+
+    @include media(">=tablet") {
+      right: 3em;
+      top: 2em;
+      text-align: right;
+    }
+  }
+}
+
+.blockhome-1 {
+  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("../images/home/block1-hdbg.jpg");
+  background-size: cover;
+  background-position: 30% center;
+
+  .block1-left {
+    @include font-bold;
+  }
+
+  .block1-down {
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7));
+
+    .container {
+      line-height: 30px;
+      padding: 1em 0 1em 0;
+
+      span {
+        @include font-light;
+      }
+
+      @include media(">=tablet") {
+        padding: 1rem 4rem 1rem 0;
+      }
+
+      li {
+        height: 3em;
+
+        img {
+          height: 100%;
+        }
+      }
+    }
+  }
+
+  .citacao {
+    @include font-light;
+
+    letter-spacing: 0.7em;
+
+    .citacao-container .hidden {
+      padding: 0 1.5rem 0 2rem;
+    }
+
+    @include media("<=tablet") {
+      padding: 1em 0 1em 1em;
+    }
+
+    .block1-down-logos {
+      padding: 0.4rem 0 0.2rem 0;
+    }
+  }
+}
+
+.blockhome-3 {
+  p {
+    @include font-light;
+  }
+}
+
+// fix for iphone 5 and less resolution
+@include media("<=phone") {
+  .instagram {
+    margin-bottom: 0;
+    height: 25rem;
+    padding-bottom: 0;
+
+    .instagram-container {
+      position: relative;
+      bottom: 13em;
+    }
+  }
+}
+
+// Galeria Instagram
+.insta-gallery-feed {
+  margin-top: 18rem;
+
+  @include media(">phone") {
+    margin-top: 2rem;
   }
 }
