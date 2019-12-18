@@ -40,6 +40,10 @@
   }
 
   .cart-collaterals {
+    .woocommerce-shipping-destination {
+      display: none;
+    }
+
     .woocommerce-shipping-calculator {
       border: 1px solid $green-nos;
       border-radius: 4px;
@@ -54,13 +58,19 @@
 
       .shipping-calculator-form {
         position: relative;
-        height: 3em;
+        height: 5em;
 
         #calc_shipping_postcode_field {
           position: absolute;
           top: 0;
           left: 0;
-      }
+        }
+
+        p .button {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+        }
 
         #calc_shipping_country_field,
         #calc_shipping_state_field,
