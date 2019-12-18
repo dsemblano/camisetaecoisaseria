@@ -10,8 +10,8 @@
     <span class="hamburger-inner" aria-hidden="true"></span>
   </a> --}}
 
-  {{-- @if (has_nav_menu('primary_navigation'))
+  @if (has_nav_menu('primary_navigation'))
   {!! wp_nav_menu(['theme_location' => 'primary_navigation', 'menu_class' => 'nav flex flex-col md:flex-row uppercase text-white py-5 text-2xl']) !!}
-  @include('partials/components.socialshare')
-  @endif --}}
+  {{-- @include('partials/components.socialshare') --}}
+  @endif
 </nav>
