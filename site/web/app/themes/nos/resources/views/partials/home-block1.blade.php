@@ -7,20 +7,20 @@
 
   <div class="block1-down-container">
     <div class="block1-down border-solid border-pureblack border-t-1 w-full">
-      <ul class="container flex flex-col items-center text-center md:text-left md:flex-row justify-between text-2xl md:text-xl text-white">
-        <li class="flex items-center py-2 md:py-0 leading-tight">
+      <ul class="container flex flex-col font-bold items-end text-left md:text-left md:flex-row justify-between text-2xl md:text-xl text-white">
+        <li class="flex items-center py-2 md:py-0 leading-tight w-85">
           <img src="@asset('images/home/block1/cores.png')" alt="ícone sem limite cores" />
           <span class="ml-4"><p>SEM</p><p>limite de cores</p></span>
         </li>
-        <li class="flex items-center py-2 md:py-0 leading-tight">
+        <li class="flex items-center py-2 md:py-0 leading-tight w-85">
           <img src="@asset('images/home/block1/sempedido.png')" alt="ícone sem pedido" />
           <span class="ml-4"><p>SEM</p><p>pedido mínimo</p></span>
         </li>
-        <li class="flex items-center py-2 md:py-0 leading-tight">
+        <li class="flex items-center py-2 md:py-0 leading-tight w-85">
           <img src="@asset('images/home/block1/algodao.png')" alt=" ícone 100% algodão certificado" />
-          <span class="ml-4"><p>100% algodão</p><p>orgânico</p><p>certificado</p></span>
+          <span class="ml-4"><p>100% algodão</p><p>orgânico certificado</p></span>
         </li>
-        <li class="flex items-center py-2 md:py-0 leading-tight">
+        <li class="flex items-center py-2 md:py-0 leading-tight w-85">
           <img src="@asset('images/home/block1/produtosprontaentrega.png')" alt="ícone produtos pronta entrega.png" />
           <span class="ml-4"><p>Produtos à</p><p>pronta entrega</p></span>
         </li>
