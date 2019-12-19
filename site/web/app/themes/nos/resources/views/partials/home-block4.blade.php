@@ -19,7 +19,7 @@
           <img src="@asset('images/home/camisa3.jpg')" alt="blusa 1" class="blockhome4-img">
           <div class="text-over">
             <h3>Outsourcing</h3>
-            <p>Terceirização para sua marca, otimizerecursos com o nosso sistemaestoque zero</p>
+            <p>Terceirização para sua marca, otimize recursos com o nosso sistema e estoque zero</p>
           </div>
         </div>
       </a>
