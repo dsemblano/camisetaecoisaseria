@@ -52,9 +52,8 @@ footer.content-info {
     }
 
     .widget_text {
-      @apply text-center text-white tracking-wider;
+      @apply text-center text-white tracking-wider py-2;
 
-      padding-bottom: 0.5em;
       font-size: 0.7rem;
     }
   }
