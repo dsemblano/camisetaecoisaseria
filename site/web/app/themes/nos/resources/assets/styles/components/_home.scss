@@ -160,7 +160,7 @@
 }
 
 .blockhome-1 {
-  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("../images/home/block1-hdbg.jpg");
+  background: $gradient-blk1a, url("../images/home/block1-hdbg.jpg");
   background-size: cover;
   background-position: 30% center;
 
@@ -169,7 +169,7 @@
   }
 
   .block1-down {
-    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7));
+    background: $gradient-blk1b;
 
     .container {
       line-height: 30px;
