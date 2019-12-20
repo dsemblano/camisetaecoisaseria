@@ -4,7 +4,9 @@
       <p class="text-2xl mb-6">todos os produtos</p>
       <figure class="blockhome3-right order-2 items-end">
         <div class="imprima-button text-center">
-          <button class="btn-estudio">CRIE OUTROS PRODUTOS</button>
+          <a href="/design-editor">
+            <button class="btn-estudio">CRIE OUTROS PRODUTOS</button>
+          </a>
         </div>
       </figure>
   </div>
