@@ -5,10 +5,11 @@
 @extends('layouts.app')
 
 @section('content')
+<section class="products container">
   @while(have_posts()) @php the_post() @endphp
-    <ul class="content container flex">
+    <ul class="flex flex-wrap -mx-2 overflow-hidden xl:-mx-1">
       @foreach ($destaques_produtos as $product)
-        <li class="last-products sm:px-1 sm:w-1/4 md:my-1 md:px-1 md:w-1/2 lg:mb-10 lg:px-5 lg:w-1/4 xl:mb-10 xl:px-5 xl:w-1/4">
+        <li class="last-products my-2 px-2 w-1/2 overflow-hidden sm:w-1/4 xl:my-1 xl:px-1 xl:w-1/4">
           {!!$product->get_image()!!}
           <h2 class="text-xl mt-3">
               <a href={{$product->get_permalink( )}}>{{$product->get_title()}}</a>
@@ -29,4 +30,6 @@
       @endforeach
       </ul>
   @endwhile
+</section>
+
 @endsection
