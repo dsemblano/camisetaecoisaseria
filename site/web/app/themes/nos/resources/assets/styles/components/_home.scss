@@ -180,6 +180,12 @@
       padding: 1rem 0.5rem 1rem 0.5rem;
       display: inline-flex;
 
+      @include media(">=tablet") {
+        padding-right: 1rem;
+        padding-left: 1rem;
+        display: flex;
+      }
+
       span {
         @include font-light;
 
@@ -193,6 +199,11 @@
       .container-up {
         width: 100%;
         height: auto;
+
+        @include media(">=tablet") {
+          width: 50%;
+          display: inherit;
+        }
 
         img {
           height: 3rem;

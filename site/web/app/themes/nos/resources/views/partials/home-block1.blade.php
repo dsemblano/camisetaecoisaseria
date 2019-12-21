@@ -11,21 +11,21 @@
         <div class="container-up">
           <div class="flex items-center py-2 md:py-0 leading-tight w-full">
             <img src="@asset('images/home/block1/cores.png')" alt="ícone sem limite cores" />
-            <span class="ml-1 md:ml-4 text-xs md:text-lg"><p>SEM</p><p>limite de cores</p></span>
+            <span class="ml-4 text-xs md:text-lg"><p>SEM</p><p>limite de cores</p></span>
           </div>
           <div class="flex items-center py-2 md:py-0 leading-tight w-full">
             <img src="@asset('images/home/block1/sempedido.png')" alt="ícone sem pedido" />
-            <span class="ml-1 md:ml-4 text-xs md:text-lg"><p>SEM</p><p>pedido mínimo</p></span>
+            <span class="ml-4 text-xs md:text-lg"><p>SEM</p><p>pedido mínimo</p></span>
           </div>
         </div>
         <div class="container-up">
           <div class="flex items-center py-2 md:py-0 leading-tight w-full">
             <img src="@asset('images/home/block1/algodao.png')" alt=" ícone 100% algodão certificado" />
-            <span class="ml-1 md:ml-4 text-xs md:text-lg"><p>100% algodão</p><p>orgânico certificado</p></span>
+            <span class="ml-4 text-xs md:text-lg"><p>100% algodão</p><p>orgânico certificado</p></span>
           </div>
           <div class="flex items-center py-2 md:py-0 leading-tight w-full">
             <img src="@asset('images/home/block1/produtosprontaentrega.png')" alt="ícone produtos pronta entrega.png" />
-            <span class="ml-1 md:ml-4 text-xs md:text-lg"><p>Produtos à</p><p>pronta entrega</p></span>
+            <span class="ml-4 text-xs md:text-lg"><p>Produtos à</p><p>pronta entrega</p></span>
           </div>
         </div>
       </div>
