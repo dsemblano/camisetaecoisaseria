@@ -7,7 +7,7 @@
 
   <div class="block1-down-container">
     <div class="block1-down border-solid border-pureblack border-t-1 w-full">
-      <div class="container text-sm mx-6 md:ml-auto md:text-xl text-left text-white font-bold w-full">
+      <div class="container text-sm md:ml-auto md:text-xl text-left text-white font-bold w-full">
         <div class="container-up">
           <div class="flex items-center py-2 md:py-0 leading-tight w-full">
             <img src="@asset('images/home/block1/cores.png')" alt="ícone sem limite cores" />
