@@ -1,13 +1,13 @@
 <section class="blockhome-1 md:h-slide1-xl flex flex-col justify-between">
 
-  <div class="blockhome-1-container container flex h-full items-end pt-8 md:pt-16 pb-16 md:pb-2">
+  <div class="blockhome-1-container h-64 container flex h-full items-end pt-8 md:pt-16 md:pb-2">
     @include('partials/components.btn-customize')
     {{-- @include('partials/components.dtg') --}}
   </div>
 
   <div class="block1-down-container">
     <div class="block1-down border-solid border-pureblack border-t-1 w-full">
-      <div class="container text-sm md:text-xl text-left text-white font-bold w-full">
+      <div class="container text-sm mx-6 md:ml-auto md:text-xl text-left text-white font-bold w-full">
         <div class="container-up">
           <div class="flex items-center py-2 md:py-0 leading-tight w-full">
             <img src="@asset('images/home/block1/cores.png')" alt="ícone sem limite cores" />
