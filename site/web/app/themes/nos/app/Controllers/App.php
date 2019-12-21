@@ -30,4 +30,17 @@ class App extends Controller
         }
         return get_the_title();
     }
+
+    // Camisetas destaques home
+    public function destaquesProdutos()
+    {
+        if (is_front_page()) {
+            $args = array(
+                    'limit' => 8,
+                    'status'=> 'publish',
+                    'post_type' => 'product',
+                );
+            return wc_get_products($args);
+        }
+    }
 }
