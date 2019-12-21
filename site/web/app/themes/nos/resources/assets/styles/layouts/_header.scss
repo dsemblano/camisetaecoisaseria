@@ -2,6 +2,8 @@
   @apply list-reset flex flex-wrap;
 
   @include font-light;
+
+  text-transform: capitalize;
 }
 
 .banner .nav a {
@@ -21,34 +23,6 @@
 .the_champ_horizontal_sharing .theChampSharing {
   background-color: white;
 }
-
-// .nav-primary {
-//   .menu-menu-container {
-//     // width: 80%;
-
-//     @include font-bold;
-
-//     @include media(">=phone", "<tablet") {
-//       ul li {
-//         padding-bottom: 2rem;
-
-//         &:first-child {
-//           padding-top: 1rem;
-//         }
-//       }
-//     }
-//   }
-
-//   .heateor_sss_sharing_container {
-//     // width: 20%;
-
-//     ul {
-//       /* background-color: green; */
-//       display: flex;
-//       justify-content: flex-end;
-//     }
-//   }
-// }
 
 @include media(">=phone","<tablet") {
   .nav-primary {
