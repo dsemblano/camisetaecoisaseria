@@ -6,7 +6,7 @@
 
 @section('content')
   @while(have_posts()) @php the_post() @endphp
-    <div class="content container">
+    <ul class="content container flex">
       @foreach ($destaques_produtos as $product)
         <li class="last-products sm:px-1 sm:w-1/4 md:my-1 md:px-1 md:w-1/2 lg:mb-10 lg:px-5 lg:w-1/4 xl:mb-10 xl:px-5 xl:w-1/4">
           {!!$product->get_image()!!}
@@ -27,6 +27,6 @@
           @php do_action( 'woocommerce_after_shop_loop_item' ) @endphp
         </li>
       @endforeach
-    </div>
+      </ul>
   @endwhile
 @endsection

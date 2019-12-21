@@ -38,6 +38,7 @@ class App extends Controller
                 'limit' => 8,
                 'status'=> 'publish',
                 'post_type' => 'product',
+                'category' => 'faca-sua-nos',
             );
         return wc_get_products($args);
     }
