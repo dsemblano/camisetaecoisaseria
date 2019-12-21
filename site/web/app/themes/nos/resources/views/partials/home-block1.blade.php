@@ -1,6 +1,6 @@
 <section class="blockhome-1 md:h-slide1-xl flex flex-col justify-between">
 
-  <div class="blockhome-1-container h-64 container flex h-full items-end pt-8 md:pt-16 md:pb-2">
+  <div class="blockhome-1-container h-64 container flex items-end pt-8 md:pt-16 md:pb-2">
     @include('partials/components.btn-customize')
     {{-- @include('partials/components.dtg') --}}
   </div>
