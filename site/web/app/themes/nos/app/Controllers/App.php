@@ -34,12 +34,15 @@ class App extends Controller
     // Camisetas destaques home
     public function destaquesProdutos()
     {
+        // $base_price = product_base_price($product->get_id());
         $args = array(
                 'limit' => 8,
                 'status'=> 'publish',
                 'post_type' => 'product',
                 'category' => 'faca-sua-nos',
+                // 'base_price' => $base_price,
             );
+
         return wc_get_products($args);
     }
 }
