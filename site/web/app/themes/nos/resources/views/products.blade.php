@@ -31,7 +31,7 @@
                 echo $html;
               @endphp --}}
               @php
-                $html ='<a class="lumise-button-customize btn button" href="/design-editor/?product_cms='. $product->get_id() .'&product_base=' . $product_base .'" type="button">Customize</a>';
+                $html ='<a class="lumise-button-customize btn-estudio-products uppercase" href="/design-editor/?product_cms='. $product->get_id() .'&product_base=' . $product_base .'" type="button">Crie a sua aqui</a>';
                 // $html ='<a class="lumise-button-customize btn-estudio button" href="/design-editor/?product_cms='. $product->get_id() .'&product_base=' . '" type="button">Customize</a>';
                 echo $html;
               @endphp

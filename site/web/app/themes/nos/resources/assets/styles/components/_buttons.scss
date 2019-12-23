@@ -22,3 +22,13 @@
 
   @include font-bold;
 }
+
+.btn-estudio-products {
+  @apply bg-green-nos-button py-2 px-2 rounded-lg text-white mb-2;
+
+  &:hover {
+    @apply bg-green;
+  }
+
+  @include font-bold;
+}
