@@ -166,7 +166,7 @@
 .blockhome-1 {
   background: $gradient-blk1a, url("../images/home/block1-hdbg.jpg");
   background-size: cover;
-  background-position: 30% center;
+  background-position: 20% center;
 
   .block1-left {
     @include font-bold;
@@ -177,7 +177,7 @@
 
     .container {
       line-height: 30px;
-      padding: 1rem 0.5rem 1rem 0.5rem;
+      // padding: 1rem 0.5rem 1rem 0.5rem;
       display: inline-flex;
 
       @include media(">=tablet") {
@@ -206,7 +206,7 @@
         }
 
         img {
-          height: 3rem;
+          height: 2rem;
         }
       }
     }
