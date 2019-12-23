@@ -16,6 +16,10 @@
               <a href={{$product->get_permalink( )}}>{{$product->get_title()}}</a>
           </h2>
             @if ($product->get_price())
+            @php
+                $product_base = get_post_meta($product->get_id(), 'lumise_product_base', true);
+                // echo $product_base;
+            @endphp
               <span>R${{$product->get_price()}}</span>
               {{-- &product_base=$product->cms_id --}}
               {{-- @php
@@ -27,8 +31,8 @@
                 echo $html;
               @endphp --}}
               @php
-                // $html ='<a class="lumise-button-customize btn button" href="/design-editor/?product_cms='. $product->get_id() .'&product_base=' . $product->base_price .'" type="button">Customize</a>';
-                $html ='<a class="lumise-button-customize btn-estudio button" href="/design-editor/?product_cms='. $product->get_id() .'&product_base=' . '" type="button">Customize</a>';
+                $html ='<a class="lumise-button-customize btn button" href="/design-editor/?product_cms='. $product->get_id() .'&product_base=' . $product_base .'" type="button">Customize</a>';
+                // $html ='<a class="lumise-button-customize btn-estudio button" href="/design-editor/?product_cms='. $product->get_id() .'&product_base=' . '" type="button">Customize</a>';
                 echo $html;
               @endphp
             @endif

@@ -243,3 +243,54 @@ function allow_file_mod_language_folder($allow_file_mod, $context)
 // add_filter( 'woocommerce_shipping_calculator_enable_country', '__return_false' );
 // // 2 Disable City
 // add_filter( 'woocommerce_shipping_calculator_enable_city', '__return_false' );
+
+function customize_button()
+{
+    global $product, $wpdb, $lumise;
+
+    $config = get_option('lumise_config', array());
+
+    if (
+        (isset($config['btn_page']) && !$config['btn_page']) ||
+        !method_exists($product, 'get_id')
+    ) {
+        return;
+    }
+
+    $product_id 	= $product->get_id();
+
+    $product_base = get_post_meta($product_id, 'lumise_product_base', true);
+    $lumise_customize = get_post_meta($product_id, 'lumise_customize', true);
+    $disable_cartbtn = get_post_meta($product_id, 'lumise_disable_add_cart', true);
+
+    if (empty($product_base) || $lumise_customize != 'yes') {
+        return;
+    }
+
+    $text 			= isset($config['btn_text'])? $config['btn_text'] : __('Customize', 'lumise');
+    $link_design	= str_replace('?&', '?', $this->tool_url . '&product_base='.$product_base.'&product_cms='.$product_id);
+
+    do_action('lumise_before_customize_button');
+
+    $class_lumise = apply_filters('lumise_button_customize', 'lumise-button button alt');
+    $link_design = apply_filters('lumise_customize_link', $link_design);
+
+    echo '<a name="customize"
+                id="lumise-customize-button"
+                class="'.$class_lumise.'"
+                href="'.esc_url($link_design).'">'.
+                    esc_html($text).
+                '</a>';
+
+    if ($disable_cartbtn == 'yes') {
+        echo "<script>
+                jQuery('#lumise-customize-button').
+                    closest('form').
+                    after(jQuery('#lumise-customize-button')).
+                    remove();
+            </script>";
+    }
+
+    do_action('lumise_after_customize_button');
+}
+

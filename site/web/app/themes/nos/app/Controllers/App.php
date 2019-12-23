@@ -35,6 +35,8 @@ class App extends Controller
     public function destaquesProdutos()
     {
         // $base_price = product_base_price($product->get_id());
+        // $base_price  = $_POST['product_base'];
+
         $args = array(
                 'limit' => -1,
                 'status'=> 'publish',
