@@ -9,6 +9,59 @@
   @include('partials.page-header')
   @while(have_posts()) @php the_post() @endphp
     <ul class="flex flex-wrap p-0 overflow-hidden xl:-mx-1">
+      {{-- {!! do_shortcode('[product_categories]') !!} --}}
+      {{-- {!! do_shortcode('[products limit="4" columns="4" orderby="id" order="DESC" visibility="visible"]') !!} --}}
+      {{-- @php
+        // The product category taxonomy
+        $taxonomy = 'product_cat';
+
+        // Get the parent categories IDs
+        $parent_cat_ids = get_terms( $taxonomy, array(
+            'parent'     => 0,
+            'hide_empty' => false,
+            'category' => 'faca-sua-nos',
+            'fields'     => 'ids'
+        ) );
+
+        // Get only "child" WP_Term Product categories
+        $subcategories = get_terms( $taxonomy, array(
+            'exclude'     => $parent_cat_ids,
+            'orderby'    => 'name',
+            'order'      => 'asc',
+            'hide_empty' => false,
+        ) );
+
+        if( ! empty( $subcategories ) ){
+            echo '<ul>';
+            foreach ($subcategories as $subcategory) {
+                echo '<li>
+                    <a href="'. get_term_link($subcategory) .'" >' . $subcategory->name.'</a>
+                </li>';
+            }
+            echo '</ul>';
+        }
+      @endphp --}}
+      @php
+        $parent_cat_NAME = 'faca-sua-nos';
+        $IDbyNAME = get_term_by('slug', $parent_cat_NAME, 'product_cat');
+        // print_r ($IDbyNAME);
+        $product_cat_ID = $IDbyNAME->term_id;
+
+          $args = array(
+            'hierarchical' => 1,
+            'show_option_none' => '',
+            'hide_empty' => 0,
+            'parent' => $product_cat_ID,
+            'taxonomy' => 'product_cat'
+          );
+        $subcats = get_categories($args);
+          echo '<ul class="wooc_sclist">';
+            foreach ($subcats as $sc) {
+              $link = get_term_link( $sc->slug, $sc->taxonomy );
+                echo '<li><a href="'. $link .'">'.$sc->name.'</a></li>';
+            }
+          echo '</ul>';
+      @endphp
       @foreach ($destaques_produtos as $product)
         <li class="last-products my-2 px-2 w-1/2 overflow-hidden sm:w-1/4 xl:mt-1 xl:mb-8 xl:px-5 xl:w-1/4">
           {!!$product->get_image()!!}
