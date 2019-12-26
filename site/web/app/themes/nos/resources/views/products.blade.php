@@ -9,8 +9,8 @@
 
   <div class="content products container">
       @foreach ($subcats_produtos as $sub)
-        <section id="{{ $sub->slug }}-page" class="flex">
-          <h2 class="page-header-allcategories">
+        <section id="{{ $sub->slug }}-page" class="flex flex-col">
+          <h2 class="page-header-allcategories text-center">
             <a class="header-link" href={{ esc_url(get_category_link($sub->cat_ID)) }}>{{ $sub->name }}</a>
           </h2>
           <ul class="flex flex-row">
