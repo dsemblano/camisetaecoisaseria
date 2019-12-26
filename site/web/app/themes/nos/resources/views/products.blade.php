@@ -13,7 +13,7 @@
           <h2 class="page-header-allcategories text-center">
             <a class="header-link" href={{ esc_url(get_category_link($sub->cat_ID)) }}>{{ $sub->name }}</a>
           </h2>
-          <ul class="flex flex-row">
+          <ul class="flex flex-col md:flex-row">
           @php
             $destaques_produtos = wc_get_products(array(
                 'limit' => -1,
