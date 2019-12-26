@@ -7,96 +7,49 @@
 @section('content')
 <section class="products container">
   @include('partials.page-header')
-  @php
-    // $IDbyNAME = get_term_by('slug', 'faca-sua-nos', 'product_cat');
-    $product_cat_ID = get_term_by('slug', 'faca-sua-nos', 'product_cat')->term_id;
-    // var_dump($product_cat_ID);
-    $args = array(
-      'hierarchical' => 1,
-      'show_option_none' => '',
-      'hide_empty' => 0,
-      'parent' => $product_cat_ID,
-      'taxonomy' => 'product_cat'
-    );
-    $subcats = get_categories($args);
-    // var_dump($subcats);
-      // echo '<ul class="wooc_sclist">';
-      //   foreach ($subcats as $sc) {
-      //     $link = get_term_link( $sc->slug, $sc->taxonomy );
-      //       echo '<li><a href="'. $link .'">'.$sc->name.'</a></li>';
-      //   }
-      // echo '</ul>';
-      // End category parent and subs
-  @endphp
-
-  @php
-  //   $args = array(
-  //     'limit' => -1,
-  //     'status'=> 'publish',
-  //     'category' => 'customize-babylook',
-  // );
-
-      // $destaques_produtos = wc_get_products(array(
-      //   'limit' => -1,
-      //   'status'=> 'publish',
-      //   'category' => 'customize-babylook'
-      // ));
-      // var_dump($destaques_produtos);
-      // $destaques_produtos = get_term($args);
-  @endphp
-
-  {{-- @php
-    $query = new WC_Product_Query( array(
-      'limit' => 10,
-      'orderby' => 'date',
-      'order' => 'DESC',
-      'category' => 'faca-sua-nos',
-    ) );
-    $products = $query->get_products();
-  @endphp --}}
-
 
 {{-- Categorias filho --}}
-@foreach ($subcats as $category)
+@foreach ($subcats_produtos as $sub)
   <div class="page-header-allcategories">
     <h2>
-      <a class="header-link" href={{ esc_url(get_category_link($category->cat_ID)) }}>
-        {{ $category->name }}
+      <a class="header-link" href={{ esc_url(get_category_link($sub->cat_ID)) }}>
+        {{ $sub->name }}
       </a>
     </h2>
   </div>
-  <section id="{{ $category->slug }}-page" class="category-parent row">
-        {{-- Sub categorias --}}
+  <section id="{{ $sub->slug }}-page" class="category-parent row">
     <ul class="flex flex-row">
     @php
-    $destaques_produtos = wc_get_products(array(
-        'limit' => -1,
-        'status'=> 'publish',
-        'category' => $category->slug
+      $destaques_produtos = wc_get_products(array(
+          'limit' => -1,
+          'status'=> 'publish',
+          'category' => $sub->slug
       ));
-      foreach ($destaques_produtos as $product) {
-        // echo 'Pai de ' . $product->category . '<br>';
-        // echo $product->name;
-        echo '<li>';
-        echo $product->get_image();
-        echo '<h2 class="text-base mt-3">';
-        echo '<a href=' . $product->get_permalink( ) . '>' . $product->get_title() . '</a>';
-        echo '</h2>';
-            if ($product->get_price()) {
-                $product_base = get_post_meta($product->get_id(), 'lumise_product_base', true);
-                // echo $product_base;
-                echo '<span>R$' . $product->get_price() . '</span>';
-                $html ='<a class="lumise-button-customize btn-estudio-products uppercase" href="/design-editor/?product_cms='. $product->get_id() .'&product_base=' . $product_base .'" type="button">Crie a sua aqui</a>';
-                echo $html;
-            }
-
-        do_action( 'woocommerce_after_shop_loop_item' );
-        echo '</li>';
-        }
     @endphp
+      @foreach ($destaques_produtos as $product)
+        <li>
+          {!! $product->get_image() !!}
+          <h2 class="text-base mt-3">
+            <a href="{!! $product->get_permalink() !!}">{!! $product->get_title() !!}</a>
+          </h2>
+
+          @if ($product->get_price())
+            @php
+              $product_base = get_post_meta($product->get_id(), 'lumise_product_base', true);
+            @endphp
+            <span>R$ {!! $product->get_price() !!}</span>
+            <a class="lumise-button-customize btn-estudio-products uppercase" href="/design-editor/?product_cms={!! $product->get_id() !!}&product_base={{ $product_base }}" type="button">
+              Crie a sua aqui
+            </a>
+          @endif
+
+            @php do_action( 'woocommerce_after_shop_loop_item' ); @endphp
+        </li>
+      @endforeach
     </ul>
   </section>
 @endforeach
+
 </section>
 
 @endsection
