@@ -13,7 +13,7 @@
           <h2 class="page-header-allcategories text-center">
             <a class="header-link" href={{ esc_url(get_category_link($sub->cat_ID)) }}>{{ $sub->name }}</a>
           </h2>
-          <ul class="flex flex-col md:flex-row">
+          <ul class="flex flex-wrap -mx-1 overflow-hidden text-center">
           @php
             $destaques_produtos = wc_get_products(array(
                 'limit' => -1,
@@ -22,7 +22,7 @@
             ));
           @endphp
             @foreach ($destaques_produtos as $product)
-              <li class="p-4">
+              <li class="my-1 px-1 w-full overflow-hidden sm:w-1/4 md:w-1/4 lg:w-1/6 xl:w-1/6">
                 {!! $product->get_image() !!}
                 <h2 class="text-base mt-3">
                   <a href="{!! $product->get_permalink() !!}">{!! $product->get_title() !!}</a>
