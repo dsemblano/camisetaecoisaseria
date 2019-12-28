@@ -18,6 +18,7 @@ the readme will list any important changes.
 @extends('layouts.app')
 
 @section('content')
+<div class="content container mt-8">
   @php
     do_action('get_header', 'shop');
     do_action('woocommerce_before_main_content');
@@ -30,7 +31,7 @@ the readme will list any important changes.
       wc_get_template_part('content', 'single-product');
     @endphp
   @endwhile
-
+</div>
   @php
     do_action('woocommerce_after_main_content');
     do_action('get_sidebar', 'shop');
