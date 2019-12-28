@@ -31,7 +31,7 @@ class App extends Controller
         return get_the_title();
     }
 
-    public function subcatsProdutos() {
+    public function subCategories() {
         $cat_prod = 'faca-sua-nos';
         $product_cat_ID = get_term_by('slug', $cat_prod, 'product_cat')->term_id;
         $args = array(
@@ -42,6 +42,17 @@ class App extends Controller
             'taxonomy' => 'product_cat'
         );
         return get_categories($args);
+    }
+
+    public function homeProducts() {
+        $destaques_produtos = wc_get_products(array(
+            'limit' => 6,
+            'status'=> 'publish',
+            'orderby' => 'rand',
+            'category' => 'faca-sua-nos'
+        ));
+
+        return $destaques_produtos;
     }
 
     // public function destaquesProdutos() {

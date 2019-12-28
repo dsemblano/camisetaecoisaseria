@@ -8,8 +8,8 @@
   @include('partials.page-header')
 
   <div class="content products container">
-      @foreach ($subcats_produtos as $sub)
-        <section id="{{ $sub->slug }}-page" class="flex flex-col my-12">
+      @foreach ($sub_categories as $sub)
+        <section id="{{ $sub->slug }}-page" class="flex flex-col my-12 border-solid border-gray border-b-1 pb-6">
           <h2 class="page-header-allcategories text-center">
             <a class="header-link" href={{ esc_url(get_category_link($sub->cat_ID)) }}>{{ $sub->name }}</a>
           </h2>

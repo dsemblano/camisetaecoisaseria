@@ -11,6 +11,19 @@
       </figure>
   </div>
   <figure class="blockhome3-right order-2 items-end">
-    <img src="@asset('images/home/produtos.png')" alt="imagens produtos">
+    @foreach ($sub_categories as $sub)
+      @php
+        $destaques_produtos = wc_get_products(array(
+          'limit' => 6,
+          'status'=> 'publish',
+          'orderby' => 'rand',
+          'category' => $sub->slug
+        ));
+      @endphp
+      @foreach ($destaques_produtos as $img)
+        {!! $img->get_image() !!}
+      @endforeach
+    @endforeach
+    {{-- <img src="@asset('images/home/produtos.png')" alt="imagens produtos"> --}}
   </figure>
 </section>
