@@ -14,7 +14,7 @@
     @foreach ($sub_categories as $sub)
       @php
         $destaques_produtos = wc_get_products(array(
-          'limit' => 6,
+          'limit' => 1,
           'status'=> 'publish',
           'orderby' => 'rand',
           'category' => $sub->slug
