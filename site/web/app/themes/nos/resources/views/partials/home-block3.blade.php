@@ -10,7 +10,7 @@
         </div>
       </figure>
   </div>
-  <figure class="blockhome3-right order-2 items-end">
+  <figure class="blockhome3-right flex flex-wrap -mx-1 overflow-hidden">
     @foreach ($sub_categories as $sub)
       @php
         $destaques_produtos = wc_get_products(array(
@@ -21,7 +21,10 @@
         ));
       @endphp
       @foreach ($destaques_produtos as $img)
-        {!! $img->get_image() !!}
+        {{-- @php $img_prod = wp_get_attachment_url($img->get_image_id(), $size = 'homeblock3' ) @endphp --}}
+        {!! $img-> get_image($size = 'homeblock3') !!}
+        {{-- <img src="{{$img_prod}}" class="my-1 px-1 w-1/2 overflow-hidden attachment-homeblock3" alt="imagens produtos"> --}}
+
       @endforeach
     @endforeach
     {{-- <img src="@asset('images/home/produtos.png')" alt="imagens produtos"> --}}
