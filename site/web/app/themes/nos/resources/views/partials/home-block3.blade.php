@@ -23,7 +23,9 @@
         @endphp
         @foreach ($destaques_produtos as $img)
           {{-- @php $img_prod = wp_get_attachment_url($img->get_image_id(), $size = 'homeblock3' ) @endphp --}}
-          {!! $img-> get_image($size = 'homeblock3') !!}
+          <a href="{!! $img->get_permalink() !!}">
+            {!! $img->get_image($size = 'homeblock3') !!}
+          </a>
           {{-- <img src="{{$img_prod}}" class="my-1 px-1 w-1/2 overflow-hidden attachment-homeblock3" alt="imagens produtos"> --}}
 
         @endforeach
