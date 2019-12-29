@@ -57,7 +57,7 @@ add_action('after_setup_theme', function () {
     add_theme_support('post-thumbnails');
 
     // Thumbnails images
-    add_image_size('homeblock3', 250, 250, true);
+    add_image_size('homeblock3', 250, 170, true);
 
     /**
      * Enable HTML5 markup support

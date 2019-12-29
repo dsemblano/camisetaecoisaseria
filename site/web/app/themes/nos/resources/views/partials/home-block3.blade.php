@@ -23,13 +23,12 @@
         @endphp
         @foreach ($destaques_produtos as $img)
           {{-- @php $img_prod = wp_get_attachment_url($img->get_image_id(), $size = 'homeblock3' ) @endphp --}}
-          <figure>
-            <a href="{!! $img->get_permalink() !!}">
-              {!! $img->get_image($size = 'homeblock3') !!}
-            </a>
-          </figure>
-          {{-- <img src="{{$img_prod}}" class="my-1 px-1 w-1/2 overflow-hidden attachment-homeblock3" alt="imagens produtos"> --}}
-
+              <a class="linkimgprod my-1 px-1 w-1/2 overflow-hidden" href="{!! $img->get_permalink() !!}">
+                @php
+                  $imgprod = $img->get_image($size = 'homeblock3', array('class'=>'imgprod w-full'));
+                @endphp
+                {!! $imgprod !!}
+              </a>
         @endforeach
       @endforeach
       {{-- <img src="@asset('images/home/produtos.png')" alt="imagens produtos"> --}}

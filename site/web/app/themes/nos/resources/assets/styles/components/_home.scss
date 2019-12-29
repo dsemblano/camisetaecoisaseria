@@ -20,15 +20,14 @@
 }
 
 .blockhome3-right {
-  figure {
-    background-color: white;
-    margin: 5px 5px 0 0;
-
-    .attachment-homeblock3 {
+  a {
+    .imgprod {
       @extend %imgeffect;
+
+      background-color: white;
     }
 
-    &:hover .attachment-homeblock3 {
+    &:hover .imgprod {
       @extend %hoverimgeffect;
     }
   }
