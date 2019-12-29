@@ -238,6 +238,11 @@ function allow_file_mod_language_folder($allow_file_mod, $context)
     }
 }
 
+// remove_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart');
+
+// // remove da página produtos de veja mais
+// remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_add_to_cart');
+
 // 1 Disable State
 // add_filter( 'woocommerce_shipping_calculator_enable_state', '__return_false' );
 // add_filter( 'woocommerce_shipping_calculator_enable_country', '__return_false' );

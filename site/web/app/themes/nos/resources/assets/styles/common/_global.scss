@@ -101,14 +101,25 @@ ul {
 }
 
 // single products
-.woocommerce ul.products li.product a {
-  img {
-    @extend %imgeffect;
+.woocommerce {
+  div.product div.images img {
+    width: auto;
   }
 
-  &:hover img {
-    @extend %hoverimgeffect;
+  ul.products li.product a {
+    img {
+      @extend %imgeffect;
+    }
+
+    &:hover img {
+      @extend %hoverimgeffect;
+    }
   }
+}
+
+a.button.product_type_simple,
+.button.single_add_to_cart_button.button.alt {
+  display: none;
 }
 
 // top-arrow
