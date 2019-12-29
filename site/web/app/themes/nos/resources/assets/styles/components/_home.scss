@@ -1,3 +1,20 @@
+%imgeffect {
+  -webkit-transform: scale(1);
+  transform: scale(1);
+  -webkit-transition: 0.3s ease-in-out;
+  transition: 0.2s ease-in-out;
+}
+
+%hoverimgeffect {
+  -webkit-transform: scale(1.1);
+  transform: scale(1.1);
+}
+
+// .hover01 figure:hover img {
+// 	-webkit-transform: scale(1.3);
+// 	transform: scale(1.3);
+// }
+
 .email-input {
   left: 1em;
 
@@ -11,6 +28,21 @@
     @include font-regular;
 
     letter-spacing: 0.2rem;
+  }
+}
+
+.blockhome3-right {
+  figure {
+    background-color: white;
+    margin: 5px 5px 0 0;
+
+    .attachment-homeblock3 {
+      @extend %imgeffect;
+    }
+
+    &:hover .attachment-homeblock3 {
+      @extend %hoverimgeffect;
+    }
   }
 }
 
