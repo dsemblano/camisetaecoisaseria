@@ -23,11 +23,13 @@
   @include font-bold;
 }
 
+body.woocommerce .products .product .lumise-list-button {
+  background-color: #1ebe85 !important;
+}
+
 .btn-estudio-products,
 .woocommerce button.button.alt,
-.woocommerce a.button.alt,
-body.woocommerce .products .product .lumise-list-button,
-a.lumise-button.lumise-list-button {
+.woocommerce a.button.alt {
   @apply bg-green-nos-button py-2 px-2 rounded-lg text-white mb-2;
 
   &:hover {
@@ -36,3 +38,4 @@ a.lumise-button.lumise-list-button {
 
   @include font-bold;
 }
+
