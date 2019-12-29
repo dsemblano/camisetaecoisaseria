@@ -9,11 +9,11 @@
 
   <div class="content products container">
       @foreach ($sub_categories as $sub)
-        <section id="{{ $sub->slug }}-page" class="flex flex-col my-12 border-solid border-gray border-b-1 pb-6">
+        <section id="{{ $sub->slug }}-page" class="category-products flex flex-col my-12 border-solid border-gray border-b-1 pb-6">
           <h2 class="page-header-allcategories text-center">
             <a class="header-link" href={{ esc_url(get_category_link($sub->cat_ID)) }}>{{ $sub->name }}</a>
           </h2>
-          <ul class="flex flex-wrap -mx-1 overflow-hidden text-center">
+          <ul class="flex flex-wrap p-0 text-center">
           @php
             $destaques_produtos = wc_get_products(array(
                 'limit' => -1,
@@ -22,9 +22,9 @@
             ));
           @endphp
             @foreach ($destaques_produtos as $product)
-              <li class="my-1 px-1 w-full overflow-hidden sm:w-1/4 md:w-1/4 lg:w-1/6 xl:w-1/6">
+              <li class="my-2 px-2 w-1/2 overflow-hidden sm:w-1/6 md:w-1/6">
                 {!! $product->get_image() !!}
-                <h2 class="text-base mt-3">
+                <h2 class="text-sm mt-3 h-8">
                   <a href="{!! $product->get_permalink() !!}">{!! $product->get_title() !!}</a>
                 </h2>
 
