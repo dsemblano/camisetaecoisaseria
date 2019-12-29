@@ -1,4 +1,17 @@
 // Mixins
+
+%imgeffect {
+  -webkit-transform: scale(1);
+  transform: scale(1);
+  -webkit-transition: 0.3s ease-in-out;
+  transition: 0.2s ease-in-out;
+}
+
+%hoverimgeffect {
+  -webkit-transform: scale(1.1);
+  transform: scale(1.1);
+}
+
 $small-mq: 480px;
 $medium-mq: 768px;
 $large-mq: 1024px;
@@ -84,6 +97,17 @@ ul {
 
   &:nth-of-type(4n) {
     border-right: none;
+  }
+}
+
+// single products
+.woocommerce ul.products li.product a {
+  img {
+    @extend %imgeffect;
+  }
+
+  &:hover img {
+    @extend %hoverimgeffect;
   }
 }
 
