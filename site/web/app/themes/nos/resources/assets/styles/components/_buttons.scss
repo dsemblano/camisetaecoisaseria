@@ -26,7 +26,8 @@
 .btn-estudio-products,
 .woocommerce button.button.alt,
 .woocommerce a.button.alt,
-body.woocommerce .products .product .lumise-list-button {
+body.woocommerce .products .product .lumise-list-button,
+a.lumise-button.lumise-list-button {
   @apply bg-green-nos-button py-2 px-2 rounded-lg text-white mb-2;
 
   &:hover {
