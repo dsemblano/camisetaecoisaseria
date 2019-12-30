@@ -24,7 +24,11 @@
             @foreach ($destaques_produtos as $product)
               <li class="my-2 px-2 w-1/2 overflow-hidden sm:w-1/6 md:w-1/6">
                 <a href="{!! $product->get_permalink() !!}">
-                  {!! $product->get_image() !!}
+                  @php
+                      $imgprod = $product->get_image($size = 'homeblock3', array('class'=>'imgprod w-full bg-white'));
+                  @endphp
+                  {{-- {!! $product->get_image() !!} --}}
+                  {!! $imgprod !!}
                   <h2 class="text-sm mt-3 h-8">
                     {!! $product->get_title() !!}
                   </h2>
