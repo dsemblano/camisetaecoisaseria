@@ -12,6 +12,7 @@
   font-size: 1rem;
 }
 
+// botão principal home
 .btn-estudio,
 .woocommerce .wpmc-nav-wrapper button {
   @apply bg-green-nos-button py-4 px-4 rounded-lg text-white mb-2;
@@ -24,13 +25,22 @@
 }
 
 body.woocommerce .products .product .lumise-list-button {
-  background-color: #1ebe85 !important;
+  background-color: $green-nos-button !important;
 }
 
 .btn-estudio-products,
 .woocommerce button.button.alt,
-.woocommerce a.button.alt {
-  @apply bg-green-nos-button py-2 px-2 rounded-lg text-white mb-2;
+.woocommerce a.button.alt,
+body.woocommerce .products .product .lumise-list-button {
+  @apply bg-green-nos-button text-white text-xs;
+
+  display: inline-block;
+  transition: all 0.3s ease 0s;
+  line-height: 1;
+  width: auto;
+  padding: 12px 20px;
+  border-radius: 2px;
+  margin: 0 2px;
 
   &:hover {
     @apply bg-green;
@@ -38,4 +48,3 @@ body.woocommerce .products .product .lumise-list-button {
 
   @include font-bold;
 }
-
