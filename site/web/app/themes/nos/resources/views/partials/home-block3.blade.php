@@ -28,6 +28,9 @@
                   $imgprod = $img->get_image($size = 'homeblock3', array('class'=>'imgprod w-full'));
                 @endphp
                 {!! $imgprod !!}
+                <h2 class="text-sm mt-3 h-8 text-center">
+                  {!! $img->get_title() !!}
+                </h2>
               </a>
         @endforeach
       @endforeach
