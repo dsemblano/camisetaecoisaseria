@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "23d8a049952b21ea68652bc330344cbb",
+    "content-hash": "be9397e4d18a54faa1c92db75295a389",
     "packages": [
         {
             "name": "composer/installers",
@@ -535,7 +535,7 @@
         },
         {
             "name": "wpackagist-plugin/automatic-translator-addon-for-loco-translate",
-            "version": "1.3.2",
+            "version": "1.4",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/automatic-translator-addon-for-loco-translate/",
@@ -543,7 +543,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/automatic-translator-addon-for-loco-translate.zip?timestamp=1576241264"
+                "url": "https://downloads.wordpress.org/plugin/automatic-translator-addon-for-loco-translate.zip?timestamp=1577787249"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -571,15 +571,15 @@
         },
         {
             "name": "wpackagist-plugin/insta-gallery",
-            "version": "2.6.4",
+            "version": "2.6.5",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/insta-gallery/",
-                "reference": "tags/2.6.4"
+                "reference": "tags/2.6.5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/insta-gallery.2.6.4.zip"
+                "url": "https://downloads.wordpress.org/plugin/insta-gallery.2.6.5.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -751,15 +751,15 @@
         },
         {
             "name": "wpackagist-plugin/woocommerce-admin",
-            "version": "0.23.2",
+            "version": "0.23.3",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/woocommerce-admin/",
-                "reference": "tags/0.23.2"
+                "reference": "tags/0.23.3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/woocommerce-admin.0.23.2.zip"
+                "url": "https://downloads.wordpress.org/plugin/woocommerce-admin.0.23.3.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -895,15 +895,15 @@
         },
         {
             "name": "wpackagist-plugin/wordpress-popup",
-            "version": "7.0.3",
+            "version": "7.0.4",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/wordpress-popup/",
-                "reference": "tags/7.0.3"
+                "reference": "tags/7.0.4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/wordpress-popup.7.0.3.zip"
+                "url": "https://downloads.wordpress.org/plugin/wordpress-popup.7.0.4.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -948,22 +948,41 @@
             "homepage": "https://wordpress.org/plugins/wp-enable-webp/"
         },
         {
-            "name": "wpackagist-plugin/wp-multi-step-checkout",
-            "version": "2.6",
+            "name": "wpackagist-plugin/wp-mail-smtp",
+            "version": "1.8.1",
             "source": {
                 "type": "svn",
-                "url": "https://plugins.svn.wordpress.org/wp-multi-step-checkout/",
-                "reference": "tags/2.6"
+                "url": "https://plugins.svn.wordpress.org/wp-mail-smtp/",
+                "reference": "tags/1.8.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/wp-multi-step-checkout.2.6.zip"
+                "url": "https://downloads.wordpress.org/plugin/wp-mail-smtp.1.8.1.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
             },
             "type": "wordpress-plugin",
-            "homepage": "https://wordpress.org/plugins/wp-multi-step-checkout/"
+            "homepage": "https://wordpress.org/plugins/wp-mail-smtp/"
+        },
+        {
+            "name": "wpackagist-plugin/wp-multi-step-checkout",
+            "version": "dev-trunk",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/wp-multi-step-checkout/",
+                "reference": "trunk"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/wp-multi-step-checkout.zip?timestamp=1576062743"
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/wp-multi-step-checkout/",
+            "time": "2019-12-11T11:12:23+00:00"
         },
         {
             "name": "wpackagist-plugin/wp-smushit",
@@ -1009,12 +1028,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "181dd66fd666ed397991ded7b725fe90a8a00413"
+                "reference": "44a677c8e06241a66409ae6e4820dc166fc09ab2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/181dd66fd666ed397991ded7b725fe90a8a00413",
-                "reference": "181dd66fd666ed397991ded7b725fe90a8a00413",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/44a677c8e06241a66409ae6e4820dc166fc09ab2",
+                "reference": "44a677c8e06241a66409ae6e4820dc166fc09ab2",
                 "shasum": ""
             },
             "conflict": {
@@ -1105,7 +1124,7 @@
                 "pusher/pusher-php-server": "<2.2.1",
                 "robrichards/xmlseclibs": ">=1,<3.0.4",
                 "sabre/dav": ">=1.6,<1.6.99|>=1.7,<1.7.11|>=1.8,<1.8.9",
-                "scheb/two-factor-bundle": "<3.26|>=4,<4.11",
+                "scheb/two-factor-bundle": ">=0,<3.26|>=4,<4.11",
                 "sensiolabs/connect": "<4.2.3",
                 "serluck/phpwhois": "<=4.2.6",
                 "shopware/shopware": "<5.3.7",
@@ -1220,7 +1239,7 @@
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
-            "time": "2019-12-21T14:43:42+00:00"
+            "time": "2019-12-26T14:16:40+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",
