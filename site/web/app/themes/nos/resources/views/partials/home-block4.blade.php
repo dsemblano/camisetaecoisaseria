@@ -4,7 +4,7 @@
     <li class="w-full mb-8 md:w-1/25">
       <a href="/outsourcing-dropshipping/">
         <div class="img-container">
-          <img src="@asset('images/home/camisa2.jpg')" alt="blusa 1" class="blockhome4-img">
+          <img src="@asset('images/home/block4/camisa2.jpg')" alt="blusa 1" class="blockhome4-img">
           <div class="text-over">
             <h3>Dropshipping</h3>
             <p>Produzimos e enviamos o seu produto para todo o Brasil</p>
@@ -16,7 +16,7 @@
     <li class="w-full mb-8 md:w-1/25">
       <a href="/outsourcing-dropshipping/">
         <div class="img-container">
-          <img src="@asset('images/home/camisa3.jpg')" alt="blusa 1" class="blockhome4-img">
+          <img src="@asset('images/home/block4/camisa3.jpg')" alt="blusa 1" class="blockhome4-img">
           <div class="text-over">
             <h3>Outsourcing</h3>
             <p>Terceirização para sua marca, otimize recursos com o nosso sistema e estoque zero</p>
@@ -28,7 +28,7 @@
     <li class="w-full mb-8 md:w-1/25">
       <a href="/impressao-digital-avulsa-em-algodao/">
         <div class="img-container">
-          <img src="@asset('images/home/camisa1.jpg')" alt="blusa 1" class="blockhome4-img">
+          <img src="@asset('images/home/block4/camisa1.jpg')" alt="blusa 1" class="blockhome4-img">
           <div class="text-over">
             <h3>Impressão digital avulsa em algodão</h3>
             <p>Nossa impressão no seu tecido de algodão</p>
