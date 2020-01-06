@@ -8,12 +8,12 @@
   @include('partials.page-header')
 
   <div class="content products container">
+    <section class="category-products flex flex-col my-12 border-solid border-gray border-b-1 pb-6">
+      <ul class="flex flex-wrap p-0 text-center">
       @foreach ($sub_categories as $sub)
-        <section id="{{ $sub->slug }}-page" class="category-products flex flex-col my-12 border-solid border-gray border-b-1 pb-6">
-          <h2 class="page-header-allcategories text-center">
+          {{-- <h2 class="page-header-allcategories text-center">
             <a class="header-link" href={{ esc_url(get_category_link($sub->cat_ID)) }}>{{ $sub->name }}</a>
-          </h2>
-          <ul class="flex flex-wrap p-0 text-center">
+          </h2> --}}
           @php
             $destaques_produtos = wc_get_products(array(
                 'limit' => -1,
@@ -49,9 +49,9 @@
                   @php do_action( 'woocommerce_after_shop_loop_item' ); @endphp
               </li>
             @endforeach
-          </ul>
-        </section>
       @endforeach
+      </ul>
+    </section>
   </div>
 
 </section>
