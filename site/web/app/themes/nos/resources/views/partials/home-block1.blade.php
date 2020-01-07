@@ -5,7 +5,7 @@
     @include('partials/components.dtg')
   </div>
 
-  <div class="block1-down-container">
+  <div class="block1-down-container mt-8">
     <div class="block1-down border-solid border-pureblack border-t-1 w-full">
       <div class="container text-sm md:ml-auto md:text-xl text-left text-white font-bold w-full">
         <div class="container-up">
