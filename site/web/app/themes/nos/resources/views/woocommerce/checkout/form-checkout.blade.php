@@ -36,8 +36,8 @@ if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_requir
 
   <?php do_action( 'woocommerce_checkout_before_customer_details' ); ?>
 
-  <div class="flex flex-wrap -mx-3 overflow-hidden">
-    <div class="col2-set my-3 px-3 w-full overflow-hidden sm:w-1/2 md:w-1/2" id="customer_details">
+  <div class="flex flex-wrap container">
+    <div class="col2-set my-3 px-3 w-full sm:w-1/2 md:w-1/2" id="customer_details">
       {{-- <div class="col-1"> --}}
         <?php do_action( 'woocommerce_checkout_billing' ); ?>
       {{-- </div> --}}
@@ -47,7 +47,7 @@ if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_requir
       {{-- </div> --}}
     </div>
 
-    <div class="pedido my-3 px-3 w-full overflow-hidden sm:w-1/2 md:w-1/2">
+    <div class="pedido my-3 px-3 w-full sm:w-1/2 md:w-1/2">
       <?php do_action( 'woocommerce_checkout_after_customer_details' ); ?>
 
       <?php endif; ?>
