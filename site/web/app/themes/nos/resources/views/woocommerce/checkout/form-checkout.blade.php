@@ -38,13 +38,13 @@ if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_requir
 
   <div class="flex flex-wrap container">
     <div class="col2-set my-3 px-3 w-full sm:w-1/2 md:w-1/2" id="customer_details">
-      {{-- <div class="col-1"> --}}
+      <div class="col-1">
         <?php do_action( 'woocommerce_checkout_billing' ); ?>
-      {{-- </div> --}}
+      </div>
 
-      {{-- <div class="col-2"> --}}
+      <div class="col-2">
         <?php do_action( 'woocommerce_checkout_shipping' ); ?>
-      {{-- </div> --}}
+      </div>
     </div>
 
     <div class="pedido my-3 px-3 w-full sm:w-1/2 md:w-1/2">
