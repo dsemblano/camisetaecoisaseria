@@ -39,6 +39,12 @@
     }
   }
 
+  form .form-row input.input-text {
+    border-style: inset;
+    padding-left: 10px;
+    border-left: 1px solid $green-nos;
+  }
+
   .cart-collaterals {
     .woocommerce-shipping-destination {
       display: none;
