@@ -57,6 +57,7 @@
     "wpackagist-plugin/wp-multi-step-checkout":">=2.7",
     "wpackagist-plugin/woocommerce-pdf-invoices-packing-slips":">=2.4.2",
     "wpackagist-plugin/wp-mail-smtp":">=1.8.1",
+    "wpackagist-plugin/flexible-checkout-fields":">=2.2.3",
     "wpackagist-plugin/wps-hide-login":">=1.5.4.2"
   },
   "require-dev": {

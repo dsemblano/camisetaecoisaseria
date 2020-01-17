@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Themes - Twenty Twenty package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2019-11-13 17:31:06+0000\n"
+"PO-Revision-Date: 2019-12-18 12:18:02+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -19,6 +19,10 @@ msgstr "O nosso tema padrão para 2020 foi desenvolvido para tirar o máximo de 
 msgid "Twenty Twenty"
 msgstr "Twenty Twenty"
 
+#: classes/class-twentytwenty-customize.php:246
+msgid "Show author bio"
+msgstr "Mostrar biografia do autor"
+
 #: template-parts/entry-author-bio.php:29
 msgid "View Archive <span aria-hidden=\"true\">&rarr;</span>"
 msgstr "Ver arquivo <span aria-hidden=\"true\">&rarr;</span>"
@@ -28,7 +32,7 @@ msgctxt "Theme starter content"
 msgid "The New UMoMA Opens its Doors"
 msgstr "O novo UMoMA abre suas portas"
 
-#: inc/template-tags.php:387
+#: inc/template-tags.php:393
 msgctxt "A string that is output before one or more categories"
 msgid "In"
 msgstr "Em"
@@ -78,13 +82,13 @@ msgstr "Leia mais"
 msgid "August 1 -- December 1"
 msgstr "1º de agosto - 1º de dezembro"
 
-#: inc/starter-content.php:133
-msgid "With seven floors of striking architecture, UMoMA shows exhibitions of international contemporary art, sometimes along with art historical retrospectives. Existential, political and philosophical issues are intrinsic to our programme. As visitor you are invited to guided tours artist talks, lectures, film screenings and other events with free admission"
-msgstr "Com sete andares de arquitetura impressionante, o UMoMA têm exibições de arte contemporânea internacional, algumas vezes com retrospectivas de história da arte. Questões existenciais, políticas e filosóficas são intrínsecas ao nosso programa. Como visitante, você será convidado para passeios guiados com palestras, exibições de filmes e outros eventos livres."
-
 #: inc/starter-content.php:66
 msgid "Works and Days"
 msgstr "Trabalhos e dias"
+
+#: inc/starter-content.php:133
+msgid "With seven floors of striking architecture, UMoMA shows exhibitions of international contemporary art, sometimes along with art historical retrospectives. Existential, political and philosophical issues are intrinsic to our programme. As visitor you are invited to guided tours artist talks, lectures, film screenings and other events with free admission"
+msgstr "Com sete andares de arquitetura impressionante, o UMoMA têm exibições de arte contemporânea internacional, algumas vezes com retrospectivas de história da arte. Questões existenciais, políticas e filosóficas são intrínsecas ao nosso programa. Como visitante, você será convidado para passeios guiados com palestras, exibições de filmes e outros eventos livres."
 
 #: inc/starter-content.php:55
 msgid "The premier destination for modern art in Northern Sweden. Open from 10 AM to 6 PM every day during the summer months."
@@ -94,27 +98,27 @@ msgstr "O principal destino da arte moderna no norte da Suécia. Funciona todos 
 msgid "The New UMoMA Opens its Doors"
 msgstr "O novo UMoMA abre suas portas"
 
-#: classes/class-twentytwenty-customize.php:374
+#: classes/class-twentytwenty-customize.php:395
 msgid "Overlay Opacity"
 msgstr "Transparência da camada de sobreposição"
 
-#: classes/class-twentytwenty-customize.php:354
+#: classes/class-twentytwenty-customize.php:375
 msgid "The color used for the text in the overlay."
 msgstr "A cor usada no texto da camada de sobreposição."
 
-#: classes/class-twentytwenty-customize.php:353
+#: classes/class-twentytwenty-customize.php:374
 msgid "Overlay Text Color"
 msgstr "Cor do texto da camada de sobreposição"
 
-#: classes/class-twentytwenty-customize.php:332
+#: classes/class-twentytwenty-customize.php:353
 msgid "The color used for the overlay. Defaults to the accent color."
 msgstr "A cor usada na camada de sobreposição. Padrão para a cor de destaque."
 
-#: classes/class-twentytwenty-customize.php:331
+#: classes/class-twentytwenty-customize.php:352
 msgid "Overlay Background Color"
 msgstr "Cor de fundo da camada de sobreposição"
 
-#: classes/class-twentytwenty-customize.php:262
+#: classes/class-twentytwenty-customize.php:283
 msgid "Settings for the \"Cover Template\" page template. Add a featured image to use as background."
 msgstr "Configurações para o modelo de página \"Cobertura\". Adicione uma imagem destacada para usá-la como fundo."
 
@@ -134,7 +138,7 @@ msgstr "Padrão"
 msgid "Primary Color"
 msgstr "Cor primária"
 
-#: searchform.php:24 template-parts/modal-search.php:20
+#: template-parts/modal-search.php:20 searchform.php:24
 msgid "Search for:"
 msgstr "Pesquisar por:"
 
@@ -208,7 +212,7 @@ msgstr "Comentários"
 msgid "Comments are closed."
 msgstr "Os comentários estão desativados."
 
-#: inc/starter-content.php:176 inc/starter-content.php:186 functions.php:491
+#: functions.php:491 inc/starter-content.php:176 inc/starter-content.php:186
 msgid "Primary"
 msgstr "Primário"
 
@@ -258,7 +262,7 @@ msgid "Full Width Template"
 msgstr "Modelo com largura total"
 
 #. translators: %s: Author name
-#: template-parts/entry-author-bio.php:20 inc/template-tags.php:348
+#: template-parts/entry-author-bio.php:20 inc/template-tags.php:354
 msgid "By %s"
 msgstr "Por %s"
 
@@ -288,20 +292,20 @@ msgctxt "placeholder"
 msgid "Search &hellip;"
 msgstr "Pesquisar &hellip;"
 
-#: inc/template-tags.php:401
+#: inc/template-tags.php:407
 msgid "Tags"
 msgstr "Tags"
 
-#: template-parts/entry-header.php:36 template-parts/content-cover.php:70
-#: inc/template-tags.php:383
+#: template-parts/content-cover.php:70 template-parts/entry-header.php:36
+#: inc/template-tags.php:389
 msgid "Categories"
 msgstr "Categorias"
 
-#: inc/template-tags.php:365
+#: inc/template-tags.php:371
 msgid "Post date"
 msgstr "Data de publicação"
 
-#: inc/template-tags.php:341
+#: inc/template-tags.php:347
 msgid "Post author"
 msgstr "Autor do post"
 
@@ -346,7 +350,7 @@ msgstr "Dispositivo móvel"
 msgid "Expanded"
 msgstr "Expandido"
 
-#: inc/template-tags.php:439
+#: inc/template-tags.php:445
 msgid "Sticky post"
 msgstr "Post fixo"
 
@@ -445,7 +449,7 @@ msgstr "Comentários mais antigos"
 msgid "Newer Comments"
 msgstr "Comentários mais recentes"
 
-#: classes/class-twentytwenty-walker-page.php:134 inc/template-tags.php:545
+#: classes/class-twentytwenty-walker-page.php:134 inc/template-tags.php:555
 msgid "Show sub menu"
 msgstr "Mostrar submenu"
 
@@ -462,32 +466,32 @@ msgstr "Por autor do post"
 msgid "says:"
 msgstr "diz:"
 
-#: classes/class-twentytwenty-customize.php:375
+#: classes/class-twentytwenty-customize.php:396
 msgid "Make sure that the contrast is high enough so that the text is readable."
 msgstr "Tenha certeza de que há contraste o suficiente para que o texto seja legível."
 
-#: classes/class-twentytwenty-customize.php:285
+#: classes/class-twentytwenty-customize.php:306
 msgid "Creates a parallax effect when the visitor scrolls."
 msgstr "Cria um efeito parallax durante a rolagem de tela."
 
-#: classes/class-twentytwenty-customize.php:284
+#: classes/class-twentytwenty-customize.php:305
 msgid "Fixed Background Image"
 msgstr "Imagem de fundo fixa"
 
 #. Template Name of the theme
-#: classes/class-twentytwenty-customize.php:260
+#: classes/class-twentytwenty-customize.php:281
 msgid "Cover Template"
 msgstr "Modelo de cobertura"
 
-#: classes/class-twentytwenty-customize.php:249
+#: classes/class-twentytwenty-customize.php:270
 msgid "Summary"
 msgstr "Resumo"
 
-#: classes/class-twentytwenty-customize.php:248
+#: classes/class-twentytwenty-customize.php:269
 msgid "Full text"
 msgstr "Texto completo"
 
-#: classes/class-twentytwenty-customize.php:246
+#: classes/class-twentytwenty-customize.php:267
 msgid "On archive pages, posts show:"
 msgstr "Em páginas de arquivo, mostrar dos posts:"
 
@@ -519,11 +523,6 @@ msgstr "Não foi possível encontrar a página que você estava procurando. Ela 
 msgid "Page Not Found"
 msgstr "Página não encontrada"
 
-#. Author URI of the theme
-#: footer.php:32
-msgid "https://wordpress.org/"
-msgstr "https://wordpress.org/"
-
 #. Author of the theme
 msgid "the WordPress team"
 msgstr "a equipe do WordPress"
@@ -531,3 +530,8 @@ msgstr "a equipe do WordPress"
 #. Theme URI of the theme
 msgid "https://wordpress.org/themes/twentytwenty/"
 msgstr "https://br.wordpress.org/themes/twentytwenty/"
+
+#. Author URI of the theme
+#: footer.php:32
+msgid "https://wordpress.org/"
+msgstr "https://br.wordpress.org/"
