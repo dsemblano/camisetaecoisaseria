@@ -45,65 +45,65 @@
     border-left: 1px solid $green-nos;
   }
 
-  .cart-collaterals {
-    // .woocommerce-shipping-destination {
-    //   display: none;
-    // }
-    .woocommerce-shipping-calculator {
-      border: 1px solid $green-nos;
-      border-radius: 4px;
-      padding: 0 0 7px 10px;
-      text-align: left;
+  // .cart-collaterals {
+  //   // .woocommerce-shipping-destination {
+  //   //   display: none;
+  //   // }
+  //   .woocommerce-shipping-calculator {
+  //     border: 1px solid $green-nos;
+  //     border-radius: 4px;
+  //     padding: 0 0 7px 10px;
+  //     text-align: left;
 
-      input {
-        border: 1px solid $green-nos;
-        padding: 5px;
-        border-radius: 5px;
-      }
+  //     input {
+  //       border: 1px solid $green-nos;
+  //       padding: 5px;
+  //       border-radius: 5px;
+  //     }
 
-      .shipping-calculator-form {
-        position: relative;
-        height: 5em;
+  //     .shipping-calculator-form {
+  //       position: relative;
+  //       height: 5em;
 
-        #calc_shipping_postcode_field {
-          position: absolute;
-          top: 0;
-          left: 0;
-        }
+  //       #calc_shipping_postcode_field {
+  //         position: absolute;
+  //         top: 0;
+  //         left: 0;
+  //       }
 
-        p .button {
-          position: absolute;
-          bottom: 0;
-          left: 0;
-        }
+  //       p .button {
+  //         position: absolute;
+  //         bottom: 0;
+  //         left: 0;
+  //       }
 
-        // #calc_shipping_country_field,
-        // #calc_shipping_state_field,
-        // #calc_shipping_city_field {
-        //   visibility: hidden;
-        // }
-      }
+  //       // #calc_shipping_country_field,
+  //       // #calc_shipping_state_field,
+  //       // #calc_shipping_city_field {
+  //       //   visibility: hidden;
+  //       // }
+  //     }
 
-      // .form-row:not(#calc_shipping_postcode_field) {
-      //   display: none;
-      // }
+  //     // .form-row:not(#calc_shipping_postcode_field) {
+  //     //   display: none;
+  //     // }
 
-      // #calc_shipping_postcode_field {
-      //   display: block;
-      //   background-color: red;
-      // }
-    }
+  //     // #calc_shipping_postcode_field {
+  //     //   display: block;
+  //     //   background-color: red;
+  //     // }
+  //   }
 
-    .wc-proceed-to-checkout {
-      .checkout-button {
-        background-color: $green-nos-light;
+  //   .wc-proceed-to-checkout {
+  //     .checkout-button {
+  //       background-color: $green-nos-light;
 
-        &:hover {
-          background-color: $green;
-        }
-      }
-    }
-  }
+  //       &:hover {
+  //         background-color: $green;
+  //       }
+  //     }
+  //   }
+  // }
 
   .quantity .qty {
     border: 1px solid $green-nos;
