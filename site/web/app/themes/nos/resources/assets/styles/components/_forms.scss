@@ -46,10 +46,9 @@
   }
 
   .cart-collaterals {
-    .woocommerce-shipping-destination {
-      display: none;
-    }
-
+    // .woocommerce-shipping-destination {
+    //   display: none;
+    // }
     .woocommerce-shipping-calculator {
       border: 1px solid $green-nos;
       border-radius: 4px;
