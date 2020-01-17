@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6f8ccc197207bb564137c652643b561d",
+    "content-hash": "000a5c339385c710130b8a9301787048",
     "packages": [
         {
             "name": "composer/installers",
@@ -694,6 +694,24 @@
             },
             "type": "wordpress-plugin",
             "homepage": "https://wordpress.org/plugins/super-socializer/"
+        },
+        {
+            "name": "wpackagist-plugin/woo-variations-select2",
+            "version": "1.2.1",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/woo-variations-select2/",
+                "reference": "tags/1.2.1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/woo-variations-select2.1.2.1.zip"
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/woo-variations-select2/"
         },
         {
             "name": "wpackagist-plugin/woocommerce",
