@@ -45,18 +45,18 @@
     border-left: 1px solid $green-nos;
   }
 
-  // .cart-collaterals {
-  //   .woocommerce-shipping-destination {
-  //     display: none;
-  //   }
+  .cart-collaterals {
+    .woocommerce-shipping-destination {
+      display: none;
+    }
 
-  //   #calc_shipping_country_field,
-  //   #calc_shipping_state_field,
-  //   #calc_shipping_city_field {
-  //     // visibility: hidden;
-  //     display: none !important;
-  //   }
-  // }
+    #calc_shipping_country_field,
+    #calc_shipping_state_field,
+    #calc_shipping_city_field {
+      // visibility: hidden;
+      display: none !important;
+    }
+  }
 
   .quantity .qty {
     border: 1px solid $green-nos;

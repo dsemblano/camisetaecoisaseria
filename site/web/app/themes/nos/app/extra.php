@@ -1,20 +1,20 @@
 <?php
 
 //Remove JQuery migrate
-function remove_jquery_migrate($scripts)
-{
-    if (!is_admin() && isset($scripts->registered['jquery'])) {
-        $script = $scripts->registered['jquery'];
+// function remove_jquery_migrate($scripts)
+// {
+//     if (!is_admin() && isset($scripts->registered['jquery'])) {
+//         $script = $scripts->registered['jquery'];
 
-        if ($script->deps) { // Check whether the script has any dependencies
-            $script->deps = array_diff($script->deps, array(
-                'jquery-migrate'
-            ));
-        }
-    }
-}
+//         if ($script->deps) { // Check whether the script has any dependencies
+//             $script->deps = array_diff($script->deps, array(
+//                 'jquery-migrate'
+//             ));
+//         }
+//     }
+// }
 
-add_action('wp_default_scripts', 'remove_jquery_migrate');
+// add_action('wp_default_scripts', 'remove_jquery_migrate');
 
 
 // Woocommerce edits
@@ -238,17 +238,14 @@ function allow_file_mod_language_folder($allow_file_mod, $context)
     }
 }
 
-// remove select2
-add_action('wp_enqueue_scripts', 'agentwp_dequeue_stylesandscripts', 100);
-function agentwp_dequeue_stylesandscripts()
+function enqueue_select2_jquery()
 {
-    if (class_exists('woocommerce')) {
-        wp_dequeue_style('select2');
-        wp_deregister_style('select2');
-        wp_dequeue_script('select2');
-        wp_deregister_script('select2');
-    }
+    wp_register_style('select2css', '//cdnjs.cloudflare.com/ajax/libs/select2/3.4.8/select2.css', false, '1.0', 'all');
+    wp_register_script('select2', '//cdnjs.cloudflare.com/ajax/libs/select2/3.4.8/select2.js', array( 'jquery' ), '1.0', true);
+    wp_enqueue_style('select2css');
+    wp_enqueue_script('select2');
 }
+add_action('admin_enqueue_scripts', 'enqueue_select2_jquery');
 
 // remove_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart');
 // // remove da página produtos de veja mais
