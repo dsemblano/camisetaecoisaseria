@@ -165,11 +165,11 @@ class My_Text_Widget extends WP_Widget_Text
 }
 
 //Disable gutenberg style in Front
-function wps_deregister_styles()
-{
-    wp_dequeue_style('wp-block-library');
-}
-add_action('wp_print_styles', 'wps_deregister_styles', 100);
+// function wps_deregister_styles()
+// {
+//     wp_dequeue_style('wp-block-library');
+// }
+// add_action('wp_print_styles', 'wps_deregister_styles', 100);
 
 // // Disable wp-embed.js
 // function my_deregister_scripts()
