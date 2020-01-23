@@ -247,6 +247,14 @@ function enqueue_select2_jquery()
 }
 add_action('admin_enqueue_scripts', 'enqueue_select2_jquery');
 
+add_action( 'after_setup_theme', 'yourtheme_setup' );
+
+function yourtheme_setup() {
+add_theme_support( 'wc-product-gallery-zoom' );
+add_theme_support( 'wc-product-gallery-lightbox' );
+add_theme_support( 'wc-product-gallery-slider' );
+}
+
 // remove_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart');
 // // remove da página produtos de veja mais
 // remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_add_to_cart');
