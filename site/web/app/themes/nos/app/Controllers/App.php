@@ -32,7 +32,7 @@ class App extends Controller
     }
 
     public function subCategories() {
-        $cat_prod = 'faca-sua-nos';
+        $cat_prod = 'faca-sua-camiseta';
         $product_cat_ID = get_term_by('slug', $cat_prod, 'product_cat')->term_id;
         $args = array(
             'hierarchical' => 1,
@@ -49,7 +49,7 @@ class App extends Controller
             'limit' => 6,
             'status'=> 'publish',
             'orderby' => 'rand',
-            'category' => 'faca-sua-nos'
+            'category' => 'faca-sua-camiseta'
         ));
 
         return $destaques_produtos;
