@@ -1363,7 +1363,7 @@ class lumise_woocommerce {
 			$order_status = $order->get_status();
 			
 			if ( 
-				$order_status == 'completed' ||
+				$order_status == 'completed' || $order_status == 'processing' ||
 				$sent_to_admin === true
 			) {
 				
@@ -1566,7 +1566,7 @@ class lumise_woocommerce {
 			
 			$order_status = $order->get_status();
 			
-			if( $order_status == 'completed' ) {
+			if( $order_status == 'completed' || $order_status == 'processing' ) {
 				$items = $lumise->lib->get_order_products($order_id);
 
 				?>
