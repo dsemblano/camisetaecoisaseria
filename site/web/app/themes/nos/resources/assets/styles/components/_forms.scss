@@ -65,54 +65,6 @@
   }
 }
 
-// #billing_state {
-//   border: 0 !important;
-//   clip: rect(0 0 0 0) !important;
-//   height: 1px !important;
-//   margin: -1px !important;
-//   overflow: hidden !important;
-//   padding: 0 !important;
-//   position: absolute !important;
-//   width: 1px !important;
-
-//   option {
-//     font-weight: normal;
-//     display: block;
-//     white-space: pre;
-//     min-height: 1.2em;
-//     padding: 0 2px 1px;
-//   }
-// }
-
-// .select2-container {
-//   box-sizing: border-box;
-//   display: inline-block;
-//   margin: 0;
-//   position: relative;
-//   vertical-align: middle;
-//   // background-color: yellowgreen;
-
-//   .select2-selection--single {
-//     background-color: #fff;
-//     border: 1px solid #aaa;
-//     border-radius: 4px;
-//     box-sizing: border-box;
-//     cursor: pointer;
-//     display: block;
-//     height: 28px;
-//     margin: 0 0 -4px;
-//     -moz-user-select: none;
-//     -ms-user-select: none;
-//     user-select: none;
-//     -webkit-user-select: none;
-
-//     .select2-selection__rendered {
-//       display: block;
-//       padding-left: 8px;
-//       padding-right: 20px;
-//       overflow: hidden;
-//       text-overflow: ellipsis;
-//       white-space: nowrap;
-//     }
-//   }
-// }
+.woocommerce-cart table.cart img {
+  width: 8em;
+}
