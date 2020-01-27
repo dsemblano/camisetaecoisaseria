@@ -35,7 +35,6 @@ class App extends Controller
         $cat_prod = 'faca-sua-camiseta';
         $product_cat_ID = get_term_by('slug', $cat_prod, 'product_cat')->term_id;
         $args = array(
-            'hierarchical' => 1,
             'show_option_none' => '',
             'hide_empty' => 0,
             'parent' => $product_cat_ID,

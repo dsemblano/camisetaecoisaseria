@@ -18,7 +18,6 @@
             'limit' => 1,
             'status'=> 'publish',
             'orderby' => 'rand',
-            'category' => $sub->slug
           ));
         @endphp
         @foreach ($destaques_produtos as $img)

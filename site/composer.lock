@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "11a0ff400b76fe986d75f0c153fb90a0",
+    "content-hash": "e89e3810e0b8674051b45a0ef4bc11dc",
     "packages": [
         {
             "name": "composer/installers",
@@ -535,7 +535,7 @@
         },
         {
             "name": "wpackagist-plugin/automatic-translator-addon-for-loco-translate",
-            "version": "1.5",
+            "version": "1.6",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/automatic-translator-addon-for-loco-translate/",
@@ -543,7 +543,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/automatic-translator-addon-for-loco-translate.zip?timestamp=1579000448"
+                "url": "https://downloads.wordpress.org/plugin/automatic-translator-addon-for-loco-translate.zip?timestamp=1580124929"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -694,6 +694,24 @@
             },
             "type": "wordpress-plugin",
             "homepage": "https://wordpress.org/plugins/super-socializer/"
+        },
+        {
+            "name": "wpackagist-plugin/woo-parcelas-com-e-sem-juros",
+            "version": "1.5",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/woo-parcelas-com-e-sem-juros/",
+                "reference": "trunk"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/woo-parcelas-com-e-sem-juros.zip?timestamp=1569723026"
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/woo-parcelas-com-e-sem-juros/"
         },
         {
             "name": "wpackagist-plugin/woocommerce",
