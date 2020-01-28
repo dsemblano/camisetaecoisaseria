@@ -1,13 +1,13 @@
 <section class="blockhome-4 md:my-16">
   <h2 class="text-4xl mb-8 pt-8 md:text-5xl text-center text-pureblack border-solid border-black border-t-2">Serviços</h2>
-  <ul class="inline-flex flex-col md:flex-row items-center justify-between items-center text-center p-0 mb-0">
+  <ul class="inline-flex container flex-col md:flex-row items-center justify-between items-center text-center p-0 mb-0">
     <li class="w-full mb-8 md:w-1/25">
       <a href="/outsourcing-dropshipping/">
         <div class="img-container">
-          <img src="@asset('images/home/block4/camisa2.jpg')" alt="blusa 1" class="blockhome4-img">
+          <img src="@asset('images/home/block4/impressaodigital.png')" alt="blusa 1" class="blockhome4-img">
           <div class="text-over">
-            <h3>Dropshipping</h3>
-            <p>Produzimos e enviamos o seu produto para todo o Brasil</p>
+            {{-- <h3>Impressão Digital</h3>
+            <p class="text">Saiba mais</p> --}}
           </div>
         </div>
       </a>
@@ -16,10 +16,10 @@
     <li class="w-full mb-8 md:w-1/25">
       <a href="/outsourcing-dropshipping/">
         <div class="img-container">
-          <img src="@asset('images/home/block4/camisa3.jpg')" alt="blusa 1" class="blockhome4-img">
+          <img src="@asset('images/home/block4/outsourcing.png')" alt="blusa 1" class="blockhome4-img">
           <div class="text-over">
-            <h3>Outsourcing</h3>
-            <p>Terceirização para sua marca, otimize recursos com o nosso sistema e estoque zero</p>
+            {{-- <h3>Outsourcing</h3>
+            <p>Saiba mais</p> --}}
           </div>
         </div>
       </a>
@@ -28,10 +28,10 @@
     <li class="w-full mb-8 md:w-1/25">
       <a href="/impressao-digital-avulsa-em-algodao/">
         <div class="img-container">
-          <img src="@asset('images/home/block4/camisa1.jpg')" alt="blusa 1" class="blockhome4-img">
+          <img src="@asset('images/home/block4/dropshipping.png')" alt="blusa 1" class="blockhome4-img">
           <div class="text-over">
-            <h3>Impressão digital avulsa em algodão</h3>
-            <p>Nossa impressão no seu tecido de algodão</p>
+            {{-- <h3>Dropshipping</h3>
+            <p>Saiba mais</p> --}}
           </div>
         </div>
       </a>
