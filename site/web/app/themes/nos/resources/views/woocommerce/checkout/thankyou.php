@@ -38,7 +38,9 @@ defined( 'ABSPATH' ) || exit;
 		<?php else : ?>
 
 			<p class="woocommerce-notice woocommerce-notice--success woocommerce-thankyou-order-received"><?php echo apply_filters( 'woocommerce_thankyou_order_received_text', esc_html__( 'Thank you. Your order has been received.', 'woocommerce' ), $order ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p>
-
+      <a class="button wc-backward" href="/produtos">
+        <?php esc_html_e( 'Continuar comprando', 'woocommerce' ); ?>
+      </a>
 			<ul class="woocommerce-order-overview woocommerce-thankyou-order-details order_details">
 
 				<li class="woocommerce-order-overview__order order">
@@ -80,7 +82,7 @@ defined( 'ABSPATH' ) || exit;
 	<?php else : ?>
 
 		<p class="woocommerce-notice woocommerce-notice--success woocommerce-thankyou-order-received"><?php echo apply_filters( 'woocommerce_thankyou_order_received_text', esc_html__( 'Thank you. Your order has been received.', 'woocommerce' ), null ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p>
-    <a class="button wc-backward" href="<?php echo esc_url( apply_filters( 'woocommerce_return_to_shop_redirect', wc_get_page_permalink( 'produtos' ) ) ); ?>">
+    <a class="button wc-backward" href="/produtos">
       <?php esc_html_e( 'Continuar comprando', 'woocommerce' ); ?>
     </a>
 
