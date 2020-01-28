@@ -170,8 +170,8 @@
             @php do_action( 'woocommerce_cart_coupon' ); @endphp
           </div>
           @endif
-          <a class="button wc-backward" href="<?php echo esc_url( apply_filters( 'woocommerce_return_to_shop_redirect', wc_get_page_permalink( 'shop' ) ) ); ?>">
-            <?php esc_html_e( 'Return to shop', 'woocommerce' ); ?>
+          <a class="button wc-backward" href="<?php echo esc_url( apply_filters( 'woocommerce_return_to_shop_redirect', wc_get_page_permalink( 'produtos' ) ) ); ?>">
+            <?php esc_html_e( 'Continuar comprando', 'woocommerce' ); ?>
           </a>
           <button type="submit" class="button" name="update_cart"
             value="@php esc_attr_e( 'Update cart', 'woocommerce' ); @endphp">@php esc_html_e( 'Update cart',
