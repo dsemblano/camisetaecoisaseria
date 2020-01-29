@@ -60,6 +60,7 @@
     "wpackagist-plugin/flexible-checkout-fields":">=2.2.3",
     "wpackagist-plugin/woocommerce-parcelas":">=1.2.9.1",
     "wpackagist-plugin/woo-parcelas-com-e-sem-juros":">=1.5",
+    "wpackagist-plugin/autodescription":">=4.0.4",
     "wpackagist-plugin/wps-hide-login":">=1.5.4.2"
   },
   "require-dev": {
