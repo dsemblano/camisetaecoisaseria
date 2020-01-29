@@ -6,7 +6,7 @@
   </h2>
   <ul class="inline-flex container flex-col md:flex-row items-center justify-between items-center text-center p-0 mb-0">
     <li class="w-full mb-8 md:w-1/25">
-      <a href="/outsourcing-dropshipping/">
+      <a href="/servicos/impressao-digital-avulsa-em-algodao">
         <div class="img-container">
           <img src="@asset('images/home/block4/impressaodigital.png')" alt="blusa 1" class="blockhome4-img">
           <div class="text-over">
@@ -18,7 +18,7 @@
     </li>
 
     <li class="w-full mb-8 md:w-1/25">
-      <a href="/outsourcing-dropshipping/">
+      <a href="/servicos/outsourcing">
         <div class="img-container">
           <img src="@asset('images/home/block4/outsourcing.png')" alt="blusa 1" class="blockhome4-img">
           <div class="text-over">
@@ -30,7 +30,7 @@
     </li>
 
     <li class="w-full mb-8 md:w-1/25">
-      <a href="/impressao-digital-avulsa-em-algodao/">
+      <a href="/servicos/dropshipping">
         <div class="img-container">
           <img src="@asset('images/home/block4/dropshipping.png')" alt="blusa 1" class="blockhome4-img">
           <div class="text-over">
