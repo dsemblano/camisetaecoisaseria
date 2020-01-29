@@ -42,6 +42,9 @@
   p {
     @include font-bold;
 
+    font-size: 1.5rem;
+    color: white;
+
     // font-size: 1rem;
     // line-height: 1.5;
     // padding: 0 1em 0 1em;
@@ -71,28 +74,37 @@
         }
 
         .text-over {
-          transition: 0.5s ease;
           opacity: 0;
           position: absolute;
-          top: 50%;
-          left: 50%;
+          padding-top: 4em;
+          height: 140px;
+          top: 92%;
+          left: 0;
           width: 100%;
-          transform: translate(-50%, -50%);
-          -ms-transform: translate(-50%, -50%);
+          overflow: hidden;
+          -webkit-transition: all 0.27s cubic-bezier(0.3, 0.1, 0.58, 1);
+          -moz-transition: all 0.27s cubic-bezier(0.3, 0.1, 0.58, 1);
+          -o-transition: all 0.27s cubic-bezier(0.3, 0.1, 0.58, 1);
+          -ms-transition: all 0.27s cubic-bezier(0.3, 0.1, 0.58, 1);
+          transition: all 0.27s cubic-bezier(0.3, 0.1, 0.58, 1);
           text-align: center;
 
-          @include media("<=tablet") {
-            opacity: 1;
-          }
+          // @include media("<=tablet") {
+          //   opacity: 1;
+          // }
         }
 
-        &:hover .blockhome4-img {
-          opacity: 0.3;
-          // background-color: red;
-        }
+        // &:hover .blockhome4-img {
+        //   opacity: 0.3;
+        //   // background-color: red;
+        // }
 
         &:hover .text-over {
           opacity: 1;
+          background-color: rgba(51, 51, 51, 0.7);
+          -webkit-transform: translateY(-99px);
+          -moz-transform: translateY(-99px);
+          transform: translateY(-99px);
           // background-color: yellowgreen;
         }
       }
