@@ -112,6 +112,7 @@
         // }
 
         &:hover .text-over,
+        &:focus .text-over,
         &:active .text-over {
           opacity: 1;
           background-color: rgba(51, 51, 51, 0.7);
