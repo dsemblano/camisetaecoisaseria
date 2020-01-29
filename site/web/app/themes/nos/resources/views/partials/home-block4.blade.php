@@ -6,8 +6,8 @@
         <div class="img-container">
           <img src="@asset('images/home/block4/impressaodigital.png')" alt="blusa 1" class="blockhome4-img">
           <div class="text-over">
-            {{-- <h3>Impressão Digital</h3>
-            <p class="text">Saiba mais</p> --}}
+            {{-- <h3>Impressão Digital</h3> --}}
+            <p class="text">Saiba mais</p>
           </div>
         </div>
       </a>
@@ -18,8 +18,8 @@
         <div class="img-container">
           <img src="@asset('images/home/block4/outsourcing.png')" alt="blusa 1" class="blockhome4-img">
           <div class="text-over">
-            {{-- <h3>Outsourcing</h3>
-            <p>Saiba mais</p> --}}
+            {{-- <h3>Outsourcing</h3> --}}
+            <p>Saiba mais</p>
           </div>
         </div>
       </a>
@@ -30,8 +30,8 @@
         <div class="img-container">
           <img src="@asset('images/home/block4/dropshipping.png')" alt="blusa 1" class="blockhome4-img">
           <div class="text-over">
-            {{-- <h3>Dropshipping</h3>
-            <p>Saiba mais</p> --}}
+            {{-- <h3>Dropshipping</h3> --}}
+            <p>Saiba mais</p>
           </div>
         </div>
       </a>
