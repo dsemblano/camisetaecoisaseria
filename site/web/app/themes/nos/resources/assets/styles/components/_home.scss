@@ -111,7 +111,8 @@
         //   // background-color: red;
         // }
 
-        &:hover .text-over {
+        &:hover .text-over,
+        &:active .text-over {
           opacity: 1;
           background-color: rgba(51, 51, 51, 0.7);
           -webkit-transition: all 0.27s cubic-bezier(0.3, 0.1, 0.58, 1);
