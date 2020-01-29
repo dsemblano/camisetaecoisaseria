@@ -59,6 +59,23 @@
       .img-container {
         position: relative;
 
+        // &::after {
+        //   // background: rgba(238, 238, 238, 0.85);
+        //   content: " ";
+        //   display: block;
+        //   width: 100%;
+        //   height: 100%;
+        //   position: absolute;
+        //   top: 0;
+        //   left: 0;
+        //   background: rgba(250, 250, 250, 0);
+        //   -webkit-transition: all 0.27s cubic-bezier(0.3, 0.1, 0.58, 1);
+        //   -moz-transition: all 0.27s cubic-bezier(0.3, 0.1, 0.58, 1);
+        //   -o-transition: all 0.27s cubic-bezier(0.3, 0.1, 0.58, 1);
+        //   -ms-transition: all 0.27s cubic-bezier(0.3, 0.1, 0.58, 1);
+        //   transition: all 0.27s cubic-bezier(0.3, 0.1, 0.58, 1);
+        // }
+
         .blockhome4-img {
           opacity: 1;
           display: block;
@@ -82,11 +99,6 @@
           left: 0;
           width: 100%;
           overflow: hidden;
-          -webkit-transition: all 0.27s cubic-bezier(0.3, 0.1, 0.58, 1);
-          -moz-transition: all 0.27s cubic-bezier(0.3, 0.1, 0.58, 1);
-          -o-transition: all 0.27s cubic-bezier(0.3, 0.1, 0.58, 1);
-          -ms-transition: all 0.27s cubic-bezier(0.3, 0.1, 0.58, 1);
-          transition: all 0.27s cubic-bezier(0.3, 0.1, 0.58, 1);
           text-align: center;
 
           // @include media("<=tablet") {
@@ -102,9 +114,13 @@
         &:hover .text-over {
           opacity: 1;
           background-color: rgba(51, 51, 51, 0.7);
-          -webkit-transform: translateY(-99px);
-          -moz-transform: translateY(-99px);
-          transform: translateY(-99px);
+          -webkit-transition: all 0.27s cubic-bezier(0.3, 0.1, 0.58, 1);
+          -moz-transition: all 0.27s cubic-bezier(0.3, 0.1, 0.58, 1);
+          -o-transition: all 0.27s cubic-bezier(0.3, 0.1, 0.58, 1);
+          -ms-transition: all 0.27s cubic-bezier(0.3, 0.1, 0.58, 1);
+          transition: all 0.27s cubic-bezier(0.3, 0.1, 0.58, 1);
+          height: 100%;
+          top: 0;
           // background-color: yellowgreen;
         }
       }
