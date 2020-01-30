@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d582874d5796636ac532ffe733929e44",
+    "content-hash": "1db75845ae44370406b1f8616eb1939d",
     "packages": [
         {
             "name": "composer/installers",
@@ -784,6 +784,24 @@
             },
             "type": "wordpress-plugin",
             "homepage": "https://wordpress.org/plugins/woocommerce-correios/"
+        },
+        {
+            "name": "wpackagist-plugin/woocommerce-extra-checkout-fields-for-brazil",
+            "version": "3.7.2",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/woocommerce-extra-checkout-fields-for-brazil/",
+                "reference": "tags/3.7.2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/woocommerce-extra-checkout-fields-for-brazil.3.7.2.zip"
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/woocommerce-extra-checkout-fields-for-brazil/"
         },
         {
             "name": "wpackagist-plugin/woocommerce-gateway-paypal-express-checkout",
