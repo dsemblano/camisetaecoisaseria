@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7c64ef065d6e08e3e99c7037727718bd",
+    "content-hash": "d582874d5796636ac532ffe733929e44",
     "packages": [
         {
             "name": "composer/installers",
@@ -571,15 +571,15 @@
         },
         {
             "name": "wpackagist-plugin/flexible-checkout-fields",
-            "version": "2.2.3",
+            "version": "2.2.4",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/flexible-checkout-fields/",
-                "reference": "tags/2.2.3"
+                "reference": "tags/2.2.4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/flexible-checkout-fields.2.2.3.zip"
+                "url": "https://downloads.wordpress.org/plugin/flexible-checkout-fields.2.2.4.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -804,6 +804,24 @@
             "homepage": "https://wordpress.org/plugins/woocommerce-gateway-paypal-express-checkout/"
         },
         {
+            "name": "wpackagist-plugin/woocommerce-pagarme",
+            "version": "2.0.17",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/woocommerce-pagarme/",
+                "reference": "tags/2.0.17"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/woocommerce-pagarme.2.0.17.zip"
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/woocommerce-pagarme/"
+        },
+        {
             "name": "wpackagist-plugin/woocommerce-pagseguro",
             "version": "2.14.0",
             "source": {
@@ -931,15 +949,15 @@
         },
         {
             "name": "wpackagist-plugin/wp-multi-step-checkout",
-            "version": "2.7",
+            "version": "2.8",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/wp-multi-step-checkout/",
-                "reference": "tags/2.7"
+                "reference": "tags/2.8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/wp-multi-step-checkout.2.7.zip"
+                "url": "https://downloads.wordpress.org/plugin/wp-multi-step-checkout.2.8.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -1213,16 +1231,16 @@
         },
         {
             "name": "squizlabs/php_codesniffer",
-            "version": "3.5.3",
+            "version": "3.5.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "557a1fc7ac702c66b0bbfe16ab3d55839ef724cb"
+                "reference": "dceec07328401de6211037abbb18bda423677e26"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/557a1fc7ac702c66b0bbfe16ab3d55839ef724cb",
-                "reference": "557a1fc7ac702c66b0bbfe16ab3d55839ef724cb",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/dceec07328401de6211037abbb18bda423677e26",
+                "reference": "dceec07328401de6211037abbb18bda423677e26",
                 "shasum": ""
             },
             "require": {
@@ -1260,7 +1278,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2019-12-04T04:46:47+00:00"
+            "time": "2020-01-30T22:20:29+00:00"
         }
     ],
     "aliases": [],
