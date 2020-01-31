@@ -25,7 +25,7 @@
               <li class="my-4 px-4 w-1/2 overflow-hidden sm:w-1/4 md:w-1/4">
                 <a href="{!! $product->get_permalink() !!}">
                   @php
-                      $imgprod = $product->get_image($size = 'homeblock3', array('class'=>'imgprod w-full bg-white'));
+                      $imgprod = $product->get_image($size = 'produtos', array('class'=>'imgprod w-full bg-white'));
                   @endphp
                   {{-- {!! $product->get_image() !!} --}}
                   {!! $imgprod !!}

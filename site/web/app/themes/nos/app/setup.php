@@ -58,6 +58,7 @@ add_action('after_setup_theme', function () {
 
     // Thumbnails images
     add_image_size('homeblock3', 250, 170, true);
+    add_image_size('produtos', 300, 300, true);
 
     /**
      * Enable HTML5 markup support
