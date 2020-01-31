@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1db75845ae44370406b1f8616eb1939d",
+    "content-hash": "6032f294ea74a8e2599ab7445412832d",
     "packages": [
         {
             "name": "composer/installers",
@@ -858,24 +858,6 @@
             "homepage": "https://wordpress.org/plugins/woocommerce-pagseguro/"
         },
         {
-            "name": "wpackagist-plugin/woocommerce-parcelas",
-            "version": "1.2.9.1",
-            "source": {
-                "type": "svn",
-                "url": "https://plugins.svn.wordpress.org/woocommerce-parcelas/",
-                "reference": "tags/1.2.9.1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/woocommerce-parcelas.1.2.9.1.zip"
-            },
-            "require": {
-                "composer/installers": "~1.0"
-            },
-            "type": "wordpress-plugin",
-            "homepage": "https://wordpress.org/plugins/woocommerce-parcelas/"
-        },
-        {
             "name": "wpackagist-plugin/woocommerce-pdf-invoices-packing-slips",
             "version": "2.4.5",
             "source": {
@@ -964,24 +946,6 @@
             },
             "type": "wordpress-plugin",
             "homepage": "https://wordpress.org/plugins/wp-mail-smtp/"
-        },
-        {
-            "name": "wpackagist-plugin/wp-multi-step-checkout",
-            "version": "2.8",
-            "source": {
-                "type": "svn",
-                "url": "https://plugins.svn.wordpress.org/wp-multi-step-checkout/",
-                "reference": "tags/2.8"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/wp-multi-step-checkout.2.8.zip"
-            },
-            "require": {
-                "composer/installers": "~1.0"
-            },
-            "type": "wordpress-plugin",
-            "homepage": "https://wordpress.org/plugins/wp-multi-step-checkout/"
         },
         {
             "name": "wpackagist-plugin/wp-smushit",
