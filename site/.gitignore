@@ -9,8 +9,10 @@ web/app/upgrade
 web/app/uploads/*
 !web/app/uploads/.gitkeep
 # web/app/languages/loco/*
-web/app/languages/loco/
 web/app/languages/loco/*/
+# web/app/languages/loco/
+# web/app/languages/loco/plugins/
+# web/app/languages/loco/plugins/*
 # !web/app/languages/loco/.gitkeep tst
 
 
