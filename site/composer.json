@@ -52,7 +52,7 @@
     "wpackagist-plugin/wp-smushit":">=3.3.1",
     "wpackagist-plugin/smart-slider-3":">=3.3.24",
     "wpackagist-plugin/insta-gallery":">=2.6.1",
-    "wpackagist-plugin/sassy-social-share":">=3.3.4",
+    "wpackagist-plugin/sassy-social-share":">=3.3.4",   
     "wpackagist-plugin/wordpress-popup":">=7.0.3",
     "wpackagist-plugin/wp-multi-step-checkout":">=2.7",
     "wpackagist-plugin/woocommerce-pdf-invoices-packing-slips":">=2.4.2",
