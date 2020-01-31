@@ -25,7 +25,7 @@
           {{-- @php $img_prod = wp_get_attachment_url($img->get_image_id(), $size = 'homeblock3' ) @endphp --}}
               <a class="linkimgprod my-1 px-1 w-1/2 overflow-hidden" href="{!! $img->get_permalink() !!}">
                 @php
-                  $imgprod = $img->get_image($size = 'homeblock3', array('class'=>'imgprod w-full'));
+                  $imgprod = $img->get_image($size = 'produtos', array('class'=>'imgprod w-full'));
                 @endphp
                 {!! $imgprod !!}
                 <h2 class="text-sm mt-3 h-8 text-center">
