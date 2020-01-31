@@ -7,15 +7,9 @@ web/app/plugins/*
 web/app/mu-plugins/*/
 web/app/upgrade
 web/app/uploads/*
-web/app/languages/**
-!web/app/languages/.gitkeep
 !web/app/uploads/.gitkeep
-# web/app/languages/loco/*
-# web/app/languages/loco/
-# web/app/languages/loco/plugins/
-# web/app/languages/loco/plugins/*
-# !web/app/languages/loco/.gitkeep
-
+web/app/languages/loco/*/
+!web/app/languages/loco/.gitkeep
 
 # WordPress
 web/wp
@@ -28,7 +22,7 @@ web/.htaccess
 .env
 .env.*
 !.env.example
-    
+
 # Composer
 /vendor
 
