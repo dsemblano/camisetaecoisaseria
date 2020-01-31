@@ -14,7 +14,7 @@ web/app/languages/loco/*
 # web/app/languages/loco/
 # web/app/languages/loco/plugins/
 # web/app/languages/loco/plugins/*
-# !web/app/languages/loco/.gitkeep tst
+# !web/app/languages/loco/.gitkeep
 
 
 # WordPress
