@@ -11,7 +11,7 @@ web/app/uploads/*
 # web/app/languages/loco/*
 web/app/languages/loco/
 web/app/languages/loco/*/
-# !web/app/languages/loco/.gitkeep
+# !web/app/languages/loco/.gitkeep tst
 
 
 # WordPress
