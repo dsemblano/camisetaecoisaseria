@@ -12,6 +12,7 @@ web/app/languages/loco/*
 web/app/languages/loco/
 !web/app/languages/loco/.gitkeep
 
+
 # WordPress
 web/wp
 web/.htaccess
