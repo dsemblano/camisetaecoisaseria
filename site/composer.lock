@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6032f294ea74a8e2599ab7445412832d",
+    "content-hash": "49304ac5c0243627bf7fc5c200f8de85",
     "packages": [
         {
             "name": "composer/installers",
@@ -661,15 +661,15 @@
         },
         {
             "name": "wpackagist-plugin/side-cart-woocommerce",
-            "version": "1.0.2",
+            "version": "2.0",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/side-cart-woocommerce/",
-                "reference": "tags/1.0.2"
+                "reference": "tags/2.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/side-cart-woocommerce.1.0.2.zip"
+                "url": "https://downloads.wordpress.org/plugin/side-cart-woocommerce.2.0.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -946,6 +946,24 @@
             },
             "type": "wordpress-plugin",
             "homepage": "https://wordpress.org/plugins/wp-mail-smtp/"
+        },
+        {
+            "name": "wpackagist-plugin/wp-sentry-integration",
+            "version": "3.2.0",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/wp-sentry-integration/",
+                "reference": "tags/3.2.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/wp-sentry-integration.3.2.0.zip"
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/wp-sentry-integration/"
         },
         {
             "name": "wpackagist-plugin/wp-smushit",
