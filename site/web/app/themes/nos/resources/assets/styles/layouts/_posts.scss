@@ -1,6 +1,10 @@
 // single products
 .woocommerce {
   div.product {
+    .flex-viewport {
+      margin-bottom: 1rem;
+    }
+
     div.images img {
       width: auto;
     }
