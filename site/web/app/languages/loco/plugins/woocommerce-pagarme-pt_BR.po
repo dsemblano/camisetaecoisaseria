@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2020-02-01 12:00+0000\n"
+"PO-Revision-Date: 2020-02-01 12:30+0000\n"
 "Last-Translator: admin <admin@example.test>\n"
 "Language-Team: Português do Brasil\n"
 "X-Generator: Loco https://localise.biz/\n"
@@ -467,8 +467,8 @@ msgid ""
 "After we receive the banking ticket payment confirmation, your order will be "
 "processed."
 msgstr ""
-"Depois de receber a confirmação do pagamento do boleto, sua encomenda será "
-"processada."
+"Depois de recebermos a confirmação do pagamento do boleto, sua encomenda "
+"será processada."
 
 #: templates/banking-ticket/payment-instructions.php:16
 msgid "Please click in the following button to view your banking ticket."
@@ -477,9 +477,7 @@ msgstr "Por favor, clique no botão ao lado para ver seu boleto"
 #: templates/banking-ticket/payment-instructions.php:16
 msgid ""
 "You can print and pay in your internet banking or in a lottery retailer."
-msgstr ""
-"Você pode imprimir e pagar em seu internet banking ou em uma loteria "
-"varejista."
+msgstr "Você pode imprimir e pagar em seu internet banking ou em uma lotérica."
 
 #: templates/credit-card/emails/html-instructions.php:17
 #: templates/credit-card/emails/plain-instructions.php:18
