@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6032f294ea74a8e2599ab7445412832d",
+    "content-hash": "a5b635e039be19f4c064b2e982ab69e7",
     "packages": [
         {
             "name": "composer/installers",
@@ -766,6 +766,24 @@
             },
             "type": "wordpress-plugin",
             "homepage": "https://wordpress.org/plugins/woocommerce-admin/"
+        },
+        {
+            "name": "wpackagist-plugin/woocommerce-advanced-free-shipping",
+            "version": "1.1.4",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/woocommerce-advanced-free-shipping/",
+                "reference": "tags/1.1.4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/woocommerce-advanced-free-shipping.1.1.4.zip"
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/woocommerce-advanced-free-shipping/"
         },
         {
             "name": "wpackagist-plugin/woocommerce-correios",
