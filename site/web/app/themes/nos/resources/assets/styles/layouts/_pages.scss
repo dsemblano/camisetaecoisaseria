@@ -5,6 +5,9 @@
 
       @include font-light;
     }
+
+    .has-medium-font-size {
+      @apply text-base;
+    }
   }
 }
-
