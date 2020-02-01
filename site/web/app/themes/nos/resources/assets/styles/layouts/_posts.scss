@@ -11,7 +11,7 @@
     }
 
     .woocommerce-product-details__short-description {
-      @apply mt-1 mb-4 text-base leading-relaxed text-black tracking-wide;
+      @apply my-4 text-base leading-relaxed text-black tracking-wide;
 
       @include font-light;
     }
