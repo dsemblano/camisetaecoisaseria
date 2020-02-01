@@ -1,6 +1,23 @@
-.woocommerce div.product p.price,
-.woocommerce div.product span.price {
-  p.price {
-    @apply mt-1 text-base;
+// single products
+.woocommerce {
+  div.product {
+    div.images img {
+      width: auto;
+    }
+
+    p.price,
+    span.price {
+      @apply mt-1 text-base;
+    }
+  }
+
+  ul.products li.product a {
+    img {
+      @extend %imgeffect;
+    }
+
+    &:hover img {
+      @extend %hoverimgeffect;
+    }
   }
 }
