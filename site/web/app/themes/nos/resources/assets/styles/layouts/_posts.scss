@@ -9,6 +9,10 @@
     span.price {
       @apply mt-1 text-base;
     }
+
+    .woocommerce-product-details__short-description {
+      @apply my-1 text-base;
+    }
   }
 
   ul.products li.product a {
