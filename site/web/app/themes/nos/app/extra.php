@@ -247,12 +247,13 @@ function enqueue_select2_jquery()
 }
 add_action('admin_enqueue_scripts', 'enqueue_select2_jquery');
 
-add_action( 'after_setup_theme', 'yourtheme_setup' );
+add_action('after_setup_theme', 'yourtheme_setup');
 
-function yourtheme_setup() {
-add_theme_support( 'wc-product-gallery-zoom' );
-add_theme_support( 'wc-product-gallery-lightbox' );
-add_theme_support( 'wc-product-gallery-slider' );
+function yourtheme_setup()
+{
+    add_theme_support('wc-product-gallery-zoom');
+    add_theme_support('wc-product-gallery-lightbox');
+    add_theme_support('wc-product-gallery-slider');
 }
 
 // remove_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart');
@@ -263,3 +264,32 @@ add_theme_support( 'wc-product-gallery-slider' );
 // add_filter( 'woocommerce_shipping_calculator_enable_country', '__return_false' );
 // // 2 Disable City
 // add_filter( 'woocommerce_shipping_calculator_enable_city', '__return_false' );
+
+//
+// prazo entrega no email
+function my_wc_custom_cart_shipping_notice()
+{
+    echo '<tr class="shipping-notice"><td colspan="2"><small>';
+    _e('<strong>Atenção:</strong> O prazo de entrega começa a contar a partir da aprovação do pagamento.', 'my-text-domain');
+    echo '</small></td></tr>';
+}
+
+add_action('woocommerce_cart_totals_after_shipping', 'my_wc_custom_cart_shipping_notice');
+add_action('woocommerce_review_order_after_shipping', 'my_wc_custom_cart_shipping_notice');
+
+/**
+ * Adds a custom message about how long will take to delivery in emails.
+ *
+ * @param  WC_Order $order         Order data.
+ * @param  bool     $sent_to_admin True if is an admin email.
+ */
+function my_wc_custom_email_shipping_notice($order, $sent_to_admin)
+{
+    if ($sent_to_admin) {
+        return;
+    }
+
+    _e('<strong>Atenção:</strong> O prazo de entrega começa a contar a partir da aprovação do pagamento.', 'my-text-domain');
+}
+
+add_action('woocommerce_email_after_order_table', 'my_wc_custom_email_shipping_notice', 100, 2);
