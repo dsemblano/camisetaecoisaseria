@@ -293,3 +293,12 @@ function my_wc_custom_email_shipping_notice($order, $sent_to_admin)
 }
 
 add_action('woocommerce_email_after_order_table', 'my_wc_custom_email_shipping_notice', 100, 2);
+
+// Remove Additional Information
+
+add_filter( 'woocommerce_product_tabs', 'bbloomer_remove_product_tabs', 9999 );
+
+function bbloomer_remove_product_tabs( $tabs ) {
+    unset( $tabs['additional_information'] );
+    return $tabs;
+}
