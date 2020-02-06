@@ -45,11 +45,13 @@ class App extends Controller
 
     public function homeProducts() {
         $destaques_produtos = wc_get_products(array(
-            'limit' => 6,
+            'limit' => -1,
             'status'=> 'publish',
             'orderby' => 'rand',
             'category' => 'faca-sua-camiseta'
         ));
+
+        // var_dump($destaques_produtos);
 
         return $destaques_produtos;
     }
