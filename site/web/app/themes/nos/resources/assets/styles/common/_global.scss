@@ -181,6 +181,30 @@ a.button.product_type_simple,
   bottom: 70px;
 }
 
+// Lumise
+#lumise-navigations ul:last-of-type {
+  background-color: blue;
+  display: flex;
+  position: relative;
+  margin-right: 3em !important;
+  flex-wrap: wrap;
+}
+
+#lumise-navigations ul:last-of-type > li {
+  width: 33.333333%;
+}
+
+// #lumise-navigations ul:last-of-type #lumise-cart-options {}
+
+// #lumise-navigations ul:last-of-type #lumise-proceed {}
+
+#lumise-navigations ul:last-of-type #lumise-proceed button {
+  font-size: 0.6rem !important;
+  line-height: 16px !important;
+  background: red !important;
+  width: 10em;
+}
+
 // Font face
 @font-face {
   font-family: "clear_sansregular";
