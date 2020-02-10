@@ -29,7 +29,6 @@
   <meta name="msapplication-TileColor" content="#2b5797">
   <meta name="msapplication-TileImage" content="@asset('images/favicon/ms-icon-144x144.png')">
   <meta name="theme-color" content="#ff0000">
-
-
+  @include('partials.analytics')
   @php wp_head() @endphp
 </head>
