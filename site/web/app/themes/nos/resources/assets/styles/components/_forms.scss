@@ -68,3 +68,15 @@
 .woocommerce-cart table.cart img {
   width: 8em;
 }
+
+// Newsletter plugin
+.tnp-subscription div.tnp-field {
+  margin-bottom: 0;
+}
+
+.tnp-subscription input.tnp-submit {
+  background-color: inherit;
+  font-size: inherit;
+  padding: 0.5em;
+  margin: 0 auto;
+}
