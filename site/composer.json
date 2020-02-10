@@ -64,6 +64,7 @@
     "wpackagist-plugin/woocommerce-advanced-free-shipping":">=1.1.4",
     "wpackagist-plugin/woo-picpay":">=1.1.5",
     "wpackagist-plugin/mailchimp-for-wp":">=4.7.4",
+    "wpackagist-plugin/newsletter":">=6.4.6",
     "wpackagist-plugin/wps-hide-login":">=1.5.4.2"
   },
   "require-dev": {
