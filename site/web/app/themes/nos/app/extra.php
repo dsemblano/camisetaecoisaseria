@@ -302,3 +302,17 @@ function bbloomer_remove_product_tabs( $tabs ) {
     unset( $tabs['additional_information'] );
     return $tabs;
 }
+
+// CPF email
+function cpf_email( $order, $sent_to_admin, $plain_text ) {
+ 
+    if ($order->billing_cpf){
+        echo '<br><p> <strong>CPF: </strong>'. $order->billing_cpf.'</p>';
+    } 
+    if ($order->billing_cnpj){ 
+        echo '<br><p> <strong>CNPJ: </strong>'. $order->billing_cnpj. '</p>';
+    } 
+ 
+}
+add_action('woocommerce_email_customer_details', 'cpf_email', 30, 3 );
+
