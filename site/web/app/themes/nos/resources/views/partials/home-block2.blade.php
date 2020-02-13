@@ -1,4 +1,4 @@
-<nav id="navigation" class="nav-primary text-center bg-pureblack md:w-4/5 md:flex md:justify-between">
+<nav id="navigation" class="blockhome nav-primary text-center bg-pureblack md:w-4/5 md:flex md:justify-between">
   <button class="hamburger hamburger--vortex" type="button" aria-label="Menu" aria-controls="navigation">
     <span class="hamburger-box">
       <span class="hamburger-inner"></span>

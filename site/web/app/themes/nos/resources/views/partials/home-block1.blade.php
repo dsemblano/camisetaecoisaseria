@@ -1,4 +1,4 @@
-<section class="blockhome-1 md:h-slide1-xl flex flex-col justify-between">
+<section class="blockhome blockhome-1 md:h-slide1-xl flex flex-col justify-between">
 
   <div class="blockhome-1-container h-slidelg container flex flex-col justify-center items-start pt-8 md:pt-16 md:pb-2">
     @include('partials/components.btn-customize')

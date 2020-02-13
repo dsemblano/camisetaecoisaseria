@@ -1,4 +1,4 @@
-<section class="blockhome-4 md:my-16">
+<section class="blockhome blockhome-4 md:my-16">
   <h2 class="text-4xl mb-8 pt-8 md:text-5xl text-center text-pureblack border-solid border-black border-t-2">
     <a href="/servicos">
       Serviços
