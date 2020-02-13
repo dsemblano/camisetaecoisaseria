@@ -13,7 +13,7 @@
       @php dynamic_sidebar('sidebar-footerup') @endphp
   </div>
 
-  <div class="footer-down bg-pureblack w-full pt-2">
+  <div class="footer-down bg-pureblack w-full pt-2 mt-4">
     <div class="container flex flex-row md:flex-row items-center justify-between">
       @include('partials/components.logo')
       {{-- <nav class="nav-secondary bg-pureblack">
