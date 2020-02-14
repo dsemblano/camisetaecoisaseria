@@ -8,6 +8,8 @@ const glob = require('glob-all');
 const PurgecssPlugin = require('purgecss-webpack-plugin');
 const whitelister = require('purgecss-whitelister');
 
+const HtmlCriticalWebpackPlugin = require("html-critical-webpack-plugin");
+
 const config = require('./config');
 
 class TailwindExtractor {
@@ -67,6 +69,28 @@ module.exports = {
         ...whitelister("node_modules/tailwindcss/css/preflight.css"),
       ],
       wwhitelistPatternsChildren: [/^gfield/, /^gform/, /^ginput/, /^banner/],
+    }),
+    new HtmlCriticalWebpackPlugin({
+      base: config.paths.dist,
+      src: config.devUrl,
+      dest: "styles/critical-home.css",
+      ignore: ["@font-face", /url\(/],
+      inline: false,
+      minify: true,
+      extract: false,
+      dimensions: [
+        {
+          width: 360,
+          height: 640,
+        },
+        {
+          width: 1920,
+          height: 1080,
+        },
+      ],
+      penthouse: {
+        blockJSRequests: false,
+      },
     }),
   ],
 };

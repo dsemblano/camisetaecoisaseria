@@ -96,3 +96,28 @@ remove_action('wp_print_styles', 'print_emoji_styles');
 
 remove_action('admin_print_scripts', 'print_emoji_detection_script');
 remove_action('admin_print_styles', 'print_emoji_styles');
+
+/**
+ * Inject critical assets in head as early as possible
+ */
+add_action('wp_head', function (): void {
+    if ('development' === env('WP_ENV')) {
+        return;
+    }
+
+    if (is_front_page()) {
+        // $critical_CSS = locate_asset('styles/critical-home.css');
+        $critical_CSS = 'styles/critical-home.css';
+    } elseif (is_singular()) {
+        // $critical_CSS = locate_asset('styles/critical-singular.css');
+        $critical_CSS = 'styles/critical-singular.css';
+    } else {
+        // $critical_CSS = locate_asset('styles/critical-landing.css');
+        $critical_CSS = 'styles/critical-landing.css';
+    }
+
+    // if (file_exists($critical_CSS)) {
+    if (file_exists(locate_asset($critical_CSS))) {
+        echo '<style id="critical-css">' . get_file_contents($critical_CSS) . '</style>';
+    }
+}, 1);

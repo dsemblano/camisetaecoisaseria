@@ -305,14 +305,42 @@ function bbloomer_remove_product_tabs( $tabs ) {
 
 // CPF email
 function cpf_email( $order, $sent_to_admin, $plain_text ) {
- 
+
     if ($order->billing_cpf){
         echo '<br><p> <strong>CPF: </strong>'. $order->billing_cpf.'</p>';
-    } 
-    if ($order->billing_cnpj){ 
+    }
+    if ($order->billing_cnpj){
         echo '<br><p> <strong>CNPJ: </strong>'. $order->billing_cnpj. '</p>';
-    } 
- 
+    }
+
 }
 add_action('woocommerce_email_customer_details', 'cpf_email', 30, 3 );
+
+/**
+ * Async load CSS.
+ */
+    // add_filter('style_loader_tag', function ($html, $handle, $href) {
+    //     if (is_admin()) {
+    //         return $html;
+    //     }
+
+    //     var_dump($handle);
+
+    //     if ($handle == "sage/main.css") {
+    //         $dom = new \DOMDocument();
+    //         $dom->loadHTML($html);
+    //         $tag = $dom->getElementById($handle . '-css');
+    //         $tag->setAttribute('media', 'print');
+    //         $tag->setAttribute('onload', "this.media='all");
+    //         $tag->removeAttribute('type');
+    //         $tag->removeAttribute('id');
+    //         $html = $dom->saveHTML($tag);
+
+    //         return $html;
+    //     }
+
+    //     else {
+    //         return $html;
+    //     }
+    // }, 9999, 3);
 
