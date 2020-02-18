@@ -68,7 +68,7 @@ module.exports = {
         "resources/assets/styles/layouts/*.scss",
         ...whitelister("node_modules/tailwindcss/css/preflight.css"),
       ],
-      whitelistPatternsChildren: [/^gfield/, /^gform/, /^ginput/, /^banner/, /^nav-primary/],
+      whitelistPatternsChildren: [/^gfield/, /^gform/, /^ginput/, /^banner/, /^nav-primary/, /^hamburger/],
     }),
     new HtmlCriticalWebpackPlugin({
       base: config.paths.dist,
