@@ -209,6 +209,10 @@ a.button.product_type_simple,
   display: none;
 }
 
+.banner .nav a {
+  white-space: nowrap;
+}
+
 // Font face
 @font-face {
   font-family: "clear_sansregular";

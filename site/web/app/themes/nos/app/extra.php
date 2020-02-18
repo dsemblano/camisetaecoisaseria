@@ -324,23 +324,51 @@ add_action('woocommerce_email_customer_details', 'cpf_email', 30, 3 );
     //         return $html;
     //     }
 
-    //     var_dump($handle);
+    //     // var_dump($handle);
 
-    //     if ($handle == "sage/main.css") {
-    //         $dom = new \DOMDocument();
-    //         $dom->loadHTML($html);
-    //         $tag = $dom->getElementById($handle . '-css');
-    //         $tag->setAttribute('media', 'print');
-    //         $tag->setAttribute('onload', "this.media='all");
-    //         $tag->removeAttribute('type');
-    //         $tag->removeAttribute('id');
-    //         $html = $dom->saveHTML($tag);
-
-    //         return $html;
-    //     }
-
-    //     else {
-    //         return $html;
-    //     }
+    //     $dom = new \DOMDocument();
+    //     $dom->loadHTML($html);
+    //     $tag = $dom->getElementById($handle . '-css');
+    //     $tag->setAttribute('media', 'print');
+    //     $tag->setAttribute('onload', "this.media='all");
+    //     $tag->removeAttribute('type');
+    //     $tag->removeAttribute('id');
+    //     $html = $dom->saveHTML($tag);
+    //     return $html;
     // }, 9999, 3);
 
+    // Widget as Shortcode
+
+    function widget($atts) {
+
+        global $wp_widget_factory;
+
+        extract(shortcode_atts(array(
+            'widget_name' => FALSE
+        ), $atts));
+
+        $widget_name = wp_specialchars($widget_name);
+
+        if (!is_a($wp_widget_factory->widgets[$widget_name], 'WP_Widget')):
+            $wp_class = 'WP_Widget_'.ucwords(strtolower($class));
+
+            if (!is_a($wp_widget_factory->widgets[$wp_class], 'WP_Widget')):
+                return '<p>'.sprintf(__("%s: Widget class not found. Make sure this widget exists and the class name is correct"),'<strong>'.$class.'</strong>').'</p>';
+            else:
+                $class = $wp_class;
+            endif;
+        endif;
+
+        ob_start();
+        the_widget($widget_name, $instance, array('widget_id'=>'arbitrary-instance-'.$id,
+            'before_widget' => '',
+            'after_widget' => '',
+            'before_title' => '',
+            'after_title' => ''
+        ));
+        $output = ob_get_contents();
+        ob_end_clean();
+        return $output;
+
+    }
+    add_shortcode('widget','widget');
