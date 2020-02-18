@@ -61,7 +61,7 @@ module.exports = {
         'instagram-pics', 'heateor_sss_sharing_container',
         'heateorSssWhatsappBackground', 'heateorSssSMSBackground',
         'heateor_sss_horizontal_sharing', 'blockhome',
-        'banner', 'nav-links', 'page-numbers', 'current',
+        'banner', 'nav-links', 'nav-primary', 'page-numbers', 'current',
         "my-whitelisted-selector", "lazyloaded", "is-active",
         "resources/assets/styles/common/*.scss",
         "resources/assets/styles/components/*.scss",
