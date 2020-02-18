@@ -1,13 +1,9 @@
-.page-template-default {
-  main .content {
-    p {
-      @apply mb-3 leading-relaxed text-black tracking-wide;
+.content p {
+  @apply mb-3 leading-relaxed text-black tracking-wide;
 
-      @include font-light;
-    }
+  @include font-light;
 
-    .has-medium-font-size {
-      @apply text-base;
-    }
+  .has-medium-font-size {
+    @apply text-base;
   }
 }
