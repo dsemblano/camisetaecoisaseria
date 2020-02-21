@@ -168,7 +168,7 @@
   width: 100%;
 
   @include media(">phone", "<tablet") {
-    height: 5rem;
+    height: 8rem;
   }
 
   @include media(">=tablet") {
