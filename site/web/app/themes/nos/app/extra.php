@@ -372,3 +372,9 @@ add_action('woocommerce_email_customer_details', 'cpf_email', 30, 3 );
 
     }
     add_shortcode('widget','widget');
+
+    //Disable gutenberg style in Front
+    function wps_deregister_styles() {
+        wp_dequeue_style( 'wp-block-library' );
+    }
+    add_action( 'wp_print_styles', 'wps_deregister_styles', 100 );
