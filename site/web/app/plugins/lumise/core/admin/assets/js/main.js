@@ -372,7 +372,15 @@
 						
 						$('textarea#lumise-field-stages-inp').val(enjson(stages));
 						$('textarea#lumise-field-variations-inp').val(enjson(variations));
-						$('textarea#lumise-field-attributes-inp').val(enjson(lumise.product.get_attributes()));
+						var attrs = lumise.product.get_attributes();
+						Object.keys(attrs).map(function(index) {
+							if(['select', 'product_color', 'color', 'checkbox', 'radio'].indexOf(attrs[index].type) < 0)
+							{
+								return true;
+							}
+							attrs[index].values = typeof attrs[index].values === "string" ?  JSON.parse(attrs[index].values): attrs[index].values;
+						})
+						$('textarea#lumise-field-attributes-inp').val(enjson(attrs))
 						
 						return true; /*lumise.product.upload_images_submit(stages, variations);*/
 						
@@ -988,7 +996,7 @@
 					editradius: function(e) {
 						
 						$(this).closest('.lumise-stage-design-view').find('.lumise-stage-editzone,.design-template-inner').css({
-							borderRadius: this.value+'px'
+							borderRadius: this.value+'%'
 						});	
 						
 					},

@@ -48,7 +48,6 @@ class lumise_cfg extends lumise_tmpl_register{
 		'logo' => '',
 		'favicon' => '',
 		'logo_link' => 'https://lumise.com',
-		'back_link' => '',
 		'primary_color' => '',
 		'conditions' => '',
 		
@@ -646,7 +645,7 @@ class lumise_cfg extends lumise_tmpl_register{
 			'61'=> $lumise->lang('Design from blank'),
 			'62'=> $lumise->lang('Start design now!'),
 			'63'=> $lumise->lang('Search product'),
-			'64'=> $lumise->lang('Print Technologies'),
+			'64'=> $lumise->lang('Printing'),
 			'65'=> $lumise->lang('Side'),
 			'66'=> $lumise->lang('Quantity'),
 			'67'=> $lumise->lang('Prices table'),

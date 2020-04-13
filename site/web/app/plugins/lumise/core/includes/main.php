@@ -10,7 +10,7 @@
 if (!defined('DS'))
 	define('DS', DIRECTORY_SEPARATOR);
 
-define('LUMISE', '1.7.6');
+define('LUMISE', '1.8');
 
 class lumise {
 

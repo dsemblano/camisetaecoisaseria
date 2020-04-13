@@ -2301,6 +2301,63 @@ class lumise_lib{
 
 	}	
 
+	public function cart_meta($cart_data) {
+		
+		$custom_items = array();
+		
+		if ( is_array($cart_data ) ){
+			
+			foreach ( $cart_data['attributes'] as $aid => $attr ) {
+				
+				if (isset($attr['value']) ) {
+					
+					$val = $attr['value'];
+					
+					if (
+						($attr['type'] == 'color' || 
+						$attr['type'] == 'product_color') &&
+						is_array($attr['values']) &&
+						is_array($attr['values']['options'])
+					) {
+						foreach ($attr['values']['options'] as $v) {
+							if (trim($val) == trim($v['value'])) {
+								$val = '<span style="background-color: '.$v['value'].';padding: 1px 3px;" title="'.$v['value'].'">'.$v['title'].'</span>';
+							}
+						}
+					} else if ($attr['type'] == 'quantity') {
+						
+						if ( is_array(@json_decode($val, true)) ) {
+							$val = @json_decode($val, true);
+							foreach ($val as $k => $v) {
+								$val[$k] = '<p><strong>'.$k.':</strong>'.$v.'</p>';
+							}
+							$val = implode('', array_values($val));
+						} else $val = $attr['value'];
+					} else if(
+						is_array($attr['values']) &&
+						isset($attr['values']['options']) &&
+						is_array($attr['values']['options'])
+					){
+						foreach ($attr['values']['options'] as $v) {
+							if (trim($val) == trim($v['value'])) {
+								$val = $v['title'];
+							}
+						}		
+					}
+					
+					$custom_items[] = array( 
+						"name" => $attr['name'], 
+						"value" => $val
+					);
+				}
+				
+			}
+		}
+		
+		return $custom_items;
+		
+	}
+
     protected function gen_str( $max = 10 ) {
         
         $sources = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';

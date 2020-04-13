@@ -4,7 +4,7 @@ Plugin Name: Lumise - Product Designer Tool
 Plugin URI: https://www.lumise.com/
 Description: The professional solution for designing & printing online
 Author: King-Theme
-Version: 1.7.6
+Version: 1.8
 Author URI: http://king-theme.com/
 */
 
@@ -12,12 +12,17 @@ if(!defined('DS')) {
 	define('DS', DIRECTORY_SEPARATOR );
 }
 if(!defined('LUMISE_WOO')) {
-	define('LUMISE_WOO', '1.7.5' );
+	define('LUMISE_WOO', '1.8' );
 }
 if ( ! defined( 'LUMISE_FILE' ) ) {
 	define('LUMISE_FILE', __FILE__ );
 	define('LUMISE_PLUGIN_BASENAME', plugin_basename(LUMISE_FILE));
 }	
+
+function lumise_lang($s) {
+	global $lumise;
+	return isset($lumise) ? esc_html($lumise->lang($s)) : $s;
+}
 
 class lumise_woocommerce {
 	    
@@ -192,6 +197,7 @@ class lumise_woocommerce {
 			$role->add_cap('lumise_edit_tags');
 			$role->add_cap('lumise_edit_bugs');
 			$role->add_cap('lumise_edit_addons');
+			$role->add_cap('lumise_edit_distresss');
 			   
 		}
 		
@@ -215,7 +221,7 @@ class lumise_woocommerce {
 		
         // save data to table product order
         add_action('woocommerce_new_order', array(&$this, 'woo_order_finish'), 20, 3);
-		add_action( 'woocommerce_thankyou', array(&$this, 'woo_thank_you'), 20, 3);
+		add_action('woocommerce_thankyou', array(&$this, 'woo_thank_you'), 20, 3);
 		add_filter('woocommerce_loop_add_to_cart_link', array(&$this, 'woo_customize_link_list'), 999, 2);
 		
         add_action( 'woocommerce_product_thumbnails', array(&$this, 'woo_add_template_thumbs' ), 30);
@@ -238,7 +244,8 @@ class lumise_woocommerce {
         add_filter( 'woocommerce_email_order_item_quantity', array(&$this, 'woo_email_order_item_quantity' ), 30, 2);
 		
         add_filter( 'woocommerce_get_price_html', array(&$this, 'woo_product_get_price_html' ), 999, 2);
-        add_filter( 'woocommerce_cart_item_price', array(&$this, 'woocommerce_cart_item_price' ), 999, 3);
+        //Was updated by update quantity of woo, so do not need to fake the price
+        //add_filter( 'woocommerce_cart_item_price', array(&$this, 'woocommerce_cart_item_price' ), 999, 3);
         add_filter( 'woocommerce_widget_cart_item_quantity', array(&$this, 'woo_widget_cart_item_quantity' ), 999, 3);
 		
 		add_action( 'woocommerce_email_order_details', array(&$this, 'email_customer_designs' ), 11, 4 );
@@ -281,7 +288,7 @@ class lumise_woocommerce {
 			$current_user = wp_get_current_user();
 			
 			$page = array(
-				'post_title'  => __( 'Design Editor' ),
+				'post_title'  => esc_html('Design Editor'),
 				'post_status' => 'publish',
 				'post_author' => $current_user->ID,
 				'post_type'   => 'page',
@@ -1128,7 +1135,7 @@ class lumise_woocommerce {
 			wp_delete_post($order_id, true);
 			$wpdb->delete( $table_name, array( 'order_id' => $order_id ) );
 			
-			$msg = $lumise->lang('Sorry, something went wrong when we processed your order. Please contact the administrator')
+			$msg = lumise_lang('Sorry, something went wrong when we processed your order. Please contact the administrator')
 				   .'.<br><br><em>'.$log.' -  "'.$cart['msg'].'"</em>';
 			
 			header('HTTP/1.1 401 '.$msg, true, 401);
@@ -1136,6 +1143,15 @@ class lumise_woocommerce {
 			
 		}
 		
+		// // hash : b450dbe41097246dbfd0d37f0b54034e
+		// $order_product = new WC_Order($order_id);
+		// $order_key = $order_product->order_key;
+
+		// $order_received_url = wc_get_endpoint_url( 'order-received', $order_id, wc_get_checkout_url() );
+		// $order_received_url = add_query_arg( 'key', $order_key, $order_received_url );
+
+		// echo json_encode(array('result' => 'success', 'redirect' => $order_received_url));
+		// wp_die();
     }
 	
 	public function woo_thank_you() {
@@ -1328,7 +1344,8 @@ class lumise_woocommerce {
 			
 			if( count($items) > 0 ):
 				foreach ($items as $order_item) {
-					 if( $product_id == $order_item['product_id'] ) {
+					// hash : 09199e1fe4d7d285194da94841dc2d27
+					if( $product_id == $order_item['product_id'] && $quantity == $order_item['qty'] ) {
 						 return $order_item['qty'];
 					 }
 				}
@@ -1372,14 +1389,14 @@ class lumise_woocommerce {
 				if( count($items) > 0 ) :
 						
 				?>
-					<h2><?php echo $lumise->lang("Custom designs");?></h2>
+					<h2>Custom designs</h2>
 					<div style="margin-bottom: 40px;">
 					<table class="td" cellspacing="0" cellpadding="6" style="width: 100%; font-family: 'Helvetica Neue', Helvetica, Roboto, Arial, sans-serif;" border="1">
 						<thead>
 							<tr>
-								<th class="td" scope="col"><?php echo $lumise->lang('Product'); ?></th>
-								<th class="td" scope="col"><?php echo $lumise->lang('Quantity'); ?></th>
-								<th class="td" scope="col"><?php echo $lumise->lang('Price'); ?></th>
+							<th class="td" scope="col">Product</th>
+								<th class="td" scope="col">Quantity</th>
+								<th class="td" scope="col">Price</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -1402,10 +1419,10 @@ class lumise_woocommerce {
 							?>
 							<tr class="order_item">
 								<td class="td" scope="col">
-									<?php echo $item['product_name']; ?>
+									<?php echo esc_html($item['product_name']); ?>
 								</td>
 								<td class="td" scope="col">
-									<?php echo $item['qty']; ?>
+									<?php echo esc_html($item['qty']); ?>
 								</td>
 								<td class="td" scope="col">
 									<?php echo wc_price($item['product_price']); ?>
@@ -1490,9 +1507,7 @@ class lumise_woocommerce {
 									) {
 										echo '<tr class="order_item">'.
 												'<td scope="col" class="td">'.
-													'<span style="font-weight:500;">'.
-													 $lumise->lang('Variation').
-													 ':</span>'.
+													'<span style="font-weight:500;">Variation:</span>'.
 												 '</td>'.
 												 '<td class="td" colspan="2">#'.$data->variation.'</td>'.
 											'</tr>';
@@ -1508,9 +1523,7 @@ class lumise_woocommerce {
 											if ($pmethod['id'] == $data->printing) {
 												echo '<tr class="order_item">'.
 														'<td scope="col" class="td">'.
-															'<span style="font-weight:500;">'.
-															 $lumise->lang('Printing').
-															 ':</span>'.
+															'<span style="font-weight:500;">Printing:</span>'.
 														 '</td>'.
 														 '<td class="td" colspan="2">'.$pmethod['title'].'</td>'.
 													'</tr>';
@@ -1570,7 +1583,7 @@ class lumise_woocommerce {
 				$items = $lumise->lib->get_order_products($order_id);
 
 				?>
-				<h2><?php echo $lumise->lang("Your Designs:");?></h2>
+				<h2><?php echo lumise_lang("Your Designs:");?></h2>
 				<div style="margin-bottom: 40px;">
 				<table class="woocommerce-table woocommerce-table--order-details shop_table order_details">
 					<thead>
@@ -1592,11 +1605,12 @@ class lumise_woocommerce {
 								
 					$url = str_replace('?&', '?', $url);
 					
-					$download_url_html = apply_filters( 'lumise_order_download_link', '<a href="' . $url . '" target="_blank" class="lumise-view-design">' . $lumise->lang('View Design') . '</a>', $order_item );
 					?>
 					<tr class="woocommerce-table__line-item order_item">
-						<td class="woocommerce-table__product-name product-name"><?php echo $order_item['product_name'];?></td>
-						<td class="woocommerce-table__product-name product-link"><?php echo $download_url_html;?></td>
+						<td class="woocommerce-table__product-name product-name"><?php echo esc_html($order_item['product_name']);?></td>
+						<td class="woocommerce-table__product-name product-link"><?php 
+							echo apply_filters( 'lumise_order_download_link', '<a href="' . $url . '" target="_blank" class="lumise-view-design">' . lumise_lang('View Design') . '</a>', $order_item ); 
+						?></td>
 					</tr>
 					<?php
 				}
@@ -1643,8 +1657,8 @@ class lumise_woocommerce {
 					'data-src'                => $template['screenshot'],
 					'data-large_image'        => $template['screenshot']
 				);
-				$html  = '<div data-thumb="' . $template['screenshot'] . '" class="woocommerce-product-gallery__image"><a href="' . esc_url( $template['screenshot'] ) . '">';
-				$html .= '<img src="'.$template['screenshot'].'" '.implode(' ', $attributes).'/>';
+				$html  = '<div data-thumb="' . esc_url($template['screenshot']) . '" class="woocommerce-product-gallery__image"><a href="' . esc_url( $template['screenshot'] ) . '">';
+				$html .= '<img src="'.esc_url($template['screenshot']).'" '.implode(' ', $attributes).'/>';
 				$html .= '</a></div>';
 				echo $html;
 			}
@@ -1669,6 +1683,7 @@ class lumise_woocommerce {
 	}
 	
 	public function get_base_id($product_id) {
+		
 		global $wpdb;
 		
 		$sql_design = "
@@ -1744,7 +1759,7 @@ class lumise_woocommerce {
 				
 			}else $product_quantity = $cart_item_data['qty'];
 			
-			return wc_price($cart_item['data']->price/$product_quantity);
+			return wc_price($cart_item['data']->price);
 		}
 		
 		return $price;
@@ -1851,7 +1866,7 @@ class lumise_woocommerce {
 	
 	public function update_message($response){
 		
-		?><script>document.querySelectorAll("#lumise-hook-sfm-update .update-message.notice p")[0].innerHTML = '<?php echo esc_html__('There is a new version of Lumise - Product Designer Tool'); ?>. <a href="https://www.lumise.com/changelogs/woocommerce/?utm_source=client-site&utm_medium=text&utm_campaign=update-page&utm_term=links&utm_content=woocommerce" target=_blank" target=_blank>View version <?php echo $response['new_version']; ?> details</a> or <a href="<?php echo admin_url( 'admin.php?page=lumise&lumise-page=updates' ); ?>">update now</a>.';</script><?php
+		?><script>document.querySelectorAll("#lumise-hook-sfm-update .update-message.notice p")[0].innerHTML = '<?php echo esc_html__('There is a new version of Lumise - Product Designer Tool'); ?>. <a href="https://www.lumise.com/changelogs/woocommerce/?utm_source=client-site&utm_medium=text&utm_campaign=update-page&utm_term=links&utm_content=woocommerce" target=_blank" target=_blank>View version <?php echo esc_html($response['new_version']); ?> details</a> or <a href="<?php echo admin_url( 'admin.php?page=lumise&lumise-page=updates' ); ?>">update now</a>.';</script><?php
 	}
 	
 	public function my_orders_actions($actions, $order) {

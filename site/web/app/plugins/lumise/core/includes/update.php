@@ -715,7 +715,7 @@ class lumise_update extends lumise_lib {
 					$product['id'], 
 					array("attributes" => $this->main->lib->enjson($attributes)), 
 					'products' 
-				). ' ';
+				);
 					
 			}
 			

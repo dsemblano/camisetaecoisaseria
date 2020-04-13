@@ -26,13 +26,7 @@ class lumise_views extends lumise_lib {
 		if (is_string($cfg->settings['components']))
 			$components = explode(',', $cfg->settings['components']);
 		
-		if (
-			isset($cfg->settings['back_link']) && 
-			!empty($cfg->settings['back_link'])
-		)
-			$back_link = $cfg->settings['back_link'];
-		else 
-			$back_link = $cfg->settings['logo_link'];
+		$back_link = $this->main->apply_filters('back_link', $cfg->settings['logo_link']);
 			
 		$logo = $this->main->apply_filters('logo-nav', '<a data-view="logo" href="'.$cfg->settings['logo_link'].'"><img src="'.$logo.'" /></a>');
 		
@@ -586,8 +580,8 @@ class lumise_views extends lumise_lib {
 		<?php
 		if (in_array('back', $components)) {
 		?>
-		<li>
-			<a href="<?php echo $back_link;?>" class="back_shop"><?php echo $this->main->lang('Back To Shop'); ?></a>
+		<li id="back-btn">
+			<a href="<?php echo $back_link; ?>" class="back_shop"><?php echo $this->main->lang('Back To Shop'); ?></a>
 		</li>
 		<?php } ?>
 		<!-- Avalable hook: after_cart -->
@@ -2361,7 +2355,7 @@ class lumise_views extends lumise_lib {
 							$limit .= 'left: '.($sdata->edit_zone->left+($sdata->product_width/2)-($sdata->edit_zone->width/2)).'px;';
 							$limit .= 'top: '.($sdata->edit_zone->top+($sdata->product_height/2)-($sdata->edit_zone->height/2)).'px;';
 							if (isset($sdata->edit_zone->radius) && !empty($sdata->edit_zone->radius))
-								$limit .= 'border-radius: '.$sdata->edit_zone->radius.'px;';
+								$limit .= 'border-radius: '.$sdata->edit_zone->radius.'%;';
 							$limit .= '"';
 						}else $limit = '';
 						
@@ -2496,7 +2490,7 @@ class lumise_views extends lumise_lib {
 										<?php } ?>
 										<div class="edr-row editzone-radius">
 											<label><?php echo $this->main->lang('Editzone radius'); ?>:</label>
-											<input type="range" min="0" max="500" value="<?php
+											<input type="range" min="0" max="100" value="<?php
 												if (isset($sdata->edit_zone->radius) && !empty($sdata->edit_zone->radius))
 													echo $sdata->edit_zone->radius;
 												else echo 0; 

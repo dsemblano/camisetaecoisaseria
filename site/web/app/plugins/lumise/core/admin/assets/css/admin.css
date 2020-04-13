@@ -78,6 +78,7 @@ body.toplevel_page_lumise .lumise_wrapper a:not(.lumise_btn):hover{
     height: 28px;
     vertical-align: middle;
     color: #111;
+    padding: 0 5px;
 }
 button{
     font-family: 'Roboto', sans-serif;
@@ -2193,10 +2194,6 @@ html body .lumise-stages-wrp .lumise_tab_nav li:not([data-add]) a{
     width: calc(100% - 20px);
     margin: 0 10px 0px 10px;
     display: inline-block;
-    border: 1px solid #ddd;
-    box-shadow: inset 0 1px 2px rgba(0,0,0,.07);
-    background-color: #fff;
-    color: #32373c;
     outline: 0;
     transition: 50ms border-color ease-in-out;
     height: 31px;
@@ -2324,7 +2321,10 @@ html body .lumise-stages-wrp .lumise_tab_nav li a img{
     position: relative;
     z-index: 99;
 }
-
+.lumise_form_content em.notice{
+    
+border: none;
+}
 .lumise_add_cate {
     margin-top: 10px;
     line-height: 16px;

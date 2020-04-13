@@ -233,12 +233,6 @@
 					)
 				),
 				array(
-					'type' => 'input',
-					'name' => 'back_link',
-					'label' => $lumise->lang('Back to Shop url'),
-					'desc' => $lumise->lang('The link will be redirect when click on Back to Shop button. Default is Logo url value'),
-				),
-				array(
 					'type' => 'text',
 					'name' => 'custom_css',
 					'label' => $lumise->lang('Custom CSS'),
@@ -257,13 +251,13 @@
 					'desc' => $lumise->lang('The prefix of file name download'),
 					'default' => 'Front'
 				),
-				array(
-					'type' => 'toggle',
-					'name' => 'text_direction',
-					'label' => $lumise->lang('Text direction'),
-					'desc' => $lumise->lang('Fix the text direction when writing, left as default and right for RTL mode'),
-					'default' => 'no'
-				),
+				// array(
+				// 	'type' => 'toggle',
+				// 	'name' => 'text_direction',
+				// 	'label' => $lumise->lang('Text direction'),
+				// 	'desc' => $lumise->lang('Fix the text direction when writing, left as default and right for RTL mode'),
+				// 	'default' => 'no'
+				// ),
 				array(
 					'type' => 'toggle',
 					'name' => 'dis_qrcode',

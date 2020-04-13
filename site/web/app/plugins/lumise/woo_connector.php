@@ -55,6 +55,8 @@ if(!class_exists('lumise_connector')){
 			$lumise->add_filter('product_tabs', array(&$this, 'product_tabs'));
 			$lumise->add_filter('init_settings', array(&$this, 'init_settings'));
 			$lumise->add_filter('after_save_settings', array(&$this, 'after_save_settings'));
+			
+			$lumise->add_filter('back_link', array(&$this, 'backToShop_link'));
             
             if (!is_admin()) {
 	            $lumise->add_action('js_init', array(&$this, 'js_init'));
@@ -690,6 +692,12 @@ if(!class_exists('lumise_connector')){
 	
 			update_option('lumise_config', $config);
 	
+		}
+		
+		public function backToShop_link ($link) {
+			if (isset($_GET['product_cms']))
+				return get_permalink($_GET['product_cms']);
+			return $link;
 		}
 		
 		public function do_action($name = '', $params = '') {

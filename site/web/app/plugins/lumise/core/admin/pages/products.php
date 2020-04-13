@@ -175,7 +175,8 @@
 				) {
 					$_v = @json_decode($v['options'][0]['title'], true);
 					if (is_array($_v) && isset($_v['options'])) {
-						$attrs[$i]['values'] = $v['options'][0]['title'];
+					 
+						$attrs[$i]['values'] = json_decode($v['options'][0]['title'],true);
 						$istrik = true;
 					}
 				}

@@ -178,7 +178,7 @@
 						<th><?php echo $lumise->lang('Thumbnail'); ?></th>
 						<th><?php echo $lumise->lang('Attributes'); ?></th>
                         <th width="5%"><?php echo $lumise->lang('Subtotal'); ?></th>
-                        <th width="5%"><?php echo $lumise->lang('Print'); ?></th>
+                        <th width="30%"><?php echo $lumise->lang('Print'); ?></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -186,6 +186,21 @@
 	                
 	                if (count($items['rows']) > 0) {
 	                    foreach($items['rows'] as $item):
+	                    
+	                    $scrs = array();
+	                    $pdfid = '';
+	                    $sc = @json_decode($item['screenshots']);
+						$prt = @json_decode($item['print_files'], true);
+						
+						$pdfid = $item['cart_id'];
+						
+						foreach ($sc as $i => $s) {
+							array_push($scrs, array(
+								"url" => is_array($prt) && isset($prt[$i]) ? $lumise->cfg->upload_url.'orders/'.$prt[$i] : '#',
+								"screenshot" => $lumise->cfg->upload_url.'orders/'.$s,
+								"download" => true
+							));
+						}
 	                ?>
 	                <tr>
 						<td>#<?php echo $item['id'];?></td>
@@ -276,21 +291,56 @@
                         ?></td>
                         <td><?php echo $lumise->lib->price($item['product_price']);?></td>
                         <td>
-	                        <a target="_blank" class="btn btn-print-design" href="<?php
+	                        <?php
 		                        
-                                $is_query = explode('?', $lumise->cfg->tool_url);
-	                                
-                                $url = $lumise->cfg->tool_url.(isset($is_query[1])? '&':'?');
-                                $url .= 'product_base='.$item['product_base'];
-                                $url .= (($item['custom'] == 1)? '&design_print='.str_replace('.lumi', '', $item['design']) : '');
-                                $url .= '&order_print='.$order_id;
-                                $url .= ($lumise->connector->platform != 'php' ? '&product_cms='.$item['product_id'] : '');
-	                                        
-                                echo str_replace('?&', '?', $url);
-	                                
-			                ?>">
-		                        <?php echo $lumise->lang('Download Design'); ?> &rarr;
-		                    </a>
+		                        if (count($scrs) > 0) {
+			
+									$is_query = explode('?', $lumise->cfg->tool_url);
+													
+									$url = $lumise->cfg->tool_url.(isset($is_query[1])? '&':'?');
+									
+									if (!empty($item['design'])) {
+										$url .= '&design_print='.str_replace('.lumi', '', $item['design']);
+										$url .= '&order_print='.$item['order_id'];
+										$url .= '&product_base='.$item['product_base'];
+									}
+									
+									$url = str_replace('?&', '?', $url);
+												
+									$html = '<p>';
+									
+									foreach ($scrs as $i => $scr) {
+										
+										$html .= '<a ';
+										
+										if ($scr['download'] === true) {
+											$html .= 'href="'.$scr['url'].'" download="order_id#'.$item['id'].' (stage '.($i+1).').png"';
+											$prtable = true;
+										} else {
+											$html .= 'href="'.(!empty($scr['url']) ? $scr['url'] : $url).'" target=_blank';
+										}
+										$html .= '><img width="80" src="'.$scr['screenshot'].'" /></a>';
+									}
+									
+									$html .= '</p>';
+									
+									if ($prtable === true) {
+										$html .= '<p><font color="#888">(*) ';
+										$html .= $lumise->lang('Click on each image to download the printable file (.PNG)').'</font></p>';
+									}
+									
+									$html .= '<p><a href="'.$url.'" target=_blank class="button button-primary">';
+									$html .= $lumise->lang('View designs in editor').'</a> &nbsp; ';
+									
+									$html .= '<br><a href="'.$lumise->cfg->tool_url.'?pdf_download='.$pdfid.'" target=_blank class="button">'.$lumise->lang('Download all in a PDF file').'</a>';
+									
+									$html .= '</p>';
+									
+									echo $html;
+									
+								}
+		                        
+	                        ?>
 		                </td>
 					</tr>
 	                    <?php
