@@ -4874,6 +4874,15 @@ imagemin-jpegtran@^5.0.2:
     is-jpg "^1.0.0"
     jpegtran-bin "^3.0.0"
 
+imagemin-jpegtran@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/imagemin-jpegtran/-/imagemin-jpegtran-6.0.0.tgz#c8d3bcfb6ec9c561c20a987142854be70d90b04f"
+  integrity sha512-Ih+NgThzqYfEWv9t58EItncaaXIHR0u9RuhKa8CtVBlMBvY0dCIxgQJQCfwImA4AV1PMfmUKlkyIHJjb7V4z1g==
+  dependencies:
+    exec-buffer "^3.0.0"
+    is-jpg "^2.0.0"
+    jpegtran-bin "^4.0.0"
+
 imagemin-mozjpeg@~7.0.0:
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/imagemin-mozjpeg/-/imagemin-mozjpeg-7.0.0.tgz#d926477fc6ef5f3a768a4222f7b2d808d3eba568"
@@ -5356,6 +5365,11 @@ is-jpg@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/is-jpg/-/is-jpg-1.0.1.tgz#296d57fdd99ce010434a7283e346ab9a1035e975"
   integrity sha1-KW1X/dmc4BBDSnKD40armhA16XU=
+
+is-jpg@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/is-jpg/-/is-jpg-2.0.0.tgz#2e1997fa6e9166eaac0242daae443403e4ef1d97"
+  integrity sha1-LhmX+m6RZuqsAkLarkQ0A+TvHZc=
 
 is-natural-number@^2.0.0:
   version "2.1.1"
