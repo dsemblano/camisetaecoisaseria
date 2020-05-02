@@ -703,6 +703,7 @@ class lumise_lib{
 		}
 
 		$result = array();
+		
 		$files = scandir($path);
 
 		foreach ($files as $file) {
@@ -862,7 +863,7 @@ class lumise_lib{
 
 		) return array("error" => $lumise->lang('Invalid upload file types, only allows .jpg, .png, .gif and .svg'));
 		
-		if (!isset($data->size) || ($data->size > 5242880 && strpos($data->name, '.lumi') === false))
+		if (!isset($data->size) || ($data->size > 52428800 && strpos($data->name, '.lumi') === false))
 			return array("error" => $lumise->lang('Max file size upload is 5MB'));
 		
 		if($data->size > 52428800 && strpos($data->name, '.lumi') !== false)
@@ -990,17 +991,19 @@ class lumise_lib{
 		global $lumise;
 		
 		if (!$id && isset($_GET['product_base']))
-			$id = (int)$lumise->esc('product_base');
+			$id = $lumise->esc('product_base');
 		
 		if (!$id && isset($_POST['product_base']))
-			$id = (int)$lumise->esc('product_base');
+			$id = $lumise->esc('product_base');
 		
 		if ($id === null)
 	    	return null;
 		
 	    $product = $lumise->db->rawQuery(
-	    	"SELECT * FROM `{$lumise->db->prefix}products` WHERE `author`='{$this->main->vendor_id}' AND id=".$id
+	    	"SELECT * FROM `{$lumise->db->prefix}products` WHERE `author`='{$this->main->vendor_id}' AND id=".(Int)$id
 	    );
+		
+		$product = $lumise->apply_filters('get_product', $product, $id);
 		
 	    if (count($product) > 0) {
 			return $this->prepare_product($product[0]);
@@ -1076,7 +1079,7 @@ class lumise_lib{
 			$product['attributes']->quantity = array(
 				"id" => "quantity",
 				"name" => $lumise->lang('Quantity'),
-				"value" => 1,
+				"value" => isset($_POST['quantity']) ? (Int)$_POST['quantity'] : 1,
 				"type" => "quantity"
 			);	
 		}
@@ -1390,6 +1393,8 @@ class lumise_lib{
 			$lumise->logger->log('Lumise log for order ID#' . $order_id.' '.date ("Y-m-d H:i:s").' - cart_data session is empty or no items');
 			return true;
 		}
+
+		$stagesArr = array();
 		
 		foreach ($cart_data['items'] as $key => $item){
 			
@@ -1475,6 +1480,8 @@ class lumise_lib{
 						if (isset($sdata['print_file'])) {
 							
 							$scr_file_name = date('Y', $time).DS.date('m', $time).DS.$lumise->generate_id().'-stage'.$isf.'.png';
+
+							$scr_file_name = $lumise->apply_filters('scr-file-name-stage', $scr_file_name, array('sdata' => $sdata, 'isf' => $isf));
 							$scr_name = $order_path . DS . $scr_file_name;
 							
 							if (strpos($sdata['print_file'], 'data:image') === false)
@@ -1488,12 +1495,17 @@ class lumise_lib{
 								)
 							){
 								array_push($print_files, $scr_file_name);
+
+								$sdata['limuse_print_file'] = $scr_file_name;
+								array_push($stagesArr, $sdata);
 							}
 							
 							unset($extra_data['design']['stages'][$s]['print_file']);
 								
 						}
-					}	
+					}
+
+					$lumise->do_action('store-cart-stage', $order_id, array('stagesArr' => $stagesArr, 'qty' => $item['qty']) );
 				}
 				
 				$design_raw = json_encode($extra_data['design']);
@@ -2636,13 +2648,15 @@ class lumise_lib{
     
     public function pdf_download($id) {
 		
-		if (is_file($this->main->cfg->upload_path. 'user_data'.DS.'pdf'.DS.$id.'.pdf')) {
-			header('location: '.$this->main->cfg->upload_url. 'user_data/pdf/'.$id.'.pdf');
+		$bleed = isset($_GET['bleed']) ? (float)$_GET['bleed'] : 0;
+		
+		$pdf_target =  $id.($bleed > 0 ? '-'.$bleed : '').'.pdf';
+		
+		if (is_file($this->main->cfg->upload_path.'user_data'.DS.'pdf'.DS.$pdf_target)) {
+			header('location: '.$this->main->cfg->upload_url. 'user_data/pdf/'.$pdf_target);
 		}
 		
-		if (!extension_loaded('imagick')){
-		    die ('Imagick not installed, please contact with server administrator');
-		}
+		global $lumise;
 		
 		$files = array();
 		
@@ -2653,7 +2667,7 @@ class lumise_lib{
 				$id
 			)
 		);
-			
+		
 		if (count($cart_item) > 0) {
 			
 			$prt = @json_decode($cart_item[0]['print_files'], true);
@@ -2664,7 +2678,8 @@ class lumise_lib{
 				}
 			}
 						
-		} else {
+		} else 
+		{
 			
 			$tmps = @base64_decode($id);
 			
@@ -2691,35 +2706,56 @@ class lumise_lib{
 			}
 		}
 		
+		require_once('TCPDF'.DS.'tcpdf.php');
+		
+		$pdf = new TCPDF('P', 'mm', 'A4', true, 'UTF-8', false);
+		$pdf->setPrintHeader(false);
+		$pdf->setPrintFooter(false);
+		$pdf->SetMargins(0, 0, 0, true);
+		
+		$pdf->SetFooterMargin(0);
+		$pdf->SetAutoPageBreak(TRUE, 0);
+		
 		if (count($files) > 0) {
 			
 			if (!is_dir($this->main->cfg->upload_path. 'user_data'.DS.'pdf')) {
 				@mkdir($this->main->cfg->upload_path. 'user_data'.DS.'pdf', 0755);	
 			}
 			
-			$combined = new Imagick();
+			foreach ($files as $file) {
+				
+				$file_info = getimagesize($file);
+				
+				$width = (21/248)*$file_info[0];
+				$height = (21/248)*$file_info[1];
+				
+				$pdf->AddPage(($height>$width) ? 'P' : 'L', [$width+(2*$bleed), $height+(2*$bleed)]);
+				
+				if (isset($bleed) && $bleed > 0) {
+					// corner crop marks
+					$pdf->cropMark((2*$bleed), (2*$bleed), (2*$bleed), (2*$bleed), $type = 'A', $color = array(0, 0, 0));
+					$pdf->cropMark($width, (2*$bleed), (2*$bleed), (2*$bleed), $type = 'B', $color = array(0, 0, 0));
+					$pdf->cropMark((2*$bleed), $height, (2*$bleed), (2*$bleed), $type = 'C', $color = array(0, 0, 0));
+					$pdf->cropMark($width, $height, (2*$bleed), (2*$bleed), $type = 'D', $color = array(0, 0, 0));
+				}
+				
+				$pdf->Image($file, $bleed, $bleed, $width, $height, '', '', '', false, 300, '', false, false, 1, false, false, false);
+			}	
 			
-			foreach ($files as $image) {
-			   
-			    $page = new Imagick();
-				$page->setResolution(300,300);
-				$page->readimage($image);
-		        $combined->addImage($page);
-			        
-			}
+			// Export file
+			//$this->main->cfg->upload_path. 'user_data'.DS.'pdf'.DS.$id.'.pdf'
+			//Close and output PDF document
 			
-			//$combined->setResolution(300, 300);
-			//$combined->resizeImage(2480, 3508,Imagick::FILTER_CUBIC,1);
-			$combined->setImageFormat("pdf");
-			$combined->writeImages($this->main->cfg->upload_path. 'user_data'.DS.'pdf'.DS.$id.'.pdf', true );
+			$pdf->Output($this->main->cfg->upload_path.'user_data'.DS.'pdf'.DS.$pdf_target, 'F');
 			
-			header('location: '.$this->main->cfg->upload_url. 'user_data/pdf/'.$id.'.pdf');
+			header('location: '.$this->main->cfg->upload_url. 'user_data/pdf/'.$pdf_target);
 			
 			exit;
 			
 		} else {
 			die ('No print file found');
 		}
+		
 		   
 	}
     

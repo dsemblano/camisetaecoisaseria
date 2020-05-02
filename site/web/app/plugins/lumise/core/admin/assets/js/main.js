@@ -108,11 +108,41 @@
 				
 		};
 	
+	var popup_actions = (s) => {
+		if (window.frameElement) {
+			if (s == 'open') {
+				window.frameElement.setAttribute(
+					'data-current-style', 
+					encodeURIComponent(window.frameElement.getAttribute('style'))
+				);
+				window.frameElement.setAttribute(
+					'data-full', 'true'
+				);
+				// $(window.frameElement).css({
+				// 	position: 'fixed',
+				// 	top: '0px',
+				// 	left: '0px',
+				// 	width: '100vw',
+				// 	height: '100vh',
+				// 	zIndex: '1000000',
+				// });
+			} else {
+				window.frameElement.setAttribute(
+					'style', 
+					decodeURIComponent(window.frameElement.getAttribute('data-current-style'))
+				);
+				window.frameElement.removeAttribute('data-full');
+			}
+		};
+	};
+	
 	var lightbox = function(ops) {
 
-			if (ops == 'close')
+			if (ops == 'close') {
+				popup_actions('close');
 				return $('#lumise-lightbox').remove();
-
+			};
+			
 			var tmpl = '<div id="lumise-lightbox" class="lumise-lightbox">\
 							<div id="lumise-lightbox-body">\
 								<div id="lumise-lightbox-content" style="min-width:%width%px">\
@@ -146,21 +176,12 @@
 			cfg.onload(tmpl);
 			tmpl.find('a.kalb-close,div.kalb-overlay').on('click', function(e){
 				cfg.onclose(tmpl);
+				popup_actions('close');
 				$('.lumise-lightbox').remove();
 			});
+			
+			popup_actions('open');
 
-		},
-		enjson = function(str) {
-			return btoa(encodeURIComponent(JSON.stringify(str)));
-		},
-		dejson = function(str) {
-			return JSON.parse(decodeURIComponent(atob(str)));
-		},
-		esc_html = function(str) {
-			return str.replace(/\"/g, '&quot;')
-					  .replace(/\'/g, '&#39;')
-					  .replace(/\>/g, '&gt;')
-					  .replace(/\</g, '&lt;');
 		},
 		process_submit_upload = function() {
 			
@@ -247,6 +268,21 @@
 			
 		};
 	
+	window.enjson = function(str) {
+		return btoa(encodeURIComponent(JSON.stringify(str)));
+	};
+	
+	window.dejson = function(str) {
+		return JSON.parse(decodeURIComponent(atob(str)));
+	};
+	
+	window.esc_html = function(str) {
+		return str.replace(/\"/g, '&quot;')
+				  .replace(/\'/g, '&#39;')
+				  .replace(/\>/g, '&gt;')
+				  .replace(/\</g, '&lt;');
+	};
+	
 	window.lumise = {
 
 		i : function(s){
@@ -308,7 +344,23 @@
 						'#lumise-stages-wrp ul.lumise_tab_nav li[data-add="tab"]': 'new_stage',
 						'#lumise-stages-upload-helper:change': 'upload_image_helper',
 						'#lumise-stages-wrp .lumise_tab_nav_wrap': 'is_stage_accord',
-						'#lumise-stages-wrp div.lumise_tab_nav_wrap>i[data-move]': 'stage_accord'
+						'#lumise-stages-wrp div.lumise_tab_nav_wrap>i[data-move]': 'stage_accord',
+						'div.fill-base-color input:change': 'fill_variation'
+					},
+					
+					fill_variation : function(e) {
+						
+						let wrp = $(this).closest('div.lumise-stages-wrp');
+						
+						wrp.find('div.fill-base-color input').val(this.value);
+						
+						wrp.find('div.lumise-stage-body .lumise-stage-design-view').css({
+							background: this.value
+						}).click();
+						
+						wrp.find('div.lumise-stage-editzone').css({
+							'border-color': lumise.invert_color(this.value)
+						});
 					},
 					
 					change_color: function(e) {
@@ -334,6 +386,7 @@
 					close_popup: function(e) {
 						
 						$('#lumise-popup').hide();
+						popup_actions('close');
 						e.preventDefault();
 						
 					},
@@ -400,6 +453,7 @@
 						switch (act) {
 							case 'close': 
 								$(this).hide();
+								popup_actions('close');
 								return e.preventDefault();	 
 							break;
 							case 'base': 
@@ -773,6 +827,7 @@
 					events: {
 						
 						'button[data-func="select"]': 'select_base',
+						'button[data-func="download"]': 'download_mockup',
 						'button[data-func="reset"]': 'reset_base',
 						'select[data-name="sizes"]:change': 'select_size',
 						'input[data-name="width"]:change,input[data-name="height"]:change': 'change_size',
@@ -780,6 +835,7 @@
 							if (e.keyCode === 13)
 								this.blur();	
 						},
+						'input[data-name="crop_marks_bleed"]:change': 'crop_marks_bleed',
 						'.constrain-aspect-ratio': function() {
 							if ($(this).hasClass('active'))
 								$(this).removeClass('active');
@@ -809,12 +865,100 @@
 							$('body').append($('#lumise-popup').attr({'data-moved': true}));
 						}
 						
-						$('#lumise-popup').show().data({stage: $(this).closest('div.lumise_tab_content').attr('data-stage')});
+						$('#lumise-popup').show().attr({
+							'data-stage': $(this).closest('div.lumise_tab_content').attr('data-stage')
+						});
 						
 						if ($('#lumise-uploaded-bases li[data-act="load-more"][data-start="0"]').length > 0)
 							$('#lumise-uploaded-bases li[data-act="load-more"]').click();
+						
+						popup_actions('open');
 							
 						e.preventDefault();
+						
+					},
+					
+					download_mockup : function(e) {
+						
+						e.preventDefault();
+						
+						let canvas = document.createElement('canvas'),
+							editcanvas = document.createElement('canvas'),
+							sbody =  $(this).closest('.lumise-stage-body'),
+							img = sbody.find('img.lumise-stage-image').get(0),
+							temp = sbody.find('div.design-template-inner>img').get(0),
+							editzone = sbody.find('.lumise-stage-editzone').get(0),
+							ctx = canvas.getContext('2d'),
+							ectx = editcanvas.getContext('2d'),
+							ratio = img.width/img.naturalWidth;
+						
+						canvas.width = img.naturalWidth;
+						canvas.height = img.naturalHeight;
+						
+						editcanvas.width = editzone.offsetWidth/ratio;
+						editcanvas.height = editzone.offsetHeight/ratio;
+						
+						ctx.fillStyle = img.parentNode.style.backgroundColor;
+						ctx.fillRect(0, 0, canvas.width, canvas.height);
+						
+						ectx.drawImage(temp, temp.offsetLeft/ratio, temp.offsetTop/ratio, temp.width/ratio, temp.height/ratio);
+						
+						let top = parseFloat(editzone.style.marginTop.replace('px', ''))/ratio,
+							left = parseFloat(editzone.style.marginLeft.replace('px', ''))/ratio;
+						
+						if (isNaN(top))
+							top = 0;
+						if (isNaN(left))
+							left = 0;
+							
+						left += (canvas.width/2) - (editcanvas.width/2);
+						top += (canvas.height/2) - (editcanvas.height/2);
+						
+						let x = left,
+							y = top,
+							width = editcanvas.width,
+							height = editcanvas.height,
+							radius = parseInt(editzone.style.borderRadius.replace('px', ''));
+						
+						ctx.save();
+						ctx.beginPath();
+						ctx.moveTo(x + radius, y);
+						ctx.lineTo(x + width - radius, y);
+						ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+						ctx.lineTo(x + width, y + height - radius);
+						ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+						ctx.lineTo(x + radius, y + height);
+						ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+						ctx.lineTo(x, y + radius);
+						ctx.quadraticCurveTo(x, y, x + radius, y);
+						ctx.closePath();
+						ctx.clip();
+						ctx.drawImage(editcanvas, x, y, width, height);
+						ctx.restore();
+						
+						ctx.drawImage(img, 0, 0);
+						
+						
+						
+						let dataURL = canvas.toDataURL('image/jpeg', 1).split(','),
+							binStr = atob(dataURL[1]),
+							len = binStr.length,
+							arr = new Uint8Array(len);
+		
+						for (var i = 0; i < len; i++) {
+							arr[i] = binStr.charCodeAt(i);
+						}
+		
+						let blob = new Blob([arr], {
+								type: dataURL[0].substring(dataURL[0].indexOf('image/'), dataURL[0].indexOf(';')-1)
+							}),
+							a = document.createElement('a'),
+							name = 'lumise-mockup'
+						
+						a.download = name+'.jpg';
+						a.href = URL.createObjectURL(blob);
+						a.click();
+						URL.revokeObjectURL(a.href);
 						
 					},
 					
@@ -838,12 +982,12 @@
 					
 						if (size != 'custom' && size !== '') {
 							
-							edz.css({height: (edz.width()/0.70715)+'px'});
+							edz.css({height: (edz.width()/0.7069555302166477)+'px'});
 							
 							if (edz.height() > img.height()) {
 								edz.css({
 									height: (img.height()*0.9)+'px',
-									width: (img.height()*0.9*0.70715)+'px'
+									width: (img.height()*0.9*0.7069555302166477)+'px'
 								});
 							}
 							
@@ -940,6 +1084,15 @@
 						
 					},
 					
+					crop_marks_bleed : function(e) {
+						
+						let wrp = $(this).closest('div.lumise-stage-body');
+						if (this.checked)
+							wrp.find('div.edr-row[data-row="bleed-range"]').show();
+						else
+							wrp.find('div.edr-row[data-row="bleed-range"]').hide();
+					},
+					
 					edit_funcs: function(e) {
 						
 						var func = this.getAttribute('data-func');
@@ -978,16 +1131,36 @@
 							return;
 							
 						var im = img.get(0),
+							s = parseFloat(this.value), 
 							w = im.naturalWidth,
 							h = im.naturalHeight,
-							cl = im.offsetLeft+(im.offsetWidth/2),
-							ct = im.offsetTop+(im.offsetHeight/2);
+							ow = parseFloat(im.style.width.replace('px', '')),
+							oh = parseFloat(im.style.height.replace('px', '')),
+							cl = parseFloat(im.style.left.replace('px', '')),
+							ct = parseFloat(im.style.top.replace('px', ''));
+						
+						if (!s || isNaN(s))
+							s = 1;
+						
+						if (isNaN(ow))
+							ow = im.offsetWidth;
+						if (isNaN(oh))
+							oh = im.offsetHeight;
+						if (isNaN(ct))
+							ct = im.offsetTop;
+						if (isNaN(cl))
+							cl = im.offsetLeft;
 							
+						let nw = ((w*s)/100),
+							nh = ((h*s)/100),
+							nl = (nw-ow)/2,
+							nt = (nh-oh)/2;
+								
 						img.css({
-							width:	((w*this.value)/100)+'px', 
-							height:	((h*this.value)/100)+'px',
-							left:	(cl-(((w*this.value)/100)/2))+'px',
-							top:	(ct-(((h*this.value)/100)/2))+'px'
+							width :	nw+'px', 
+							height : nh+'px',
+							left : (cl-nl)+'px',
+							top : (ct-nt)+'px'
 						});
 						
 						lumise.product.update_pos($(this).closest('div.lumise-stage-design-view'));
@@ -1348,7 +1521,14 @@
 					},
 					
 					is_mask: function(e) {
-						$(this).closest('div.lumise-stage-body').attr({'data-is-mask': this.checked});
+						let inps = $(this).closest('div.lumise-stages-wrp').
+							find('div.lumise-stage-body').
+							attr({'data-is-mask': this.checked}).
+							find('input[name="is_mask"]');
+						if (this.checked)
+							inps.attr({checked: 'checked'});
+						else
+							inps.removeAttr('checked');
 					},
 					
 				}, true);
@@ -1811,12 +1991,12 @@
 						
 						var edata = e.data,
 							wrp = $('#lumise-tab-attributes .lumise-att-layout'),
-							data = $('#lumise-field-attributes-inp').val().trim();
+							data = $('#lumise-field-attributes-inp').val();
 						
-						if (data === '')
+						if (data === undefined || data === '')
 							return;
 						
-						data = dejson(data);
+						data = dejson(data.trim());
 						
 						Object.keys(data).map(function(id) {
 							
@@ -1862,12 +2042,12 @@
 						
 						var edata = e.data,
 							wrp = $('#lumise-tab-variations .lumise-att-layout'),
-							data = $('#lumise-field-variations-inp').val().trim();
+							data = $('#lumise-field-variations-inp').val();
 						
-						if (data === '')
+						if (data === undefined || data === '')
 							return;
 							
-						data = dejson(data);
+						data = dejson(data.trim());
 						
 						Object.keys(data.variations).map(function(id) {
 							
@@ -2133,6 +2313,7 @@
 							design = ops_designs.filter(function(p){return p.id == id;});
 						
 						$(this).closest('#lumise-lightbox').remove();
+						popup_actions('close');
 						$('body').css({overflow: ''});
 						
 						lumise.product.render_design(design[0]);
@@ -2234,8 +2415,10 @@
 			
 			set_image: function(url, source) {
 				
-				var stage = $('#lumise-popup').hide().data('stage'),
+				var stage = $('#lumise-popup').hide().attr('data-stage'),
 					wrp = $('#lumise-product-design-'+stage);
+				
+				popup_actions('close');
 				
 				if (url.indexOf("image/svg+xml") > -1 || url.split('.').pop() == 'svg')
 					wrp.find('img.lumise-stage-image').attr({'data-svg': '1'});
@@ -2250,7 +2433,7 @@
 				
 				if (_url.split('.').pop() == 'jpg' || _url.indexOf('data:image/jpeg') === 0)
 					wrp.find('input[name="is_mask"]').prop({checked: false});
-					
+				console.log(wrp.find('img.lumise-stage-image'));	
 				wrp.find('img.lumise-stage-image').attr({
 					'src': _url, 
 					'data-url': url, 
@@ -2567,6 +2750,13 @@
 					el,
 					color = '#f0f0f0';
 				
+				if (
+					$('div#lumise-stages-wrp div.fill-base-color').length > 0 &&
+					$('div#lumise-stages-wrp div.fill-base-color')[0].value !== ''
+				) {
+					color = $('div#lumise-stages-wrp div.fill-base-color')[0].value;
+				};
+				
 				$('#lumise-field-attributes-items>.lumise-att-layout-item').each(function() {
 					
 					el = $(this);
@@ -2689,18 +2879,17 @@
 				};
 			
 				wrp.find('.lumise_tab_nav li:not([data-add]) a').each(function() {
-				   	
-					var tab = $(this.getAttribute('href')),
-				    	url = tab.find('img.lumise-stage-image').data('url'),
-						source = tab.find('img.lumise-stage-image').data('source'),
+				   
+					let tab = $(this.getAttribute('href')),
+				    	url = tab.find('img.lumise-stage-image').attr('data-url'),
+						source = tab.find('img.lumise-stage-image').attr('data-source'),
 						overlay = tab.find('input[name="is_mask"]').prop('checked'),
-						pos = tab.find('input[name="pos"]').val();
-					  	
-					var ret = {},
+						pos = tab.find('input[name="pos"]').val(),
+						ret = {},
 						b = tab.find('.lumise-stage-design-view img.lumise-stage-image').get(0),
 						l = tab.find('.lumise-stage-editzone').get(0),
 						templ = {},
-						stg = tab.data('stage');
+						stg = tab.attr('data-stage');
 				   
 				    try {
 						pos = JSON.parse(pos);
@@ -2720,7 +2909,7 @@
 						
 						if (
 					   		tab.find('.design-template-inner').length > 0 && 
-					   		tab.find('.design-template-inner').data('id')
+					   		tab.find('.design-template-inner').attr('data-id')
 					   	) {
 						   	var im = tab.find('.design-template-inner img').get(0);
 							pos.template = {
@@ -2736,20 +2925,22 @@
 				   
 				   	if (
 				   		tab.find('.design-template-inner').length > 0 && 
-				   		tab.find('.design-template-inner').data('id')
+				   		tab.find('.design-template-inner').attr('data-id')
 				   	) {
-					   	var im = tab.find('.design-template-inner img').get(0);
+					   	let im = tab.find('.design-template-inner img').get(0);
 					   	templ = {
-							id: tab.find('.design-template-inner').data('id'),
+							id: tab.find('.design-template-inner').attr('data-id'),
 							scale: tab.find('.design-scale input').val(),
 							css: tab.find('.design-template-inner img').attr('style'),
 							offset: pos.template
 						};
 				   	};
 				   	
-				   	var tab_thumbn = $(this).find('img[data-func="upload-thumbn"]');
-				   	
-				   	var size = tab.find('select[data-name="sizes"]').val();
+				   	let tab_thumbn = $(this).find('img[data-func="upload-thumbn"]'),
+				   		size = tab.find('select[data-name="sizes"]').val(),
+				   		include_base = tab.find('input[data-name="include_base"]').prop('checked'),
+				   		crop_marks_bleed = tab.find('input[data-name="crop_marks_bleed"]').prop('checked'),
+				   		bleed_range = tab.find('input[data-name="bleed_range"]').val();
 				   	
 				   	if (size == 'custom') {
 					   	size = {
@@ -2758,6 +2949,8 @@
 							constrain: tab.find('span.constrain-aspect-ratio').hasClass('active'),
 							unit: tab.find('select[data-name="unit"]').val()
 						}
+				   	} else if (size !== '') {
+					  	pos.edit_zone.width = pos.edit_zone.height*0.7069555302166477;
 				   	};
 				   	
 				   	pos.edit_zone.radius = tab.find('.editzone-radius input').val();
@@ -2771,10 +2964,17 @@
 						product_height: pos.product_height,
 						template: templ,
 						size: size,
+						include_base: include_base,
+						crop_marks_bleed: crop_marks_bleed,
+						bleed_range: bleed_range,
 						orientation: tab.find('select[data-name="orientation"]').val(),
 						label: $(this).find('text').text(),
-						thumbnail: tab_thumbn.data('url') ? tab_thumbn.data('url') : tab_thumbn.attr('src')
+						thumbnail: tab_thumbn.attr('data-url') ? tab_thumbn.attr('data-url') : tab_thumbn.attr('src')
 					}, tab);
+					
+					if (wrp.find('div.fill-base-color').length > 0) {
+						data[stg].color = wrp.find('div.fill-base-color input')[0].value;
+					};
 					
 				});
 				
@@ -2943,7 +3143,7 @@
 						
 						var dsview = new_body.find('.lumise-stage-design-view');
 						
-						dsview.data({
+						dsview.attr({
 							'data-info': dsview.attr('data-info').split(':')[0]+': '
 							+data[id].edit_zone.width+'x'+data[id].edit_zone.height
 						}).find('input[name="is_mask"]').prop({checked: data[id].overlay});
@@ -2996,7 +3196,7 @@
 				$('#lumise-tab-details .lumise_field_printing .lumise_checkboxes').sortable('destroy');
 				
 				var clone = $('#lumise-tab-details .lumise_field_printing .lumise_form_content').clone(true),
-					uni = wrp.closest('.lumise-att-layout-item').attr('data-id');;
+					uni = wrp.closest('.lumise-att-layout-item').attr('data-id');
 				
 				clone.find('.field_children').each(function() {
 					$(this).find('.radio input[type="radio"]').each(function() {
@@ -3053,7 +3253,7 @@
 				
 				if (
 			   		stage.find('.design-template-inner').length > 0 && 
-			   		stage.find('.design-template-inner').data('id')
+			   		stage.find('.design-template-inner').attr('data-id')
 			   	) {
 				   	var im = stage.find('.design-template-inner img').get(0);
 					pos.template = {
@@ -3543,7 +3743,7 @@
 							});
 						}else{
 							var ctn = active.find('.lumise_tab_content').first();
-							data.values[ctn.data('stage')] = vals(ctn);
+							data.values[ctn.attr('data-stage')] = vals(ctn);
 						}
 						
 						el.find('input[data-func="data-saved"]').val(btoa(encodeURIComponent(JSON.stringify(data))));
@@ -3648,10 +3848,10 @@
 				event.preventDefault();
 				
 				var data = {
-			        "type": $(this).data('type'),
-			        "action": $(this).data('action'),
-			        "id": $(this).data('id'),
-			        "status": $(this).data('status'),
+			        "type": $(this).attr('data-type'),
+			        "action": $(this).attr('data-action'),
+			        "id": $(this).attr('data-id'),
+			        "status": $(this).attr('data-status'),
 			    }, that = $(this);
 
 			    that.html('<i class="fa fa-spinner fa-spin"></i>');
@@ -3675,17 +3875,17 @@
 							if (res.action == 'switch_feature') {
 								if (res.value == 1) {
 									that.html("<i class='fa fa-star'></i>");
-									that.data('status', 1);
+									that.attr('data-status', 1);
 								} else {
 									that.html("<i class='none fa fa-star-o'></i>");
-									that.data('status', 0);
+									that.attr('data-status', 0);
 								}
 							}
 							var tdname = that.closest('tr').find('td[data-name]');
 							if (res.action == 'switch_active') {
 								if (res.value == 1) {
 									that.html('<em class="pub">'+lumise.i(85)+'</em>');
-									that.data('status', 1);
+									that.attr('data-status', 1);
 									if (data.type == 'addons') {
 										tdname.html(
 											'<a href="'+LumiseDesign.admin_url+'lumise-page=addon&name='+tdname.attr('data-slug')+'">'+decodeURIComponent(tdname.attr('data-name'))+'</a>'
@@ -3693,7 +3893,7 @@
 									}
 								} else {
 									that.html('<em class="un pub">'+lumise.i(86)+'</em>');
-									that.data('status', 0);
+									that.attr('data-status', 0);
 									if (data.type == 'addons') {
 										tdname.html(decodeURIComponent(tdname.attr('data-name')));
 									}
@@ -3713,8 +3913,8 @@
 				this.setAttribute('data-working', 'true');
 				
 				var data = {
-				        "id": $(this).data('id'),
-				        "table": $(this).data('table')
+				        "id": $(this).attr('data-id'),
+				        "table": $(this).attr('data-table')
 				    }, 
 				    that = $(this),
 				    toptr = that.closest('tr');
@@ -3820,8 +4020,8 @@
 				
 				e.preventDefault();
 				
-				var func = $(this).data('func'),
-					item_id = $(this).data('item');
+				var func = $(this).attr('data-func'),
+					item_id = $(this).attr('data-item');
 				
 				switch (func) {
 					case 'delete':
@@ -3876,11 +4076,11 @@
 				$('.lumise_icon_dropdown').removeClass('open');
 				$(".lumise_sub_menu.open").css({'height': 0}).removeClass('open');
 	
-				if( $(this).data('height') === undefined) {
+				if( $(this).attr('data-height') === undefined) {
 					$(sub).find('li').each(function (i){
 						height += $(this).outerHeight();
 					});	
-					$(this).data('height', height);
+					$(this).attr('data-height', height);
 				}
 	
 				if($(this).next().css('height') == '0px'){
@@ -3891,7 +4091,7 @@
 						if($(this).is('.open'))
 							$(sub).css({'height': 0});
 						else
-							$(sub).css({'height': $(target).data('height')});
+							$(sub).css({'height': $(target).attr('data-height')});
 	
 						return 'open';
 					});
@@ -3959,7 +4159,7 @@
 				
 				$(tid).css("display", "block").addClass('active');
 				
-				if (wrp.data('id') !== '') {
+				if (wrp.attr('data-id') !== '') {
 					
 					var hist = localStorage.getItem('LUMISE-TABS');
 					
@@ -3967,7 +4167,7 @@
 						hist = {};
 					else hist = JSON.parse(hist);
 					
-					hist[wrp.data('id')] = tid;
+					hist[wrp.attr('data-id')] = tid;
 					
 					localStorage.setItem('LUMISE-TABS', JSON.stringify(hist));
 					
@@ -4467,7 +4667,7 @@
 					val = [];
 					
 				if(cur_color.get(0)){
-					color = cur_color.data('color');
+					color = cur_color.attr('data-color');
 				}
 				
 				wrp.find('li[data-color]').each(function(){
@@ -4505,7 +4705,7 @@
 				
 				var wrp = $(this),
 					el = $(e.target);
-					act = el.data('act') ? el.data('act') : el.closest('[data-act]').data('act');
+					act = el.attr('data-act') ? el.attr('data-act') : el.closest('[data-act]').attr('data-act');
 				
 				switch (act) {
 					case 'delete' : 
@@ -4580,8 +4780,8 @@
 
 			event.preventDefault();
 			var data = {
-				"type": $(this).data('type'),
-				"id": $(this).data("id"),
+				"type": $(this).attr('data-type'),
+				"id": $(this).attr("data-id"),
 		        "value": $(this).val()
 		    }, that = $(this);
 
@@ -4800,8 +5000,8 @@
 				removeConfirmation: true,
 				afterTagAdded: function(event, ui) {
 					var data = {
-				        "type": $(this).data('type'),
-				        "id": $(this).data('id'),
+				        "type": $(this).attr('data-type'),
+				        "id": $(this).attr('data-id'),
 				        'value': ui.tag.find('.tagit-label').html()
 				    }, that = $(this);
 				    if(!ui.duringInitialization)
@@ -4838,8 +5038,8 @@
 				},
 				beforeTagRemoved: function(event, ui) {
 			        var data = {
-				        "type": $(this).data('type'),
-				        "id": $(this).data('id'),
+				        "type": $(this).attr('data-type'),
+				        "id": $(this).attr('data-id'),
 				        'value': ui.tag.find('.tagit-label').html()
 				    }, that = $(this);
 
@@ -4911,7 +5111,7 @@
 			
 			var wrp = $(this).closest('.lumise_tabs_wrapper'),
 				hist = localStorage.getItem('LUMISE-TABS'),
-				id = wrp.data('id');
+				id = wrp.attr('data-id');
 					
 			if (!hist)
 				hist = {};

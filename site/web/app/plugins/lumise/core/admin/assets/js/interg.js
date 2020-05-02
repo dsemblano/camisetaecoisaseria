@@ -1,6 +1,6 @@
 jQuery(document).ready(function($){
 	
-	$('#woocommerce-product-data ul.wc-tabs li.lumise_tab a').trigger('click');
+	//$('#woocommerce-product-data ul.wc-tabs li.lumise_tab a').trigger('click');
 	
 	var storage_products = {},
 		trigger = function( obj ) {
@@ -107,7 +107,9 @@ jQuery(document).ready(function($){
 			var cates = ['<ul data-view="categories">',
 							'<h3>'+lumisejs._i56+'</h3>',
 							'<li data-id="" '+(res.category === '' ? 'class="active"' : '')+' data-lv="0"> '+lumisejs._i57+'</li>'],
-				prods = ['<h3 data-view="top"><input type="search" value="'+res.s+'" placeholder="'+lumisejs._i63+'" /><a href="#new-product"><i class="dashicons dashicons-plus"></i> '+lumisejs._i59+'</a></h3>','<ul data-view="items">'];
+				prods = ['<h3 data-view="top"><input type="search" value="'+res.s+'" placeholder="'+lumisejs._i63+'" />'+(
+					ops.products.cfg.can_create_new ? '<a href="#new-product"><i class="dashicons dashicons-plus"></i> '+lumisejs._i59+'</a>' : ''
+				)+'</h3>','<ul data-view="items">'];
 
 			if (res.categories) {
 				res.categories.map(function(c) {
@@ -166,15 +168,15 @@ jQuery(document).ready(function($){
 						current_product = $('#lumise_product_base').val(),
 						img_url = '';
 					
-					if(fstage.source == 'raws')
+					if(fstage.source === undefined || fstage.source == 'raws')
 						img_url = lumisejs.assets_url + 'raws/' + fstage.url;
 					else
 						img_url = lumisejs.upload_url + fstage.url;
 						
 					prods.push(
 						'<li data-id="'+p.id+'"'+((current_product == p.id)?' data-current="true"':'')+' data-name="'+p.name.toLowerCase().trim().replace(/[^a-z0-9 ]/gmi, "")+'">\
-							<span data-view="thumbn" data-start="'+lumisejs._i64+'">\
-								<img style="background: '+color+'" src="'+img_url+'" />\
+							<span data-view="thumbn" data-start="'+ops.products.cfg.action_text+'">\
+								<img style="background: '+(fstage.color ? fstage.color : color)+'" src="'+img_url+'" />\
 							</span>\
 							<span data-view="name">'+p.name+'</span>\
 						</li>'
@@ -216,18 +218,14 @@ jQuery(document).ready(function($){
 					
 					$('#lumise-list-items-wrp').css({background: '#f2f2f2'}).html('<center><i class="lumise-spinner x3"></i></center>');
 					
+					ops.products.query.s = storage_products.s;
+					ops.products.query.category = id;
+					ops.products.query.index = 0;
+					
 					$.ajax({
 						url: lumisejs.admin_ajax_url,
 						method: 'POST',
-						data: {
-							nonce: 'LUMISE-SECURITY-BACKEND:'+lumisejs.nonce_backend,
-							ajax: 'backend',
-							action: 'list_products',
-							task: 'cms_product',
-							s: storage_products.s,
-							category: id,
-							index: 0
-						},
+						data: ops.products.query,
 						statusCode: {
 							403: function(){
 								alert('Error 403');
@@ -235,8 +233,8 @@ jQuery(document).ready(function($){
 						},
 						success:  function(res) {
 							
-							ops.products = res;
-							render_products(ops.products);
+							ops.products.res = res;
+							render_products(ops.products.res);
 							
 						}
 					});
@@ -245,12 +243,15 @@ jQuery(document).ready(function($){
 				
 				product: function(e) {
 					
-					var id = this.getAttribute('data-id'),
-						product = ops.products.products.filter(function(p){return p.id == id;});
+					let id = this.getAttribute('data-id'),
+						product = ops.products.res.products.filter(function(p){return p.id == id;});
 					
 					$(this).closest('#lumise-lightbox').remove();
 					$('body').css({overflow: ''});
 					
+					if (typeof ops.products.cfg.action_fn == 'function')
+						return ops.products.cfg.action_fn(product[0]);
+						
 					$('#lumise_product_base').val(product[0].id);
 					render_product(product[0]);
 					ops.current_product = product[0].id;
@@ -272,19 +273,15 @@ jQuery(document).ready(function($){
 						return;
 					
 					$('#lumise-list-items-wrp').css({background: '#f2f2f2'}).html('<center><i class="lumise-spinner x3"></i></center>');
+					
+					ops.products.query.s = this.value.toLowerCase();
+					ops.products.query.category = (storage_products.category ? storage_products.category : '');
+					ops.products.query.index = 0;
 						
 					$.ajax({
 						url: lumisejs.admin_ajax_url,
 						method: 'POST',
-						data: {
-							nonce: 'LUMISE-SECURITY-BACKEND:'+lumisejs.nonce_backend,
-							ajax: 'backend',
-							action: 'list_products',
-							task: 'cms_product',
-							s: this.value.toLowerCase(),
-							category: (storage_products.category ? storage_products.category : ''),
-							index: 0
-						},
+						data: ops.products.query,
 						statusCode: {
 							403: function(){
 								alert('Error 403');
@@ -292,8 +289,8 @@ jQuery(document).ready(function($){
 						},
 						success:  function(res) {
 							
-							ops.products = res;
-							render_products(ops.products);
+							ops.products.res = res;
+							render_products(ops.products.res);
 							
 						}
 					});
@@ -313,18 +310,14 @@ jQuery(document).ready(function($){
 					if (isNaN(limit))
 						limit = 2;
 					
+					ops.products.query.s = storage_products.s ? storage_products : '';
+					ops.products.query.category = (storage_products.category ? storage_products.category : '');
+					ops.products.query.index = (p*limit)-limit;
+					
 					$.ajax({
 						url: lumisejs.admin_ajax_url,
 						method: 'POST',
-						data: {
-							nonce: 'LUMISE-SECURITY-BACKEND:'+lumisejs.nonce_backend,
-							ajax: 'backend',
-							action: 'list_products',
-							task: 'cms_product',
-							s: storage_products.s ? storage_products : '',
-							category: (storage_products.category ? storage_products.category : ''),
-							index: (p*limit)-limit
-						},
+						data: ops.products.query,
 						statusCode: {
 							403: function(){
 								alert('Error 403');
@@ -332,8 +325,8 @@ jQuery(document).ready(function($){
 						},
 						success:  function(res) {
 							
-							ops.products = res;
-							render_products(ops.products);
+							ops.products.res = res;
+							render_products(ops.products.res);
 							
 						}
 					});
@@ -470,6 +463,8 @@ jQuery(document).ready(function($){
 		},
 		render_product = function(data) {
 			
+			window['lumise-seclect-base'].style.display = '';
+			
 			var data_stages;
 					
 			if (typeof data.stages == 'string')
@@ -502,7 +497,7 @@ jQuery(document).ready(function($){
 						} catch (ex) {console.log(ex);};
 					}
 				});
-			}
+			};
 			
 			if (typeof data_stages != 'object')
 				data_stages = {};
@@ -756,19 +751,39 @@ jQuery(document).ready(function($){
 					if (img.length === 0)
 						return;
 						
-					var sc = parseInt(this.value)/100,
-						im = img.get(0),
+					var im = img.get(0),
+						s = parseFloat(this.value), 
 						w = im.naturalWidth,
 						h = im.naturalHeight,
-						cl = im.offsetLeft+(im.offsetWidth/2),
-						ct = im.offsetTop+(im.offsetHeight/2);
+						ow = parseFloat(im.style.width.replace('px', '')),
+						oh = parseFloat(im.style.height.replace('px', '')),
+						cl = parseFloat(im.style.left.replace('px', '')),
+						ct = parseFloat(im.style.top.replace('px', ''));
 					
+					if (!s || isNaN(s))
+						s = 1;
+					
+					if (isNaN(ow))
+						ow = im.offsetWidth;
+					if (isNaN(oh))
+						oh = im.offsetHeight;
+					if (isNaN(ct))
+						ct = im.offsetTop;
+					if (isNaN(cl))
+						cl = im.offsetLeft;
+						
+					let nw = ((w*s)/100),
+						nh = ((h*s)/100),
+						nl = (nw-ow)/2,
+						nt = (nh-oh)/2;
+							
 					img.css({
-						width: (w*sc)+'px', 
-						height: (h*sc)+'px',
-						left: (cl-((w*sc)/2))+'px',
-						top: (ct-((h*sc)/2))+'px'
+						width :	nw+'px', 
+						height : nh+'px',
+						left : (cl-nl)+'px',
+						top : (ct-nt)+'px'
 					});
+					
 				},
 				
 				is_stage_accord: function(e) {
@@ -923,15 +938,80 @@ jQuery(document).ready(function($){
 			$('#lumise_design_template').val(encodeURIComponent(JSON.stringify(templ)));
 		},
 		ops = {
-			designs: []
+			designs: [],
+			products: {
+				query: {},
+				cfg: {}
+			}
 		};
 		
 	window.lumise_reset_products = function(data) {
-		delete ops.products;
+		delete ops.products.res;
 		$('#lumise-lightbox').remove();
 		$('#lumise_product_base').val(data.id);
 		before_submit();
 		render_product(data);
+	};
+	
+	window.load_product_bases = function(query, cfg) {
+		
+		lightbox({
+			content: '<center><i class="lumise-spinner x3"></i></center>'
+		});
+		
+		ops.products.query = {
+			nonce: 'LUMISE-SECURITY-BACKEND:'+lumisejs.nonce_backend,
+			ajax: 'backend',
+			action: 'list_products',
+			task: 'cms_product',
+			s: '',
+			category: '',
+			index: 0
+		};
+		
+		ops.products.cfg = {
+			can_create_new: true,
+			action_text: lumisejs._i64	
+		};
+		
+		if (
+			query !== undefined && 
+			query !== null && 
+			typeof query == 'object'
+		) {
+			ops.products.query = $.extend(true, ops.products.query, query);
+			delete ops.products.res;
+		};
+		
+		if (
+			cfg !== undefined && 
+			cfg !== null && 
+			typeof cfg == 'object'
+		) {
+			ops.products.cfg = $.extend(true, ops.products.cfg, cfg);
+		};
+		
+		
+		if (ops.products.res !== undefined)
+			return render_products(ops.products.res);
+		
+		$.ajax({
+			url: lumisejs.admin_ajax_url,
+			method: 'POST',
+			data: ops.products.query,
+			statusCode: {
+				403: function(){
+					alert('Error 403');
+				}
+			},
+			success: function(res) {
+				
+				ops.products.res = res;
+				render_products(ops.products.res);
+				
+			}
+		});
+		
 	};
 	
 	trigger({
@@ -948,36 +1028,7 @@ jQuery(document).ready(function($){
 			
 			e.preventDefault();
 			
-			lightbox({
-				content: '<center><i class="lumise-spinner x3"></i></center>'
-			});
-			
-			if (ops.products !== undefined)
-				return render_products(ops.products);
-			
-			$.ajax({
-				url: lumisejs.admin_ajax_url,
-				method: 'POST',
-				data: {
-					nonce: 'LUMISE-SECURITY-BACKEND:'+lumisejs.nonce_backend,
-					action: 'list_products',
-					task: 'cms_product',
-					s: '',
-					category: '',
-					index: 0
-				},
-				statusCode: {
-					403: function(){
-						alert('Error 403');
-					}
-				},
-				success: function(res) {
-					
-					ops.products = res;
-					render_products(ops.products);
-					
-				}
-			});
+			load_product_bases();
 			
 		},
 		
@@ -1039,21 +1090,33 @@ jQuery(document).ready(function($){
 	});
 	
 	$('#lumise_product_data').closest('form').on('submit', before_submit);
-	
+
 	$('#product-type').on('change', function(e) {
+		
 		if (this.value == 'simple') {
+			
+			$('ul.product_data_tabs li.lumise_options.lumise_tab, #lumise-seclect-base').show();
+			
+			if (window.lumisejs.current_data !== undefined) {
+				render_product(lumisejs.current_data);
+			} else {
+				$('#lumise-product-base').html('<p class="notice notice-warning">'+lumisejs._i71+'</p>');
+				$('#lumise-enable-customize, #lumise_product_data a[data-func="remove-base-product"]').addClass('hidden');
+			};
+			
+		} else if (this.value == "variable") {
+			
+			$('#lumise-product-base').html(
+				'<p class="notice notice-warning">This is variable product, Please set the Lumise Configuration in <a href="#" onclick="jQuery(\'li.variations_options a\').click();return false;">Variations Tab</a></p>'
+			);
+			
+			$('#lumise-seclect-base').hide();
 			$('ul.product_data_tabs li.lumise_options.lumise_tab').show();
-			$('ul.product_data_tabs li.lumise_options.lumise_tab a').trigger('click');
+			
 		} else {
 			$('ul.product_data_tabs li.lumise_options.lumise_tab').hide();
-		}
+		};
+		
 	}).change();
-	
-	if (window.lumisejs.current_data !== undefined) {
-		render_product(lumisejs.current_data);
-	} else {
-		$('#lumise-product-base').html('<p class="notice notice-warning">'+lumisejs._i71+'</p>');
-		$('#lumise-enable-customize, #lumise_product_data a[data-func="remove-base-product"]').addClass('hidden');
-	}
-	
+
 });

@@ -56,10 +56,15 @@ if(!class_exists('lumise_connector')){
 			$lumise->add_filter('init_settings', array(&$this, 'init_settings'));
 			$lumise->add_filter('after_save_settings', array(&$this, 'after_save_settings'));
 			
+			// Filter before listing all product bases
+			$lumise->add_filter('list_products', array(&$this, 'list_products'));
+			
 			$lumise->add_filter('back_link', array(&$this, 'backToShop_link'));
             
             if (!is_admin()) {
 	            $lumise->add_action('js_init', array(&$this, 'js_init'));
+	            $lumise->add_filter('get_product', array(&$this, 'get_product'));
+	           //$lumise->add_filter('js_init', array(&$this, 'editor_js_init'));
             }
             
         }
@@ -105,6 +110,10 @@ if(!class_exists('lumise_connector')){
 		}
         
         public function filter_product($data) {
+			
+			// do not process for woocommerce variable product
+			if (strpos($data['id'], 'variable:') !== false)
+				return $data;
 			
 			/*
 			*	$data['product'] is product CMS ID
@@ -654,6 +663,33 @@ if(!class_exists('lumise_connector')){
 				'desc' => $lumise->lang('Send details of designs in email for admin when orders are created, send to user when orders are completed'),
 			);
 			
+			$arg['tabs']['editor:'.$lumise->lang('Editor')][] = array(
+				'type' => 'toggle',
+				'name' => 'editor_iframe',
+				'value' => 0,
+				'default' => 'no',
+				'label' => $lumise->lang('Show header & footer'),
+				'desc' => $lumise->lang('Display Lumise editor in a page with header and footer of your theme'),
+			);
+			
+			$arg['tabs']['editor:'.$lumise->lang('Editor')][] = array(
+				'type' => 'input',
+				'name' => 'editor_iframe_width',
+				'value' => 0,
+				'default' => '100%',
+				'label' => $lumise->lang('Set width for editor'),
+				'desc' => $lumise->lang('Set width for editor in case you set showing header & footer (px, %, vw)'),
+			);
+			
+			$arg['tabs']['editor:'.$lumise->lang('Editor')][] = array(
+				'type' => 'input',
+				'name' => 'editor_iframe_height',
+				'value' => 0,
+				'default' => '80vh',
+				'label' => $lumise->lang('Set height for editor'),
+				'desc' => $lumise->lang('Set height for editor in case you set showing header & footer (px, %, vw)'),
+			);
+			
 			return $arg;
 		}
 		
@@ -694,6 +730,115 @@ if(!class_exists('lumise_connector')){
 	
 		}
 		
+		public function list_products ($res, $query) {
+			
+			if (
+				isset($_POST['product_source']) && 
+				$_POST['product_source'] == 'woo-variation'
+			) {
+				
+				global $lumise;
+				
+				if (!isset($query['limit']))
+					$query['limit'] = 12;
+				
+				$index = ((Int)$query['index']);
+				
+				$args = array(
+				    'taxonomy'   => "product_cat",
+				    'hide_empty' => true
+				);
+				
+				$product_categories = get_terms($args);
+					
+				$categories = array();
+				
+				foreach ($product_categories as $cat) {
+					array_push($categories, array(
+						"id" => $cat->term_id,
+						"name" => $cat->name,
+						"parent" => $cat->parent,
+						"count" => $cat->count,
+						"thumbnail" => "",
+						"lv" => 0	
+					));
+				}
+				
+				$products = array();
+				
+				$args = array(
+				    'post_type' => 'product_variation',
+				    'post_status' => array('publish'),
+				    'category' => $query['category'],
+				    'posts_per_page' => $query['limit'],
+				    'offset' => $index,
+				    's' => $query['s'],
+				    'meta_query' => array(
+					    array(
+					        'key' => '_variation_lumise',
+					        'value'   => array(''),
+					        'compare' => 'NOT IN'
+					    )
+					)
+				);
+				
+				$get_posts = new WP_Query;
+				
+				$variations = $get_posts->query( $args );
+				$products = array();
+				
+				foreach ($variations as $vari) {
+					$lumi_data = get_post_meta($vari->ID, '_variation_lumise', true);
+					$lumi = json_decode(urldecode($lumi_data), true);
+					$stages = $lumise->lib->dejson($lumi['stages']);
+					$thumbnail_url = '';
+					foreach ($stages as $stage) {
+						if (empty($thumbnail_url)) {
+							if ($stage->source == 'raws')
+								$thumbnail_url = $lumise->cfg->assets_url.'raws/'.$stage->url;
+							else
+								$thumbnail_url = $lumise->cfg->upload_url.$stage->url;
+						}
+					}
+					array_push($products, array(
+						"id" => $vari->ID,
+						"name" => $vari->post_title,
+						"price" => 0,
+						"product" => 0,
+						"thumbnail" => "",
+						"thumbnail_url" => $thumbnail_url,
+						"template" => "0",
+						"description" => $vari->post_excerpt,
+						"lumise_data" => $lumi_data,
+						"stages" =>  $lumi['stages'],
+						"variations" => "",
+						"attributes" => "",
+						"printings" => "",
+						"order" => 0,
+						"active" => 1,
+						"author" => "",
+						"created" => $vari->post_date,
+						"updated" => $vari->post_modified	
+					));
+				}
+				
+				$total = $get_posts->found_posts;
+				
+				return array(
+					'categories' => $categories,
+					'products' => $products,
+					'index' => $index+count($products),
+					'limit' => $query['limit'],
+					'total' => (Int)$total,
+					's'		=> $query['s'],
+					'category' => $query['category']
+				);
+			}
+			
+			return null;
+			
+		}
+		
 		public function backToShop_link ($link) {
 			if (isset($_GET['product_cms']))
 				return get_permalink($_GET['product_cms']);
@@ -706,6 +851,115 @@ if(!class_exists('lumise_connector')){
 		
 		public function apply_filters($name = '', $params = '', $params2 = null, $params3 = null) {
 			return apply_filters('lumise_'.$name, $params, $params2, $params3);
+		}
+		
+		public function get_product($products, $pid) {
+			
+			if (
+				$pid !== null &&
+				!empty($pid) &&
+				strpos($pid, 'variable:') !== false
+			) {
+				
+				global $lumise, $wpdb;
+				
+				$pid = (Int)str_replace('variable:', '', $pid);
+				
+				$data = get_post_meta($pid, '_variation_lumise', true);
+				
+				if ($data && !empty($data)) {
+					
+					$data = json_decode(urldecode($data), true);
+			
+					$product = $wpdb->get_results(
+						sprintf(
+							"SELECT * FROM `%s` WHERE `ID`=%d",
+							$wpdb->prefix.'posts',
+							(Int)$pid
+						)
+					);
+					
+					$product = wc_get_product($pid);
+					
+					$stages = $lumise->lib->dejson($data['stages']);
+					
+					$products[0] = array( 
+						'id' => 'variable:'.$pid,
+						'product' => $pid,
+						'cms_id' => isset($_POST['product_cms']) ? $_POST['product_cms'] : '',
+						'color' => 'red',
+						'name' => $product->get_name(), 
+						'sku' => $product->get_sku(), 
+						'price' => $product->get_price(), 
+						'description' => $product->get_description(), 
+						'stages' => $data['stages'],
+						'printings' => $data['printing'],
+						'attributes' => array(),
+						'variations' => array()
+					);
+				}
+			}
+			
+			return $products;
+			
+		}
+		
+		public function editor_js_init($cfg) {
+			
+			return $cfg;
+			
+			$pid = isset($_POST['product_base']) ? $_POST['product_base'] : '';
+			
+			if (
+				!empty($pid) &&
+				strpos($pid, 'variable:') !== false
+			) {
+				
+				global $lumise;
+				
+				$pid = (Int)str_replace('variable:', '', $pid);
+				
+				$data = get_post_meta($pid, '_variation_lumise', true);
+				
+				if ($data && !empty($data)) {
+					
+					$data = json_decode(urldecode($data), true);
+					$product = wc_get_product($pid);
+					
+					$stages = $lumise->lib->dejson($data['stages']);
+					
+					foreach ($stages as $name => $stage) {
+						if (isset($stage->template) && isset($stage->template->id)) {
+							$template = $lumise->lib->get_template($stage->template->id);
+							$stages->{$name}->template->price = isset($template['price']) ? $template['price'] : 0;
+							$stages->{$name}->template->upload = $template['upload'];
+						}
+					}
+					
+					$cfg['onload'] = array(
+						'id' => 'variable:'.$pid,
+						'name' => $product->name, 
+						'sku' => $product->sku, 
+						'price' => $product->price, 
+						'description' => $product->description, 
+						'stages' => $stages,
+						'printings' => $lumise->lib->get_printings($data['printing']),
+						'variations' => '',
+						'product' => isset($_POST['product_cms']) ? $_POST['product_cms'] : 0,
+						'attributes' => array(
+							'quantity' =>  array(
+								'id' => "quantity", 
+								'name' => "Quantity",
+								'type' => "quantity",
+								'value' => isset($_POST['quantity']) ? (Int)$_POST['quantity'] : 1
+							)
+						)
+					);
+				}
+			}
+			
+			return $cfg;
+			
 		}
 		
 		public function setup() {

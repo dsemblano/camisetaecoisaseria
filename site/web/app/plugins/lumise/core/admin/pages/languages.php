@@ -153,10 +153,10 @@
 
 		<div class="lumise_header">
 			<h2><?php echo $lumise->lang('Languages'); ?></h2>
-			<a href="#add" id="lumise-add-language" class="add_new">
+			<a href="#add" id="lumise-add-language" class="add-new lumise-button">
 				<i class="fa fa-plus"></i> <?php echo $lumise->lang('Add New Language'); ?>
 			</a>
-			<a href="#scan" id="lumise-scan-language" class="add_new tip">
+			<a href="#scan" id="lumise-scan-language" class="add_new tip" style="top: 8px;left: 10px;">
 				<i class="fa fa-refresh"></i> <?php echo $lumise->lang('Rescan texts'); ?>
 				<span><?php echo $lumise->lang('Rescan all language texts from Lumise files'); ?></span>
 			</a>

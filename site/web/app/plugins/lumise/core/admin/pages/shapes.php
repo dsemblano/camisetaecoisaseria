@@ -141,12 +141,12 @@
 
 		<div class="lumise_header">
 			<h2><?php echo $lumise->lang('Shapes'); ?></h2>
-			<a href="<?php echo $lumise->cfg->admin_url;?>lumise-page=shape" class="add_new">
+			<a href="<?php echo $lumise->cfg->admin_url;?>lumise-page=shape" class="add-new lumise-button">
 				<i class="fa fa-plus"></i> 
 				<?php echo $lumise->lang('Add new shape'); ?>
 			</a>
 			<?php if (isset($shapes['rows']) && count($shapes['rows']) < 3){ ?>
-			<a href="<?php echo $lumise->cfg->admin_url;?>lumise-page=shapes&task=import-sample" class="add_new">
+			<a href="<?php echo $lumise->cfg->admin_url;?>lumise-page=shapes&task=import-sample" class="add-new lumise-button">
 				<i class="fa file-import"></i>
 				<?php echo $lumise->lang('Import sample'); ?>
 			</a>

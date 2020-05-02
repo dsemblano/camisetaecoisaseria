@@ -1,9 +1,5 @@
 <?php
 	
-	if (isset($_POST['upload'])) {
-		print_r($_POST['upload']);
-		exit;
-	}
 	global $lumise;
 	
 	$arg = array(
@@ -133,7 +129,7 @@
 			<?php $lumise->views->tabs_render($fields, 'products'); ?>
 
 			<div class="lumise_form_group" style="margin-top: 20px">
-				<input type="submit" value="<?php echo $lumise->lang('Save Product'); ?>"/>
+				<input type="submit" class="lumise-button lumise-button-primary" value="<?php echo $lumise->lang('Save Product'); ?>"/>
 				<input type="hidden" name="do" value="action" />
 				<input type="hidden" name="lumise-section" value="product">
 			</div>

@@ -5,7 +5,7 @@ $items = $lumise->addons->load_installed();
 	<div class="lumise_content">
 		<div class="lumise_header">
 			<h2><?php echo $lumise->lang('Addons'); ?></h2>
-			<a href="#" class="add_new" onclick="document.querySelectorAll('.upload-addon-wrap')[0].style.display = 'inline-block';">
+			<a href="#" class="add-new lumise-button" onclick="document.querySelectorAll('.upload-addon-wrap')[0].style.display = 'inline-block';">
 				<i class="fa fa-cloud-upload"></i>
 				<?php echo $lumise->lang('Upload a new addon'); ?>
 			</a>

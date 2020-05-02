@@ -10,7 +10,7 @@
 if (!defined('DS'))
 	define('DS', DIRECTORY_SEPARATOR);
 
-define('LUMISE', '1.8');
+define('LUMISE', '1.9');
 
 class lumise {
 
@@ -126,8 +126,15 @@ class lumise {
 	}
 
 	public function lang($s) {
-		return isset($this->cfg->lang_storage[strtolower($s)]) ?
-			   str_replace("'", "&#39;", stripslashes($this->cfg->lang_storage[strtolower($s)])) : $s;
+		if(is_admin() && isset($this->cfg->lang_storage_backend[strtolower($s)])){
+			$s = str_replace("'", "&#39;", stripslashes($this->cfg->lang_storage_backend[strtolower($s)]));
+		}
+
+		if(!is_admin() && isset($this->cfg->lang_storage_frontend[strtolower($s)])){
+			$s = str_replace("'", "&#39;", stripslashes($this->cfg->lang_storage_frontend[strtolower($s)]));
+		}
+
+		return $s;
 	}
 	
 	public function router( $st = '' ) {
@@ -282,9 +289,16 @@ class lumise {
 
 		$langs = $this->langs();
 
-		if (isset($langs[$code])) {
-			$this->cfg->active_language = $code;
-			$this->connector->set_session('lumise-active-lang', $code);
+		// backend language 
+		if (isset($langs[$code]) && is_admin()) {
+			$this->cfg->active_language_backend = $code;
+			$this->connector->set_session('lumise-active-lang-backend', $code);
+		}
+
+		// frontend language 
+		if (isset($langs[$code]) && !is_admin()) {
+			$this->cfg->active_language_frontend = $code;
+			$this->connector->set_session('lumise-active-lang-frontend', $code);
 		}
 
 	}

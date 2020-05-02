@@ -39,7 +39,7 @@
 			<?php $lumise->views->tabs_render($fields); ?>
 
 			<div class="lumise_form_group lumise_form_submit">
-				<input type="submit" value="<?php echo $lumise->lang('Save Bug'); ?>"/>
+				<input type="submit" class="lumise-button lumise-button-primary" value="<?php echo $lumise->lang('Save Bug'); ?>"/>
 				<input type="hidden" name="do" value="action" />
 				<a class="lumise_cancel" href="<?php echo $lumise->cfg->admin_url;?>lumise-page=bugs">
 					<?php echo $lumise->lang('Cancel'); ?>

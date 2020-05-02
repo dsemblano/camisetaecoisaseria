@@ -2,7 +2,7 @@
 	<div class="lumise_content">
 		<div class="lumise_header">
 			<h2><?php echo $lumise->lang('Explore all addons'); ?></h2>
-			<a href="<?php echo $lumise->cfg->admin_url; ?>lumise-page=addons"class="add_new">
+			<a href="<?php echo $lumise->cfg->admin_url; ?>lumise-page=addons"class="add-new lumise-button">
 				<i class="fa fa-download"></i> 
 				<?php echo $lumise->lang('Your installed addons'); ?>
 			</a>

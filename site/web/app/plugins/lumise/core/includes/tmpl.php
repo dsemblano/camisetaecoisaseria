@@ -24,12 +24,15 @@ class lumise_tmpl_register {
 					'<header>
 						<name></name>
 						<price></price>
-						<sku></sku>
-						<button class="lumise-btn white" id="lumise-change-product">
-							'.$lumise->lang('Change product').'
-							<i class="lumisex-arrow-swap"></i>
-						</button>
-						<desc>
+						<sku></sku>'.
+						(
+							!isset($_GET['product_base']) || strpos($_GET['product_base'], 'variable:') === false ?
+							'<button class="lumise-btn white" id="lumise-change-product">
+								'.$lumise->lang('Change product').'
+								<i class="lumisex-arrow-swap"></i>
+							</button>' : ''
+						).
+						'<desc>
 							<span></span>
 							&nbsp;&nbsp;<a href="#more">'.$lumise->lang('More').'</a>
 						</desc>

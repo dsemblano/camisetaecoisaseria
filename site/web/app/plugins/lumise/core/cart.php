@@ -21,7 +21,7 @@ class lumise_cart extends lumise_lib
 	    global $lumise;
 	    $this->main = $lumise;
 	    $this->action 	= $this->main->lib->esc('action');
-	    
+	   
 	    $this->process_checkout();
         
     }
@@ -354,6 +354,8 @@ class lumise_cart extends lumise_lib
                 'template'      => false,
                 'screenshots'   => $screenshorts
             );
+
+            $items_cart[ $cart_id ] = $lumise->apply_filters( 'items-cart-temp', $items_cart[ $cart_id ], array('attributes' => $attributes, 'variations' => $variations, 'product_stages' => $product_stages));
             
             unset($item);
             

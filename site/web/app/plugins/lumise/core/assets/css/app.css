@@ -3820,7 +3820,7 @@ div#nav-bottom-left div[data-nav]{
 }
 div#nav-bottom-left div[data-nav="colors"]{
     padding: 7px;
-    display: none;
+    /* display: none; */
 }
 div#nav-bottom-left div[data-nav="colors"]>i{
     font-style: normal;
@@ -8893,4 +8893,7 @@ div#LumiseDesign div#lumise-navigations ul[data-block="right"]>li#lumise-proceed
     display: block;
     position: relative;
     width: 100%;
+}
+ul#lumise-file-nav li[data-func="save"]{
+    display: none !important;
 }

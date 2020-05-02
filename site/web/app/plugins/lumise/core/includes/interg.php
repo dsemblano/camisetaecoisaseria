@@ -43,7 +43,7 @@ function lumise_cms_product_data_fields($ops, $js_cfg, $id) {
 			</span>
 		</p>
         <div id="lumise-product-base" class="options_group"></div>
-        <p>
+        <p id="lumise-seclect-base">
 	        <a href="#" class="lumise-button lumise-button-primary lumise-button-large" data-func="products">
 		        <i class="fa fa-cubes"></i>
 		        <?php echo $lumise->lang('Select product base'); ?>
@@ -54,6 +54,7 @@ function lumise_cms_product_data_fields($ops, $js_cfg, $id) {
 		        <?php echo $lumise->lang('Remove product'); ?>
 		    </a>
         </p>
+        <?php $lumise->do_action( 'product-lumise-option-tab' ); ?>
         <input type="hidden" value="<?php echo $product; ?>" name="lumise_product_base" id="lumise_product_base" />
         <input type="hidden" value="<?php echo $design; ?>" name="lumise_design_template" id="lumise_design_template" />
     </div>

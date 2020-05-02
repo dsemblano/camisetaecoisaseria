@@ -141,7 +141,7 @@
 	<div class="lumise_content">
 		<div class="lumise_header">
 			<h2><?php echo $lumise->lang('Tags'); ?></h2>
-			<a href="<?php echo $lumise->cfg->admin_url;?>lumise-page=tag&type=<?php echo $type; ?>" class="add_new"><?php echo $lumise->lang('Add New Tag'); ?></a>
+			<a href="<?php echo $lumise->cfg->admin_url;?>lumise-page=tag&type=<?php echo $type; ?>" class="add-new lumise-button"><?php echo $lumise->lang('Add New Tag'); ?></a>
 			<?php
 				$lumise_page = isset($_GET['lumise-page']) ? $_GET['lumise-page'] : '';
 				$type = isset($_GET['type']) ? $_GET['type'] : '';

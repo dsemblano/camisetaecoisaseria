@@ -1,5 +1,5 @@
 
-@media only screen and (max-width: 1024px){
+@media only screen and (max-width: 1170px){
 	html,body{
 		overflow: hidden !important;
 		user-select: none;
@@ -192,7 +192,7 @@
 	}
 }
 
-@media only screen and (min-width: 768px) and (max-width: 999px){
+@media only screen and (min-width: 768px) and (max-width: 1169px){
 	div#lumise-top-tools>ul.lumise-top-nav li[data-tool="spacing"] ul[data-view="sub"],
 	div#lumise-top-tools>ul.lumise-top-nav li[data-tool="text-effect"] ul[data-view="sub"]{
 		left: 0;

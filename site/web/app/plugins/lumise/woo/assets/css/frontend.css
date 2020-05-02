@@ -32,6 +32,12 @@ body .summary form .lumise-button.alt{
     font-family: arial;
     text-transform: uppercase;
 }
+div.woocommerce-variation-add-to-cart-disabled .lumise-button.alt{
+    background: #ccc;
+    cursor: not-allowed;
+    text-decoration: none !important;
+    display: none;
+}
 body .woocommerce .products .product .lumise-list-button, body.woocommerce .products .product .lumise-list-button{
     background-color: #EE6C4D;
     color: #fff;

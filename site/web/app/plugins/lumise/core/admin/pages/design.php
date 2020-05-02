@@ -86,7 +86,7 @@
 			<?php
 
 				if (isset($_GET['id'])) {
-					echo '<h2>'.$lumise->lang('Edit Design').'</h2><a href="'.$lumise->cfg->admin_url.'lumise-page=design" class="add_new">'.$lumise->lang('Add New Design').'</a>';
+					echo '<h2>'.$lumise->lang('Edit Design').'</h2><a href="'.$lumise->cfg->admin_url.'lumise-page=design" class="add-new lumise-button">'.$lumise->lang('Add New Design').'</a>';
 				} else {
 					echo '<h2>'.$lumise->lang('Add Design').'</h2>';
 				}
@@ -173,7 +173,7 @@
 			</div>
 			<div class="lumise_form_group">
 				<input type="hidden" name="id" value="<?php echo !empty($data['id']) ? $data['id'] : '' ?>"/>
-				<input type="submit" value="<?php echo $lumise->lang('Save Design'); ?>"/>
+				<input type="submit" class="lumise-button lumise-button-primary" value="<?php echo $lumise->lang('Save Design'); ?>"/>
 				<input type="hidden" name="save_design" value="true">
 			</div>
 			<?php $lumise->securityFrom();?>

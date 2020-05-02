@@ -51,7 +51,7 @@
 			<?php $lumise->views->tabs_render($fields); ?>
 
 			<div class="lumise_form_group lumise_form_submit">
-				<input type="submit" value="<?php echo $lumise->lang('Save Translate Text'); ?>"/>
+				<input type="submit" class="lumise-button lumise-button-primary" value="<?php echo $lumise->lang('Save Translate Text'); ?>"/>
 				<input type="hidden" name="do" value="action" />
 				<a class="lumise_cancel" href="<?php echo $lumise->cfg->admin_url;?>lumise-page=<?php echo $section; ?>s">
 					<?php echo $lumise->lang('Cancel'); ?>
@@ -148,7 +148,7 @@
 			<?php
 
 				if (!empty($data['id'])) {
-					echo '<h2>'.$lumise->lang('Edit Translate Text').'</h2><a href="'.$lumise->cfg->admin_url.'lumise-page=language" class="add_new">'.$lumise->lang('Add New Language').'</a>';
+					echo '<h2>'.$lumise->lang('Edit Translate Text').'</h2><a href="'.$lumise->cfg->admin_url.'lumise-page=language" class="add-new lumise-button">'.$lumise->lang('Add New Language').'</a>';
 				} else {
 					echo '<h2>'.$lumise->lang('Add Translate Text').'</h2>';
 				}
@@ -217,7 +217,7 @@
 			</div>
 			<div class="lumise_form_group lumise_form_submit">
 				<input type="hidden" name="id" value="<?php echo !empty($data['id']) ? $data['id'] : '' ?>"/>
-				<input type="submit" value="<?php echo $lumise->lang('Save Language'); ?>"/>
+				<input type="submit" class="lumise-button lumise-button-primary" value="<?php echo $lumise->lang('Save Language'); ?>"/>
 				<input type="hidden" name="save_language" value="true">
 				<a class="lumise_cancel" href="<?php echo $lumise->cfg->admin_url;?>lumise-page=languages">
 					<?php echo $lumise->lang('Cancel'); ?>

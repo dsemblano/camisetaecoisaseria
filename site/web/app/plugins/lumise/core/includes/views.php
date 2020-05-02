@@ -147,7 +147,7 @@ class lumise_views extends lumise_lib {
 									PNG <em class="check"></em>
 								</label>
 							</div>
-							<div class="lumise-radio">
+							<!-- <div class="lumise-radio">
 								<input type="radio" data-dp="format" class="doPrint" data-format="svg" name="print-format" id="print-format-svg">
 								<label class="lumise-cart-option-label" for="print-format-svg">
 									SVG <em class="check"></em>
@@ -158,7 +158,7 @@ class lumise_views extends lumise_lib {
 								<label class="lumise-cart-option-label" for="print-format-pdf">
 									PDF <em class="check"></em>
 								</label>
-							</div>
+							</div> -->
 						</div>
 					</span>
 				</li>
@@ -420,8 +420,8 @@ class lumise_views extends lumise_lib {
 		<?php
 		
 		$this->main->do_action('before_language');
-			
-		$active_lang = $this->main->cfg->active_language;
+		
+		$active_lang = $this->main->cfg->active_language_frontend;
 		
 		$get_langs = $this->main->get_langs();
 		
@@ -1450,7 +1450,7 @@ class lumise_views extends lumise_lib {
 			
 		if (!empty($_GET['id'])) {
 			echo '<h2><a href="'.$lumise->cfg->admin_url.'lumise-page='.$args['pages'].(isset($args['type']) ? '&type='.$args['type'] : '').'">'.$args['pages'].'</a> <i class="fa fa-angle-right"></i> '.$args['edit'].'</h2>'.
-					'<a href="'.$lumise->cfg->admin_url.'lumise-page='.$args['page'].(isset($args['type']) ? '&type='.$args['type'] : '').(isset($_GET['callback']) ? '&callback=edit-cms-product' : '').'" class="add_new"><i class="fa fa-plus"></i> '.
+					'<a href="'.$lumise->cfg->admin_url.'lumise-page='.$args['page'].(isset($args['type']) ? '&type='.$args['type'] : '').(isset($_GET['callback']) ? '&callback=edit-cms-product' : '').'" class="add-new lumise-button"><i class="fa fa-plus"></i> '.
 					$args['add'].
 					'</a>';
 		} else {
@@ -1965,6 +1965,7 @@ class lumise_views extends lumise_lib {
     public function field_printing($args = array()) {
 
 		$prints = $this->main->views->get_prints();
+		
 		$inp_val = json_decode(rawurldecode($args['value']), true);
 		
 		if (count($prints) > 0) {
@@ -2354,6 +2355,9 @@ class lumise_views extends lumise_lib {
 							$limit .= 'width: '.$sdata->edit_zone->width.'px;';
 							$limit .= 'left: '.($sdata->edit_zone->left+($sdata->product_width/2)-($sdata->edit_zone->width/2)).'px;';
 							$limit .= 'top: '.($sdata->edit_zone->top+($sdata->product_height/2)-($sdata->edit_zone->height/2)).'px;';
+							if(isset($sdata->hide_edz) && $sdata->hide_edz == true){
+								$limit .= 'display: none;';
+							}
 							if (isset($sdata->edit_zone->radius) && !empty($sdata->edit_zone->radius))
 								$limit .= 'border-radius: '.$sdata->edit_zone->radius.'%;';
 							$limit .= '"';
@@ -2382,7 +2386,7 @@ class lumise_views extends lumise_lib {
 									$is_mask = 'true';
 							?>
 							<div class="lumise-stage-body" data-is-mask="<?php echo $is_mask; ?>">
-								<div class="lumise_form_content">
+								<div class="lumise_form_content" style="<?php if(isset($sdata->hide_mark_layer) && $sdata->hide_mark_layer == true){ echo 'display:none;'; } ?>">
 									<div class="lumise-toggle">
 										<input type="checkbox" name="is_mask" <?php
 											echo ($is_mask == 'true' ? 'checked="true"' : '');
@@ -2401,9 +2405,18 @@ class lumise_views extends lumise_lib {
 										</a>
 									</label>
 								</div>
+								<?php if (isset($_GET['action']) && $_GET['action'] == 'product_variation') { ?>
+								<div class="lumise_form_content fill-base-color">
+									<input type="text" value="<?php echo (isset($sdata->color) && $sdata->color !== '' ? $sdata->color : ''); ?>" placeholder="Fill color for product image" /> 
+									<input type="color" value="<?php echo (isset($sdata->color) && $sdata->color !== '' ? $sdata->color : ''); ?>" />
+								</div>
+								<?php } ?>
 								<div class="lumise-stage-design-view" <?php
 									if (isset($sdata->edit_zone)) {
 										echo ' data-info="scale ratio: '.$sdata->edit_zone->width.'x'.$sdata->edit_zone->height.'"';
+									}
+									if (isset($sdata->color) && $sdata->color !== '') {
+										echo ' style="background:'.$sdata->color.';"';
 									}
 								?>>
 									<img src="<?php 
@@ -2464,7 +2477,7 @@ class lumise_views extends lumise_lib {
 										
 									</div>
 									
-									<div class="editzone-ranges">
+									<div class="editzone-ranges" style="<?php if(isset($sdata->hide_size) && $sdata->hide_size == true){ echo 'display:none;'; } ?>">
 										<?php
 											$pos = array(
 												"template" => isset($sdata->template->offset) ? $sdata->template->offset : array(),
@@ -2586,17 +2599,65 @@ class lumise_views extends lumise_lib {
 												?> value="landscape">Landscape</option>
 											</select>
 										</div>
+										<div class="edr-row" data-row="include-base">
+											<label><?php echo $this->main->lang('Export include base'); ?>:</label>
+											<div class="lumise-toggle">
+												<input type="checkbox" <?php
+													echo (isset($sdata->include_base) && $sdata->include_base == 'yes' ? 'checked' : '');
+												?> data-name="include_base">
+												<span class="lumise-toggle-label" data-on="Yes" data-off="No"></span>
+												<span class="lumise-toggle-handle"></span>
+											</div>
+											<a href="#tip" class="tip">
+												<i class="fa fa-question-circle"></i>
+												<span><?php echo $this->main->lang('Export for printing include product base image.'); ?></span>
+											</a>
+										</div>
+										<div class="edr-row" data-row="crop-marks">
+											<label><?php echo $this->main->lang('Crop marks & bleed'); ?>:</label>
+											<div class="lumise-toggle">
+												<input type="checkbox" <?php
+													echo (isset($sdata->crop_marks_bleed) && $sdata->crop_marks_bleed == 'yes' ? 'checked' : '');
+												?> data-name="crop_marks_bleed">
+												<span class="lumise-toggle-label" data-on="Yes" data-off="No"></span>
+												<span class="lumise-toggle-handle"></span>
+											</div>
+											<a href="#tip" class="tip">
+												<i class="fa fa-question-circle"></i>
+												<span><?php echo $this->main->lang('Show the guide line for crop marks and bleed in Lumise editor.'); ?></span>
+											</a>
+										</div>
+										<!--div class="edr-row" data-row="bleed-range"<?php
+											if (!isset($sdata->crop_marks_bleed) || $sdata->crop_marks_bleed != 'yes') {
+												echo ' style="display:none;"'; 
+											}
+											?>>
+											<label><?php echo $this->main->lang('Bleed range'); ?>:</label>
+											<input style="width: 150px" data-name="bleed_range" type="text" placeholder="<?php echo $this->main->lang('Typically it is 2mm'); ?>" value="<?php
+												echo (isset($sdata->bleed_range) ? $sdata->bleed_range : '');
+												?>" data-unit="mm" />
+												<a href="#tip" class="tip">
+													<i class="fa fa-question-circle"></i>
+													<span><?php echo $this->main->lang('The bleeed range in milimet, typically it is 2mm'); ?></span>
+												</a>
+										</div-->
 									</div>
 										
 								</div>
-								<div class="lumise-stage-btn">
+								<div class="lumise-stage-btn" style="<?php if(isset($sdata->hide_size) && $sdata->hide_size == true){ echo 'display:none;'; } ?>"> 
 									<button type="button" class="lumise-button lumise-button-large" data-func="select">
 										<i class="fa fa-th"></i>
-									<?php echo $this->main->lang('Select product image'); ?>
+										<?php echo $this->main->lang('Select product image'); ?>
 									</button>
+									<?php if ($this->main->connector->platform == 'php') { ?>
+									<button type="button" class="lumise-button lumise-button-large" data-func="download">
+										<i class="fa fa-download"></i>
+										<?php echo $this->main->lang('Download mockup'); ?>
+									</button>
+									<?php } ?>
 									<button type="button" class="lumise-button lumise-button-large" data-func="reset">
 										<i class="fa fa-refresh"></i>
-										<?php echo $this->main->lang('Clear'); ?>
+										<?php echo $this->main->lang('Reset all'); ?>
 									</button>
 								</div>
 							</div>
@@ -3126,7 +3187,7 @@ EOF;
 		}
 	}
 	
-	public function order_designs($data, $attr = true) {
+public function order_designs($data, $attr = true) {
 		
 		global $lumise_printings;
 		
@@ -3141,6 +3202,292 @@ EOF;
 		*	Customized designs
 		*/
 		
+		if(empty($data['cart_id'])){
+			$session_name = 'product_'.$data['order_id'].'_'.$data['product_cms'].'_'.$data['product_base'].'_length';
+			$itemCheckAgain = $this->main->db->rawQuery(
+					sprintf(
+						"SELECT * FROM `%s` WHERE `order_id`='%s' AND `product_id`='%s' AND `product_base`='%s' ",
+						$this->main->db->prefix.'order_products',
+						$data['order_id'],
+						$data['product_cms'],
+						$data['product_base']
+					)
+	
+			);
+
+			if(count($itemCheckAgain) > 0){
+				// create new temp
+				if( 
+					!isset($_SESSION[$session_name]) 
+					|| ( isset($_SESSION[$session_name]) && $_SESSION[$session_name]['order_id'] != $data['order_id'] )
+				){
+					$_SESSION[$session_name] = array(
+						'order_id' => $data['order_id'],
+						'product_cms' => $data['product_cms'],
+						'product_base' => $data['product_base'],
+						'index' => 0,
+						'maxIndex' => count($itemCheckAgain)
+					);
+				}
+
+				$item = $this->main->db->rawQuery(
+
+					sprintf(
+						"SELECT * FROM `%s` WHERE `order_id`='%s' AND `product_id`='%s' AND `product_base`='%s' ORDER BY id ASC LIMIT ".intval($_SESSION[$session_name]['index']).",1",
+						$this->main->db->prefix.'order_products',
+						$data['order_id'],
+						$data['product_cms'],
+						$data['product_base']
+					)
+	
+				);
+	
+				if (count($item) > 0) {
+	
+					$_SESSION[$session_name]['index'] = intval($_SESSION[$session_name]['index'])+1;
+	
+					$sc = @json_decode($item[0]['screenshots']);
+	
+					$prt = @json_decode($item[0]['print_files'], true);
+	
+					
+	
+					$data['design'] = $item[0]['design'];
+	
+					
+	
+					foreach ($sc as $i => $s) {
+	
+						array_push($scrs, array(
+	
+							"url" => is_array($prt) && isset($prt[$i]) ? $this->main->cfg->upload_url.'orders/'.$prt[$i] : '#',
+	
+							"screenshot" => $this->main->cfg->upload_url.'orders/'.$s,
+	
+							"download" => true
+	
+						));
+	
+					}
+	
+					
+	
+					$prtable = true; 
+	
+					$pdfid = $data['cart_id'];
+	
+					
+	
+					$data_obj = $this->main->lib->dejson($item[0]['data']);
+	
+							
+	
+					if ($attr === true && isset($data_obj->attributes)) {
+	
+						
+	
+						echo '<br>';
+	
+						
+	
+						$attrs = (array) $data_obj->attributes;
+	
+						
+	
+						foreach ($attrs as $name => $options) {
+	
+							
+	
+							if (is_object($options) && isset($options->name)) {
+	
+								
+	
+								if (isset($options->value)) {
+	
+									echo '<div><strong>'.$options->name.':</strong> ';
+	
+									if (
+	
+										$options->type == 'color' || 
+	
+										$options->type == 'product_color'
+	
+									) {
+	
+										$val = trim($options->value);
+	
+										$lab = $options->value;
+	
+										if (
+	
+											isset($options->values) && 
+	
+											is_object($options->values) && 
+	
+											is_array($options->values->options)
+	
+										) {
+	
+											foreach ($options->values->options as $op) {
+	
+												if ($op->value == $val)
+	
+													$lab = $op->title;
+	
+											}
+	
+										}
+	
+										echo '<span title="'.htmlentities($options->value).'" style="background:'.$options->value.';padding: 3px 8px;border-radius: 12px;">'.htmlentities($lab).'</span>';
+	
+									
+	
+									} else if($options->type == 'quantity') {
+	
+										
+	
+										$val = @json_decode($options->value);
+	
+										
+	
+										if (
+	
+											isset($options->values) &&
+	
+											is_object($options->values) &&
+	
+											isset($options->values->type) &&
+	
+											$options->values->type == 'multiple'
+	
+										) {
+	
+											foreach ($options->values->multiple_options as $op) {
+	
+												if (
+	
+													is_object($val) &&
+	
+													isset($val->{$op->value})
+	
+												) 
+	
+													echo '<span>'.$op->title.': '.$val->{$op->value}.'</span> ';
+	
+											}
+	
+										} else echo '<span>'.$options->value.'</span>';
+	
+										
+	
+									} else if (
+	
+										isset($options->values) && 
+	
+										is_object($options->values) && 
+	
+										isset($options->values->options) &&
+	
+										is_array($options->values->options)
+	
+									) {
+	
+										
+	
+										$val = explode("\n", $options->value);
+	
+										
+	
+										foreach ($options->values->options as $op) {
+	
+											if (in_array($op->value, $val))
+	
+												echo '<span>'.$op->title.'</span> ';
+	
+										}
+	
+										
+	
+									} else echo '<span>'.$options->value.'</span>';
+	
+									
+	
+									echo '</div>';
+	
+								}
+	
+								
+	
+							} else {
+	
+								echo '<dt class="lumise-variation">'.$name.':</dt>';
+	
+								foreach ($options as $option) {
+	
+									echo '<dd class="lumise-variation">'.$option.'</dd>';
+	
+								}
+	
+							}
+	
+						}
+	
+						
+	
+					}
+	
+					
+	
+					if ($attr === true && isset($data_obj->variation) && !empty($data_obj->variation)) {
+	
+						
+	
+						echo "<div>";
+	
+						echo "<strong>".$this->main->lang('Variation').":</strong> ";
+	
+						echo "<span>#".$data_obj->variation."</span>";
+	
+						echo "</div>";
+	
+						
+	
+					}
+	
+					
+	
+					if ($attr === true && isset($data_obj->printing) && is_array($lumise_printings)) {
+	
+						
+	
+						foreach ($lumise_printings as $pmethod) {
+	
+							if ($pmethod['id'] == $data_obj->printing) {
+	
+								echo "<div>";
+	
+								echo "<strong>".$this->main->lang('Printing').":</strong> ";
+	
+								echo "<span>".$pmethod['title']."</span>";
+	
+								echo "</div>";
+	
+							}
+	
+						}
+	
+						
+	
+					}
+				}
+
+				if( (intval($_SESSION[$session_name]['index'])+1) == intval($_SESSION[$session_name]['maxIndex']) ){
+					unset($_SESSION[$session_name]);
+				}
+
+			}
+		}
+
 		if (!empty($data['cart_id'])) {
 			
 			$item = $this->main->db->rawQuery(
@@ -3316,7 +3663,16 @@ EOF;
 		if (count($scrs) > 0) {
 			
 			$is_query = explode('?', $this->main->cfg->tool_url);
-							
+			
+			$product = wc_get_product($data['product_cms']);
+			
+			if ($product && $product->get_type() == 'variation') {
+				$data['product_base'] = 'variable:'.$data['product_cms'];
+				$data['product_cms'] = $product->get_parent_id();
+			}
+			
+			
+						
 			$url = $this->main->cfg->url.(isset($is_query[1])? '&':'?');
 			$url .= 'product_base='.$data['product_base'];
 			if (!empty($data['design'])) {
@@ -3344,16 +3700,17 @@ EOF;
 			$html .= '</p>';
 			
 			if ($prtable === true) {
-				$html .= '<p><font color="#888">(*) ';
-				$html .= $this->main->lang('Click on each image to download the printable file (.PNG)').'</font></p>';
+				$html .= '<p><font color="#E91E63">(*) ';
+				$html .= $this->main->lang('Click on each image above to download the printable file <b>(.PNG)</b>').'</font></p>';
 			}
 			
-			$html .= '<p><a href="'.$url.'" target=_blank class="button button-primary">';
-			$html .= $this->main->lang('View designs in editor').'</a> &nbsp; ';
+			$html .= '<p>';
 			
 			if (!empty($pdfid)) {
-				$html .= '<a href="'.$this->main->cfg->url.'pdf_download='.$pdfid.'" target=_blank class="button">'.$this->main->lang('Download all in a PDF file').'</a>';
+				$html .= '<a href="'.$this->main->cfg->url.'pdf_download='.$pdfid.'" target=_blank class="button button-primary">'.$this->main->lang('Download designs as PDF').'</a>  &nbsp; <a href="#" data-href="'.$this->main->cfg->url.'pdf_download='.$pdfid.'" target=_blank class="button button-primary" onclick="let r = prompt(\'Enter bleed range in mimilet (Typically it is 2mm)\', \'2\');if (r){this.href = this.dataset.href+\'&bleed=\'+r;return true;}else return false;">'.$this->main->lang('PDF cropmarks & bleed').'</a> &nbsp; ';
 			}	
+			
+			$html .= '<a href="'.$url.'" target=_blank class="button">'.$this->main->lang('View in Lumise editor').'</a>';
 			
 			$html .= '</p>';
 			

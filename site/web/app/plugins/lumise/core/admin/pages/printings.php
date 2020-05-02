@@ -145,7 +145,7 @@
 
 		<div class="lumise_header">
 			<h2><?php echo $lumise->lang('Printings'); ?></h2>
-			<a href="<?php echo $lumise->cfg->admin_url;?>lumise-page=printing" class="add_new">
+			<a href="<?php echo $lumise->cfg->admin_url;?>lumise-page=printing" class="add-new lumise-button">
 				<i class="fa fa-plus"></i> 
 				<?php echo $lumise->lang('Add new printing'); ?>
 			</a>

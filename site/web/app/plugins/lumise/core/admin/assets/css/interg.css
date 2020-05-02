@@ -1148,7 +1148,7 @@ dd.lumise-variation {
     line-height: 25px;
 }
 #lumise-lightbox #lumise-list-items-wrp ul[data-view="items"] li span[data-view="thumbn"] {
-    display: inline-block;
+    float: left;
     width: 100%;
     text-align: center;
     position: relative;
@@ -1202,7 +1202,7 @@ dd.lumise-variation {
 }
 #lumise-lightbox #lumise-list-items-wrp ul[data-view="items"] li img {
     max-height: 260px;
-    display: inline-block;
+    float: left;
     max-width: 100%;
     background: #eaeaea;
 }
@@ -1313,4 +1313,33 @@ dd.lumise-variation {
     background: #008ec2;
     border-color: #006799;
     color: #fff;
+}
+.variable_lumise_data {
+	display: inline-block;
+	width: 100%;
+	padding: 10px 0;
+	position: relative;
+}
+.variable_lumise_data[data-loading]:after {
+    content: attr(data-loading);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    font-size: 15px;
+    transform: translateX(-50%) translateY(-50%);
+    background: #fff;
+    padding: 10px 20px;
+}
+.variable_lumise_data  button[data-lumise-frame] {
+    display: inline-block;
+    margin-right: 5px;
+}
+.variable_lumise_data  iframe+button[data-lumise-frame],
+.variable_lumise_data[data-empty="false"] [is="empty"],
+.variable_lumise_data[data-empty="true"] [is="nonempty"],
+.variable_lumise_data.hasFrame button {
+    display: none;
+}
+.variable_lumise_data  iframe {
+	border-top: 1px solid #ccc;
 }

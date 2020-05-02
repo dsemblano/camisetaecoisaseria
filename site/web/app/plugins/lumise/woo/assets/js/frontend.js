@@ -12,7 +12,7 @@ jQuery(document).ready(function($){
 			].join('')).appendTo('body');
 			lumisewoo.lightbox.elm.find('.lumise-lightbox-close, .lumise-lightbox-overlay').on('click', function (e){e.preventDefault();lumisewoo.lightbox.close()});
 			
-			$('.woocommerce-cart-form .product-remove > a').on('click', function(e) {
+			$(document).on('click', '.woocommerce-cart-form .product-remove > a', function(e) {
 	            var cart_id = $(this).closest('.cart_item').find('a.lumise-edit-design').attr('id'),
 	            	cart_data = JSON.parse(localStorage.getItem('LUMISE-CART-DATA'));
                   

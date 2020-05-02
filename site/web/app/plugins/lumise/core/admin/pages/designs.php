@@ -136,7 +136,7 @@
 
 		<div class="lumise_header">
 			<h2><?php echo $lumise->lang('Designs'); ?></h2>
-			<a href="<?php echo $lumise->cfg->admin_url;?>lumise-page=design" class="add_new"><?php echo $lumise->lang('Add New Design'); ?></a>
+			<a href="<?php echo $lumise->cfg->admin_url;?>lumise-page=design" class="add-new lumise-button"><?php echo $lumise->lang('Add New Design'); ?></a>
 			<?php
 				$lumise_page = isset($_GET['lumise-page']) ? $_GET['lumise-page'] : '';
 				echo $lumise_helper->breadcrumb($lumise_page);

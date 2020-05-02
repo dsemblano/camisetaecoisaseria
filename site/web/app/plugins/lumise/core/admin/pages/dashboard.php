@@ -91,7 +91,7 @@
 		</div>
 		<div class="lumise-col lumise-col-6">
 			<div class="lusime_box_dashbroad lumise_blog">
-				<h3><?php echo $lumise->lang('News Blog'); ?></h3>
+				<h3><?php echo $lumise->lang('Lumise RSS'); ?></h3>
 				<div class="box_content" id="lumise-rss-display">
 					<p><i><?php echo $lumise->lang('Loading latest blog'); ?>..</i></p>
 				</div>
@@ -184,8 +184,7 @@
 	</div>
 	<ul class="lumise_list_icon">
 		<li><span>Send Message</span><a href="https://www.facebook.com/lumisecom" target="blank" class="fa fa-facebook"></a></li>
-		<li><span>Videos Tutorial</span><a href="https://www.youtube.com/channel/UCi-xBFGhdx7W0OuAzJNEy5Q" target="blank" class="fa fa-youtube-play"></a></li>
 		<li><span>Custom Request</span><a href="https://www.lumise.com/services" target="blank" class="fa fa-pencil-square-o"></a></li>
-		<li><span>Help Center</span><a href="https://www.lumise.com/help-center" target="blank" class="fa fa-life-ring"></a></li>
+		<li><span>Help Center</span><a href="https://king.ticksy.com/submit" target="blank" class="fa fa-life-ring"></a></li>
 	</ul>
 </div>

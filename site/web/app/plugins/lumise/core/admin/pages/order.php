@@ -308,6 +308,7 @@
 									$url = str_replace('?&', '?', $url);
 												
 									$html = '<p>';
+									$prtable = false; 
 									
 									foreach ($scrs as $i => $scr) {
 										
@@ -322,17 +323,21 @@
 										$html .= '><img width="80" src="'.$scr['screenshot'].'" /></a>';
 									}
 									
+									
 									$html .= '</p>';
 									
 									if ($prtable === true) {
-										$html .= '<p><font color="#888">(*) ';
-										$html .= $lumise->lang('Click on each image to download the printable file (.PNG)').'</font></p>';
+										$html .= '<p><font color="#E91E63">(*) ';
+										$html .= $lumise->lang('Click on each image above to download the printable file <b>(.PNG)</b>').'</font></p>';
 									}
 									
-									$html .= '<p><a href="'.$url.'" target=_blank class="button button-primary">';
-									$html .= $lumise->lang('View designs in editor').'</a> &nbsp; ';
+									$html .= '<p>';
 									
-									$html .= '<br><a href="'.$lumise->cfg->tool_url.'?pdf_download='.$pdfid.'" target=_blank class="button">'.$lumise->lang('Download all in a PDF file').'</a>';
+									if (!empty($pdfid)) {
+										$html .= '<a href="'.$lumise->cfg->tool_url.'?pdf_download='.$pdfid.'" target=_blank class="lumise-button lumise-button-primary" style="margin-bottom:5px;">'.$lumise->lang('Download designs as PDF').'</a>  &nbsp; <a href="#" data-href="'.$lumise->cfg->tool_url.'?pdf_download='.$pdfid.'" target=_blank class="lumise-button lumise-button-primary" onclick="let r = prompt(\'Enter bleed range in mimilet (Typically it is 2mm)\', \'2\');if (r){this.href = this.dataset.href+\'&bleed=\'+r;return true;}else return false;" style="margin-bottom:5px;">'.$lumise->lang('PDF cropmarks & bleed').'</a> &nbsp; ';
+									}	
+									
+									$html .= '<a href="'.$url.'" target=_blank class="lumise-button">'.$lumise->lang('View in Lumise editor').'</a>';
 									
 									$html .= '</p>';
 									

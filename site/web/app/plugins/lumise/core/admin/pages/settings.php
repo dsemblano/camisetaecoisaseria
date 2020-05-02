@@ -329,7 +329,7 @@
 					'name' => 'number_decimals',
 					'label' => $lumise->lang('Number of decimals'),
 					'desc' => $lumise->lang('This sets the number of decimals points show in displayed price'),
-				),
+				)
 			),
 			'fonts:' . $lumise->lang('Google Fonts') => array(
 				array(
@@ -400,6 +400,15 @@
 		)
 	);
 	
+	if ($lumise->connector->platform == 'woocommerce') {
+		$arg['tabs']['shop:'.$lumise->lang('Shop')][] =  array(
+			'type' => 'toggle',
+			'name' => 'show_only_design',
+			'label' => $lumise->lang('Show only design'),
+			'desc' => $lumise->lang('Show only design in cart page (hide product)'),
+		);
+	}
+
 	if ($lumise->connector->platform == 'php') {
 		$arg['tabs']['admin:'.$lumise->lang('Admin login')] =  array(
 			array(
@@ -443,7 +452,7 @@
 			?>
 			
 			<div class="lumise_form_group" style="margin-top: 20px">
-				<input type="submit" value="<?php echo $lumise->lang('Save Settings'); ?>"/>
+				<input type="submit" class="lumise-button lumise-button-primary" value="<?php echo $lumise->lang('Save Settings'); ?>"/>
 				<input type="hidden" name="do" value="action" />
 				<input type="hidden" name="lumise-section" value="<?php echo $section; ?>">
 			</div>

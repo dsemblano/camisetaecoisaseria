@@ -234,12 +234,12 @@
 
 		<div class="lumise_header">
 			<h2><?php echo $lumise->lang('Cliparts'); ?></h2>
-			<a href="<?php echo $lumise->cfg->admin_url;?>lumise-page=clipart" class="add_new">
+			<a href="<?php echo $lumise->cfg->admin_url;?>lumise-page=clipart" class="add-new lumise-button">
 				<i class="fa fa-plus"></i>
 				<?php echo $lumise->lang('Add new clipart'); ?>
 			</a>
 			<?php if ($can_upload) { ?>
-			<a href="<?php echo $lumise->cfg->admin_url;?>lumise-page=clipart" class="add_new" id="lumise-add-bundle-cliparts">
+			<a href="<?php echo $lumise->cfg->admin_url;?>lumise-page=clipart" class="add-new lumise-button" id="lumise-add-bundle-cliparts">
 				<i class="fa fa-th"></i>
 				<?php echo $lumise->lang('Add multiple Cliparts'); ?>
 			</a>

@@ -45,11 +45,13 @@ class lumise_ajax extends lumise_lib {
 		'delete_base_image' => false,
 		'setup' => false,
 		'addon' => true,
-		'report_bug' => true
+		'report_bug' => true,
+		'product_variation' => true
 	);
 	private $actions_get = array(
 		'pdf',
-		'setup'
+		'setup',
+		'product_variation'
 	);
 	private $action;
 	private $nonce;
@@ -168,8 +170,12 @@ class lumise_ajax extends lumise_lib {
 			exit;
 		}
 
-		$scan = $this->scan_languages();
-
+		$scan = $this->scan_languages(LUMISE_CORE_PATH);
+		// Scan addons
+		$addon_scan = $this->scan_languages($this->main->cfg->upload_path.'addons');
+		
+		$scan = array_merge($scan, $addon_scan);
+		
 		foreach ($scan as $key => $val) {
 
 			$exist = $this->main->db->rawQueryOne("SELECT `id` as `text` FROM `{$this->main->db->prefix}languages` WHERE `author`='{$this->main->vendor_id}' AND `lang`= ? && `original_text`= ? ", array($code, $val));
@@ -239,12 +245,17 @@ class lumise_ajax extends lumise_lib {
 		$category = isset($_POST['category']) ? $_POST['category'] : '';
 		$index = isset($_POST['index']) ? $_POST['index'] : 0;
 		
-		$data = $this->get_products(array(
+		$query = array(
 			"s" => $s,
 			"category" => $category,
 			"index" => $index,
 			"no_cms_filter" => ($task == 'cms_product')
-		));
+		);
+		
+		$data = $this->main->apply_filters('list_products', null, $query);
+		
+		if ($data === null)
+			$data = $this->get_products($query);
 
 		header('Content-Type: application/json');
 		echo json_encode($data);
@@ -333,6 +344,10 @@ class lumise_ajax extends lumise_lib {
 		$path = 'cliparts'.DS.date('Y', $time).DS.date('m', $time).DS;
 
 		$check = $this->main->check_upload($time);
+
+		if(isset($post->tags) &&  count($post->tags) > 0){
+			$data['tags'] = implode(',', $post->tags);
+		}
 
 		if ($check !== 1) {
 
@@ -872,15 +887,51 @@ class lumise_ajax extends lumise_lib {
 		
 		$curDate = date_default_timezone_get();
 		date_default_timezone_set("Asia/Bangkok");
-		$rss = $this->main->lib->remote_connect($this->main->cfg->api_url.'news/php.rss.xml?nonce='.date('dH'));
+		$rss = $this->main->lib->remote_connect($this->main->cfg->api_url.'news/php.rss.xml?nonce='.rand(10000, 30000));
 		date_default_timezone_set($curDate);
-		
 		$rss = @simplexml_load_string($rss);
 
 		if ($rss !== null && is_object($rss)) {
+			$html = '<div class="lumise_container">';
+
+			$count0 = count($rss->channel->head);
+
+			for ($i = 0; $i < $count0; $i++) {
+
+				$item = $rss->channel->head[$i];
+				$link = $item->link;
+				$icon = $item->icon;
+				$color = $item->color;
+				$title = $item->title;
+				$html .= '<div class="lumise-col lumise-col-3">
+							<a class="lusime_box_stats" href="'.$link.'" target= "_blank">
+								<i class="'.$icon.'" style="background: '.$color.'"></i>
+								<div class="box_right">
+									<p>'.$title.'</p>
+								</div>
+							</a>
+						</div>';
+
+			}
+
+			$html .= '</div><div class="new_body">';
+
+			$count1 = count($rss->channel->body);
+
+			for ($i = 0; $i < $count1; $i++) {
+
+				$item = $rss->channel->body[$i];
+				$link = $item->link;
+				$color = $item->color;
+				$status = $item->status;
+				$title = $item->title;
+				$html .= '<a href="'.$link.'"  target= "_blank"><span style="color: '.$color.'">'.$status.'</span>'.$title.'</a>';
+
+			}
+
+			$html .= '</div>';
 
 			$count = count($rss->channel->item);
-			$html = '';
 
 			for ($i = 0; $i < $count; $i++) {
 
@@ -1387,7 +1438,12 @@ function renderPDF(svgs, url) {
 	public function report_bug() {
 		echo $this->report_bug_lumise($_POST['id']) ? 'Success' : 'Fail';
 	}
-
+	
+	public function product_variation() {
+		include (LUMISE_CORE_PATH.DS.'..'.DS.'admin'.DS.'pages'.DS.'product-variation.php');
+		exit;
+	}
+	
 	public function init() {
 		
 		$settings = $this->main->cfg->settings;

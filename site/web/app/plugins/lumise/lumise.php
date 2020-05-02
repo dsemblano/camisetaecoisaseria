@@ -4,15 +4,21 @@ Plugin Name: Lumise - Product Designer Tool
 Plugin URI: https://www.lumise.com/
 Description: The professional solution for designing & printing online
 Author: King-Theme
-Version: 1.8
+Version: 1.9
 Author URI: http://king-theme.com/
 */
 
 if(!defined('DS')) {
-	define('DS', DIRECTORY_SEPARATOR );
+	if(DIRECTORY_SEPARATOR == "\\"){
+		// window type
+		define('DS', "/" ); 
+	} else {
+		// linux type
+		define('DS', DIRECTORY_SEPARATOR );
+	}
 }
 if(!defined('LUMISE_WOO')) {
-	define('LUMISE_WOO', '1.8' );
+	define('LUMISE_WOO', '1.9' );
 }
 if ( ! defined( 'LUMISE_FILE' ) ) {
 	define('LUMISE_FILE', __FILE__ );
@@ -199,6 +205,10 @@ class lumise_woocommerce {
 			$role->add_cap('lumise_edit_addons');
 			$role->add_cap('lumise_edit_distresss');
 			   
+		} else {
+			// Add Lumise design to variations on add to cart form
+			add_filter( 'woocommerce_available_variation', array(&$this, 'frontstore_variation'), 999, 3);
+			
 		}
 		
 		//enqueue style for frontend
@@ -256,6 +266,10 @@ class lumise_woocommerce {
 		
         add_filter( 'before_delete_post', array(&$this, 'woo_remove_order' ), 999, 2);
 		add_filter( 'display_post_states', array(&$this, 'add_display_post_states' ), 10, 2 );
+		
+		add_action( 'woocommerce_product_after_variable_attributes', array(&$this, 'add_variable_attributes' ), 10, 3 );
+		add_action( 'woocommerce_save_product_variation', array(&$this, 'save_variable_attributes' ), 10, 2 );
+		
 		
 		if (
 			!isset($_COOKIE['LUMISESESSID']) || 
@@ -401,9 +415,13 @@ class lumise_woocommerce {
 	
 	public function page_display() {
 			
-		global $wp_query, $lumise;
+		global $wp_query, $lumise, $post;
 		
 		$editor = get_option('lumise_editor_page', 0);
+		$in_iframe = $lumise->get_option('editor_iframe', 0);
+		$iframe_width = $lumise->get_option('editor_iframe_width', '100%');
+		$iframe_height = $lumise->get_option('editor_iframe_height', '80vh');
+		
 		$id = get_queried_object_id();
 		
 		if ($editor > 0){
@@ -425,10 +443,15 @@ class lumise_woocommerce {
 				$editor == $id
 			){
 				
-				$this->render();
-				
-				exit;
-				
+				if ($in_iframe == 1 && !isset($_GET['lumise_iframe']) && !isset($_GET['pdf_download'])) {
+					remove_all_filters('the_content');
+					$link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')  ? "https" : "http"; 
+					$link .= "://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].'&lumise_iframe=true';
+					$post->post_content = '<iframe style="border:none;width: '.$iframe_width.';height: '.$iframe_height.';" src="'.esc_url($link).'"></iframe><script>if (top.location.href !== window.location.href)top.location.href=window.location.href;</script>';
+				} else {
+					$this->render();
+					exit;
+				}
 			}
 		}
 	}
@@ -709,7 +732,7 @@ class lumise_woocommerce {
 		$product = wc_get_product( $post->ID );
 
 		$product_data_tabs['lumise'] = array(
-			'label' => __( 'Lumise', 'lumise' ),
+			'label' => __( 'Lumise Configuration', 'lumise' ),
 			'target' => 'lumise_product_data'
 		);
 		
@@ -813,7 +836,7 @@ class lumise_woocommerce {
 		        	
 		        	if (!isset($d->id))
 		        		continue; 
-		        	print_r($d->id);	
+		        		
 		        	$data = $wpdb->get_results("SELECT `name`,`screenshot` FROM `{$lumise->db->prefix}templates` WHERE `id`=".$d->id);
 		        	if (isset($data[0]))
 			        	$designs->{$s}->screenshot = $data[0]->screenshot;
@@ -824,8 +847,9 @@ class lumise_woocommerce {
 	        	$js_cfg['current_design'] = $designs;
 	        	
         	}
-		
+        	
 			lumise_cms_product_data_fields($ops, $js_cfg, $id);
+			echo '<script type="text/javascript" src="'.$lumise->cfg->assets_url.'admin/assets/js/woo_product.js?version='.LUMISE.'"></script>';
 		
 		}
 		
@@ -916,6 +940,10 @@ class lumise_woocommerce {
 							if ( is_array(@json_decode($val, true)) ) {
 								$val = @json_decode($val, true);
 								foreach ($val as $k => $v) {
+									if($v == 0){
+										unset($val[$k]);
+										continue;
+									}
 									$val[$k] = '<p><strong>'.$k.':</strong>'.$v.'</p>';
 								}
 								$val = implode('', array_values($val));
@@ -976,6 +1004,10 @@ class lumise_woocommerce {
 			}
 		}
 		
+		if (intval($lumise->cfg->settings['show_only_design']) == 1 && function_exists('is_cart') && is_cart() && isset($cart_item['lumise_data']) ) {
+			$product_image = '';
+		}
+
 		return $product_image.$design_thumb;
 	}
 	
@@ -992,11 +1024,28 @@ class lumise_woocommerce {
 				if( isset($value['lumise_data']) ){
 					
 					$cart_item_data = $lumise->lib->get_cart_data( $value['lumise_data'] );
-					
+
 					$lumise_price = (
 						isset($cart_item_data['price']) && 
 						isset($cart_item_data['price']['total'])
 					) ? floatVal($cart_item_data['price']['total']) : 0;
+
+					if(isset($cart_item_data['options']) && isset($cart_item_data['attributes'])){
+						// fix bug package option price
+						foreach ($cart_item_data['options'] as $indexListChoice => $valueListChoice) {
+							foreach ($cart_item_data['attributes'] as $keyListOption => $valueListOption) {
+								if( $indexListChoice == $valueListOption['id'] && $valueListOption['type'] == 'quantity' && isset($valueListOption['values']['package_options']) ){
+									foreach ($valueListOption['values']['package_options'] as $keyPackageOption => $valuePackageOption) {
+										if( $valueListChoice == $valuePackageOption['value']){
+											$lumise_price += (doubleval($valuePackageOption['value']) * doubleval($valuePackageOption['price']));
+										}
+									}
+								}
+							}
+						}
+					}
+
+					$lumise_price = $lumise->apply_filters('add-custom-price-limuse-data', $lumise_price, $cart_item_data);
 					
 					$lumise_qty = isset($cart_item_data['qty']) ? intval($cart_item_data['qty']) : 1;
 					
@@ -1111,9 +1160,9 @@ class lumise_woocommerce {
 		$log = 'Lumise Trace Error ID#' . $order_id.' '.date ("Y-m-d H:i:s");
 
 		if ($count_order > 0) {
-			$lumise->logger->log( '[FAIL] '.$log.' - order_id exist)');
-			header('HTTP/1.1 401 '.'Error: order_id #'.$order_id.' was exist)', true, 401);
-			return;
+			//$lumise->logger->log( '[FAIL] '.$log.' - order_id exist)');
+			//header('HTTP/1.1 401 '.'Error: order_id #'.$order_id.' was exist)', true, 401);
+			//return;
 		}
 		
 		$cart_data = array('items' => array());
@@ -1380,7 +1429,7 @@ class lumise_woocommerce {
 			$order_status = $order->get_status();
 			
 			if ( 
-				$order_status == 'completed' || $order_status == 'processing' ||
+				$order_status == 'completed' ||
 				$sent_to_admin === true
 			) {
 				
@@ -1579,7 +1628,7 @@ class lumise_woocommerce {
 			
 			$order_status = $order->get_status();
 			
-			if( $order_status == 'completed' || $order_status == 'processing' ) {
+			if( $order_status == 'completed' ) {
 				$items = $lumise->lib->get_order_products($order_id);
 
 				?>
@@ -1821,6 +1870,57 @@ class lumise_woocommerce {
 		return $post_states;
 	}
 	
+	public  function add_variable_attributes( $loop, $variation_data, $variation ) {
+		
+		global $lumise;
+		
+	?>
+	<div>
+		<p class="form-field variable_description0_field form-row form-row-full" style="margin-bottom:0px;">
+			<label>Lumise configuration</label>
+			<textarea style="display: none;" class="short lumise-vari-inp" style="" name="variable_lumise[<?php echo $loop; ?>]" id="variable-lumise-<?php echo $variation->ID; ?>" placeholder="" rows="2" cols="20"><?php 
+				if (isset($variation_data['_variation_lumise'])) {
+					echo str_replace(array('<textarea', '</textarea>'), array('&lt;textarea', '&lt;/textarea&gt;'), $variation_data['_variation_lumise'][0]); 
+				}
+			?></textarea> 
+		</p>
+		<div class="variable_lumise_data" data-empty="<?php
+					echo (
+						isset($variation_data['_variation_lumise']) && 
+						!empty($variation_data['_variation_lumise'][0])
+					) ? 'false' : 'true';
+			?>" data-id="<?php echo $variation->ID; ?>">
+			<button class="button" data-lumise-frame="<?php 
+				echo $lumise->cfg->ajax_url;	
+			?>&action=product_variation&variation_id=<?php echo $variation->ID; ?>" id="lumise-config-<?php echo $variation->ID; ?>">
+				<i class="fa fa-cog"></i> 
+				<text is="nonempty"><?php echo $lumise->lang('Open Lumise Configuration'); ?></text>
+				<text is="empty"><?php echo $lumise->lang('Setup new Lumise Designer'); ?></text>
+			</button>
+			<button class="button secondary button-link-delete" is="nonempty" data-lumise-frame="clear">
+				<i class="fa fa-trash"></i>  <?php echo $lumise->lang('Clear this config'); ?>
+			</button>
+			<button class="button secondary" is="empty" data-lumise-frame="list">
+				<i class="fa fa-th"></i>  <?php echo $lumise->lang('Select an exist config'); ?>
+			</button>
+			<button class="button secondary" is="empty" data-lumise-frame="paste">
+				<i class="fa fa-paste"></i>  <?php echo $lumise->lang('Paste copied config'); ?>
+			</button>
+		</div>
+	</div>	
+	<?php
+	}
+	
+	public  function save_variable_attributes( $variation_id, $i ) {
+		if (
+			isset( $_POST['variable_lumise']) && 
+			isset( $_POST['variable_lumise'][ $i ] )
+		) {
+			$variation_id = absint($_POST['variable_post_id'][$i]);
+			update_post_meta($variation_id, '_variation_lumise', $_POST['variable_lumise'][$i]);			
+		}
+	}
+	
 	public function plugin_action_links( $links ) {
 		
 		$action_links = array(
@@ -1882,6 +1982,15 @@ class lumise_woocommerce {
 		
 	}
 	
+	public function frontstore_variation($data, $claz, $vari) {
+		
+		$lumise_data = get_post_meta($data['variation_id'], '_variation_lumise', true);
+		$data['lumise'] = isset($lumise_data) && !empty($lumise_data) ? $data['variation_id'] : 0;
+		
+		return $data;
+		
+	}
+	
 	public function customize_button() {
 		
 		global $product, $wpdb, $lumise;
@@ -1898,9 +2007,17 @@ class lumise_woocommerce {
 		$product_base = get_post_meta($product_id, 'lumise_product_base', true);
 		$lumise_customize = get_post_meta($product_id, 'lumise_customize', true);
 		$disable_cartbtn = get_post_meta($product_id, 'lumise_disable_add_cart', true);
-		
-		if (empty($product_base) || $lumise_customize != 'yes') {
+
+		if (
+			(empty($product_base) && $product->is_type( 'simple' )) || 
+			$lumise_customize != 'yes' ||
+			(!$product->is_type( 'variable' ) && !$product->is_type( 'simple' ))
+		) {
 			return;
+		}
+		
+		if ($product->is_type( 'variable' )) {
+			$product_base = 'variable';	
 		}
 		
 		$text 			= isset($config['btn_text'])? $config['btn_text'] : __('Customize', 'lumise');
@@ -1908,24 +2025,47 @@ class lumise_woocommerce {
 		
 		do_action( 'lumise_before_customize_button' );
 
-		$class_lumise = apply_filters('lumise_button_customize', 'lumise-button button alt');
+		$class_lumise = apply_filters('lumise_button_customize', 'lumise-customize-button button alt single_add_to_cart_button');
 		$link_design = apply_filters( 'lumise_customize_link', $link_design );
 
-		echo '<a name="customize" 
-					id="lumise-customize-button" 
-					class="'.$class_lumise.'" 
-					href="'.esc_url($link_design ).'">'.
-						esc_html($text).
-					'</a>';
-		
-		if ($disable_cartbtn == 'yes') {
-			echo "<script>
-					jQuery('#lumise-customize-button').
-						closest('form').
-						after(jQuery('#lumise-customize-button')).
-						remove();
-				</script>";	
-		}
+		?>
+		<a name="customize" id="lumise-customize-button" class="<?php echo $class_lumise; ?>" href="<?php echo esc_url($link_design ); ?>" data-href="<?php echo esc_url($link_design ); ?>">
+			<?php echo esc_html($text); ?>
+		</a>
+		<script>
+			(function($) {
+				<?php  if ($disable_cartbtn == 'yes') { ?>
+				$('#lumise-customize-button').closest('form').find('button.single_add_to_cart_button').remove();
+				<?php } ?>
+				$('form.variations_form')/*.on('show_variation', function (e) {
+					
+				}).on('hide_variation', function (e) {
+					
+				})*/.on('found_variation', function (e, vari) {
+					setTimeout(() => {
+						let lm = vari.lumise,
+							hrf = $('#lumise-customize-button').attr('data-href').replace('product_base=variable', 'product_base=variable:'+lm)+'&quantity='+$(this).find('input[name="quantity"]').val();
+						
+						$('#lumise-customize-button').attr({
+							'href': lm !== '' && lm !== 0 ? hrf : "javascript:alert('This variant has not been configured with Lumise')",
+						}).removeAttr('disabled').removeClass('disabled');
+						
+						// If not setup Lumise for this variation ==> disable customize button
+						if (lm === '' || lm === 0) {
+							$('#lumise-customize-button').attr({'disabled': 'disabled'}).addClass('disabled');
+						}
+					}, 1);
+				}).find('input[name="quantity"]').on('change', function() {
+					if (!$('#lumise-customize-button').hasClass('disabled')) {
+						let hrf = $('#lumise-customize-button').attr('href');
+						hrf = hrf.replace(/&quantity=[\d]*/g, '&quantity='+this.value);
+						$('#lumise-customize-button').attr('href', hrf);
+					}
+				});
+				
+			})(jQuery);
+		</script>
+		<?php
 		
 		do_action( 'lumise_after_customize_button' );
 
