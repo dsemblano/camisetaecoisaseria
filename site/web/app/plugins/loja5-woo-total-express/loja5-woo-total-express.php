@@ -23,6 +23,7 @@ class WC_Loja5_Total_Express {
 	public function init() {
         if ( defined( 'WC_VERSION' ) && version_compare( WC_VERSION, '2.6.0', '>=' ) ) {
             include_once(dirname(__FILE__).'/classes/class.loja5.php');
+			include_once(dirname(__FILE__).'/classes/config-total-express.php');
             include_once(dirname(__FILE__).'/classes/abstract-total-express.php');
             include_once(dirname(__FILE__).'/classes/metodos-total-express.php');
         }else{
