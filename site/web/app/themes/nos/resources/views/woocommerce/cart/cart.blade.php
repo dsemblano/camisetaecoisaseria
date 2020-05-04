@@ -16,6 +16,12 @@
 
 @php do_action( 'woocommerce_before_cart' ); @endphp
 
+<style>
+    .woocommerce-cart table.cart .size-woocommerce_thumbnail {
+    display: none;
+  }
+</style>
+
 <form class="woocommerce-cart-form" action="@php echo esc_url( wc_get_cart_url() ); @endphp" method="post">
   @php
   do_action( 'woocommerce_before_cart_table' );
