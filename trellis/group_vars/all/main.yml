@@ -12,7 +12,7 @@ ip_whitelist:
   - "{{ (env == 'development') | ternary(ansible_default_ipv4.gateway, ipify_public_ip | default('')) }}"
 
 php_extensions_custom:
-  php7.3-soap: "{{ apt_package_state }}"
+  php7.4-soap: "{{ apt_package_state }}"
   php-imagick: "{{ apt_package_state }}"
 
 php_post_max_size: 800M
