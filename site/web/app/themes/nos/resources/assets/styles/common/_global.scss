@@ -217,6 +217,10 @@ ul {
   white-space: nowrap;
 }
 
+body.woocommerce .products .product .lumise-list-button {
+  background-color: $green-nos-button !important;
+}
+
 // .woocommerce-cart table.cart .size-woocommerce_thumbnail {
 //   display: none;
 // }
