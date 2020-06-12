@@ -4978,6 +4978,15 @@ imagemin-jpegtran@^6.0.0:
     is-jpg "^2.0.0"
     jpegtran-bin "^4.0.0"
 
+imagemin-jpegtran@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/imagemin-jpegtran/-/imagemin-jpegtran-7.0.0.tgz#7728f84876362d489b9a1656e0cc8e2009406e6f"
+  integrity sha512-MJoyTCW8YjMJf56NorFE41SR/WkaGA3IYk4JgvMlRwguJEEd3PnP9UxA8Y2UWjquz8d+On3Ds/03ZfiiLS8xTQ==
+  dependencies:
+    exec-buffer "^3.0.0"
+    is-jpg "^2.0.0"
+    jpegtran-bin "^5.0.0"
+
 imagemin-mozjpeg@~7.0.0:
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/imagemin-mozjpeg/-/imagemin-mozjpeg-7.0.0.tgz#d926477fc6ef5f3a768a4222f7b2d808d3eba568"
@@ -5733,7 +5742,7 @@ jpegtran-bin@^4.0.0:
     bin-wrapper "^4.0.0"
     logalot "^2.0.0"
 
-jpegtran-bin@^5.0.1:
+jpegtran-bin@^5.0.0, jpegtran-bin@^5.0.1:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/jpegtran-bin/-/jpegtran-bin-5.0.1.tgz#3cecaa471726bbcb66adabeeb544c409b17c73e5"
   integrity sha512-xQoXWkIEt4ckmvcHd9xG3RcCIn00sf2TshDyFMOAE+46EspEqwqoPWotVI3e55FGWafMa9cEqaoIyrCeWDnFPw==
@@ -7600,10 +7609,10 @@ penthouse@^1.11.1:
     jsesc "^2.5.2"
     puppeteer "1.13.0"
 
-penthouse@^2.2.3:
-  version "2.2.3"
-  resolved "https://registry.yarnpkg.com/penthouse/-/penthouse-2.2.3.tgz#2346adf24d80d1599442e94837274d36e6906a3a"
-  integrity sha512-YfC+D4toxb8DSBm85yMftRapEd7WD3LjCgRra9h4+h4ScoWh+BAt+cflgcSf6pBzEDHvdlFDPRdX+T8dHuSSiA==
+penthouse@^2.2.4:
+  version "2.2.4"
+  resolved "https://registry.yarnpkg.com/penthouse/-/penthouse-2.2.4.tgz#a9b13dbf50e2eb9555194b3829a087102e7261e8"
+  integrity sha512-iBxCWabO770vkWKAOz6qyqEL6um73c24UsGhYyngcyozJ0arrfN24bnNhosSGtdrYERiLzmxQkPgwTzXk0rQCQ==
   dependencies:
     css-mediaquery "^0.1.2"
     css-tree "1.0.0-alpha.28"
