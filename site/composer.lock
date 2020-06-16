@@ -619,7 +619,7 @@
         },
         {
             "name": "wpackagist-plugin/automatic-translator-addon-for-loco-translate",
-            "version": "1.7.5",
+            "version": "1.8",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/automatic-translator-addon-for-loco-translate/",
@@ -627,7 +627,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/automatic-translator-addon-for-loco-translate.zip?timestamp=1590588216"
+                "url": "https://downloads.wordpress.org/plugin/automatic-translator-addon-for-loco-translate.zip?timestamp=1591948385"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -655,15 +655,15 @@
         },
         {
             "name": "wpackagist-plugin/insta-gallery",
-            "version": "2.8.0",
+            "version": "2.8.2",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/insta-gallery/",
-                "reference": "tags/2.8.0"
+                "reference": "tags/2.8.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/insta-gallery.2.8.0.zip"
+                "url": "https://downloads.wordpress.org/plugin/insta-gallery.2.8.2.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -691,15 +691,15 @@
         },
         {
             "name": "wpackagist-plugin/newsletter",
-            "version": "6.7.1",
+            "version": "6.7.2",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/newsletter/",
-                "reference": "tags/6.7.1"
+                "reference": "tags/6.7.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/newsletter.6.7.1.zip"
+                "url": "https://downloads.wordpress.org/plugin/newsletter.6.7.2.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -1015,15 +1015,15 @@
         },
         {
             "name": "wpackagist-plugin/woocommerce-services",
-            "version": "1.23.1",
+            "version": "1.23.2",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/woocommerce-services/",
-                "reference": "tags/1.23.1"
+                "reference": "tags/1.23.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/woocommerce-services.1.23.1.zip"
+                "url": "https://downloads.wordpress.org/plugin/woocommerce-services.1.23.2.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
