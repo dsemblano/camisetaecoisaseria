@@ -2,7 +2,7 @@
   <meta charset="utf-8">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="google-site-verification" content="7ZElNt_DHoeos4td5dfxiZpUj65liVNqFJfdmpBTNJ0" />
+  <meta name="google-site-verification" content="xGHSV6jM_1KN_PpGBZHVSVAnd5uy_D0TdekKa7d5pHw" />
   <link rel="apple-touch-icon" sizes="57x57" href="@asset('images/favicon/apple-icon-57x57.png')">
   <link rel="apple-touch-icon" sizes="60x60" href="@asset('images/favicon/apple-icon-60x60.png')">
   <link rel="apple-touch-icon" sizes="72x72" href="@asset('images/favicon/apple-icon-72x72.png')">
