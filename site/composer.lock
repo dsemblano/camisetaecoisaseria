@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "80b82fd94a0192c58ab4457b141655da",
+    "content-hash": "466800f0f9adb603229cd364598593ae",
     "packages": [
         {
             "name": "composer/installers",
@@ -659,15 +659,15 @@
         },
         {
             "name": "wpackagist-plugin/insta-gallery",
-            "version": "2.9.5",
+            "version": "2.9.6",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/insta-gallery/",
-                "reference": "tags/2.9.5"
+                "reference": "tags/2.9.6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/insta-gallery.2.9.5.zip"
+                "url": "https://downloads.wordpress.org/plugin/insta-gallery.2.9.6.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -695,15 +695,15 @@
         },
         {
             "name": "wpackagist-plugin/newsletter",
-            "version": "6.7.2",
+            "version": "6.7.3",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/newsletter/",
-                "reference": "tags/6.7.2"
+                "reference": "tags/6.7.3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/newsletter.6.7.2.zip"
+                "url": "https://downloads.wordpress.org/plugin/newsletter.6.7.3.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -803,7 +803,7 @@
         },
         {
             "name": "wpackagist-plugin/super-socializer",
-            "version": "7.12.42",
+            "version": "7.12.44",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/super-socializer/",
@@ -811,7 +811,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/super-socializer.zip?timestamp=1590642779"
+                "url": "https://downloads.wordpress.org/plugin/super-socializer.zip?timestamp=1593271098"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -998,24 +998,6 @@
             },
             "type": "wordpress-plugin",
             "homepage": "https://wordpress.org/plugins/woocommerce-pagseguro/"
-        },
-        {
-            "name": "wpackagist-plugin/woocommerce-pdf-invoices-packing-slips",
-            "version": "2.5.2",
-            "source": {
-                "type": "svn",
-                "url": "https://plugins.svn.wordpress.org/woocommerce-pdf-invoices-packing-slips/",
-                "reference": "tags/2.5.2"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/woocommerce-pdf-invoices-packing-slips.2.5.2.zip"
-            },
-            "require": {
-                "composer/installers": "~1.0"
-            },
-            "type": "wordpress-plugin",
-            "homepage": "https://wordpress.org/plugins/woocommerce-pdf-invoices-packing-slips/"
         },
         {
             "name": "wpackagist-plugin/woocommerce-services",
