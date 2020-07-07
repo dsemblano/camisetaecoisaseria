@@ -65,6 +65,7 @@
     "wpackagist-plugin/newsletter":">=6.4.6",
     "wpackagist-plugin/social-pug":">=1.6.2",
     "wpackagist-plugin/woo-cart-abandonment-recovery":">=1.2.7",
+    "wpackagist-plugin/woocommerce-payment-discounts":">=3.1.0",
     "wpackagist-plugin/wps-hide-login":">=1.5.4.2"
   },
   "require-dev": {
