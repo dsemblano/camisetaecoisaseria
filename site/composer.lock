@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a7713937ae1c7cd82e846745cecd8884",
+    "content-hash": "2a1786675a22a310a8c636cc8ab5435b",
     "packages": [
         {
             "name": "composer/installers",
@@ -856,6 +856,24 @@
             "homepage": "https://wordpress.org/plugins/woo-parcelas-com-e-sem-juros/"
         },
         {
+            "name": "wpackagist-plugin/woo-payment-discounts",
+            "version": "1.2.0",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/woo-payment-discounts/",
+                "reference": "tags/1.2.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/woo-payment-discounts.1.2.0.zip"
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/woo-payment-discounts/"
+        },
+        {
             "name": "wpackagist-plugin/woo-picpay",
             "version": "1.1.8",
             "source": {
@@ -1016,24 +1034,6 @@
             },
             "type": "wordpress-plugin",
             "homepage": "https://wordpress.org/plugins/woocommerce-pagseguro/"
-        },
-        {
-            "name": "wpackagist-plugin/woocommerce-payment-discounts",
-            "version": "3.1.0",
-            "source": {
-                "type": "svn",
-                "url": "https://plugins.svn.wordpress.org/woocommerce-payment-discounts/",
-                "reference": "tags/3.1.0"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/woocommerce-payment-discounts.3.1.0.zip"
-            },
-            "require": {
-                "composer/installers": "~1.0"
-            },
-            "type": "wordpress-plugin",
-            "homepage": "https://wordpress.org/plugins/woocommerce-payment-discounts/"
         },
         {
             "name": "wpackagist-plugin/woocommerce-services",
