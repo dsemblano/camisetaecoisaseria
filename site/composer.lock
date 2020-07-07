@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2a1786675a22a310a8c636cc8ab5435b",
+    "content-hash": "476949a124b07469c82d9c0bf6c8d0c2",
     "packages": [
         {
             "name": "composer/installers",
@@ -677,15 +677,15 @@
         },
         {
             "name": "wpackagist-plugin/loco-translate",
-            "version": "2.4.0",
+            "version": "2.3.3",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/loco-translate/",
-                "reference": "tags/2.4.0"
+                "reference": "tags/2.3.3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/loco-translate.2.4.0.zip"
+                "url": "https://downloads.wordpress.org/plugin/loco-translate.2.3.3.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
