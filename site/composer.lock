@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f5d3505fe422359ad7843d1f6e0a354c",
+    "content-hash": "3ab87e24348cd8f3627643b0a3a69290",
     "packages": [
         {
             "name": "composer/installers",
@@ -638,6 +638,42 @@
             },
             "type": "wordpress-plugin",
             "homepage": "https://wordpress.org/plugins/automatic-translator-addon-for-loco-translate/"
+        },
+        {
+            "name": "wpackagist-plugin/cf7-cep-autofill",
+            "version": "1.0.6",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/cf7-cep-autofill/",
+                "reference": "trunk"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/cf7-cep-autofill.zip?timestamp=1554564651"
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/cf7-cep-autofill/"
+        },
+        {
+            "name": "wpackagist-plugin/contact-form-7",
+            "version": "5.2",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/contact-form-7/",
+                "reference": "tags/5.2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/contact-form-7.5.2.zip"
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/contact-form-7/"
         },
         {
             "name": "wpackagist-plugin/flexible-checkout-fields",
