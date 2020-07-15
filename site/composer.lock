@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3ab87e24348cd8f3627643b0a3a69290",
+    "content-hash": "4a1548e3f9a1ea6d416a3dc8676e222d",
     "packages": [
         {
             "name": "composer/installers",
@@ -640,42 +640,6 @@
             "homepage": "https://wordpress.org/plugins/automatic-translator-addon-for-loco-translate/"
         },
         {
-            "name": "wpackagist-plugin/cf7-cep-autofill",
-            "version": "1.0.6",
-            "source": {
-                "type": "svn",
-                "url": "https://plugins.svn.wordpress.org/cf7-cep-autofill/",
-                "reference": "trunk"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/cf7-cep-autofill.zip?timestamp=1554564651"
-            },
-            "require": {
-                "composer/installers": "~1.0"
-            },
-            "type": "wordpress-plugin",
-            "homepage": "https://wordpress.org/plugins/cf7-cep-autofill/"
-        },
-        {
-            "name": "wpackagist-plugin/contact-form-7",
-            "version": "5.2",
-            "source": {
-                "type": "svn",
-                "url": "https://plugins.svn.wordpress.org/contact-form-7/",
-                "reference": "tags/5.2"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/contact-form-7.5.2.zip"
-            },
-            "require": {
-                "composer/installers": "~1.0"
-            },
-            "type": "wordpress-plugin",
-            "homepage": "https://wordpress.org/plugins/contact-form-7/"
-        },
-        {
             "name": "wpackagist-plugin/flexible-checkout-fields",
             "version": "2.4.13",
             "source": {
@@ -854,6 +818,24 @@
             },
             "type": "wordpress-plugin",
             "homepage": "https://wordpress.org/plugins/woo-cart-abandonment-recovery/"
+        },
+        {
+            "name": "wpackagist-plugin/woo-correios-calculo-de-frete-na-pagina-do-produto",
+            "version": "3.1.96",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/woo-correios-calculo-de-frete-na-pagina-do-produto/",
+                "reference": "tags/3.1.96"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/woo-correios-calculo-de-frete-na-pagina-do-produto.3.1.96.zip"
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/woo-correios-calculo-de-frete-na-pagina-do-produto/"
         },
         {
             "name": "wpackagist-plugin/woo-parcelas-com-e-sem-juros",
