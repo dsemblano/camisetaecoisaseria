@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4a1548e3f9a1ea6d416a3dc8676e222d",
+    "content-hash": "f5d3505fe422359ad7843d1f6e0a354c",
     "packages": [
         {
             "name": "composer/installers",
@@ -818,24 +818,6 @@
             },
             "type": "wordpress-plugin",
             "homepage": "https://wordpress.org/plugins/woo-cart-abandonment-recovery/"
-        },
-        {
-            "name": "wpackagist-plugin/woo-correios-calculo-de-frete-na-pagina-do-produto",
-            "version": "3.1.96",
-            "source": {
-                "type": "svn",
-                "url": "https://plugins.svn.wordpress.org/woo-correios-calculo-de-frete-na-pagina-do-produto/",
-                "reference": "tags/3.1.96"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/woo-correios-calculo-de-frete-na-pagina-do-produto.3.1.96.zip"
-            },
-            "require": {
-                "composer/installers": "~1.0"
-            },
-            "type": "wordpress-plugin",
-            "homepage": "https://wordpress.org/plugins/woo-correios-calculo-de-frete-na-pagina-do-produto/"
         },
         {
             "name": "wpackagist-plugin/woo-parcelas-com-e-sem-juros",

@@ -65,7 +65,6 @@
     "wpackagist-plugin/social-pug":">=1.6.2",
     "wpackagist-plugin/woo-cart-abandonment-recovery":">=1.2.7",
     "wpackagist-plugin/woo-payment-discounts":">=1.2.0",
-    "wpackagist-plugin/woo-correios-calculo-de-frete-na-pagina-do-produto":">=3.1.96",
     "wpackagist-plugin/wps-hide-login":">=1.5.4.2"
   },
   "require-dev": {
