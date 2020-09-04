@@ -883,7 +883,7 @@ jQuery(document).ready(function($){
 					content: '<center><i class="lumise-spinner x3"></i></center>'
 				});
 			};
-			
+			alert(lumisejs.admin_ajax_url);
 			$.ajax({
 				url: lumisejs.admin_ajax_url,
 				method: 'POST',
@@ -1104,6 +1104,8 @@ jQuery(document).ready(function($){
 				$('#lumise-enable-customize, #lumise_product_data a[data-func="remove-base-product"]').addClass('hidden');
 			};
 			
+			$('#lumise_product_data').closest('div.dokan-other-options.dokan-edit-row').show();
+			
 		} else if (this.value == "variable") {
 			
 			$('#lumise-product-base').html(
@@ -1113,10 +1115,53 @@ jQuery(document).ready(function($){
 			$('#lumise-seclect-base').hide();
 			$('ul.product_data_tabs li.lumise_options.lumise_tab').show();
 			
+			$('#lumise_product_data').closest('div.dokan-other-options.dokan-edit-row').hide();
+			
 		} else {
 			$('ul.product_data_tabs li.lumise_options.lumise_tab').hide();
+			$('#lumise_product_data').closest('div.dokan-other-options.dokan-edit-row').hide();
 		};
 		
 	}).change();
+	
+	
+	$('#product_type').on('change', function(e) {
+		
+		if (this.value == 'simple') {
+			$('#lumise_product_data').closest('div.dokan-other-options.dokan-edit-row').show();
+			
+		} else {
+			$('#lumise_product_data').closest('div.dokan-other-options.dokan-edit-row').hide();
+		};
+		
+	}).change();
+	
+	$('select#field_to_edit option[value="delete_all"]').after('<option value="delete_all_lumise">Clear all Lumise Configuations</option>');
+	$('select#field_to_edit+a').on('click', (e) => {
+		if ($('select#field_to_edit').val() == 'delete_all_lumise') {
+			if (confirm('Are you sure that you want to clear all Lumise Configuations?'))
+			$('textarea.lumise-vari-inp').val('');
+			$('div.variable_lumise_data').attr('data-empty', 'true').removeAttr('is').find('iframe').remove();
+			$('div#woocommerce-product-data').append(`<div class="UIloading blockUI blockOverlay" style="z-index: 1000; border: none; margin: 0px; padding: 0px; width: 100%; height: 100%; top: 0px; left: 0px; background: rgb(255, 255, 255); opacity: 0.6; cursor: wait; position: absolute;"></div>`);
+			$.ajax({
+				url: lumisejs.admin_ajax_url,
+				method: 'POST',
+				data: {
+					nonce: 'LUMISE-SECURITY-BACKEND:'+lumisejs.nonce_backend,
+					ajax: 'backend',
+					action: 'product_variation',
+					clear_all_config: window.post_ID.value
+				},
+				success: (res) => {
+					window.parent.jQuery('div#woocommerce-product-data div.UIloading').remove();
+					window.parent.jQuery('div#variable_product_options div.toolbar button')
+							.attr({'disabled': 'disabled'});
+							
+				}
+			});
+			e.preventDefault();
+			return false;
+		}
+	});
 
 });

@@ -8886,14 +8886,14 @@ div[data-design-layer] {
 div#LumiseDesign div#lumise-navigations ul[data-block="right"]>li#lumise-proceed i{
     display: none;
 }
-
-/*=========END=========*/
-
 .lumise_content table tbody td .product-title{
     display: block;
     position: relative;
     width: 100%;
 }
-ul#lumise-file-nav li[data-func="save"]{
-    display: none !important;
+ul.lumise-left-nav{
+    overflow: hidden;
+    overflow-y: auto;
+    max-height: calc(100vh - 56px);
 }
+/*===COMMIT===*/

@@ -1250,9 +1250,9 @@ class lumise_lib{
 		);
 	}
 	
-	public function get_uploaded_bases() {
+	public function get_uploaded_bases($uid = '') {
 		
-		$path = $this->main->cfg->upload_path.'products'.DS;
+		$path = $this->main->cfg->upload_path.'products'.DS.(!empty($uid) ? $uid.DS : '');
 		$items = array();
 		
 		if ($handle = opendir($path)) {
@@ -1262,8 +1262,8 @@ class lumise_lib{
 		            	is_file($path.DS.$sub) &&
 		            	(strpos($sub, '.png') !== false || strpos($sub, '.jpg') !== false || strpos($sub, '.svg') !== false)
 		            ) {
-		                $items[-filemtime($path.DS.$sub)] = $sub;
-		            } else if (is_dir($path.DS.$sub) && $_handle = opendir($path.DS.$sub)) {
+		                $items[-filemtime($path.DS.$sub)] = (!empty($uid) ? $uid.'/' : '').$sub;
+		            }/* else if (is_dir($path.DS.$sub) && $_handle = opendir($path.DS.$sub)) {
 						while (false !== ($_sub = readdir($_handle))) {
 				            if (
 				            	is_file($path.DS.$sub.DS.$_sub) && 
@@ -1275,11 +1275,11 @@ class lumise_lib{
 				            	$_sub != "." && 
 				            	$_sub != ".."
 				            ) {
-					            $items[-filemtime($path.DS.$sub.DS.$_sub)] = $sub.'/'.$_sub;
+					            $items[-filemtime($path.DS.$sub.DS.$_sub)] = (!empty($uid) ? $uid.'/' : '').$sub.'/'.$_sub;
 				            }
 				        }
 						closedir($_handle);
-			        }   
+			        }*/   
 		        }
 	        }
 			closedir($handle);

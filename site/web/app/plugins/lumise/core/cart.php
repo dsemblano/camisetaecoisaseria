@@ -519,7 +519,8 @@ class lumise_cart extends lumise_lib
                     }
 
                     if (isset($rule[$option]))
-                        $print_price += floatval($rule[$option]*$unit);
+                        // $print_price += floatval($rule[$option]*$unit);
+                    	$print_price += floatval(floatval($rule[$option])*floatval($unit));
                     
                     if (!is_array($val))
                     	$total_res += $unit;

@@ -62,6 +62,7 @@ if(!class_exists('lumise_connector')){
 			$lumise->add_filter('back_link', array(&$this, 'backToShop_link'));
             
             if (!is_admin()) {
+	            $lumise->add_action('ajax', array(&$this, 'ajax'));
 	            $lumise->add_action('js_init', array(&$this, 'js_init'));
 	            $lumise->add_filter('get_product', array(&$this, 'get_product'));
 	           //$lumise->add_filter('js_init', array(&$this, 'editor_js_init'));
@@ -89,6 +90,50 @@ if(!class_exists('lumise_connector')){
 		public function is_login() {
 			global $lumise;
 			return $lumise->connector->cookie('uid') || 0;
+			
+		}
+		
+		public function ajax () {
+			
+			global $lumise;
+			
+			if (
+				isset($_POST['subaction']) &&
+				$_POST['subaction'] == 'woo_product_variation'
+			) {
+				
+				header('content-type: application/json');
+				
+				$variable_product = wc_get_product( wp_get_post_parent_id( absint( $_POST['product_id'] ) ) );
+			
+			    if ( ! $variable_product ) {
+			    	echo '{"success": false, "message": "Error, invalid product id."}';
+			    	exit;
+			    }
+			
+			    $data_store   = WC_Data_Store::load( 'product' );
+			    $variation_id = $data_store->find_matching_product_variation( $variable_product, wp_unslash( $_POST ) );
+			    $variation    = $variation_id ? $variable_product->get_available_variation( $variation_id ) : false;
+			   
+			    if (
+			    	!isset($variation['lumise']) ||
+			    	$variation['lumise'] === 0
+			    ) {
+				    echo '{"success": false, "message": "Error, The variation you choose does not support custom designs."}';
+			    	exit;
+			    }
+				
+				$products = $this->get_product(array(), 'variable:'.$variation['lumise']);
+				
+				echo json_encode(array(
+					"success" => true,
+					"id" => $variation['lumise'],
+					"data" => $lumise->lib->prepare_product($products[0])
+				));
+				
+				exit;
+					
+			}
 			
 		}
 		
@@ -883,9 +928,12 @@ if(!class_exists('lumise_connector')){
 					
 					$stages = $lumise->lib->dejson($data['stages']);
 					
+					$woo_product = wc_get_product( $pid );
+					$woo_product_parent = wc_get_product( $woo_product->get_parent_id() );
+					
 					$products[0] = array( 
 						'id' => 'variable:'.$pid,
-						'product' => $pid,
+						'product' => isset($_POST['product_cms']) ? $_POST['product_cms'] : '',
 						'cms_id' => isset($_POST['product_cms']) ? $_POST['product_cms'] : '',
 						'color' => 'red',
 						'name' => $product->get_name(), 
@@ -895,7 +943,58 @@ if(!class_exists('lumise_connector')){
 						'stages' => $data['stages'],
 						'printings' => $data['printing'],
 						'attributes' => array(),
-						'variations' => array()
+						'variations' => array(),
+						'ext_attributes' => $woo_product_parent->get_variation_attributes(),
+						'ext_attributes_value' => $woo_product->get_attributes(),
+						'ext_attributes_callback' => "
+							let selects = wrp.find('div.lumise-cart-field.ext-attribute select'); 
+							selects.on('change', function(e) {
+								
+								let sel = this,
+									val = this.value,
+									post_data = {
+										nonce: 'LUMISE-SECURITY:'+lumise.data.nonce,
+										ajax: 'frontend',
+										action: 'load_product',
+										subaction: 'woo_product_variation',
+										product_id: lumise.data.product.replace('variable:', ''),
+										product_cms: lumise.fn.url_var('product_cms')
+									};
+								
+								post_data['attribute_'+this.name] = val;
+								
+								selects.each(function() {
+									if (post_data['attribute_'+this.name] === undefined) {
+										post_data['attribute_'+this.name] = this.value;
+									}
+								});
+								
+								sel.value = sel.getAttribute('data-value');
+								
+								lumise.f('Loading variation..');
+								
+								$.ajax({
+									url: lumise.data.ajax,
+									method: 'POST',
+									data: post_data,
+									dataType: 'JSON',
+									success: function(res) {
+										
+										if (res.success === false) {
+											lumise.fn.notice(res.message, 'error', 5000);
+										} else {
+											lumise.render.product(res.data);
+										};
+										
+										lumise.f(false);
+										
+									}
+								});
+					
+							}).each(function() {
+								this.setAttribute('data-value', this.value);
+							});
+						"
 					);
 				}
 			}

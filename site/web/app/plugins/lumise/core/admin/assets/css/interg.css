@@ -1343,3 +1343,12 @@ dd.lumise-variation {
 .variable_lumise_data  iframe {
 	border-top: 1px solid #ccc;
 }
+.variable_lumise_data  iframe[data-full="true"] {
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	width: 100vw !important;
+	height: 100vh !important;
+	z-index: 100000000;
+}
+/*--COMMIT--*/

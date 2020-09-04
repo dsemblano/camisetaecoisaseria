@@ -147,12 +147,12 @@ class lumise_views extends lumise_lib {
 									PNG <em class="check"></em>
 								</label>
 							</div>
-							<!-- <div class="lumise-radio">
+							<div class="lumise-radio">
 								<input type="radio" data-dp="format" class="doPrint" data-format="svg" name="print-format" id="print-format-svg">
 								<label class="lumise-cart-option-label" for="print-format-svg">
 									SVG <em class="check"></em>
 								</label>
-							</div>
+							</div><!-- 
 							<div class="lumise-radio">
 								<input type="radio" data-dp="format" class="doPrint" data-format="pdf" name="print-format" id="print-format-pdf">
 								<label class="lumise-cart-option-label" for="print-format-pdf">
@@ -185,7 +185,7 @@ class lumise_views extends lumise_lib {
 				</li>
 				<li data-row="unit">
 					<input type="radio" data-dp="unit" class="doPrint" name="print-unit" id="print-unit-cm" checked data-unit="cm" />
-					<label for="print-unit-cm">Centimet</label>
+					<label for="print-unit-cm">Centimeters</label>
 					<input type="radio" data-dp="unit" class="doPrint" name="print-unit" id="print-unit-inch" data-unit="inch" />
 					<label for="print-unit-inch"> Inch</label>
 					<input type="radio" data-dp="unit" class="doPrint" name="print-unit" id="print-unit-px" data-unit="px" />
@@ -2565,7 +2565,7 @@ class lumise_views extends lumise_lib {
 														isset($sdata->size->unit) && 
 														$sdata->size->unit == 'cm'
 													) echo 'selected';
-												?> value="cm">Centimet</option>
+												?> value="cm">Centimeters</option>
 												<option <?php
 													if (
 														isset($sdata->size) && 
@@ -3102,7 +3102,7 @@ class lumise_views extends lumise_lib {
 							</p>
 							<p data-field="required">
 								<input id="" data-name="required" type="checkbox" />
-								<label for=""><?php echo $this->main->lang('Field reqired'); ?></label>
+								<label for=""><?php echo $this->main->lang('Field required'); ?></label>
 							</p>
 							<p data-field="use_variation">
 								<input id="" data-name="use_variation" type="checkbox" />

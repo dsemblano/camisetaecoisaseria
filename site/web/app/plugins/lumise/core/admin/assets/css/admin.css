@@ -1745,6 +1745,7 @@ left: 0px !important;
 #lumise-popup #lumise-base-upload-progress>div img{
     max-width: 200px;
     margin-top: 10px;
+    max-height: 50vh;
 }
 #lumise-popup #lumise-base-upload-progress>div button{
     margin: 20px 2px 10px;

@@ -10,7 +10,7 @@
 if (!defined('DS'))
 	define('DS', DIRECTORY_SEPARATOR);
 
-define('LUMISE', '1.9');
+define('LUMISE', '1.9.5');
 
 class lumise {
 
@@ -44,10 +44,10 @@ class lumise {
 	}
 
 	public function init(){
-
+		
 		$this->connector = new lumise_connector();
 		$this->cfg = new lumise_cfg($this->connector);
-		
+
 		if (
 			property_exists($this->cfg, 'database') &&
 			$this->cfg->database !== null &&
@@ -126,12 +126,35 @@ class lumise {
 	}
 
 	public function lang($s) {
-		if(is_admin() && isset($this->cfg->lang_storage_backend[strtolower($s)])){
-			$s = str_replace("'", "&#39;", stripslashes($this->cfg->lang_storage_backend[strtolower($s)]));
+		
+		if (!isset($this->connector))
+			return $s;
+				
+		if (
+			isset($this->connector->platform) && 
+			$this->connector->platform == 'php'
+		){
+
+			return isset($this->cfg->lang_storage[strtolower($s)]) ?
+			   str_replace("'", "&#39;", stripslashes($this->cfg->lang_storage[strtolower($s)])) : $s;
 		}
 
-		if(!is_admin() && isset($this->cfg->lang_storage_frontend[strtolower($s)])){
-			$s = str_replace("'", "&#39;", stripslashes($this->cfg->lang_storage_frontend[strtolower($s)]));
+		if (isset($this->connector->platform) &&$this->connector->platform == 'woocommerce'){
+			if(is_admin() && isset($this->cfg->lang_storage_backend[strtolower($s)])){
+				$s = str_replace("'", "&#39;", stripslashes($this->cfg->lang_storage_backend[strtolower($s)]));
+			}
+
+			if(!is_admin() && isset($this->cfg->lang_storage_frontend[strtolower($s)])){
+				$s = str_replace("'", "&#39;", stripslashes($this->cfg->lang_storage_frontend[strtolower($s)]));
+			}
+		}
+
+		if (!isset($this->connector->platform)){
+			if(isset($this->cfg->lang_storage[strtolower($s)])){
+				return str_replace("'", "&#39;", stripslashes($this->cfg->lang_storage[strtolower($s)]));
+			} else {
+				return $s;
+			}
 		}
 
 		return $s;
@@ -167,7 +190,7 @@ class lumise {
 
 		return $this->db->rawQuery(
 			sprintf(
-				"SELECT `name`, `upload` FROM `%s` WHERE `author`='%s' AND `active` = 1",
+				"SELECT `name`, `name_desc`, `upload` FROM `%s` WHERE `author`='%s' AND `active` = 1",
 				$this->db->prefix.'fonts',
 				$this->vendor_id
 			)
@@ -288,18 +311,32 @@ class lumise {
 	public function set_lang($code) {
 
 		$langs = $this->langs();
-
-		// backend language 
-		if (isset($langs[$code]) && is_admin()) {
-			$this->cfg->active_language_backend = $code;
-			$this->connector->set_session('lumise-active-lang-backend', $code);
+		if(isset($this->connector->platform) && $this->connector->platform == 'php'){
+			if (isset($langs[$code])) {
+				$this->cfg->active_language = $code;
+				$this->connector->set_session('lumise-active-lang', $code);
+			}
 		}
 
-		// frontend language 
-		if (isset($langs[$code]) && !is_admin()) {
-			$this->cfg->active_language_frontend = $code;
-			$this->connector->set_session('lumise-active-lang-frontend', $code);
+		if(isset($this->connector->platform) && $this->connector->platform == 'woocommerce'){
+			// backend language 
+			if (isset($langs[$code]) && is_admin()) {
+				$this->cfg->active_language_backend = $code;
+				$this->connector->set_session('lumise-active-lang-backend', $code);
+			}
+
+			// frontend language 
+			if (isset($langs[$code]) && !is_admin()) {
+				$this->cfg->active_language_frontend = $code;
+				$this->connector->set_session('lumise-active-lang-frontend', $code);
+			}
 		}
+
+		if (isset($langs[$code]) && !isset($this->connector->platform) ) {
+			$this->cfg->active_language = $code;
+			$this->connector->set_session('lumise-active-lang', $code);
+		}
+
 
 	}
 

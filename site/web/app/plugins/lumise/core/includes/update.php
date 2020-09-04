@@ -179,6 +179,15 @@ class lumise_update extends lumise_lib {
 		if (version_compare(LUMISE, '1.7.5') >=0 ) {
 			$this->upgrade_1_7_5();
 		}
+
+		if (version_compare(LUMISE, '1.9.2') >=0 ) {
+			$sql = "SHOW COLUMNS FROM `{$this->main->db->prefix}fonts` LIKE 'name_desc'";
+			$columns = $this->main->db->rawQuery($sql);
+			if(count($columns) == 0){
+				$sql_active = "ALTER TABLE `{$this->main->db->prefix}fonts` ADD `name_desc` varchar(255) NOT NULL DEFAULT '' AFTER `upload`";
+				$this->main->db->rawQuery($sql_active);
+			}
+		}
 		
 		
 		/*

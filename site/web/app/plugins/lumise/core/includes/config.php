@@ -347,92 +347,126 @@ class lumise_cfg extends lumise_tmpl_register{
 
     public function set_lang($lumise) {
 
-	 //    if (
-		// 	defined('LUMISE_ADMIN') && 
-		// 	LUMISE_ADMIN === true
-		// ) {
+    	if($lumise->connector->platform == 'php'){
+    		if (
+				defined('LUMISE_ADMIN') && 
+				LUMISE_ADMIN === true
+			) {
 
-		// 	if (
-		// 		isset($this->settings['admin_lang']) &&
-		// 		!empty($this->settings['admin_lang'])
-		// 	)
-		// 		$this->active_language = $this->settings['admin_lang'];
-		// 	else
-		// 		$this->active_language = 'en';
+				if (
+					isset($this->settings['admin_lang']) &&
+					!empty($this->settings['admin_lang'])
+				)
+					$this->active_language = $this->settings['admin_lang'];
+				else
+					$this->active_language = 'en';
 
-		// }else{
-		// 	$this->active_language = $lumise->connector->get_session('lumise-active-lang');
+			}else{
+				$this->active_language = $lumise->connector->get_session('lumise-active-lang');
+				
+				if (
+					!isset($this->active_language) ||
+					empty($this->active_language) || 
+					!$this->settings['allow_select_lang']
+				) {
+
+					if (
+						isset($this->settings['editor_lang']) &&
+						!empty($this->settings['editor_lang'])
+					)
+						$this->active_language = $this->settings['editor_lang'];
+					else
+						$this->active_language = 'en';
+						
+						$lumise->connector->set_session('lumise-active-lang', $this->active_language);
+
+				}
+			} 
 			
-		// 	if (
-		// 		!isset($this->active_language) ||
-		// 		empty($this->active_language) || 
-		// 		!$this->settings['allow_select_lang']
-		// 	) {
+			if (
+				isset($this->active_language) &&
+				!empty($this->active_language) 
+				// && $this->active_language != 'en'
+			) {
 
-		// 		if (
-		// 			isset($this->settings['editor_lang']) &&
-		// 			!empty($this->settings['editor_lang'])
-		// 		)
-		// 			$this->active_language = $this->settings['editor_lang'];
-		// 		else
-		// 			$this->active_language = 'en';
-					
-		// 			$lumise->connector->set_session('lumise-active-lang', $this->active_language);
-
-		// 	}
-		// } 
-		
-		// if (
-		// 	isset($this->active_language) &&
-		// 	!empty($this->active_language) 
-		// 	// && $this->active_language != 'en'
-		// ) {
-
-		// 	$get_query = "SELECT `original_text`, `text` FROM `{$lumise->db->prefix}languages` WHERE `author`='{$lumise->vendor_id}' AND `lang`='".$this->active_language."'";
-		// 	$get_langs = $lumise->db->rawQuery($get_query);
-
-		// 	if (count($get_langs) > 0) {
-		// 		foreach ($get_langs as $lang) {
-		// 			$this->lang_storage[strtolower($lang['original_text'])] = $lang['text'];
-		// 		}
-		// 	}
-			
-		// 	$this->lang_storage = $lumise->apply_filters('language', $this->lang_storage);
-			
-		// }
-
-    	// backend
-    	if(is_admin()){
-    		if ( isset($this->settings['admin_lang']) && !empty($this->settings['admin_lang']) ){
-				$this->active_language_backend = $this->settings['admin_lang'];
-			} else {
-				$this->active_language_backend = 'en';
-			}
-
-			if ( isset($this->settings['editor_lang']) && !empty($this->settings['editor_lang']) ){
-				$this->active_language_frontend = $this->settings['editor_lang'];
-			} else {
-				$this->active_language_frontend = 'en';
-			}
-
-			if(isset($this->active_language_backend) && !empty($this->active_language_backend) && $this->active_language_backend != 'en'){
-
-				$lumise->connector->set_session('lumise-active-lang-backend', $this->active_language_backend);
-
-				$get_query = "SELECT `original_text`, `text` FROM `{$lumise->db->prefix}languages` WHERE `author`='{$lumise->vendor_id}' AND `lang`='".$this->active_language_backend."'";
+				$get_query = "SELECT `original_text`, `text` FROM `{$lumise->db->prefix}languages` WHERE `author`='{$lumise->vendor_id}' AND `lang`='".$this->active_language."'";
 				$get_langs = $lumise->db->rawQuery($get_query);
 
 				if (count($get_langs) > 0) {
 					foreach ($get_langs as $lang) {
-						$this->lang_storage = $this->lang_storage_backend[strtolower($lang['original_text'])] = $lang['text'];
+						$this->lang_storage[strtolower($lang['original_text'])] = $lang['text'];
 					}
 				}
 				
-				$this->lang_storage_backend = $lumise->apply_filters('language', $this->lang_storage_backend);
+				$this->lang_storage = $lumise->apply_filters('language', $this->lang_storage);
+				
 			}
+    	}
 
-			if(isset($this->active_language_frontend) && !empty($this->active_language_frontend) && $this->active_language_frontend != 'en'){
-				$lumise->connector->set_session('lumise-active-lang-frontend', $this->active_language_frontend);
+    	if($lumise->connector->platform == 'woocommerce'){
+    		// backend
+	    	if(is_admin()){
+	    		if ( isset($this->settings['admin_lang']) && !empty($this->settings['admin_lang']) ){
+					$this->active_language_backend = $this->settings['admin_lang'];
+				} else {
+					$this->active_language_backend = 'en';
+				}
+
+				if ( isset($this->settings['editor_lang']) && !empty($this->settings['editor_lang']) ){
+					$this->active_language_frontend = $this->settings['editor_lang'];
+				} else {
+					$this->active_language_frontend = 'en';
+				}
+
+				if(isset($this->active_language_backend) && !empty($this->active_language_backend) && $this->active_language_backend != 'en'){
+
+					$lumise->connector->set_session('lumise-active-lang-backend', $this->active_language_backend);
+
+					$get_query = "SELECT `original_text`, `text` FROM `{$lumise->db->prefix}languages` WHERE `author`='{$lumise->vendor_id}' AND `lang`='".$this->active_language_backend."'";
+					$get_langs = $lumise->db->rawQuery($get_query);
+
+					if (count($get_langs) > 0) {
+						foreach ($get_langs as $lang) {
+							$this->lang_storage = $this->lang_storage_backend[strtolower($lang['original_text'])] = $lang['text'];
+						}
+					}
+					
+					$this->lang_storage_backend = $lumise->apply_filters('language', $this->lang_storage_backend);
+				}
+
+				if(isset($this->active_language_frontend) && !empty($this->active_language_frontend) && $this->active_language_frontend != 'en'){
+					$lumise->connector->set_session('lumise-active-lang-frontend', $this->active_language_frontend);
+
+					$get_query = "SELECT `original_text`, `text` FROM `{$lumise->db->prefix}languages` WHERE `author`='{$lumise->vendor_id}' AND `lang`='".$this->active_language_frontend."'";
+					$get_langs = $lumise->db->rawQuery($get_query);
+
+					if (count($get_langs) > 0) {
+						foreach ($get_langs as $lang) {
+							$this->lang_storage_frontend[strtolower($lang['original_text'])] = $lang['text'];
+						}
+					}
+					
+					$this->lang_storage_frontend = $lumise->apply_filters('language', $this->lang_storage_frontend);
+				}
+	    	}
+
+	    	// frontend
+	    	if(!is_admin()){
+
+	    		// get frontend language session
+	    		$this->active_language_frontend = $lumise->connector->get_session('lumise-active-lang-frontend');
+				
+				// if frontend language session not set or not allow user change, get from setting
+				if ( !isset($this->active_language_frontend) || empty($this->active_language_frontend) || !$this->settings['allow_select_lang']) {
+					if (!isset($this->settings['editor_lang']) || empty($this->settings['editor_lang'])){
+						$this->active_language_frontend = 'en';
+						
+					}
+					if(isset($this->settings['editor_lang']) || !empty($this->settings['editor_lang'])){
+						$this->active_language_frontend = $this->settings['editor_lang'];
+					}
+					$lumise->connector->set_session('lumise-active-lang-frontend', $this->active_language_frontend);
+				}
 
 				$get_query = "SELECT `original_text`, `text` FROM `{$lumise->db->prefix}languages` WHERE `author`='{$lumise->vendor_id}' AND `lang`='".$this->active_language_frontend."'";
 				$get_langs = $lumise->db->rawQuery($get_query);
@@ -444,38 +478,7 @@ class lumise_cfg extends lumise_tmpl_register{
 				}
 				
 				$this->lang_storage_frontend = $lumise->apply_filters('language', $this->lang_storage_frontend);
-			}
-    	}
-
-    	// frontend
-    	if(!is_admin()){
-
-    		// get frontend language session
-    		$this->active_language_frontend = $lumise->connector->get_session('lumise-active-lang-frontend');
-			
-			// if frontend language session not set or not allow user change, get from setting
-			if ( !isset($this->active_language_frontend) || empty($this->active_language_frontend) || !$this->settings['allow_select_lang']) {
-				if (!isset($this->settings['editor_lang']) || empty($this->settings['editor_lang'])){
-					$this->active_language_frontend = 'en';
-					
-				}
-				if(isset($this->settings['editor_lang']) || !empty($this->settings['editor_lang'])){
-					$this->active_language_frontend = $this->settings['editor_lang'];
-				}
-				$lumise->connector->set_session('lumise-active-lang-frontend', $this->active_language_frontend);
-			}
-
-			$get_query = "SELECT `original_text`, `text` FROM `{$lumise->db->prefix}languages` WHERE `author`='{$lumise->vendor_id}' AND `lang`='".$this->active_language_frontend."'";
-			$get_langs = $lumise->db->rawQuery($get_query);
-
-			if (count($get_langs) > 0) {
-				foreach ($get_langs as $lang) {
-					$this->lang_storage_frontend[strtolower($lang['original_text'])] = $lang['text'];
-				}
-			}
-			
-			$this->lang_storage_frontend = $lumise->apply_filters('language', $this->lang_storage_frontend);
-
+	    	}
     	}
 
     }

@@ -131,3 +131,6 @@ body .woocommerce .products .product .lumise-list-button:hover{
     top: 0;
     left: 0;
 }
+div.single_variation_wrap + a#lumise-customize-button{
+    display: none;
+}

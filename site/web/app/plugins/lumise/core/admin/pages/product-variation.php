@@ -1,5 +1,43 @@
 <?php
 	
+	global $lumise, $current_user;
+	
+	if(
+		!defined('LUMISE') || 
+		!$current_user ||
+		(!$lumise->caps('lumise_access') && get_user_meta( $current_user->ID, 'dokan_enable_selling' , true ) != 'yes')
+	) {
+		header('HTTP/1.0 403 Forbidden');
+		exit;
+	}
+	
+	if (
+		isset($_POST['clear_all_config'])
+	) {
+		global $wpdb;
+		$varis = $wpdb->get_results("SELECT `ID` FROM `{$wpdb->prefix}posts` WHERE `post_parent`=".((int)$_POST['clear_all_config'])." AND `post_type` = 'product_variation' AND `post_status` = 'publish'");
+		if (count($varis) > 0) {
+			foreach ($varis as $vari) {
+				update_post_meta($vari->ID, '_variation_lumise', '');
+			}
+		}
+		exit;
+	}
+	
+	if (
+		isset($_POST['data']) &&
+		isset($_POST['apply_all_variations']) &&
+		$_POST['apply_all_variations'] = 1
+	) {
+		global $wpdb;
+		$varis = $wpdb->get_results("SELECT `ID` FROM `{$wpdb->prefix}posts` WHERE `post_parent`=".((int)$_GET['product_id'])." AND `post_type` = 'product_variation' AND `post_status` = 'publish'");
+		if (count($varis) > 0) {
+			foreach ($varis as $vari) {
+				update_post_meta($vari->ID, '_variation_lumise', $_POST['data']);
+			}
+		}
+		exit;
+	}
 	
 	global $lumise;
 	global $lumise_admin;
@@ -76,7 +114,7 @@
 		ajax : "<?php echo htmlspecialchars_decode($lumise->cfg->admin_ajax_url); ?>",
 		assets : "<?php echo $lumise->cfg->assets_url; ?>",
 		jquery : "<?php echo $lumise->cfg->load_jquery; ?>",
-		nonce : "<?php echo lumise_secure::create_nonce('LUMISE_ADMIN') ?>",
+		nonce : "<?php echo lumise_secure::create_nonce('LUMISE_ADMIN'); ?>",
 		filter_ajax: function(ops) {
 			return ops;
 		},
@@ -88,7 +126,9 @@
 <?php $lumise->do_action('editor-footer'); ?>
 <script type="text/javascript">
 (function() {
-	
+	if($('body.LumiseDesign').width() <= 1000){
+		$('body.LumiseDesign').css('overflow-y', 'scroll');
+	}
 	let fitIframe = () => {
 		
 			inp.val(
@@ -148,16 +188,42 @@
 					
 				break;
 				case 'apply': 
-					if (confirm('<?php echo $lumise->lang('Are you sure that you want to apply this config to all other variations?'); ?>')) {
-						window.parent.jQuery('textarea.lumise-vari-inp').val(
-							encodeURIComponent(
-								JSON.stringify({
-									stages: enjson(lumise.product.get_stages($('#lumise-stages-wrp'))),
-									printing: encodeURIComponent(JSON.stringify(lumise.product.get_printing(wrp)))
-								})
-							)
-						).first().change();
+					if (confirm('<?php 
+						echo $lumise->lang('Are you sure that you want to apply this config to all other variations?'); 
+					?>')) {
+						
+						let data = encodeURIComponent(
+							JSON.stringify({
+								stages: enjson(lumise.product.get_stages($('#lumise-stages-wrp'))),
+								printing: encodeURIComponent(JSON.stringify(lumise.product.get_printing(wrp)))
+							})
+						);
+						
+						window.parent.jQuery('textarea.lumise-vari-inp').val(data);
 						window.parent.jQuery('div.variable_lumise_data').attr('data-empty', 'false');
+						window.parent.jQuery('div.variable_lumise_data iframe').each(function() {
+							if (this !== window.frameElement) {
+								$(this).parent().attr({'data-empty': 'false', 'is': 'nonempty'}).removeClass('hasFrame');
+								$(this).remove();
+							}
+						});
+						window.parent.jQuery('div#woocommerce-product-data').append(`<div class="UIloading blockUI blockOverlay" style="z-index: 1000; border: none; margin: 0px; padding: 0px; width: 100%; height: 100%; top: 0px; left: 0px; background: rgb(255, 255, 255); opacity: 0.6; cursor: wait; position: absolute;"></div>`);
+						
+						$.ajax({
+							url: window.location.href,
+							method: 'POST',
+							data: {
+								data	: data,
+								apply_all_variations	: 1
+							},
+							success: (res) => {
+								window.parent.jQuery('div#woocommerce-product-data div.UIloading').remove();
+								window.parent.jQuery('div#variable_product_options div.toolbar button')
+										.attr({'disabled': 'disabled'});
+										
+							}
+						});
+						
 					}
 				break;
 			}

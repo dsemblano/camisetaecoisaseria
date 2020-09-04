@@ -332,7 +332,7 @@ class lumise_ajax extends lumise_lib {
 
 		$data = array(
 			'name' => $post->name,
-			'price' => (int)$post->price,
+			'price' => doubleval($post->price),
 			'featured' => $post->featured,
 			'active' => 1,
 			'author' => $this->main->vendor_id,
@@ -1018,17 +1018,31 @@ class lumise_ajax extends lumise_lib {
 	
 	public function upload_product_images() {
 		
+		if (!$this->main->caps('lumise_can_upload')) {
+			echo $this->main->lang('Sorry, You do not have permission to upload');
+			exit;
+		}
+		
 		$time = time();
 		$check = $this->main->check_upload($time);
+		
+		$vendor = isset($_POST['vendor']) ? $_POST['vendor'] : 'false';
+		$uid = get_current_user_id();
 		
 		if ($check !== 1) {
 			echo 'Error: '.$check;
 			exit;
 		}
 		
+		if ($vendor == 'true' && !is_dir($this->main->cfg->upload_path.'products'.DS.$uid))
+			mkdir($this->main->cfg->upload_path.'products'.DS.$ui, 0755);
+		
 		$path = $this->main->cfg->upload_path.'products'.DS;
 		$res = array();
 		
+		if ($vendor == 'true')
+			$path .= $uid.DS;
+			
 		foreach ($_FILES as $name => $file) {
 			
 			$image = @file_get_contents($file["tmp_name"]);
@@ -1037,7 +1051,7 @@ class lumise_ajax extends lumise_lib {
 			$image = base64_decode($image[1]);
 			
 			if (@file_put_contents($path.$name.$type, $image)) {
-				$res[$name] = 'products/'.$name.$type;
+				$res[$name] = 'products/'.($vendor == 'true' ? $uid.'/' : '').$name.$type;
 			}
 			
 			unset($image);
@@ -1050,6 +1064,11 @@ class lumise_ajax extends lumise_lib {
 	}
 	
 	public function upload() {
+		
+		if (!$this->main->caps('lumise_can_upload')) {
+			echo $this->main->lang('Sorry, You do not have permission to upload');
+			exit;
+		}
 		
 		$time = time();
 		$check = $this->main->check_upload($time);
@@ -1104,6 +1123,11 @@ class lumise_ajax extends lumise_lib {
 	}
 	
 	public function upload_stages($matches) {
+		
+		if (!$this->main->caps('lumise_can_upload')) {
+			echo $this->main->lang('Sorry, You do not have permission to delete');
+			exit;
+		}
 		
 		$path = $this->main->cfg->upload_path.'products'.DS;
 		$type = '.jpg';
@@ -1304,13 +1328,16 @@ function renderPDF(svgs, url) {
 		
 		$start = isset($_POST['start']) ? $_POST['start'] : 0;
 		$limit = isset($_POST['limit']) ? $_POST['limit'] : 30;
+		$vendor = isset($_POST['vendor']) ? $_POST['vendor'] : 'false';
 		
-		$items = $this->main->lib->get_uploaded_bases();
+		$uid = get_current_user_id();
+		
+		$items = $this->main->lib->get_uploaded_bases($vendor == 'true' ? $uid : '');
 		$total = count($items);
 		
 		$items = array_splice($items, $start, $limit);
 		
-		$list = $this->main->get_option('product_image_names');
+		$list = $this->main->get_option('product_image_names'.($vendor == 'true' ? '_'.$uid : ''));
 		
 		if ($list === null)
 			$list = array();
@@ -1337,7 +1364,15 @@ function renderPDF(svgs, url) {
 	
 	public function edit_name_product_image() {
 		
-		$list = $this->main->get_option('product_image_names');
+		if (!$this->main->caps('lumise_can_upload')) {
+			echo $this->main->lang('Sorry, You do not have permission to edit name');
+			exit;
+		}
+		
+		$vendor = isset($_POST['vendor']) ? $_POST['vendor'] : 'false';
+		$uid = get_current_user_id();
+		
+		$list = $this->main->get_option('product_image_names'.($vendor == 'true' ? '_'.$uid : ''));
 		
 		if ($list === null)
 			$list = array();
@@ -1345,7 +1380,7 @@ function renderPDF(svgs, url) {
 		
 		$list[$_POST['file']] = $_POST['name'];
 		
-		$this->main->set_option('product_image_names', json_encode($list));
+		$this->main->set_option('product_image_names'.($vendor == 'true' ? '_'.$uid : ''), json_encode($list));
 		
 		echo 1;
 		exit;
@@ -1360,6 +1395,12 @@ function renderPDF(svgs, url) {
 		}
 		
 		$file = isset($_POST['file']) ? $_POST['file'] : '';
+		$vendor = isset($_POST['vendor']) ? $_POST['vendor'] : 'false';
+		$uid = get_current_user_id();
+		
+		if ($vendor == 'true') {
+			$file = $uid.DS.$file;
+		}
 		
 		if (empty($file) || !is_file($this->main->cfg->upload_path.'products'.DS.$file)) {
 			echo $this->main->lang('Error, the file does not exist');
@@ -1370,7 +1411,7 @@ function renderPDF(svgs, url) {
 		
 		if ($del) {
 			
-			$list = $this->main->get_option('product_image_names');
+			$list = $this->main->get_option('product_image_names'.($vendor == 'true' ? '_'.$uid : ''));
 			
 			if ($list === null)
 				$list = array();
@@ -1378,7 +1419,7 @@ function renderPDF(svgs, url) {
 			
 			unset($list[$file]);
 			
-			$this->main->set_option('product_image_names', json_encode($list));
+			$this->main->set_option('product_image_names'.($vendor == 'true' ? '_'.$uid : ''), json_encode($list));
 		
 		}
 		

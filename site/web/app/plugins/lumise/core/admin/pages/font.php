@@ -11,6 +11,14 @@
 			'default' => 'Untitled'
 		),
 		array(
+			'type' => 'input',
+			'name' => 'name_desc',
+			'label' => $lumise->lang('Name Desciption'),
+			'required' => true,
+			'desc' => $lumise->lang('Show on frontend(design editor), default will is name'),
+			'default' => ''
+		),
+		array(
 			'type' => 'upload',
 			'name' => 'upload',
 			'required' => true,

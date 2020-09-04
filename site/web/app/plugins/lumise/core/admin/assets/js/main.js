@@ -142,10 +142,33 @@
 				popup_actions('close');
 				return $('#lumise-lightbox').remove();
 			};
-			
+			var getWidthParent = $('div#lumise-product-page').width();
+			if(getWidthParent >= 1000){
+				getWidthParent = 1000;
+			}
+			// var tmpl = '<div id="lumise-lightbox" class="lumise-lightbox">\
+			// 				<div id="lumise-lightbox-body">\
+			// 					<div id="lumise-lightbox-content" style="min-width:%width%px">\
+			// 						%content%\
+			// 					</div>\
+			// 					%footer%\
+			// 					<a class="kalb-close" href="#close" title="Close">\
+			// 						<svg enable-background="new 0 0 32 32" height="32px" id="close" version="1.1" viewBox="0 0 32 32" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M17.459,16.014l8.239-8.194c0.395-0.391,0.395-1.024,0-1.414c-0.394-0.391-1.034-0.391-1.428,0  l-8.232,8.187L7.73,6.284c-0.394-0.395-1.034-0.395-1.428,0c-0.394,0.396-0.394,1.037,0,1.432l8.302,8.303l-8.332,8.286  c-0.394,0.391-0.394,1.024,0,1.414c0.394,0.391,1.034,0.391,1.428,0l8.325-8.279l8.275,8.276c0.394,0.395,1.034,0.395,1.428,0  c0.394-0.396,0.394-1.037,0-1.432L17.459,16.014z" fill="#121313" id="Close"></path><g></g><g></g><g></g><g></g><g></g><g></g></svg>\
+			// 					</a>\
+			// 				</div>\
+			// 				<div class="kalb-overlay"></div>\
+			// 			</div>',
+			// 	cfg = $.extend({
+			// 		width: 1000,
+			// 		footer: '',
+			// 		content: '',
+			// 		onload: function(){},
+			// 		onclose: function(){}
+			// 	}, ops);
+
 			var tmpl = '<div id="lumise-lightbox" class="lumise-lightbox">\
 							<div id="lumise-lightbox-body">\
-								<div id="lumise-lightbox-content" style="min-width:%width%px">\
+								<div id="lumise-lightbox-content" style="min-width:'+getWidthParent+'px">\
 									%content%\
 								</div>\
 								%footer%\
@@ -494,6 +517,7 @@
 										
 										formData.append('action', 'upload_product_images'); 
 										formData.append('nonce', 'LUMISE_ADMIN:'+LumiseDesign.nonce);
+										formData.append('vendor', window.parent && window.parent.lumisejs && window.parent.lumisejs.is_admin === false ? 'true' : 'false');
 										
 										tx.html('Starting upload..');
 										
@@ -534,7 +558,7 @@
 											    	.find('img')
 											    	.attr({src: lumise_upload_url+res[name], 'data-src': res[name]});
 											    
-											    $('#lumise-uploaded-bases').prepend('<li><img data-act="base" data-src="products/'+name+'.jpg" data-source="uploads" src="'+lumise_upload_url+'products/'+name+'.jpg"><i class="fa fa-trash" title="Delete" data-act="delete" data-file="'+name+'.jpg"></i><span data-file="'+name+'.jpg" data-act="edit-name" data-name="'+name+'" title="Click to edit image name">'+name+' <i data-file="'+name+'.jpg" data-act="edit-name" data-name="'+name+'" class="fa fa-pencil"></i></span></li>');
+											    $('#lumise-uploaded-bases').prepend('<li><img data-act="base" data-src="'+res[name]+'" data-source="uploads" src="'+lumise_upload_url+res[name]+'"><i class="fa fa-trash" title="Delete" data-act="delete" data-file="'+name+'.jpg"></i><span data-file="'+name+'.jpg" data-act="edit-name" data-name="'+name+'" title="Click to edit image name">'+name+' <i data-file="'+name+'.jpg" data-act="edit-name" data-name="'+name+'" class="fa fa-pencil"></i></span></li>');
 											    
 										    },
 										    error: function() {
@@ -593,7 +617,8 @@
 										ajax: 'backend',
 										action: 'edit_name_product_image',
 										name: name,
-										file: file
+										file: file,
+										vendor: window.parent && window.parent.lumisejs && window.parent.lumisejs.is_admin === false ? 'true' : 'false'
 									},
 									statusCode: {
 										403: function(){
@@ -603,7 +628,7 @@
 									success: function(res) {
 										if (etarget.tagName == 'I') {
 											var i = $(etarget).clone();
-												pr = etarget.parentNode;
+												pr = $(etarget).parent();
 										} else {
 											var pr = $(etarget),
 												i = pr.find('i').clone();
@@ -632,7 +657,8 @@
 											nonce: 'LUMISE_ADMIN:'+LumiseDesign.nonce,
 											ajax: 'backend',
 											action: 'delete_base_image',
-											file: file
+											file: file.split('/').pop(),
+											vendor: window.parent && window.parent.lumisejs && window.parent.lumisejs.is_admin === false ? 'true' : 'false'
 										},
 										statusCode: {
 											403: function(){
@@ -669,7 +695,8 @@
 										ajax: 'backend',
 										action: 'load_more_bases',
 										limit: 18,
-										start: e.target.getAttribute('data-start')
+										start: e.target.getAttribute('data-start'),
+										vendor: window.parent && window.parent.lumisejs && window.parent.lumisejs.is_admin === false ? 'true' : 'false'
 									},
 									statusCode: {
 										403: function(){
@@ -731,7 +758,7 @@
 							
 						navs.find('li[data-add="tab"]').before(nav);
 						
-						nav.find('a').attr({"href": '#lumise-stage-'+num, "data-label": "Untilted"}).find('text').html('Untilted');
+						nav.find('a').attr({"href": '#lumise-stage-'+num, "data-label": "Untitled"}).find('text').html('Untitled');
 						nav.find('>a>span').remove();
 						
 						bod.attr({"id": "lumise-stage-"+num, "data-stage": num});
@@ -2314,7 +2341,9 @@
 						
 						$(this).closest('#lumise-lightbox').remove();
 						popup_actions('close');
-						$('body').css({overflow: ''});
+						if($('body.LumiseDesign').width() > 1000){
+							$('body').css({overflow: ''});
+						}
 						
 						lumise.product.render_design(design[0]);
 						
@@ -2393,10 +2422,10 @@
 				};
 				
 				$.ajax({
-					url: LumiseDesign.ajax,
+					url: window.parent && window.parent.lumisejs && window.parent.lumisejs.is_admin === false ? window.parent.lumisejs.admin_ajax_url : LumiseDesign.ajax,
 					method: 'POST',
 					data: {
-						nonce: 'LUMISE_ADMIN:'+LumiseDesign.nonce,
+						nonce: window.parent && window.parent.lumisejs && window.parent.lumisejs.is_admin === false ? 'LUMISE-SECURITY-BACKEND:'+window.parent.lumisejs.nonce_backend : 'LUMISE_ADMIN:'+LumiseDesign.nonce,
 						ajax: 'backend',
 						action: 'templates',
 						category: ops.category !== undefined ? ops.category : '',

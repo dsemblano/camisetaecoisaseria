@@ -160,6 +160,47 @@ class lumise_addons {
 		$this->process_action();
 		
 		$items = array();
+		$files = @scandir($this->path, 0);
+		if($files == FALSE){
+			$files = array();
+		}
+		foreach ($files as $file) {
+			
+			if (is_dir($this->path.$file) && $file != '.' && $file != '..') {
+				
+				if (file_exists($this->path.$file.DS.'index.php')) {
+					
+					$data = $this->main->lib->get_file_data($this->path.$file.DS.'index.php', array(
+						'Name',
+						'Description',
+						'Version',
+						'Compatible',
+						'Platform'
+					));
+					
+					$items[$file] = array(
+						'Name' => !empty($data[0]) ? $data[0] : 'Unknow',
+						'Description' => !empty($data[1]) ? $data[1] : '',
+						'Version' => !empty($data[2]) ? $data[2] : '1.0',
+						'Compatible' => !empty($data[3]) ? $data[3] : '1.0',
+						'Platform' => isset($data[4]) && !empty($data[4]) ? $data[4] : '',
+						'Slug' => $file
+					);
+				}
+			}
+		}
+		
+		return $items;
+		
+	}
+
+	public function addon_installed_list() {
+		
+		if (!is_dir($this->path) && !mkdir($this->path, 0755)) {
+			return false;
+		}
+		
+		$items = array();
 		$files = scandir($this->path, 0);
 		
 		foreach ($files as $file) {
@@ -276,6 +317,19 @@ class lumise_addons {
 	public function process_action() {
 
 		if (isset($_POST['action'])) {
+			
+			if (!$this->main->caps('lumise_can_upload')) {
+				echo '<div class="lumise_wrapper" id="lumise-product-page">
+							<div class="lumise_content">
+								<div class="lumise_message err">
+									<em class="lumise_err">
+										<i class="fa fa-times"></i>  Sorry, You do not have permission to do action
+									</em>	
+							</div>
+						</div>
+					</div>';
+				exit;
+			}
 			
 			$actives = $this->main->get_option( 'active_addons');
 							

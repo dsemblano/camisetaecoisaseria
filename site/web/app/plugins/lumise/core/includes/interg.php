@@ -64,6 +64,7 @@ function lumise_cms_product_data_fields($ops, $js_cfg, $id) {
 		'nonce_backend' => lumise_secure::create_nonce('LUMISE-SECURITY-BACKEND'),
 		'ajax_url' => $lumise->cfg->ajax_url,
 		'admin_ajax_url' => $lumise->cfg->admin_ajax_url,
+		'is_admin' => is_admin(),
 		'admin_url' => $lumise->cfg->admin_url,
 		'assets_url' => $lumise->cfg->assets_url,
 		'upload_url' => $lumise->cfg->upload_url,
