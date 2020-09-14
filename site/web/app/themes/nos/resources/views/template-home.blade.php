@@ -13,6 +13,6 @@
     @include('partials.home-block4')
     {{-- @include('partials.home-slideshow') --}}
     @include('partials.slideshow')
-    @include('partials.home-insta')
+    {{-- @include('partials.home-insta') --}}
   @endwhile
 @endsection

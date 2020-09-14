@@ -11,7 +11,7 @@
     @endwhile
   </div>
   @include('partials/components.ribbon-algodao')
-  @include('partials.slideinsta')
+  {{-- @include('partials.slideinsta') --}}
 
 @else
   <div class="content container">
