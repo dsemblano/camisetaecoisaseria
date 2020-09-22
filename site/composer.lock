@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8166437cbdb9dcbbff6c24aea037c660",
+    "content-hash": "03d7fa291cc474869d127bee2a39ee47",
     "packages": [
         {
             "name": "composer/installers",
@@ -713,15 +713,15 @@
         },
         {
             "name": "wpackagist-plugin/flexible-checkout-fields",
-            "version": "2.5.1",
+            "version": "2.5.5",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/flexible-checkout-fields/",
-                "reference": "tags/2.5.1"
+                "reference": "tags/2.5.5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/flexible-checkout-fields.2.5.1.zip"
+                "url": "https://downloads.wordpress.org/plugin/flexible-checkout-fields.2.5.5.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -730,22 +730,22 @@
             "homepage": "https://wordpress.org/plugins/flexible-checkout-fields/"
         },
         {
-            "name": "wpackagist-plugin/insta-gallery",
-            "version": "3.0.0",
+            "name": "wpackagist-plugin/instagram-feed",
+            "version": "2.4.6",
             "source": {
                 "type": "svn",
-                "url": "https://plugins.svn.wordpress.org/insta-gallery/",
-                "reference": "tags/3.0.0"
+                "url": "https://plugins.svn.wordpress.org/instagram-feed/",
+                "reference": "tags/2.4.6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/insta-gallery.3.0.0.zip"
+                "url": "https://downloads.wordpress.org/plugin/instagram-feed.2.4.6.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
             },
             "type": "wordpress-plugin",
-            "homepage": "https://wordpress.org/plugins/insta-gallery/"
+            "homepage": "https://wordpress.org/plugins/instagram-feed/"
         },
         {
             "name": "wpackagist-plugin/loco-translate",
@@ -1037,15 +1037,15 @@
         },
         {
             "name": "wpackagist-plugin/woocommerce-pagarme",
-            "version": "2.1.0",
+            "version": "2.2.0",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/woocommerce-pagarme/",
-                "reference": "tags/2.1.0"
+                "reference": "tags/2.2.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/woocommerce-pagarme.2.1.0.zip"
+                "url": "https://downloads.wordpress.org/plugin/woocommerce-pagarme.2.2.0.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -1088,24 +1088,6 @@
             },
             "type": "wordpress-plugin",
             "homepage": "https://wordpress.org/plugins/woocommerce-services/"
-        },
-        {
-            "name": "wpackagist-plugin/wordpress-popup",
-            "version": "7.3.0",
-            "source": {
-                "type": "svn",
-                "url": "https://plugins.svn.wordpress.org/wordpress-popup/",
-                "reference": "tags/7.3.0"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/wordpress-popup.7.3.0.zip"
-            },
-            "require": {
-                "composer/installers": "~1.0"
-            },
-            "type": "wordpress-plugin",
-            "homepage": "https://wordpress.org/plugins/wordpress-popup/"
         },
         {
             "name": "wpackagist-plugin/wp-enable-webp",
