@@ -22,13 +22,14 @@
   <link rel="icon" type="image/png" sizes="16x16" href="@asset('images/favicon/favicon-16x16.png')">
   <link rel="manifest" href="@asset('images/favicon/site.webmanifest')">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-status-bar-style" content="#1ebe85">
   <meta name="apple-mobile-web-app-title" content="Imprima Sua Camiseta">
   <meta name="application-name" content="Imprima Sua Camiseta">
   <link rel="manifest" href="@asset('images/favicon/manifest.json')">
   <meta name="msapplication-config" content="@asset('images/favicon/browserconfig.xml')">
   <meta name="msapplication-TileColor" content="#2b5797">
   <meta name="msapplication-TileImage" content="@asset('images/favicon/ms-icon-144x144.png')">
+  <meta name="msapplication-navbutton-color" content="#1ebe85">
   <meta name="theme-color" content="#1ebe85">
   @include('partials.analytics')
   @php wp_head() @endphp
