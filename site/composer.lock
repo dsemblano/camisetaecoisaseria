@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "03d7fa291cc474869d127bee2a39ee47",
+    "content-hash": "b7d3e74f74c66ef10d1510fee6a6df8e",
     "packages": [
         {
             "name": "composer/installers",
@@ -710,6 +710,24 @@
             },
             "type": "wordpress-plugin",
             "homepage": "https://wordpress.org/plugins/automatic-translator-addon-for-loco-translate/"
+        },
+        {
+            "name": "wpackagist-plugin/click-to-chat-for-whatsapp",
+            "version": "2.11",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/click-to-chat-for-whatsapp/",
+                "reference": "tags/2.11"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/click-to-chat-for-whatsapp.2.11.zip"
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/click-to-chat-for-whatsapp/"
         },
         {
             "name": "wpackagist-plugin/flexible-checkout-fields",
