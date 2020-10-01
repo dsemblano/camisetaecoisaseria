@@ -29,7 +29,7 @@
   <meta name="msapplication-config" content="@asset('images/favicon/browserconfig.xml')">
   <meta name="msapplication-TileColor" content="#2b5797">
   <meta name="msapplication-TileImage" content="@asset('images/favicon/ms-icon-144x144.png')">
-  <meta name="theme-color" content="#ff0000">
+  <meta name="theme-color" content="#1ebe85">
   @include('partials.analytics')
   @php wp_head() @endphp
 </head>
