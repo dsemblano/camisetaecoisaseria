@@ -1,5 +1,5 @@
-<section class="blockhome blockhome-3 container flex flex-wrap items-center -mx-1 overflow-hidden mt-0 md:mt-12 mb-12">
-  <div class="blockhome-3-left text-md m-auto mt-8 md:mt-0 mb-8 my-1 px-1 md:w-2/3 overflow-hidden text-center leading-none">
+<section class="blockhome blockhome-3 container flex flex-wrap -mx-2 mt-8 overflow-hidden">
+  <div class="blockhome-3-left my-2 px-2 w-1/2 text-md m-auto text-center leading-none overflow-hidden">
       <h2 class="md:text-4xl text-pureblack">Crie e Customize</h2>
       <p class="md:text-2xl mb-6">todos os produtos</p>
       <figure class="order-2 items-end">
@@ -10,7 +10,7 @@
         </div>
       </figure>
   </div>
-  <div class="my-1 px-1 md:w-1/3 overflow-hidden">
+  <div class="my-2 px-2 w-1/2 overflow-hidden">
     <div class="blockhome3-right flex flex-wrap -mx-2 overflow-hidden">
       {{-- @foreach ($sub_categories as $sub)
         @php
