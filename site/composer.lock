@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ccc2c257df971cbee4aa73b13690dad3",
+    "content-hash": "ac21dda5aa68b89b9718762e1a0c8685",
     "packages": [
         {
             "name": "composer/installers",
@@ -877,7 +877,7 @@
         },
         {
             "name": "wpackagist-plugin/super-socializer",
-            "version": "dev-trunk",
+            "version": "7.13.2",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/super-socializer/",
@@ -891,8 +891,7 @@
                 "composer/installers": "~1.0"
             },
             "type": "wordpress-plugin",
-            "homepage": "https://wordpress.org/plugins/super-socializer/",
-            "time": "2020-10-06T08:22:23+00:00"
+            "homepage": "https://wordpress.org/plugins/super-socializer/"
         },
         {
             "name": "wpackagist-plugin/woo-cart-abandonment-recovery",
@@ -1128,6 +1127,24 @@
             },
             "type": "wordpress-plugin",
             "homepage": "https://wordpress.org/plugins/wp-all-import/"
+        },
+        {
+            "name": "wpackagist-plugin/wp-database-backup",
+            "version": "5.6",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/wp-database-backup/",
+                "reference": "trunk"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/wp-database-backup.zip?timestamp=1600928408"
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/wp-database-backup/"
         },
         {
             "name": "wpackagist-plugin/wp-enable-webp",
