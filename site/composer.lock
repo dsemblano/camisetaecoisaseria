@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b7d3e74f74c66ef10d1510fee6a6df8e",
+    "content-hash": "ccc2c257df971cbee4aa73b13690dad3",
     "packages": [
         {
             "name": "composer/installers",
@@ -695,7 +695,7 @@
         },
         {
             "name": "wpackagist-plugin/automatic-translator-addon-for-loco-translate",
-            "version": "2.0.1",
+            "version": "dev-trunk",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/automatic-translator-addon-for-loco-translate/",
@@ -703,13 +703,14 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/automatic-translator-addon-for-loco-translate.zip?timestamp=1596796934"
+                "url": "https://downloads.wordpress.org/plugin/automatic-translator-addon-for-loco-translate.zip?timestamp=1602674224"
             },
             "require": {
                 "composer/installers": "~1.0"
             },
             "type": "wordpress-plugin",
-            "homepage": "https://wordpress.org/plugins/automatic-translator-addon-for-loco-translate/"
+            "homepage": "https://wordpress.org/plugins/automatic-translator-addon-for-loco-translate/",
+            "time": "2020-10-14T11:17:04+00:00"
         },
         {
             "name": "wpackagist-plugin/click-to-chat-for-whatsapp",
@@ -731,21 +732,22 @@
         },
         {
             "name": "wpackagist-plugin/flexible-checkout-fields",
-            "version": "2.5.6",
+            "version": "dev-trunk",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/flexible-checkout-fields/",
-                "reference": "tags/2.5.6"
+                "reference": "trunk"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/flexible-checkout-fields.2.5.6.zip"
+                "url": "https://downloads.wordpress.org/plugin/flexible-checkout-fields.zip?timestamp=1601584355"
             },
             "require": {
                 "composer/installers": "~1.0"
             },
             "type": "wordpress-plugin",
-            "homepage": "https://wordpress.org/plugins/flexible-checkout-fields/"
+            "homepage": "https://wordpress.org/plugins/flexible-checkout-fields/",
+            "time": "2020-10-01T20:32:35+00:00"
         },
         {
             "name": "wpackagist-plugin/instagram-feed",
@@ -875,7 +877,7 @@
         },
         {
             "name": "wpackagist-plugin/super-socializer",
-            "version": "7.13",
+            "version": "dev-trunk",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/super-socializer/",
@@ -883,13 +885,14 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/super-socializer.zip?timestamp=1600841573"
+                "url": "https://downloads.wordpress.org/plugin/super-socializer.zip?timestamp=1601972543"
             },
             "require": {
                 "composer/installers": "~1.0"
             },
             "type": "wordpress-plugin",
-            "homepage": "https://wordpress.org/plugins/super-socializer/"
+            "homepage": "https://wordpress.org/plugins/super-socializer/",
+            "time": "2020-10-06T08:22:23+00:00"
         },
         {
             "name": "wpackagist-plugin/woo-cart-abandonment-recovery",
@@ -1091,21 +1094,40 @@
         },
         {
             "name": "wpackagist-plugin/woocommerce-services",
-            "version": "1.24.3",
+            "version": "dev-trunk",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/woocommerce-services/",
-                "reference": "tags/1.24.3"
+                "reference": "trunk"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/woocommerce-services.1.24.3.zip"
+                "url": "https://downloads.wordpress.org/plugin/woocommerce-services.zip?timestamp=1602680892"
             },
             "require": {
                 "composer/installers": "~1.0"
             },
             "type": "wordpress-plugin",
-            "homepage": "https://wordpress.org/plugins/woocommerce-services/"
+            "homepage": "https://wordpress.org/plugins/woocommerce-services/",
+            "time": "2020-10-14T13:08:12+00:00"
+        },
+        {
+            "name": "wpackagist-plugin/wp-all-import",
+            "version": "3.5.6",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/wp-all-import/",
+                "reference": "tags/3.5.6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/wp-all-import.3.5.6.zip"
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/wp-all-import/"
         },
         {
             "name": "wpackagist-plugin/wp-enable-webp",
