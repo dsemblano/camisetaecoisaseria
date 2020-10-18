@@ -695,7 +695,7 @@
         },
         {
             "name": "wpackagist-plugin/automatic-translator-addon-for-loco-translate",
-            "version": "dev-trunk",
+            "version": "2.1",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/automatic-translator-addon-for-loco-translate/",
@@ -709,8 +709,7 @@
                 "composer/installers": "~1.0"
             },
             "type": "wordpress-plugin",
-            "homepage": "https://wordpress.org/plugins/automatic-translator-addon-for-loco-translate/",
-            "time": "2020-10-14T11:17:04+00:00"
+            "homepage": "https://wordpress.org/plugins/automatic-translator-addon-for-loco-translate/"
         },
         {
             "name": "wpackagist-plugin/click-to-chat-for-whatsapp",
@@ -732,22 +731,21 @@
         },
         {
             "name": "wpackagist-plugin/flexible-checkout-fields",
-            "version": "dev-trunk",
+            "version": "2.5.7",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/flexible-checkout-fields/",
-                "reference": "trunk"
+                "reference": "tags/2.5.7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/flexible-checkout-fields.zip?timestamp=1601584355"
+                "url": "https://downloads.wordpress.org/plugin/flexible-checkout-fields.2.5.7.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
             },
             "type": "wordpress-plugin",
-            "homepage": "https://wordpress.org/plugins/flexible-checkout-fields/",
-            "time": "2020-10-01T20:32:35+00:00"
+            "homepage": "https://wordpress.org/plugins/flexible-checkout-fields/"
         },
         {
             "name": "wpackagist-plugin/instagram-feed",
@@ -967,15 +965,15 @@
         },
         {
             "name": "wpackagist-plugin/woocommerce",
-            "version": "4.5.2",
+            "version": "4.6.0",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/woocommerce/",
-                "reference": "tags/4.5.2"
+                "reference": "tags/4.6.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/woocommerce.4.5.2.zip"
+                "url": "https://downloads.wordpress.org/plugin/woocommerce.4.6.0.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -1093,22 +1091,21 @@
         },
         {
             "name": "wpackagist-plugin/woocommerce-services",
-            "version": "dev-trunk",
+            "version": "1.25.0",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/woocommerce-services/",
-                "reference": "trunk"
+                "reference": "tags/1.25.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/woocommerce-services.zip?timestamp=1602680892"
+                "url": "https://downloads.wordpress.org/plugin/woocommerce-services.1.25.0.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
             },
             "type": "wordpress-plugin",
-            "homepage": "https://wordpress.org/plugins/woocommerce-services/",
-            "time": "2020-10-14T13:08:12+00:00"
+            "homepage": "https://wordpress.org/plugins/woocommerce-services/"
         },
         {
             "name": "wpackagist-plugin/wp-all-import",
