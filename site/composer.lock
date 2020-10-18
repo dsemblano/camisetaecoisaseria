@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ac21dda5aa68b89b9718762e1a0c8685",
+    "content-hash": "d622162a8e233d42b7013fb152a9adf0",
     "packages": [
         {
             "name": "composer/installers",
@@ -1106,6 +1106,24 @@
             },
             "type": "wordpress-plugin",
             "homepage": "https://wordpress.org/plugins/woocommerce-services/"
+        },
+        {
+            "name": "wpackagist-plugin/woocommerce-xml-csv-product-import",
+            "version": "1.4.7",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/woocommerce-xml-csv-product-import/",
+                "reference": "tags/1.4.7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/woocommerce-xml-csv-product-import.1.4.7.zip"
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/woocommerce-xml-csv-product-import/"
         },
         {
             "name": "wpackagist-plugin/wp-all-import",
