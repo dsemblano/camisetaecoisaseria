@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "df5c2b4af9f8822255ca95a19fcd69b0",
+    "content-hash": "38fea370732cc0a7427371e0fde60451",
     "packages": [
         {
             "name": "composer/installers",
@@ -710,24 +710,6 @@
             },
             "type": "wordpress-plugin",
             "homepage": "https://wordpress.org/plugins/automatic-translator-addon-for-loco-translate/"
-        },
-        {
-            "name": "wpackagist-plugin/bulk-delete",
-            "version": "6.0.2",
-            "source": {
-                "type": "svn",
-                "url": "https://plugins.svn.wordpress.org/bulk-delete/",
-                "reference": "tags/6.0.2"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/bulk-delete.6.0.2.zip"
-            },
-            "require": {
-                "composer/installers": "~1.0"
-            },
-            "type": "wordpress-plugin",
-            "homepage": "https://wordpress.org/plugins/bulk-delete/"
         },
         {
             "name": "wpackagist-plugin/click-to-chat-for-whatsapp",
