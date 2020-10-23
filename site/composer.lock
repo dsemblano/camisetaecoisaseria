@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a280e614441ab76c067f637ce0091cf6",
+    "content-hash": "df5c2b4af9f8822255ca95a19fcd69b0",
     "packages": [
         {
             "name": "composer/installers",
@@ -712,6 +712,24 @@
             "homepage": "https://wordpress.org/plugins/automatic-translator-addon-for-loco-translate/"
         },
         {
+            "name": "wpackagist-plugin/bulk-delete",
+            "version": "6.0.2",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/bulk-delete/",
+                "reference": "tags/6.0.2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/bulk-delete.6.0.2.zip"
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/bulk-delete/"
+        },
+        {
             "name": "wpackagist-plugin/click-to-chat-for-whatsapp",
             "version": "2.12.1",
             "source": {
@@ -890,25 +908,6 @@
             },
             "type": "wordpress-plugin",
             "homepage": "https://wordpress.org/plugins/super-socializer/"
-        },
-        {
-            "name": "wpackagist-plugin/woo-bulk-edit-products",
-            "version": "dev-trunk",
-            "source": {
-                "type": "svn",
-                "url": "https://plugins.svn.wordpress.org/woo-bulk-edit-products/",
-                "reference": "trunk"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/woo-bulk-edit-products.zip?timestamp=1603248476"
-            },
-            "require": {
-                "composer/installers": "~1.0"
-            },
-            "type": "wordpress-plugin",
-            "homepage": "https://wordpress.org/plugins/woo-bulk-edit-products/",
-            "time": "2020-10-21T02:47:56+00:00"
         },
         {
             "name": "wpackagist-plugin/woo-cart-abandonment-recovery",
