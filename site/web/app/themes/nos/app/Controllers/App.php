@@ -43,6 +43,17 @@ class App extends Controller
         return get_categories($args);
     }
 
+    public function NosCategories() {
+        $cat_prod = 'nos';
+        $product_cat_ID = get_term_by('slug', $cat_prod, 'product_cat')->term_id;
+        $args = array(
+            'show_option_none' => '',
+            'hide_empty' => 0,
+            'parent' => $product_cat_ID,
+        );
+        return get_categories($args);
+    }
+
     public function homeProducts() {
         $destaques_produtos = wc_get_products(array(
             'limit' => -1,
