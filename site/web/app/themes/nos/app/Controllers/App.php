@@ -44,15 +44,17 @@ class App extends Controller
     }
 
     public function NosCategories() {
-        $cat_prod = 'nos';
-        $product_cat_ID = get_term_by('slug', $cat_prod, 'product_cat')->term_id;
-        $args = array(
-            'show_option_none' => '',
-            'hide_empty' => 0,
-            'parent' => $product_cat_ID,
-        );
-        return get_categories($args);
-    }
+            $destaques_produtos = wc_get_products(array(
+                'limit' => -1,
+                'status'=> 'publish',
+                'orderby' => 'DESC',
+                'category' => 'nos'
+            ));
+
+            // var_dump($destaques_produtos);
+
+            return $destaques_produtos;
+        }
 
     public function homeProducts() {
         $destaques_produtos = wc_get_products(array(
