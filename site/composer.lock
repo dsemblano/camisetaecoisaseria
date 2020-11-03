@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5527850774d096b65fd03bffecdcf7ab",
+    "content-hash": "042057c905d773be7168f31bdf17059e",
     "packages": [
         {
             "name": "composer/installers",
@@ -706,7 +706,7 @@
         },
         {
             "name": "wpackagist-plugin/automatic-translator-addon-for-loco-translate",
-            "version": "dev-trunk",
+            "version": "2.1.1",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/automatic-translator-addon-for-loco-translate/",
@@ -720,8 +720,7 @@
                 "composer/installers": "~1.0"
             },
             "type": "wordpress-plugin",
-            "homepage": "https://wordpress.org/plugins/automatic-translator-addon-for-loco-translate/",
-            "time": "2020-10-27T10:13:34+00:00"
+            "homepage": "https://wordpress.org/plugins/automatic-translator-addon-for-loco-translate/"
         },
         {
             "name": "wpackagist-plugin/click-to-chat-for-whatsapp",
@@ -744,22 +743,21 @@
         },
         {
             "name": "wpackagist-plugin/flexible-checkout-fields",
-            "version": "dev-trunk",
+            "version": "2.7.0",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/flexible-checkout-fields/",
-                "reference": "trunk"
+                "reference": "tags/2.7.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/flexible-checkout-fields.zip?timestamp=1604332831"
+                "url": "https://downloads.wordpress.org/plugin/flexible-checkout-fields.2.7.0.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
             },
             "type": "wordpress-plugin",
-            "homepage": "https://wordpress.org/plugins/flexible-checkout-fields/",
-            "time": "2020-11-02T16:00:31+00:00"
+            "homepage": "https://wordpress.org/plugins/flexible-checkout-fields/"
         },
         {
             "name": "wpackagist-plugin/instagram-feed",
@@ -889,7 +887,7 @@
         },
         {
             "name": "wpackagist-plugin/super-socializer",
-            "version": "dev-trunk",
+            "version": "7.13.5",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/super-socializer/",
@@ -903,8 +901,7 @@
                 "composer/installers": "~1.0"
             },
             "type": "wordpress-plugin",
-            "homepage": "https://wordpress.org/plugins/super-socializer/",
-            "time": "2020-10-29T10:48:00+00:00"
+            "homepage": "https://wordpress.org/plugins/super-socializer/"
         },
         {
             "name": "wpackagist-plugin/woo-cart-abandonment-recovery",
@@ -1103,6 +1100,24 @@
             },
             "type": "wordpress-plugin",
             "homepage": "https://wordpress.org/plugins/woocommerce-pagseguro/"
+        },
+        {
+            "name": "wpackagist-plugin/woocommerce-products-filter",
+            "version": "1.2.4.1",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/woocommerce-products-filter/",
+                "reference": "trunk"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/woocommerce-products-filter.zip?timestamp=1604329113"
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/woocommerce-products-filter/"
         },
         {
             "name": "wpackagist-plugin/woocommerce-services",

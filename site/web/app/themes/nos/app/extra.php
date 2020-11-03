@@ -296,12 +296,12 @@ add_action('woocommerce_email_after_order_table', 'my_wc_custom_email_shipping_n
 
 // Remove Additional Information
 
-add_filter( 'woocommerce_product_tabs', 'bbloomer_remove_product_tabs', 9999 );
+// add_filter( 'woocommerce_product_tabs', 'bbloomer_remove_product_tabs', 9999 );
 
-function bbloomer_remove_product_tabs( $tabs ) {
-    unset( $tabs['additional_information'] );
-    return $tabs;
-}
+// function bbloomer_remove_product_tabs( $tabs ) {
+//     unset( $tabs['additional_information'] );
+//     return $tabs;
+// }
 
 // CPF email
 function cpf_email( $order, $sent_to_admin, $plain_text ) {

@@ -43,8 +43,8 @@ class App extends Controller
         return get_categories($args);
     }
 
-    public function NosCategories() {
-            $destaques_produtos = wc_get_products(array(
+    public function NosProducts() {
+            $nos_products = wc_get_products(array(
                 'limit' => -1,
                 'status'=> 'publish',
                 'orderby' => 'DESC',
@@ -52,8 +52,7 @@ class App extends Controller
             ));
 
             // var_dump($destaques_produtos);
-
-            return $destaques_produtos;
+            return $nos_products;
         }
 
     public function homeProducts() {
