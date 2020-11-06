@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "073382d2eb836a3e10fdae7dda292972",
+    "content-hash": "8102ef052ffbd4bf8c644461bf625447",
     "packages": [
         {
             "name": "composer/installers",
@@ -769,6 +769,24 @@
             "homepage": "https://wordpress.org/plugins/automatic-translator-addon-for-loco-translate/"
         },
         {
+            "name": "wpackagist-plugin/click-to-chat-for-whatsapp",
+            "version": "3.0.3",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/click-to-chat-for-whatsapp/",
+                "reference": "tags/3.0.3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/click-to-chat-for-whatsapp.3.0.3.zip"
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/click-to-chat-for-whatsapp/"
+        },
+        {
             "name": "wpackagist-plugin/flexible-checkout-fields",
             "version": "2.7.0",
             "source": {
@@ -929,24 +947,6 @@
             },
             "type": "wordpress-plugin",
             "homepage": "https://wordpress.org/plugins/super-socializer/"
-        },
-        {
-            "name": "wpackagist-plugin/woo-bulk-editor",
-            "version": "1.0.6.1",
-            "source": {
-                "type": "svn",
-                "url": "https://plugins.svn.wordpress.org/woo-bulk-editor/",
-                "reference": "trunk"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/woo-bulk-editor.zip?timestamp=1604329176"
-            },
-            "require": {
-                "composer/installers": "~1.0"
-            },
-            "type": "wordpress-plugin",
-            "homepage": "https://wordpress.org/plugins/woo-bulk-editor/"
         },
         {
             "name": "wpackagist-plugin/woo-cart-abandonment-recovery",

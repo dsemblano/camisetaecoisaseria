@@ -4,6 +4,7 @@ web/app/plugins/*
 !web/app/plugins/lumise/
 !web/app/plugins/loja5-woo-total-express/
 !web/app/plugins/improved-variable-product-attributes/
+!web/app/plugins/woocommerce-bulk-editor/
 # !web/app/plugins/woo-boleto-paghiper/
 web/app/mu-plugins/*/
 web/app/upgrade
