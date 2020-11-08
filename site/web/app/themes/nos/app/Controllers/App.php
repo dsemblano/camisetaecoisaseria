@@ -48,7 +48,7 @@ class App extends Controller
                 'limit' => -1,
                 'status'=> 'publish',
                 'orderby' => 'DESC',
-                'category' => 'nos'
+                'category' => 'camiseta-e-coisa-seria'
             ));
 
             // var_dump($destaques_produtos);
