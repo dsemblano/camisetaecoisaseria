@@ -121,3 +121,14 @@ add_action('wp_head', function (): void {
         echo '<style id="critical-css">' . get_file_contents($critical_CSS) . '</style>';
     }
 }, 1);
+
+// Woobe plugin
+add_filter('woobe_filter_include_children', function($include, $tax) {
+    $alow = ['product_cat', 'pa_color'];
+
+    if (in_array($tax, $alow)) {
+        $include = true;
+    }
+
+    return $include;
+}, 10, 2);
