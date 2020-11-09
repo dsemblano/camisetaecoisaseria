@@ -53,7 +53,20 @@ class App extends Controller
 
             // var_dump($destaques_produtos);
             return $nos_products;
-        }
+    }
+
+    public function BandejasImp() {
+        $nos_products = wc_get_products(array(
+            'limit' => -1,
+            'status'=> 'publish',
+            'orderby' => 'DESC',
+            'category' => 'bandejas-p-impressao'
+        ));
+
+        // var_dump($destaques_produtos);
+        return $bandejas_imp;
+    }
+
 
     public function homeProducts() {
         $destaques_produtos = wc_get_products(array(
