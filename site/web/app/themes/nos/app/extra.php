@@ -1,5 +1,6 @@
 <?php
 
+@ini_set( 'upload_max_size' , '300M' );
 //Remove JQuery migrate
 // function remove_jquery_migrate($scripts)
 // {
