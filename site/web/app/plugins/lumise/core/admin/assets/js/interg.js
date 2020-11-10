@@ -883,7 +883,7 @@ jQuery(document).ready(function($){
 					content: '<center><i class="lumise-spinner x3"></i></center>'
 				});
 			};
-			alert(lumisejs.admin_ajax_url);
+			
 			$.ajax({
 				url: lumisejs.admin_ajax_url,
 				method: 'POST',

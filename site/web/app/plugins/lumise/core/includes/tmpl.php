@@ -590,11 +590,13 @@ EOF;
 		
 		return <<<EOF
 				
-			var el = '<select name="'+data.id+'" class="lumise-cart-param" '+(data.required ? 'required' : '')+'>';
+			var el = '<select name="'+(data.id)+'" class="lumise-cart-param" '+(data.required ? 'required' : '')+'>';
 			
 			if (typeof data.values == 'object' && typeof data.values.options == 'object') {
 				data.values.options.map(function (op){
-					el += '<option value="'+op.value.replace(/\"/g, '&quot;')+'"'+(data.value == op.value ? ' selected' : '')+'>'+op.title+(op.price !== '' ? ' ('+lumise.fn.price(op.price)+')' : '')+'</option>';
+					var new_title = op.title.replace(/-/g, " ");
+					//new_title = new_title.replace(/[^a-zA-Z0-9 ]+/g, "");
+					el += '<option value="'+op.value.replace(/\"/g, '&quot;')+'"'+(data.value == op.value ? ' selected' : '')+'>'+new_title+(op.price !== '' ? ' ('+lumise.fn.price(op.price)+')' : '')+'</option>';
 				});
 			};
 			

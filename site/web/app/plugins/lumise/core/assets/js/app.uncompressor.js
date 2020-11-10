@@ -10039,8 +10039,14 @@ jQuery(document).ready(function($) {
 						if (!lumise.ops.drag_start || !lumise.ops.drag_start.getAttribute('data-ops') || stage.limit_zone.visible !== true)
 							return;
 		
-						var rect = this.getBoundingClientRect(),
-							ops = JSON.parse(lumise.ops.drag_start.getAttribute('data-ops'));
+						var rect = this.getBoundingClientRect();
+
+						var ops = lumise.ops.drag_start.getAttribute('data-ops');
+						if(lumise.ops.drag_start.getAttribute('class') == 'lumise-clipart' && lumise.xitems.ops[ops] !== undefined){
+							ops = $.extend(true, [], lumise.xitems.ops[ops]);
+						} else {
+							ops =JSON.parse(lumise.ops.drag_start.getAttribute('data-ops'));
+						}
 		
 						var disc = lumise.ops.drag_start.distance,
 							zoom = lumise.stage().canvas.getZoom(),

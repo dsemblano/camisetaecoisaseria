@@ -188,6 +188,15 @@ class lumise_update extends lumise_lib {
 				$this->main->db->rawQuery($sql_active);
 			}
 		}
+
+		if (version_compare(LUMISE, '1.9.3') >=0 ) {
+			$sql = "SHOW COLUMNS FROM `{$this->main->db->prefix}products` LIKE 'active_description'";
+			$columns = $this->main->db->rawQuery($sql);
+			if(count($columns) == 0){
+				$sql_active = "ALTER TABLE `{$this->main->db->prefix}products` ADD `active_description` INT(1) NOT NULL DEFAULT '0' AFTER `description`";
+				$this->main->db->rawQuery($sql_active);
+			}
+		}
 		
 		
 		/*

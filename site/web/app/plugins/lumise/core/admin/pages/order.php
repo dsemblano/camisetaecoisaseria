@@ -294,6 +294,10 @@
 	                        <?php
 		                        
 		                        if (count($scrs) > 0) {
+
+		                        	$key = $lumise->get_option('purchase_key');
+									$key_valid = ($key === null || empty($key) || strlen($key) != 36 || count(explode('-', $key)) != 5) ? false : true;
+									
 			
 									$is_query = explode('?', $lumise->cfg->tool_url);
 													
@@ -310,34 +314,56 @@
 									$html = '<p>';
 									$prtable = false; 
 									
-									foreach ($scrs as $i => $scr) {
-										
-										$html .= '<a ';
-										
-										if ($scr['download'] === true) {
-											$html .= 'href="'.$scr['url'].'" download="order_id#'.$item['id'].' (stage '.($i+1).').png"';
-											$prtable = true;
-										} else {
-											$html .= 'href="'.(!empty($scr['url']) ? $scr['url'] : $url).'" target=_blank';
+									if($key_valid) {
+										foreach ($scrs as $i => $scr) {
+											
+											$html .= '<a ';
+											
+											if ($scr['download'] === true) {
+												$html .= 'href="'.$scr['url'].'" download="order_id#'.$item['id'].' (stage '.($i+1).').png"';
+												$prtable = true;
+											} else {
+												$html .= 'href="'.(!empty($scr['url']) ? $scr['url'] : $url).'" target=_blank';
+											}
+											$html .= '><img width="80" src="'.$scr['screenshot'].'" /></a>';
 										}
-										$html .= '><img width="80" src="'.$scr['screenshot'].'" /></a>';
 									}
 									
 									
 									$html .= '</p>';
 									
-									if ($prtable === true) {
-										$html .= '<p><font color="#E91E63">(*) ';
+									if ($prtable === true && $key_valid) {
+										$html .= '<p><font color="#e74c3c">(*) ';
 										$html .= $lumise->lang('Click on each image above to download the printable file <b>(.PNG)</b>').'</font></p>';
 									}
 									
 									$html .= '<p>';
+									if(!$key_valid){
+										$html .= '<p style="font-size:14px;"><font color="#E91E63">(*) ';
+										$html .= $lumise->lang('<span>Please enter your purchase code to display and download file designs</span></br>
+<b><a target="_blank" href="'.$lumise->cfg->admin_url.'lumise-page=license"style="font-weight: 700; text-decoration: underline; font-style: italic;">Enter purchase code now</a></b></br>
+<span>Notice: Each License can only be used for one domain.</br><a href="https://codecanyon.net/licenses/standard" target="blank" style="font-weight: 700; text-decoration: underline; font-style: italic;">Click to learn more about license term in Envato.</a></span>').'</font></p>';
+									}
 									
 									if (!empty($pdfid)) {
-										$html .= '<a href="'.$lumise->cfg->tool_url.'?pdf_download='.$pdfid.'" target=_blank class="lumise-button lumise-button-primary" style="margin-bottom:5px;">'.$lumise->lang('Download designs as PDF').'</a>  &nbsp; <a href="#" data-href="'.$lumise->cfg->tool_url.'?pdf_download='.$pdfid.'" target=_blank class="lumise-button lumise-button-primary" onclick="let r = prompt(\'Enter bleed range in mimilet (Typically it is 2mm)\', \'2\');if (r){this.href = this.dataset.href+\'&bleed=\'+r;return true;}else return false;" style="margin-bottom:5px;">'.$lumise->lang('PDF cropmarks & bleed').'</a> &nbsp; ';
+										$link = $lumise->cfg->tool_url;
+										if(strpos($link, '?') !== false && substr($link, -1) != '?'){
+											$link .= '&pdf_download='.$pdfid;
+										} 
+										if(strpos($link, '?') !== false && substr($link, -1) == '?') {
+											$link .= 'pdf_download='.$pdfid;
+										}
+										if(strpos($link, '?') === false) {
+											$link .= '?pdf_download='.$pdfid;
+										}
+										if($key_valid) {
+											$html .= '<a href="'.$link.'" target=_blank class="lumise-button lumise-button-primary" style="margin-bottom:5px;">'.$lumise->lang('Download designs as PDF').'</a>  &nbsp; <a href="#" data-href="'.$link.'" target=_blank class="lumise-button lumise-button-primary" onclick="let r = prompt(\'Enter bleed range in mimilet (Typically it is 2mm)\', \'2\');if (r){this.href = this.dataset.href+\'&bleed=\'+r;return true;}else return false;" style="margin-bottom:5px;">'.$lumise->lang('PDF cropmarks & bleed').'</a> &nbsp; ';
+										}
 									}	
 									
-									$html .= '<a href="'.$url.'" target=_blank class="lumise-button">'.$lumise->lang('View in Lumise editor').'</a>';
+									if($key_valid) {
+										$html .= '<a href="'.$url.'" target=_blank class="lumise-button">'.$lumise->lang('View in Lumise editor').'</a>';
+									}
 									
 									$html .= '</p>';
 									

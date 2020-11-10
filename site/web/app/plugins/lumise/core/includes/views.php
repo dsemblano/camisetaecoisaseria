@@ -3189,7 +3189,7 @@ EOF;
 	
 public function order_designs($data, $attr = true) {
 		
-		global $lumise_printings;
+		global $lumise_printings, $lumise;
 		
 		$scrs = array();
 		
@@ -3201,7 +3201,7 @@ public function order_designs($data, $attr = true) {
 		/*
 		*	Customized designs
 		*/
-		
+		// var_dump($data);die();
 		if(empty($data['cart_id'])){
 			$session_name = 'product_'.$data['order_id'].'_'.$data['product_cms'].'_'.$data['product_base'].'_length';
 			$itemCheckAgain = $this->main->db->rawQuery(
@@ -3250,7 +3250,8 @@ public function order_designs($data, $attr = true) {
 	
 					$prt = @json_decode($item[0]['print_files'], true);
 	
-					
+					$prtable = true; 
+					$pdfid = $item['cart_id'];
 	
 					$data['design'] = $item[0]['design'];
 	
@@ -3273,8 +3274,11 @@ public function order_designs($data, $attr = true) {
 					
 	
 					$prtable = true; 
-	
-					$pdfid = $data['cart_id'];
+					$pdfid = $item[0]['cart_id'];
+
+					if(!empty($data['template'])){
+						$data['template'] = '';
+					}
 	
 					
 	
@@ -3481,7 +3485,7 @@ public function order_designs($data, $attr = true) {
 					}
 				}
 
-				if( (intval($_SESSION[$session_name]['index'])+1) == intval($_SESSION[$session_name]['maxIndex']) ){
+				if( intval($_SESSION[$session_name]['index']) == intval($_SESSION[$session_name]['maxIndex']) ){
 					unset($_SESSION[$session_name]);
 				}
 
@@ -3627,6 +3631,20 @@ public function order_designs($data, $attr = true) {
 		if (!empty($data['template'])) {
 			
 			$temps = json_decode(urldecode($data['template']));
+			if(isset($temps->stages)){
+				$tempsData = json_decode(urldecode(base64_decode($temps->stages)));
+				$temps = new stdClass();
+
+				foreach ($tempsData as $key => $detail) {
+					if(isset($detail->template)){
+						$detailtemplate = $lumise->lib->get_template($detail->template->id);
+						if($detailtemplate != null){
+							$tempsData->$key->template->screenshot = $detailtemplate['screenshot'];
+						}
+						$temps->$key = $detail->template;
+					}
+				}
+			}
 			
 			foreach ($temps as $n => $d) {
 				
@@ -3661,6 +3679,11 @@ public function order_designs($data, $attr = true) {
 		}
 		
 		if (count($scrs) > 0) {
+
+			global $lumise;
+
+			$key = $lumise->get_option('purchase_key');
+			$key_valid = ($key === null || empty($key) || strlen($key) != 36 || count(explode('-', $key)) != 5) ? false : true;
 			
 			$is_query = explode('?', $this->main->cfg->tool_url);
 			
@@ -3683,34 +3706,58 @@ public function order_designs($data, $attr = true) {
 			$url = str_replace('?&', '?', $url);
 						
 			$html = '<p>';
-			
-			foreach ($scrs as $i => $scr) {
-				
-				$html .= '<a ';
-				
-				if ($scr['download'] === true) {
-					$html .= 'href="'.$scr['url'].'" download="order_id#'.$data['order_id'].' order_item_id#'.$data['item_id'].' product_base_id#'.$data['product_base'].' (stage '.($i+1).').png"';
-					$prtable = true;
-				} else {
-					$html .= 'href="'.(!empty($scr['url']) ? $scr['url'] : $url).'" target=_blank';
+
+			if($key_valid){
+				foreach ($scrs as $i => $scr) {
+					
+					$html .= '<a ';
+					
+					if (isset($scr['download']) && $scr['download'] === true) {
+						$html .= 'href="'.$scr['url'].'" download="order_id#'.$data['order_id'].' order_item_id#'.$data['item_id'].' product_base_id#'.$data['product_base'].' (stage '.($i+1).').png"';
+						$prtable = true;
+					} else {
+						$html .= 'href="'.(!empty($scr['url']) ? $scr['url'] : $url).'" target=_blank';
+					}
+					$html .= '><img width="120" src="'.$scr['screenshot'].'" /></a>';
 				}
-				$html .= '><img width="120" src="'.$scr['screenshot'].'" /></a>';
 			}
 			
 			$html .= '</p>';
 			
-			if ($prtable === true) {
+			if ($prtable === true && $key_valid) {
 				$html .= '<p><font color="#E91E63">(*) ';
 				$html .= $this->main->lang('Click on each image above to download the printable file <b>(.PNG)</b>').'</font></p>';
 			}
 			
 			$html .= '<p>';
+
+			if(!$key_valid){
+				$html .= '<p style="font-size:14px;"><font color="#E91E63">(*) ';
+				$html .= $this->main->lang('<span>Please enter your purchase code to display and download file designs</span></br>
+<b><a target="_blank" href="'.$this->main->cfg->admin_url.'lumise-page=license"style="font-weight: 700; text-decoration: underline; font-style: italic;">Enter purchase code now</a></b></br>
+<span>Notice: Each License can only be used for one domain.</br><a href="https://codecanyon.net/licenses/standard" target="blank" style="font-weight: 700; text-decoration: underline; font-style: italic;">Click to learn more about license term in Envato.</a></span>').'</font></p>';
+			}
 			
 			if (!empty($pdfid)) {
-				$html .= '<a href="'.$this->main->cfg->url.'pdf_download='.$pdfid.'" target=_blank class="button button-primary">'.$this->main->lang('Download designs as PDF').'</a>  &nbsp; <a href="#" data-href="'.$this->main->cfg->url.'pdf_download='.$pdfid.'" target=_blank class="button button-primary" onclick="let r = prompt(\'Enter bleed range in mimilet (Typically it is 2mm)\', \'2\');if (r){this.href = this.dataset.href+\'&bleed=\'+r;return true;}else return false;">'.$this->main->lang('PDF cropmarks & bleed').'</a> &nbsp; ';
+
+				$link = $this->main->cfg->url;
+				if(strpos($link, '?') !== false && substr($link, -1) != '?'){
+					$link .= '&pdf_download='.$pdfid;
+				} 
+				if(strpos($link, '?') !== false && substr($link, -1) == '?') {
+					$link .= 'pdf_download='.$pdfid;
+				}
+				if(strpos($link, '?') === false) {
+					$link .= '?pdf_download='.$pdfid;
+				}
+
+				if($key_valid) {
+					$html .= '<a href="'.$link.'" target=_blank class="button button-primary">'.$this->main->lang('Download designs as PDF').'</a>  &nbsp; <a href="#" data-href="'.$link.'" target=_blank class="button button-primary" onclick="let r = prompt(\'Enter bleed range in mimilet (Typically it is 2mm)\', \'2\');if (r){this.href = this.dataset.href+\'&bleed=\'+r;return true;}else return false;">'.$this->main->lang('PDF cropmarks & bleed').'</a> &nbsp; ';
+				}
 			}	
-			
-			$html .= '<a href="'.$url.'" target=_blank class="button">'.$this->main->lang('View in Lumise editor').'</a>';
+			if($key_valid) {
+				$html .= '<a href="'.$url.'" target=_blank class="button">'.$this->main->lang('View in Lumise editor').'</a>';
+			}
 			
 			$html .= '</p>';
 			

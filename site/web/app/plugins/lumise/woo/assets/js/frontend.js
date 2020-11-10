@@ -44,4 +44,31 @@ jQuery(document).ready(function($){
 	}
 	
 	lumisewoo.init();
+
+	var getParams = function (url) {
+		var params = {};
+		var parser = document.createElement('a');
+		parser.href = url;
+		var query = parser.search.substring(1);
+		var vars = query.split('&');
+		for (var i = 0; i < vars.length; i++) {
+			var pair = vars[i].split('=');
+			params[pair[0]] = decodeURIComponent(pair[1]);
+		}
+		return params;
+	};
+
+	$(document).on('change', 'input[type="number"].input-text.qty.text', function(){
+		var customize_url = $('#lumise-customize-button').attr('href');
+		var param = getParams(customize_url);
+
+		if(param.quantity){
+			var newUrl = customize_url.replace('quantity='+param.quantity, 'quantity='+$(this).val());
+		} else {
+			var newUrl = customize_url+'&quantity='+$(this).val();
+		}
+
+		$('#lumise-customize-button').attr('href', newUrl);
+
+	});
 });

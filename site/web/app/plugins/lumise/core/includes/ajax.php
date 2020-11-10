@@ -1017,7 +1017,8 @@ class lumise_ajax extends lumise_lib {
 	}
 	
 	public function upload_product_images() {
-		
+		global $lumise;
+
 		if (!$this->main->caps('lumise_can_upload')) {
 			echo $this->main->lang('Sorry, You do not have permission to upload');
 			exit;
@@ -1027,7 +1028,11 @@ class lumise_ajax extends lumise_lib {
 		$check = $this->main->check_upload($time);
 		
 		$vendor = isset($_POST['vendor']) ? $_POST['vendor'] : 'false';
-		$uid = get_current_user_id();
+		if($lumise->connector->platform == 'woocommerce'){
+			$uid = get_current_user_id();
+		} else {
+			$uid = '1';
+		}
 		
 		if ($check !== 1) {
 			echo 'Error: '.$check;
@@ -1046,7 +1051,14 @@ class lumise_ajax extends lumise_lib {
 		foreach ($_FILES as $name => $file) {
 			
 			$image = @file_get_contents($file["tmp_name"]);
-			$type = strpos($image, 'data:image/png') !== false ? '.png' : '.jpg';
+			$type = '.jpg';
+			if(strpos($image, 'data:image/png') !== false){
+				$type = '.png';
+			}
+			if(strpos($image, 'data:image/svg') !== false){
+				$type = '.svg';
+			}
+			// $type = strpos($image, 'data:image/png') !== false ? '.png' : '.jpg';
 			$image = explode(',', $image);
 			$image = base64_decode($image[1]);
 			
@@ -1325,12 +1337,19 @@ function renderPDF(svgs, url) {
 	}
 	
 	public function load_more_bases() {
+
+		global $lumise;
 		
 		$start = isset($_POST['start']) ? $_POST['start'] : 0;
 		$limit = isset($_POST['limit']) ? $_POST['limit'] : 30;
 		$vendor = isset($_POST['vendor']) ? $_POST['vendor'] : 'false';
 		
-		$uid = get_current_user_id();
+		if($lumise->connector->platform == 'woocommerce'){
+			$uid = get_current_user_id();
+		} else {
+			$uid = '1';
+		}
+		
 		
 		$items = $this->main->lib->get_uploaded_bases($vendor == 'true' ? $uid : '');
 		$total = count($items);
@@ -1388,7 +1407,7 @@ function renderPDF(svgs, url) {
 	}
 	
 	public function delete_base_image() {
-		
+		global $lumise;
 		if (!$this->main->caps('lumise_can_upload')) {
 			echo $this->main->lang('Sorry, You do not have permission to delete');
 			exit;
@@ -1396,7 +1415,12 @@ function renderPDF(svgs, url) {
 		
 		$file = isset($_POST['file']) ? $_POST['file'] : '';
 		$vendor = isset($_POST['vendor']) ? $_POST['vendor'] : 'false';
-		$uid = get_current_user_id();
+		
+		if($lumise->connector->platform == 'woocommerce'){
+			$uid = get_current_user_id();
+		} else {
+			$uid = '1';
+		}
 		
 		if ($vendor == 'true') {
 			$file = $uid.DS.$file;

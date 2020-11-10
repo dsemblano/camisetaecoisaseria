@@ -65,299 +65,631 @@ class lumise_cart extends lumise_lib
         	) continue; 
         	
 			$current_product = $this->get_product($item->product_id);
-			
-			if ( $current_product === null )
-				continue; 
-				
-            $attributes         = $this->dejson(isset($current_product['attributes']) ? $current_product['attributes'] : '{}');
-			$variations			= $this->dejson(isset($current_product['variations']) ? $current_product['variations'] : '{}');
-			$product_stages		= $this->dejson(isset($current_product['stages']) ? $current_product['stages'] : '{}');
-            $template_price     = 0;
-            $qty                = 1;
-            
-            $attr_price			= 0;
-            $fixed_price_qtys	= 0;
-            
-            //loop through values of attribute
-            foreach ( $item->options as $aid => $val ) {
-	            
-                $attributes->{$aid}->value = $val;
-             
-                if (
-                	
-                	/* Calc price for quantity */
-                	isset($attributes->{$aid}) &&
-                	is_object($attributes->{$aid}) &&
-                	$attributes->{$aid}->type == 'quantity'
-                ) {
-	                
-                    $tol = 0;
-                    $_val = @json_decode($val);
-                    
-                    if (is_object($_val)) {
-	                    foreach ($_val as $k => $v) {
-		                    if (is_numeric((Int)$v))
-			               		$tol += (Int)$v;
-		               	}
-                    } else if (is_numeric((Int)$val))
-                    	$tol = (Int)$val;
-	               	
-	               	if (is_numeric($tol) && $tol > 0)
-                    	$qty = $tol;
-                    
-                    if (
-	                    isset($attributes->{$aid}) &&
-	                    is_object($attributes->{$aid}) &&
-                    	isset($attributes->{$aid}->values) &&
-                    	is_object($attributes->{$aid}->values)
-                    ) {
-	                	
-	                	if (
-	                		$attributes->{$aid}->values->type == 'package' &&
-	                		is_object($attributes->{$aid}->values->package_options)
-	                	) {
-		                	foreach ($attributes->{$aid}->values->package_options as $op) {
-			                	if (
-			                		$op->value == $val && 
-			                		!empty($op->price) &&
-			                		is_numeric((Float)$op->price)
-			                	) {
-				                	$attr_price += (Float)$op->price;
-			                	}
-		                	}
-	                	} 
-	                	
-	                	if (
-	                		$attributes->{$aid}->values->type == 'multiple' &&
-	                		is_array($attributes->{$aid}->values->multiple_options) &&
-	                		is_object($_val)
-	                	) {
-		                	foreach ($attributes->{$aid}->values->multiple_options as $op) {
-			                	if (
-			                		isset($_val->{$op->value}) &&
-			                		!empty($op->price) &&
-			                		is_numeric((Float)$op->price) &&
-			                		is_numeric((Int)$_val->{$op->value})
-			                	) {
-				                	$fixed_price_qtys += ((Int)$_val->{$op->value}) * ((Float)$op->price);
-			                	}
-		                	}
-		                }
-	                	
-                    }	
-                    
-				} else if ( 
-					
-					/* Calc price for attributes */
-					
-					is_object($attributes->{$aid}->values) &&
-					isset($attributes->{$aid}->values->options) &&
-					is_array($attributes->{$aid}->values->options)
-				){
-					$_val = explode("\n", $val);
-					foreach ($attributes->{$aid}->values->options as $op) {
-						if (
-							in_array($op->value, $_val) &&
-							!empty($op->price) &&
-			                is_numeric((Float)$op->price)
-						) $attr_price += (Float)$op->price;
-					}
-				}
-				
-            }
-            
-            //get screenshots & resource
-            //loop through each stage to count resource again and getting screenshot for each stage
-            $stages 		= (array) $item->design->stages;
-            $screenshorts 	= array();
-            $resource 		= array();
-			
-			foreach ( $stages as $s => $stage ) {
-                
-                if (!isset($stage->screenshot) || empty($stage->screenshot)) {
-	                $stage->screenshot = 'data:image/'.(
-	                	strpos($stage->image, '.png') !== false ? 'png' : 'jpg'
-	                ).';base64,'.base64_encode(@file_get_contents($stage->image));
-                }
-                
-				$screenshorts[$s] = $stage->screenshot;
-                $sdata            = isset($stage->data) ? $stage->data : new stdClass();
-                $objects          = isset($sdata->objects) ? (array) $sdata->objects : array();
-                
-                foreach ( $objects as $obj ){
-                    if( 
-                        isset($obj->evented ) 
-                        && $obj->evented
-                         && isset( $obj->resource_id )
-                    ){
-                        
-                        if(
-	                        !isset($obj->template) && !isset($obj->template[0]) 
-	                        && (
-                            	( isset( $obj->type ) && !in_array( $obj->type, ['i-text', 'image'] ) ) || 
-                            	( isset( $obj->resource ) && isset( $obj->resource_id ) && $obj->resource == 'cliparts' )
-                            )
-                        ){
-	                        
-                            $resource[] = array(
-                                'type'  => 'clipart',
-                                'id'    => (Int)$obj->resource_id
-                            );
-                        }
-                    }
-                }
-			}
-            
-            $resources = array_merge( $resources, $resource );
-            
-            //template price
-            if (isset($item->template)) {
-                foreach ( $item->template->stages as $stage => $temp_ids ) {
-	                
-	                if (!is_array($temp_ids))
-	                    $temp_ids = array($temp_ids);
-	                    
-                    if(
-                        count($temp_ids) > 0
-                    ){
-		                foreach ($temp_ids as $tem_id) {
-			                if (!empty($tem_id)) {
-	                    		$template = $this->get_template( $tem_id );
-								$template_price += ( $template['price'] > 0 ) ? $template['price'] : 0;
-							}
-	                    }
-                    }
-                        
-                }
-            }
-            
-            $base_price = $lumise->apply_filters(
-                'product_base_price',
-                $current_product['price'], 
-                ($lumise->connector->platform == 'php') ? $item->product_id : $item->cms_id
-            );
-            
-			if (is_array($base_price))
-				$base_price = array_sum($base_price);
-			
-			// Add price of attributes to base
-			
-			$base_price += $attr_price;
-				
-			// Regular price if there is a variation
-			
-			if (
-				isset($variations) &&
-				isset($variations->variations)
-			) {
-				
-				$vari_price = null;
-				
-				foreach ($variations->variations as $vid => $vari) {
-					
-					if (
-						$vari_price === null && 
-						is_object($vari->conditions) && 
-						!empty($vari->price)
-					) {
-						
-						$valid = true;
-						
-						foreach ($vari->conditions as $cid => $cond) {
-							if (
-								!empty($cond) && 
-								(
-									!is_object($item->options) ||
-									!isset($item->options->{$cid}) || 
-									$cond != $item->options->{$cid}
-								)
-							) {
-								$valid = false;
-							}
-						}
-						
-						if ($valid === true) {
-								
-							$vari_price = (Float)$vari->price;
-							
-							$item->variation = $vid;
-							
-							if (
-								isset($vari->minqty) && 
-								!empty($vari->minqty) && 
-								$qty < (Float)$vari->minqty
-							)
-								$qty = (Float)$vari->minqty;
-								
-							if (
-								isset($vari->maxqty) && 
-								!empty($vari->maxqty) && 
-								$qty > (Float)$vari->maxqty
-							)
-								$qty = (Float)$vari->maxqty;
-								
-						}
-					}
-				}
-				
-				if ($vari_price !== null && is_numeric($vari_price)) {
-					$base_price = $vari_price+$attr_price;
-				}
-			}
-			
-            $extra_filters = $lumise->apply_filters(
-                'product_extra_price',
-                array(),
-                $item
-            );
-			
-			$extra_filter_price = 0;
-			
-			if ( is_array($extra_filters) && count($extra_filters) > 0 ) {
-				$extra_filter_price = array_sum($extra_filters);
-			}
-			
-			//extra resource from addons
-			$extra_price_addons = 0;
-			$extra = (array) $item->extra;
-			$extra = array_values($extra);
-			
-			foreach( $extra as $ext ) {
-				foreach ( $ext as $ep ) {
-					//find resource. If exists, add resource price to global price
-					$res = $this->find_resource($ep);
-					$extra_price_addons += ($res === false)? 0: floatval($res['price']);
-				}
-			}
-				
-			$items_cart[ $cart_id ] = array(
-                'id'            => $item->product_id,
-                'cart_id'       => $cart_id,
-                'data'          => $item,
-                'qty'           => $qty,
-                'product_id'    => $item->product_id,
-                'product_cms'   => ( $lumise->connector->platform == 'php' )? $item->product_id : $item->cms_id,
-                'product_name'  => $item->product_name,
-                'price' => array(
-                    'total'     => 0,
-                    'fixed'     => $fixed_price_qtys,
-                    'resource'  => 0,
-                    'template'  => $template_price,
-                    'base'      => $base_price + $extra_filter_price + $extra_price_addons
-                ),
-                'options'    	=> $item->options,
-                'variation'    	=> $item->variation,
-                'attributes'    => $attributes,
-                'printing'      => $item->printing,
-                'resource'      => $resource,
-                'design'        => $item->design,
-                'template'      => false,
-                'screenshots'   => $screenshorts
-            );
 
-            $items_cart[ $cart_id ] = $lumise->apply_filters( 'items-cart-temp', $items_cart[ $cart_id ], array('attributes' => $attributes, 'variations' => $variations, 'product_stages' => $product_stages));
-            
-            unset($item);
+			// null 
+			if ( $current_product === null && strpos($item->product_id, 'variable') === false ){
+				continue; 
+			}
+
+			// simple product checkout process
+			if($current_product !== null && strpos($item->product_id, 'variable') === false){
+				$attributes         = $this->dejson(isset($current_product['attributes']) ? $current_product['attributes'] : '{}');
+				$variations			= $this->dejson(isset($current_product['variations']) ? $current_product['variations'] : '{}');
+				$product_stages		= $this->dejson(isset($current_product['stages']) ? $current_product['stages'] : '{}');
+	            $template_price     = 0;
+	            $qty                = 1;
+	            
+	            $attr_price			= 0;
+	            $fixed_price_qtys	= 0;
+	            
+	            //loop through values of attribute
+	            foreach ( $item->options as $aid => $val ) {
+		            
+	                $attributes->{$aid}->value = $val;
+	             
+	                if (
+	                	
+	                	/* Calc price for quantity */
+	                	isset($attributes->{$aid}) &&
+	                	is_object($attributes->{$aid}) &&
+	                	$attributes->{$aid}->type == 'quantity'
+	                ) {
+		                
+	                    $tol = 0;
+	                    $_val = @json_decode($val);
+	                    
+	                    if (is_object($_val)) {
+		                    foreach ($_val as $k => $v) {
+			                    if (is_numeric((Int)$v))
+				               		$tol += (Int)$v;
+			               	}
+	                    } else if (is_numeric((Int)$val))
+	                    	$tol = (Int)$val;
+		               	
+		               	if (is_numeric($tol) && $tol > 0)
+	                    	$qty = $tol;
+	                    
+	                    if (
+		                    isset($attributes->{$aid}) &&
+		                    is_object($attributes->{$aid}) &&
+	                    	isset($attributes->{$aid}->values) &&
+	                    	is_object($attributes->{$aid}->values)
+	                    ) {
+		                	
+		                	if (
+		                		$attributes->{$aid}->values->type == 'package' &&
+		                		is_object($attributes->{$aid}->values->package_options)
+		                	) {
+			                	foreach ($attributes->{$aid}->values->package_options as $op) {
+				                	if (
+				                		$op->value == $val && 
+				                		!empty($op->price) &&
+				                		is_numeric((Float)$op->price)
+				                	) {
+					                	$attr_price += (Float)$op->price;
+				                	}
+			                	}
+		                	} 
+		                	
+		                	if (
+		                		$attributes->{$aid}->values->type == 'multiple' &&
+		                		is_array($attributes->{$aid}->values->multiple_options) &&
+		                		is_object($_val)
+		                	) {
+			                	foreach ($attributes->{$aid}->values->multiple_options as $op) {
+				                	if (
+				                		isset($_val->{$op->value}) &&
+				                		!empty($op->price) &&
+				                		is_numeric((Float)$op->price) &&
+				                		is_numeric((Int)$_val->{$op->value})
+				                	) {
+					                	$fixed_price_qtys += ((Int)$_val->{$op->value}) * ((Float)$op->price);
+				                	}
+			                	}
+			                }
+		                	
+	                    }	
+	                    
+					} else if ( 
+						
+						/* Calc price for attributes */
+						
+						is_object($attributes->{$aid}->values) &&
+						isset($attributes->{$aid}->values->options) &&
+						is_array($attributes->{$aid}->values->options)
+					){
+						$_val = explode("\n", $val);
+						foreach ($attributes->{$aid}->values->options as $op) {
+							if (
+								in_array($op->value, $_val) &&
+								!empty($op->price) &&
+				                is_numeric((Float)$op->price)
+							) $attr_price += (Float)$op->price;
+						}
+					}
+					
+	            }
+	            
+	            //get screenshots & resource
+	            //loop through each stage to count resource again and getting screenshot for each stage
+	            $stages 		= (array) $item->design->stages;
+	            $screenshorts 	= array();
+	            $resource 		= array();
+				
+				foreach ( $stages as $s => $stage ) {
+	                
+	                if (!isset($stage->screenshot) || empty($stage->screenshot)) {
+		                $stage->screenshot = 'data:image/'.(
+		                	strpos($stage->image, '.png') !== false ? 'png' : 'jpg'
+		                ).';base64,'.base64_encode(@file_get_contents($stage->image));
+	                }
+	                
+					$screenshorts[$s] = $stage->screenshot;
+	                $sdata            = isset($stage->data) ? $stage->data : new stdClass();
+	                $objects          = isset($sdata->objects) ? (array) $sdata->objects : array();
+	                
+	                foreach ( $objects as $obj ){
+	                    if( 
+	                        isset($obj->evented ) 
+	                        && $obj->evented
+	                         && isset( $obj->resource_id )
+	                    ){
+	                        // if(
+		                       //  !isset($obj->template) && !isset($obj->template[0]) 
+		                       //  && (
+	                        //     	( isset( $obj->type ) && !in_array( $obj->type, ['i-text', 'image'] ) ) || 
+	                        //     	( isset( $obj->resource ) && isset( $obj->resource_id ) && $obj->resource == 'cliparts' )
+	                        //     )
+	                        // ){
+		                        
+	                        //     $resource[] = array(
+	                        //         'type'  => 'clipart',
+	                        //         'id'    => (Int)$obj->resource_id
+	                        //     );
+	                        // }
+
+	                        if(
+		                        !isset($obj->template) 
+		                        && !isset($obj->template[0]) 
+		                        && isset($obj->resource) 
+		                        && isset($obj->resource_id) 
+	                        ){
+	                            $resource[] = array(
+	                                'type'  => $obj->resource,
+	                                'id'    => (Int)$obj->resource_id
+	                            );
+	                        }
+
+
+	                    }
+	                }
+				}
+
+	            $resources = array_merge( $resources, $resource );
+	            
+	            //template price
+	            if (isset($item->template)) {
+	                foreach ( $item->template->stages as $stage => $temp_ids ) {
+		                
+		                if (!is_array($temp_ids))
+		                    $temp_ids = array($temp_ids);
+		                    
+	                    if(
+	                        count($temp_ids) > 0
+	                    ){
+			                foreach ($temp_ids as $tem_id) {
+				                if (!empty($tem_id)) {
+		                    		$template = $this->get_template( $tem_id );
+									$template_price += ( $template['price'] > 0 ) ? $template['price'] : 0;
+								}
+		                    }
+	                    }
+	                        
+	                }
+	            }
+	            
+	            $base_price = $lumise->apply_filters(
+	                'product_base_price',
+	                $current_product['price'], 
+	                ($lumise->connector->platform == 'php') ? $item->product_id : $item->cms_id
+	            );
+	            
+				if (is_array($base_price))
+					$base_price = array_sum($base_price);
+				
+				// Add price of attributes to base
+				
+				$base_price += $attr_price;
+					
+				// Regular price if there is a variation
+				
+				if (
+					isset($variations) &&
+					isset($variations->variations)
+				) {
+					
+					$vari_price = null;
+					
+					foreach ($variations->variations as $vid => $vari) {
+						
+						if (
+							$vari_price === null && 
+							is_object($vari->conditions) && 
+							!empty($vari->price)
+						) {
+							
+							$valid = true;
+							
+							foreach ($vari->conditions as $cid => $cond) {
+								if (
+									!empty($cond) && 
+									(
+										!is_object($item->options) ||
+										!isset($item->options->{$cid}) || 
+										$cond != $item->options->{$cid}
+									)
+								) {
+									$valid = false;
+								}
+							}
+							
+							if ($valid === true) {
+									
+								$vari_price = (Float)$vari->price;
+								
+								$item->variation = $vid;
+								
+								if (
+									isset($vari->minqty) && 
+									!empty($vari->minqty) && 
+									$qty < (Float)$vari->minqty
+								)
+									$qty = (Float)$vari->minqty;
+									
+								if (
+									isset($vari->maxqty) && 
+									!empty($vari->maxqty) && 
+									$qty > (Float)$vari->maxqty
+								)
+									$qty = (Float)$vari->maxqty;
+									
+							}
+						}
+					}
+					
+					if ($vari_price !== null && is_numeric($vari_price)) {
+						$base_price = $vari_price+$attr_price;
+					}
+				}
+				
+	            $extra_filters = $lumise->apply_filters(
+	                'product_extra_price',
+	                array(),
+	                $item
+	            );
+				
+				$extra_filter_price = 0;
+				
+				if ( is_array($extra_filters) && count($extra_filters) > 0 ) {
+					$extra_filter_price = array_sum($extra_filters);
+				}
+				
+				//extra resource from addons
+				$extra_price_addons = 0;
+				$extra = (array) $item->extra;
+				$extra = array_values($extra);
+				
+				foreach( $extra as $ext ) {
+					foreach ( $ext as $ep ) {
+						//find resource. If exists, add resource price to global price
+						$res = $this->find_resource($ep);
+						$extra_price_addons += ($res === false)? 0: floatval($res['price']);
+					}
+				}
+					
+				$items_cart[ $cart_id ] = array(
+	                'id'            => $item->product_id,
+	                'cart_id'       => $cart_id,
+	                'data'          => $item,
+	                'qty'           => $qty,
+	                'product_id'    => $item->product_id,
+	                'product_cms'   => ( $lumise->connector->platform == 'php' )? $item->product_id : $item->cms_id,
+	                'product_name'  => $item->product_name,
+	                'price' => array(
+	                    'total'     => 0,
+	                    'fixed'     => $fixed_price_qtys,
+	                    'resource'  => 0,
+	                    'template'  => $template_price,
+	                    'base'      => $base_price + $extra_filter_price + $extra_price_addons
+	                ),
+	                'options'    	=> $item->options,
+	                'variation'    	=> $item->variation,
+	                'attributes'    => $attributes,
+	                'printing'      => $item->printing,
+	                'resource'      => $resource,
+	                'design'        => $item->design,
+	                'template'      => false,
+	                'screenshots'   => $screenshorts
+	            );
+
+	            $items_cart[ $cart_id ] = $lumise->apply_filters( 'items-cart-temp', $items_cart[ $cart_id ], array('attributes' => $attributes, 'variations' => $variations, 'product_stages' => $product_stages));
+	            
+	            unset($item);
+			}
+
+			// variation product checkout process
+			if(isset($item->product_id) && strpos($item->product_id, 'variable') !== false){
+				$attributes         = isset($item->attributes) ? $item->attributes : $this->dejson('{}');
+				$variations			= isset($item->variations) ? $item->variations : $this->dejson('{}');
+				$product_stages		= isset($item->stages) ? $item->stages : $this->dejson('{}');
+	            $template_price     = 0;
+	            $qty                = 1;
+	            
+	            $attr_price			= 0;
+	            $fixed_price_qtys	= 0;
+
+	            //loop through values of attribute
+	            foreach ( $item->options as $aid => $val ) {
+	                $attributes->{$aid}->value = $val;
+	             
+	                if (
+	                	
+	                	/* Calc price for quantity */
+	                	isset($attributes->{$aid}) &&
+	                	is_object($attributes->{$aid}) &&
+	                	$attributes->{$aid}->type == 'quantity'
+	                ) {
+		                
+	                    $tol = 0;
+	                    $_val = @json_decode($val);
+	                    
+	                    if (is_object($_val)) {
+		                    foreach ($_val as $k => $v) {
+			                    if (is_numeric((Int)$v))
+				               		$tol += (Int)$v;
+			               	}
+	                    } else if (is_numeric((Int)$val))
+	                    	$tol = (Int)$val;
+		               	
+		               	if (is_numeric($tol) && $tol > 0)
+	                    	$qty = $tol;
+	                    
+	                    if (
+		                    isset($attributes->{$aid}) &&
+		                    is_object($attributes->{$aid}) &&
+	                    	isset($attributes->{$aid}->values) &&
+	                    	is_object($attributes->{$aid}->values)
+	                    ) {
+		                	
+		                	if (
+		                		$attributes->{$aid}->values->type == 'package' &&
+		                		is_object($attributes->{$aid}->values->package_options)
+		                	) {
+			                	foreach ($attributes->{$aid}->values->package_options as $op) {
+				                	if (
+				                		$op->value == $val && 
+				                		!empty($op->price) &&
+				                		is_numeric((Float)$op->price)
+				                	) {
+					                	$attr_price += (Float)$op->price;
+				                	}
+			                	}
+		                	} 
+		                	
+		                	if (
+		                		$attributes->{$aid}->values->type == 'multiple' &&
+		                		is_array($attributes->{$aid}->values->multiple_options) &&
+		                		is_object($_val)
+		                	) {
+			                	foreach ($attributes->{$aid}->values->multiple_options as $op) {
+				                	if (
+				                		isset($_val->{$op->value}) &&
+				                		!empty($op->price) &&
+				                		is_numeric((Float)$op->price) &&
+				                		is_numeric((Int)$_val->{$op->value})
+				                	) {
+					                	$fixed_price_qtys += ((Int)$_val->{$op->value}) * ((Float)$op->price);
+				                	}
+			                	}
+			                }
+		                	
+	                    }	
+	                    
+					} else if ( 
+						
+						/* Calc price for attributes */
+						
+						is_object($attributes->{$aid}->values) &&
+						isset($attributes->{$aid}->values->options) &&
+						is_array($attributes->{$aid}->values->options)
+					){
+						$_val = explode("\n", $val);
+						foreach ($attributes->{$aid}->values->options as $op) {
+							if (
+								in_array($op->value, $_val) &&
+								!empty($op->price) &&
+				                is_numeric((Float)$op->price)
+							) $attr_price += (Float)$op->price;
+						}
+					}
+					
+	            }
+	            
+	            //get screenshots & resource
+	            //loop through each stage to count resource again and getting screenshot for each stage
+	            $stages 		= (array) $item->design->stages;
+	            $screenshorts 	= array();
+	            $resource 		= array();
+				
+				foreach ( $stages as $s => $stage ) {
+	                
+	                if (!isset($stage->screenshot) || empty($stage->screenshot)) {
+		                $stage->screenshot = 'data:image/'.(
+		                	strpos($stage->image, '.png') !== false ? 'png' : 'jpg'
+		                ).';base64,'.base64_encode(@file_get_contents($stage->image));
+	                }
+	                
+					$screenshorts[$s] = $stage->screenshot;
+	                $sdata            = isset($stage->data) ? $stage->data : new stdClass();
+	                $objects          = isset($sdata->objects) ? (array) $sdata->objects : array();
+	                
+	                foreach ( $objects as $obj ){
+	                    if( 
+	                        isset($obj->evented ) 
+	                        && $obj->evented
+	                         && isset( $obj->resource_id )
+	                    ){
+	                        // if(
+		                       //  !isset($obj->template) && !isset($obj->template[0]) 
+		                       //  && (
+	                        //     	( isset( $obj->type ) && !in_array( $obj->type, ['i-text', 'image'] ) ) || 
+	                        //     	( isset( $obj->resource ) && isset( $obj->resource_id ) && $obj->resource == 'cliparts' )
+	                        //     )
+	                        // ){
+		                        
+	                        //     $resource[] = array(
+	                        //         'type'  => 'clipart',
+	                        //         'id'    => (Int)$obj->resource_id
+	                        //     );
+	                        // }
+
+	                        if(
+		                        !isset($obj->template) 
+		                        && !isset($obj->template[0]) 
+		                        && isset($obj->resource) 
+		                        && isset($obj->resource_id) 
+	                        ){
+	                            $resource[] = array(
+	                                'type'  => $obj->resource,
+	                                'id'    => (Int)$obj->resource_id
+	                            );
+	                        }
+
+
+	                    }
+	                }
+				}
+
+	            $resources = array_merge( $resources, $resource );
+	            
+	            //template price
+	            if (isset($item->template)) {
+	                foreach ( $item->template->stages as $stage => $temp_ids ) {
+		                
+		                if (!is_array($temp_ids))
+		                    $temp_ids = array($temp_ids);
+		                    
+	                    if(
+	                        count($temp_ids) > 0
+	                    ){
+			                foreach ($temp_ids as $tem_id) {
+				                if (!empty($tem_id)) {
+		                    		$template = $this->get_template( $tem_id );
+									$template_price += ( $template['price'] > 0 ) ? $template['price'] : 0;
+								}
+		                    }
+	                    }
+	                        
+	                }
+	            }
+	            
+	            $priceTemp = isset($item->price) ? $item->price : 0;
+	            $base_price = $lumise->apply_filters(
+	                'product_base_price',
+	                $priceTemp, 
+	                ($lumise->connector->platform == 'php') ? $item->product_id : $item->cms_id
+	            );
+
+	            if( $lumise->connector->platform == 'woocommerce'){
+            		$product_id = intval(preg_replace('/[^0-9]+/mi', '', $item->product_id));
+					$product = wc_get_product( $product_id );
+					$base_price = floatval($product->get_price());
+	            }
+	            
+				if (is_array($base_price)){
+					$base_price = array_sum($base_price);
+				}
+				
+				// Add price of attributes to base
+				
+				$base_price += $attr_price;
+					
+				// Regular price if there is a variation
+				
+				if (
+					isset($variations) &&
+					isset($variations->variations)
+				) {
+					
+					$vari_price = null;
+					
+					foreach ($variations->variations as $vid => $vari) {
+						
+						if (
+							$vari_price === null && 
+							is_object($vari->conditions) && 
+							!empty($vari->price)
+						) {
+							
+							$valid = true;
+							
+							foreach ($vari->conditions as $cid => $cond) {
+								if (
+									!empty($cond) && 
+									(
+										!is_object($item->options) ||
+										!isset($item->options->{$cid}) || 
+										$cond != $item->options->{$cid}
+									)
+								) {
+									$valid = false;
+								}
+							}
+							
+							if ($valid === true) {
+									
+								$vari_price = (Float)$vari->price;
+								
+								$item->variation = $vid;
+								
+								if (
+									isset($vari->minqty) && 
+									!empty($vari->minqty) && 
+									$qty < (Float)$vari->minqty
+								)
+									$qty = (Float)$vari->minqty;
+									
+								if (
+									isset($vari->maxqty) && 
+									!empty($vari->maxqty) && 
+									$qty > (Float)$vari->maxqty
+								)
+									$qty = (Float)$vari->maxqty;
+									
+							}
+						}
+					}
+					
+					if ($vari_price !== null && is_numeric($vari_price)) {
+						$base_price = $vari_price+$attr_price;
+					}
+				}
+				
+	            $extra_filters = $lumise->apply_filters(
+	                'product_extra_price',
+	                array(),
+	                $item
+	            );
+				
+				$extra_filter_price = 0;
+				
+				if ( is_array($extra_filters) && count($extra_filters) > 0 ) {
+					$extra_filter_price = array_sum($extra_filters);
+				}
+				
+				//extra resource from addons
+				$extra_price_addons = 0;
+				$extra = (array) $item->extra;
+				$extra = array_values($extra);
+				
+				foreach( $extra as $ext ) {
+					foreach ( $ext as $ep ) {
+						//find resource. If exists, add resource price to global price
+						$res = $this->find_resource($ep);
+						$extra_price_addons += ($res === false)? 0: floatval($res['price']);
+					}
+				}
+					
+				$items_cart[ $cart_id ] = array(
+	                'id'            => $item->product_id,
+	                'cart_id'       => $cart_id,
+	                'data'          => $item,
+	                'qty'           => $qty,
+	                'product_id'    => $item->product_id,
+	                'product_cms'   => ( $lumise->connector->platform == 'php' )? $item->product_id : $item->cms_id,
+	                'product_name'  => $item->product_name,
+	                'price' => array(
+	                    'total'     => 0,
+	                    'fixed'     => $fixed_price_qtys,
+	                    'resource'  => 0,
+	                    'template'  => $template_price,
+	                    'base'      => $base_price + $extra_filter_price + $extra_price_addons
+	                ),
+	                'options'    	=> $item->options,
+	                'variation'    	=> $item->variation,
+	                'attributes'    => $attributes,
+	                'printing'      => $item->printing,
+	                'resource'      => $resource,
+	                'design'        => $item->design,
+	                'template'      => false,
+	                'screenshots'   => $screenshorts
+	            );
+
+				$product_stage_printful		= $this->dejson(isset($current_product['stages']) ? $current_product['stages'] : '{}');
+	            $items_cart[ $cart_id ] = $lumise->apply_filters( 'items-cart-temp', $items_cart[ $cart_id ], array('attributes' => $attributes, 'variations' => $variations, 'product_stages' => $product_stage_printful));
+	            
+	            unset($item);
+			}
             
         }
         
@@ -365,17 +697,21 @@ class lumise_cart extends lumise_lib
         $ids = array();
         
         foreach( $resources as $res ) {
-            $ids[] = $res[ 'id' ];
+            // $ids[] = $res[ 'id' ];
+            $type = preg_replace('/[^a-zA-Z0-9]+/i', '', $res['type']);
+            $dataResource = $this->resources( $res );
+
+            $resource_ids[$type.'_'.$dataResource['id']] = $dataResource;
         }
         
-        $resources = $this->resources( $ids );
+        // $resources = $this->resources( $ids );
         
         $cart_total = 0;
-        
         foreach( $items_cart as $key => $item ) {
-	        
             foreach ( $item[ 'resource' ] as $res ){
-                $item[ 'price' ][ 'resource' ] += floatval( $resources[ $res['id'] ][ 'price' ] );
+                // $item[ 'price' ][ 'resource' ] += floatval( $resources[ $res['id'] ][ 'price' ] );
+                $type = preg_replace('/[^a-zA-Z0-9]+/i', '', $res['type']);
+                $item[ 'price' ][ 'resource' ] += floatval( $resource_ids[ $type.'_'.$res['id'] ][ 'price' ] );
                 $items_cart[ $key ][ 'price' ]['resource'] = $item['price']['resource'];
             }
             
@@ -584,27 +920,30 @@ class lumise_cart extends lumise_lib
 		exit;
 	}
     
-    public function resources( $ids ){
+    public function resources( $res ){
         
         global $lumise;
         
         $resources = array();
+
+        $table = preg_replace('/[^a-zA-Z0-9]+/i', '', $res['type']);
+
+        $query = array(
+			"SELECT  c.id, c.name, c.price",
+			"FROM {$lumise->db->prefix}".$table." c",
+			"WHERE `c`.`author`='{$lumise->vendor_id}' AND `c`.`id` IN (" . intval($res['id']) .")"
+		);
         
-        if( count( $ids ) > 0 ){
-            $query = array(
-    			"SELECT  c.id, c.name, c.price",
-    			"FROM {$lumise->db->prefix}cliparts c",
-    			"WHERE `c`.`author`='{$lumise->vendor_id}' AND `c`.`id` IN (" . implode( ',', $ids ) .")"
-    		);
-            
-            $cliparts = $lumise->db->rawQuery( implode( ' ', $query ) );
-            
-            foreach ( $cliparts as $clipart ){
-                $resources[ $clipart['id'] ] = $clipart;
-            }
+        $resourceData = $lumise->db->rawQuery( implode( ' ', $query ) );
+
+        if(count($resourceData) > 0){
+        	$resources = array(
+        		'id' => intval($resourceData[0]['id']),
+        		'name' => $resourceData[0]['name'],
+        		'price' => floatval($resourceData[0]['price'])
+        	);
         }
-        
-        
+
         return $resources;
     }
     

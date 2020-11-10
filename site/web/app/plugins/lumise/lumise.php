@@ -4,7 +4,7 @@ Plugin Name: Lumise - Product Designer Tool
 Plugin URI: https://www.lumise.com/
 Description: The professional solution for designing & printing online
 Author: King-Theme
-Version: 1.9.5
+Version: 1.9.7
 Author URI: http://king-theme.com/
 */
 
@@ -18,7 +18,7 @@ if(!defined('DS')) {
 	}
 }
 if(!defined('LUMISE_WOO')) {
-	define('LUMISE_WOO', '1.9.2' );
+	define('LUMISE_WOO', '1.9.7' );
 }
 if ( ! defined( 'LUMISE_FILE' ) ) {
 	define('LUMISE_FILE', __FILE__ );
@@ -136,12 +136,8 @@ class lumise_woocommerce {
 	        add_action( 'admin_notices', array(&$this, 'admin_notices') );
 	        
 	        if ($wpdb->get_var("SHOW TABLES LIKE 'lumise_settings'") == 'lumise_settings') {
-		        
-		        $this->update_core = $wpdb->get_results(
-		        	"SELECT `value` from `lumise_settings` WHERE `key`='last_check_update'", 
-		        	true
-		        ); 
-	
+
+		        $this->update_core = $wpdb->get_results("SELECT `value` from `lumise_settings` WHERE `key`='last_check_update'"); 
 				$this->update_core = @json_decode($this->update_core[0]->value);
 				
 				$current = get_site_transient( 'update_plugins' );
@@ -221,7 +217,7 @@ class lumise_woocommerce {
         
 		
 		add_filter('woocommerce_cart_item_name', array(&$this, 'woo_cart_edit_design_btn'), 10, 2);
-		add_filter('woocommerce_cart_item_thumbnail', array(&$this, 'woo_cart_design_thumbnails'), 10, 2);
+		add_filter('woocommerce_cart_item_thumbnail', array(&$this, 'woo_cart_design_thumbnails'), 10, 3);
 		
 		// add meta data attr cart to order
         add_action('woocommerce_add_order_item_meta', array(&$this, 'woo_add_order_item_meta'), 1, 3);		
@@ -397,13 +393,22 @@ class lumise_woocommerce {
 
 		if(isset($addon_list) && !empty($addon_list) && count($addon_list) > 0 && isset($addon_list['vendors'])){
 			// exist addon vendor
-			$key_addon_vendor = $lumise->get_option('purchase_key_addon_bundle');
+			$key_addon_vendor = $lumise->get_option('purchase_key_addon_vendor');
 			$key_valid_addon_vendor = ($key_addon_vendor === null || empty($key_addon_vendor) || strlen($key_addon_vendor) != 36 || count(explode('-', $key_addon_vendor)) != 5) ? false : true;
 
 			if (!$key_valid_addon_vendor) {
 				echo '<div class="wp-notice error" style="margin: 15px 0"><p>'.$lumise->lang('You must verify your purchase code for addon vendor to access to all features').'. <a href="'.admin_url('?page=lumise&lumise-page=license').'">'.$lumise->lang('Enter your license now').'</a></p></div>';
 			}
+		}
 
+		if(isset($addon_list) && !empty($addon_list) && count($addon_list) > 0 && isset($addon_list['printful'])){
+			// exist addon vendor
+			$key_addon_printful = $lumise->get_option('purchase_key_addon_printful');
+			$key_valid_addon_printful = ($key_addon_printful === null || empty($key_addon_printful) || strlen($key_addon_printful) != 36 || count(explode('-', $key_addon_printful)) != 5) ? false : true;
+
+			if (!$key_valid_addon_printful) {
+				echo '<div class="wp-notice error" style="margin: 15px 0"><p>'.$lumise->lang('You must verify your purchase code for addon printful to access to all features').'. <a href="'.admin_url('?page=lumise&lumise-page=license').'">'.$lumise->lang('Enter your license now').'</a></p></div>';
+			}
 		}
 	}
     
@@ -697,7 +702,34 @@ class lumise_woocommerce {
 		if (empty($data['cart_id'])) {
 	        $data['template'] = get_post_meta($data['product_cms'], 'lumise_design_template', true );	
 		}
-		
+
+		// $product = wc_get_product( 7878 );
+		// var_dump($product->is_type( 'variable' ));
+		$id_parent = 0;
+		$is_variation = false;
+		if($product->get_parent_id() != null && intval($product->get_parent_id()) != 0){
+			$id_parent = $product->get_parent_id();
+			$product_parent = wc_get_product( $id_parent );
+			$is_variation = $product_parent->is_type( 'variable' );
+		}
+		if (
+			empty($data['cart_id']) 
+			&& $id_parent != 0
+			&& $is_variation == true
+		) {
+	        $data['template'] = get_post_meta($data['product_cms'], '_variation_lumise', true );
+	        $data['product_base'] = 'variable:'.$product->get_id();	
+		}
+
+		if (count($item_data['meta_data']) > 0) {
+			foreach ($item_data['meta_data'] as $meta_data) {
+				if ($meta_data->key == 'lumise_data' && $data['product_base'] == '' && isset($meta_data->value['id']) && strpos($meta_data->value['id'], 'variable') !== false ) {
+					$data['product_base'] = $meta_data->value['id'];
+					break;
+				}
+			}
+		}
+
 		$lumise->views->order_designs($data);
 		
 	}
@@ -1036,7 +1068,7 @@ class lumise_woocommerce {
     }
 	
 	//design thumbnails in cart page
-	public function woo_cart_design_thumbnails($product_image, $cart_item) {
+	public function woo_cart_design_thumbnails($product_image, $cart_item, $cart_item_key) {
 		
 		global $lumise, $lumise_cart_thumbnails;
 		
@@ -1082,9 +1114,8 @@ class lumise_woocommerce {
             $woo_ver = WC()->version;
 
             foreach ($cart_object->cart_contents as $key => $value) {
-				
 				if( isset($value['lumise_data']) ){
-					
+
 					$cart_item_data = $lumise->lib->get_cart_data( $value['lumise_data'] );
 
 					$lumise_price = (
@@ -1096,16 +1127,21 @@ class lumise_woocommerce {
 						// fix bug package option price
 						$arrOption = (array)$cart_item_data['options'];
 						$arrAttribute = (array)$cart_item_data['attributes'];
+
 						foreach ($arrOption as $indexListChoice => $valueListChoice) {
 							foreach ($arrAttribute as $keyListOption => $valueListOption) {
 								$arrValueListOption = (array)$valueListOption;
+								$packOption_arr = array();
+								if(isset($arrValueListOption['values'])){
+									$packOption_arr = (array)$arrValueListOption['values'];
+								}
 								if( 
 									$indexListChoice == $arrValueListOption['id'] 
 									&& $arrValueListOption['type'] == 'quantity' 
 									&& isset($arrValueListOption['values']) 
-									&& isset($arrValueListOption['values']['package_options']) 
+									&& isset($packOption_arr['package_options']) 
 								){
-									foreach ($arrValueListOption['values']['package_options'] as $keyPackageOption => $valuePackageOption) {
+									foreach ($packOption_arr['package_options'] as $keyPackageOption => $valuePackageOption) {
 										$arrValuePackageOption = (array)$valuePackageOption;
 										if( $valueListChoice == $arrValuePackageOption['value']){
 											$lumise_price += (doubleval($arrValuePackageOption['value']) * doubleval($arrValuePackageOption['price']));
@@ -1115,6 +1151,84 @@ class lumise_woocommerce {
 							}
 						}
 					}
+
+					// // variable product calc price
+					// if(strpos($cart_item_data['id'], 'variable') !== false){
+					// 	$product_id = intval(preg_replace('/[^0-9]+/mi', '', $cart_item_data['id']));
+					// 	$product = wc_get_product( $product_id );
+					// 	$price = floatval($product->get_price());
+					// 	$lumise_qty = isset($cart_item_data['qty']) ? intval($cart_item_data['qty']) : 1;
+					// 	$lumise_price = $price * $lumise_qty;
+					// }
+
+					// variable product change name 
+					if(strpos($cart_item_data['id'], 'variable') !== false){
+						$product_base_id = intval(preg_replace('/[^0-9]+/mi', '', $cart_item_data['product_cms']));
+						$cart_item_data['product_name'] = get_the_title($product_base_id);
+
+						$product_id = intval(preg_replace('/[^0-9]+/mi', '', $cart_item_data['id']));
+						$product = wc_get_product( $product_id );
+						$productAttribute = $product->get_variation_attributes();
+						if($productAttribute != NULL && count($productAttribute) >= 1){
+							$newname = ' - ';
+							foreach ($productAttribute as $index => $detailAttribute) {
+								$newname .= $detailAttribute.', ';
+							}
+							$newname = substr($newname, 0, -2);
+							$value['lumise_data']['product_name'] .= $newname;
+						}
+
+						if ( version_compare( $woo_ver, '3.0', '<' ) ) {
+				            $cart_object->cart_contents[$key]['data']->name = $value['lumise_data']['product_name']; // Before WC 3.0
+				        } else {	
+							$cart_object->cart_contents[$key]['data']->name = $value['lumise_data']['product_name']; // Before WC 3.0
+				            $cart_object->cart_contents[$key]['data']->set_name($value['lumise_data']['product_name']); // WC 3.0+
+				        }
+					}
+
+					// if(strpos($cart_item_data['id'], 'variable') !== false && isset($cart_item_data['options']) && isset($cart_item_data['attributes']) ){
+					// 	$product_id = intval(preg_replace('/[^0-9]+/mi', '', $cart_item_data['id']));
+					// 	$product = wc_get_product( $product_id );
+					// 	$price = floatval($product->get_price());
+
+					// 	// fix bug package option price
+					// 	$arrOption = (array)$cart_item_data['options'];
+					// 	$arrAttribute = (array)$cart_item_data['attributes'];
+
+					// 	foreach ($arrOption as $indexListChoice => $valueListChoice) {
+					// 		foreach ($arrAttribute as $keyListOption => $valueListOption) {
+
+					// 			$arrValueListOption = (array)$valueListOption;
+					// 			if(isset($arrValueListOption['values'])){
+					// 				$packOption_arr = (array)$arrValueListOption['values'];
+					// 			}
+					// 			if( 
+					// 				$indexListChoice == $arrValueListOption['id'] 
+					// 				&& $arrValueListOption['type'] == 'quantity' 
+					// 				&& isset($arrValueListOption['values']) 
+					// 				&& isset($packOption_arr['package_options']) 
+					// 			){
+					// 				foreach ($packOption_arr['package_options'] as $keyPackageOption => $valuePackageOption) {
+					// 					$arrValuePackageOption = (array)$valuePackageOption;
+					// 					if( $valueListChoice == $arrValuePackageOption['value']){
+					// 						$lumise_price = (doubleval($arrValuePackageOption['value']) * $price);
+					// 					}
+					// 				}
+					// 			}
+
+					// 			// fix price with quantity attribute product variable (clip art orr template get price error so commented)
+					// 			// if(
+					// 			// 	$indexListChoice == $arrValueListOption['id'] 
+					// 			// 	&& $arrValueListOption['type'] == 'quantity' 
+					// 			// 	&& isset($arrValueListOption['value']) 
+					// 			// 	&& !isset($arrValueListOption['values']) 
+					// 			// 	&& !isset($packOption_arr['package_options']) 
+					// 			// ){
+					// 			// 	$lumise_price = (doubleval($arrValueListOption['value']) * $price);
+					// 			// }
+					// 		}
+					// 	}
+					// }
 
 					$lumise_price = $lumise->apply_filters('add-custom-price-limuse-data', $lumise_price, $cart_item_data);
 					
@@ -1204,6 +1318,77 @@ class lumise_woocommerce {
 							
 						}
 					}
+
+
+					// variation product template
+					if(isset($value['variation_id']) && intval($value['variation_id']) != 0 && isset($value['variation']) && !empty($value['variation']) && $product_base_id == null ){
+
+						$product_id = intval($value['variation_id']);
+						$product_base_id = 'variable:'.$product_id;
+						$cms_template = get_post_meta($product_id, '_variation_lumise', true );
+						$product = wc_get_product($product_id);
+						$template_price = 0;
+						$template_stages = array();
+						
+						if (
+							isset($cms_template) && 
+							!empty($cms_template) && 
+							$cms_template != '%7B%7D'
+						) {
+							
+							$cms_template = json_decode(urldecode($cms_template), true);
+							$templates = array();
+							if(isset($cms_template['stages']) && gettype($cms_template['stages']) == 'string'){
+								$cms_template = json_decode(urldecode(base64_decode($cms_template['stages'])), true);
+								foreach ($cms_template as $s => $stage){
+									$template_stages[$s] = intval($stage['template']['id']);
+									
+									if(!in_array($stage['template']['id'], $templates)){
+										$templates[] = intval($stage['template']['id']);
+										$template = $lumise->lib->get_template(intval($stage['template']['id']));
+										$template_price += ($template['price'] > 0)? $template['price'] : 0;
+									}
+								}
+								
+								$price = $product->get_price();
+								$total_price = 0;
+								
+								if ( version_compare( $woo_ver, '3.0', '<' ) ) {
+						            $total_price = $cart_object->cart_contents[$key]['data']->price = $price + $template_price; // Before WC 3.0
+						        } else {
+						            $cart_object->cart_contents[$key]['data']->set_price( $price + $template_price ); // WC 3.0+
+									$total_price = $price + $template_price;
+						        }
+								
+								if(!isset($value['lumise_incart'])){
+									//push item to lumise_cart
+									$data = array(
+										'product_id' => $product_base_id,
+										'product_cms' => $value['product_id'],
+										'product_name' => $product->get_name(),
+										'template' => $lumise->lib->enjson($template_stages),
+										'price' => array(
+								            'total' => $total_price,
+								            'attr' => 0,
+								            'printing' => 0,
+								            'resource' => 0,
+								            'base' => $total_price
+								        ),
+									);
+									
+									$item = $lumise->lib->cart_item_from_template($data, null);
+									
+									if(is_array($item)){
+										$item['incart'] = true;
+										$lumise->lib->add_item_cart($item);
+										$cart_object->cart_contents[$key]['lumise_incart'] = true;
+									}
+									
+								}
+							}
+						}
+					}
+
 				}
                 
             }
@@ -1224,6 +1409,10 @@ class lumise_woocommerce {
 
         global $wpdb, $lumise;
 
+        if(is_null(WC()->cart) && !isset($cart['msg'])){
+        	return;
+		}
+
         $table_name =  $this->prefix."order_products";
         
 		$count_order = $wpdb->get_var( " SELECT COUNT( * ) FROM $table_name WHERE order_id = $order_id" );
@@ -1238,6 +1427,14 @@ class lumise_woocommerce {
 		
 		$cart_data = array('items' => array());
 		
+		if(is_null(WC()->cart) && isset($cart['msg'])){
+			$msg = lumise_lang('Sorry, something went wrong when we processed your order. Please contact the administrator')
+				   .'.<br><br><em>'.$log.' -  "'.$cart['msg'].'"</em>';
+			
+			header('HTTP/1.1 401 '.$msg, true, 401);
+			exit;
+		}
+
 		$getCart = WC()->cart->get_cart();
 		if($getCart == NULL){
 			$getCart = array();
@@ -1380,14 +1577,31 @@ class lumise_woocommerce {
 			$is_query = explode('?', $this->tool_url);
 			$cart_id = $cart_item['lumise_data'][ 'cart_id' ];
 			$cart_item_data = $lumise->lib->get_cart_data( $cart_item['lumise_data'] );
-			
 			$url = $this->tool_url.
 					((isset($is_query[1]) && !empty($is_query[1]))? '&' : '').
 					'product_base='.$cart_item_data['product_id'].
 					'&product_cms='.$cart_item_data['product_cms'].
 					'&cart='.$cart_id;
-					
-			return $product_name . 
+
+			if(strpos($cart_item_data['id'], 'variable') !== false){
+				$product_base_id = intval(preg_replace('/[^0-9]+/mi', '', $cart_item_data['product_cms']));
+				$cart_item_data['product_name'] = get_the_title($product_base_id);
+
+				$product_id = intval(preg_replace('/[^0-9]+/mi', '', $cart_item_data['id']));
+				$product = wc_get_product( $product_id );
+				$productAttribute = $product->get_variation_attributes();
+
+				if($productAttribute != NULL && count($productAttribute) >= 1){
+					$newname = ' - ';
+					foreach ($productAttribute as $index => $detailAttribute) {
+						$newname .= $detailAttribute.', ';
+					}
+					$newname = substr($newname, 0, -2);
+					$cart_item_data['product_name'] .= $newname;
+				}
+			}
+
+			return $cart_item_data['product_name'] . 
 					'<div class="lumise-edit-design-wrp">'.
 						'<a id="'.$cart_id.'" class="lumise-edit-design button" href="'.$url.'">'.
 							__('Edit Design', 'lumise').
@@ -1472,7 +1686,7 @@ class lumise_woocommerce {
 			if( count($items) > 0 ):
 				foreach ($items as $order_item) {
 					// hash : 09199e1fe4d7d285194da94841dc2d27
-					if( $product_id == $order_item['product_id'] && $quantity == $order_item['qty'] ) {
+					if( $product_id == $order_item['product_id'] && $qty == $order_item['qty'] ) {
 						 return $order_item['qty'];
 					 }
 				}
@@ -1853,9 +2067,14 @@ class lumise_woocommerce {
 				$template_price = 0;
 			
 			$pprice = $product->get_price();
-			if (!is_numeric($pprice))
+			if (!is_numeric($pprice)){
 				$pprice = 0;
-			
+			}
+			$sale_product = '';
+			$new_price = $pprice + $template_price;
+			if($product->get_sale_price()){
+				return wc_format_sale_price($product->get_regular_price(), ($pprice + $template_price) ).' '.$product->get_price_suffix();
+			}
 			if(get_option('woocommerce_calc_taxes') == 'yes' && get_option('woocommerce_price_display_suffix') != ''){
 				return wc_price($pprice + $template_price).' '.$product->get_price_suffix();
 			}
@@ -2106,7 +2325,11 @@ class lumise_woocommerce {
 		
 		do_action( 'lumise_before_customize_button' );
 
-		$class_lumise = apply_filters('lumise_button_customize', 'lumise-customize-button button alt single_add_to_cart_button');
+		$disable_variation = '';
+		if ($product->is_type( 'variable' )) {
+			$disable_variation = 'disabled';	
+		}
+		$class_lumise = apply_filters('lumise_button_customize', 'lumise-customize-button button alt '.$disable_variation.' single_add_to_cart_button_fixed');
 		$link_design = apply_filters( 'lumise_customize_link', $link_design );
 
 		?>
@@ -2118,6 +2341,21 @@ class lumise_woocommerce {
 				<?php  if ($disable_cartbtn == 'yes') { ?>
 				$('#lumise-customize-button').closest('form').find('button.single_add_to_cart_button').remove();
 				<?php } ?>
+				<?php if($product->is_type( 'variable' )): ?>
+				$('#lumise-customize-button').click(function(e){
+					var goto = true;
+					$('table.variations tr select').each(function(index, value){
+						if($(this).val() == '' || $(this).val() == 'null' || $(this).val() == ' ' || $(this).val() == null || $(this).val() == undefined || $(this).val() == 'undefined' ){
+							goto = false;
+						}
+					});
+
+					if(goto == false){
+						e.preventDefault();
+						alert('Please select some product options before adding this product to customize.');
+					}
+				})
+				<?php endif; ?>
 				$('form.variations_form')/*.on('show_variation', function (e) {
 					
 				}).on('hide_variation', function (e) {
@@ -2166,6 +2404,18 @@ class lumise_woocommerce {
 		return $package;
 	}
 
+}
+
+if (class_exists('WOOCS')) {
+    global $WOOCS;
+    if ($WOOCS->is_multiple_allowed) {
+        $currrent = $WOOCS->current_currency;
+        if ($currrent != $WOOCS->default_currency) {
+            $currencies = $WOOCS->get_currencies();
+            $rate = $currencies[$currrent]['rate'];
+            $price = $price / $rate;
+        }
+    }
 }
 
 global $lumise_woo;

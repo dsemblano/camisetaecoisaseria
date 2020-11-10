@@ -52,7 +52,7 @@ class lumise_admin extends lumise_lib{
 
 	protected function process_save_data($field, $data) {
 		
-		if ($field['type'] == 'trace')
+		if (isset($field['type']) && $field['type'] == 'trace')
 			return $data;
 			
 		global $lumise_admin, $lumise;
@@ -97,20 +97,20 @@ class lumise_admin extends lumise_lib{
 			}
 		}
 		
-		if ($field['type'] == 'parent') {
+		if (isset($field['type']) && $field['type'] == 'parent') {
 			if ($_POST[$field['name']] == 'None')
 				$data[$field['name']] = '0';
 			else
 				$data[$field['name']] = $_POST[$field['name']];
 		}	
 
-		if ($field['type'] == 'upload')
+		if (isset($field['type']) && $field['type'] == 'upload')
 			$data = $this->process_upload($field, $data);
 			
-		if ($field['type'] == 'toggle' && !isset($data[$field['name']]))
+		if (isset($field['type']) && $field['type'] == 'toggle' && !isset($data[$field['name']]))
 			$data[$field['name']] = '0';
 
-		if ($field['type'] == 'tags' && isset($_POST[$field['name']])){
+		if (isset($field['type']) && $field['type'] == 'tags' && isset($_POST[$field['name']])){
 			$data[$field['name']] = $_POST[$field['name']];
 		}
 		
@@ -216,17 +216,17 @@ class lumise_admin extends lumise_lib{
 		if (isset($args['tabs'])) {
 			foreach ($args['tabs'] as $key => $tab) {
 				foreach($tab as $key2 => $field) {
-					if ($field['type'] == 'categories')
+					if (isset($field['type']) && $field['type'] == 'categories')
 						array_push($cates, $field);
-					if ($field['type'] == 'tags')
+					if (isset($field['type']) && $field['type'] == 'tags')
 						array_push($tags, $field);
 				}
 			}
 		} else {
 			foreach($args as $key => $field) {
-				if ($field['type'] == 'categories')
+				if (isset($field['type']) && $field['type'] == 'categories')
 					array_push($cates, $field);
-				if ($field['type'] == 'tags')
+				if (isset($field['type']) && $field['type'] == 'tags')
 					array_push($tags, $field);
 			}
 		}
@@ -1224,6 +1224,222 @@ class lumise_admin extends lumise_lib{
 				break;
 				
 				case 'do-update-addon-vendor':
+					
+					$key = $this->main->get_option('purchase_key');
+					$sys = $this->main->lib->check_sys_update();
+					
+					if ($key === null || empty($key) || strlen($key) != 36 || count(explode('-', $key)) != 5) {
+						$this->main->set_option('purchase_key', '');
+						echo '<script type="text/javascript">window.location.href = "'.$this->main->cfg->admin_url.'lumise-page=license";</script></body></html>';
+						exit;
+					
+					} else if ($sys !== true) {
+						
+						$lumise_msg['status'] = 'error';
+						$lumise_msg['errors'] = $sys;
+						$this->main->connector->set_session('lumise_msg', $lumise_msg);
+						
+					} else {
+						
+						$this->main->check_upload();
+						$this->main->lib->delete_dir($this->main->cfg->upload_path.'tmpl');
+						
+						if (
+							!is_dir($this->main->cfg->upload_path.'tmpl') && 
+							!mkdir($this->main->cfg->upload_path.'tmpl', 0755)
+						) {
+							
+							$lumise_msg['status'] = 'error';
+							$lumise_msg['errors'] = array(
+								$this->main->lang('Error: Could not create download folder, make sure that the permissions on lumise-data directory is 755')
+							);
+							$this->main->connector->set_session('lumise_msg', $lumise_msg);
+							return;
+						
+						}
+						
+						$file = $this->main->cfg->upload_path.'tmpl/lumize.zip';
+						
+						$fh = $this->main->lib->remote_connect(
+							$this->main->cfg->api_url.'updates/verify/',
+							array(), 
+							array(
+								"Download: yes",
+								"Key: ".$key,
+								"Referer: ".$_SERVER['HTTP_HOST'],
+					        	"Platform: ".$this->main->connector->platform,
+					        	"Scheme: ".$this->main->cfg->scheme,
+					        	"Cookie: PHPSESSID=".str_replace('=', '', base64_encode($_SERVER['HTTP_HOST']))
+					        )
+						);
+						
+						$data = file_put_contents($file, $fh);
+						@fclose($fh);
+						
+						if ($data === 0) {
+							
+							$lumise_msg['status'] = 'error';
+							$lumise_msg['errors'] = array(
+								$this->main->lang('Error: Could not download file, make sure that the fopen() funtion on your server is enabled')
+							);
+							
+							@unlink($file);
+							
+						} else if ($data < 250) {
+							
+							$lumise_msg['status'] = 'error';
+							$erro = @file_get_contents($file);
+							$lumise_msg['errors'] = array($this->main->lang('Error: ').$erro);
+							
+							@unlink($file);
+							
+						} else {
+							
+							$zip = new ZipArchive;
+							$res = $zip->open($file);
+							$rpath = str_replace(DS.'core'.DS, '', $this->main->cfg->root_path);
+							
+							if ($res === TRUE) {
+								
+								$zip->extractTo($this->main->cfg->upload_path.'tmpl');
+								$zip->close();
+								
+								if ($this->main->connector->update()) {
+									$lumise_msg['status'] = 'success';
+									$lumise_msg['msg'] = $this->main->lang('Congratulations, Lumise has updated successfully, enjoy it!');
+									$this->main->connector->set_session('lumise_msg', $lumise_msg);
+									echo '<script type="text/javascript">window.location.href = "'.$this->main->cfg->admin_url.'lumise-page=updates";</script></body></html>';
+									exit;
+								} else {
+									$lumise_msg['status'] = 'error';
+									$lumise_msg['errors'] = array($this->main->lang('Error: Could not move files'));
+								}
+								
+							} else {
+								$lumise_msg['status'] = 'error';
+								$lumise_msg['errors'] = array($this->main->lang('Error: Could not open file').$file);
+							}
+							
+						}
+						
+						$this->main->connector->set_session('lumise_msg', $lumise_msg);
+						
+					}
+					
+				break;
+
+
+				// end product function evantor
+
+				case 'verify-license-addon-printful' : 
+				
+					$key_addon_printful = $this->esc('key');
+					
+					if (empty($key_addon_printful) || strlen($key_addon_printful) != 36 || count(explode('-', $key_addon_printful)) != 5) {
+						$lumise_msg['status'] = 'error';
+						$lumise_msg['errors'] = array($this->main->lang('The purchase code is not valid'));
+						$this->main->connector->set_session('lumise_msg', $lumise_msg);
+						return;
+					}
+					$check = $this->main->lib->remote_connect(
+						$this->main->cfg->api_url.'updates/verify_addon_printful/',
+						array(), 
+						array(
+							"Key: ".$key_addon_printful,
+							"Referer: ".$_SERVER['HTTP_HOST'],
+				        	"Platform: ".$this->main->connector->platform,
+				        	"Scheme: ".$this->main->cfg->scheme,
+				        	"Cookie: PHPSESSID=".str_replace('=', '', base64_encode($_SERVER['HTTP_HOST']))
+				        )
+					);
+					
+					
+					$check = @simplexml_load_string($check);
+					
+					$resp = (string)$check->response[0];
+					$lumise_msg = $this->main->connector->get_session('lumise_msg');
+					if (!is_array($lumise_msg))
+							$lumise_msg = array();
+							
+					if ($resp == 'anti_spam') {
+						$lumise_msg['status'] = 'error';
+						$lumise_msg['errors'] = array($this->main->lang('It seems you have sent too many requests, please wait for a few minutes and try again later'));
+					}else if ($resp == 'register_success') {
+						$this->main->set_option('purchase_key_addon_printful', $key_addon_printful);
+						$lumise_msg['status'] = 'success';
+						$lumise_msg['msg'] =$this->main->lang('Your purchase code has been verified successfully');
+					}else{
+						$this->main->set_option('purchase_key_addon_printful', '');
+						$lumise_msg['status'] = 'error';
+						$lumise_msg['errors'] = array($this->main->lang('An error occurred').': '.strtoupper($resp));
+					}
+					
+					$this->main->connector->set_session('lumise_msg', $lumise_msg);
+					
+				break;
+				
+				case 'revoke-license-addon-printful' : 
+					
+					$key_addon_printful = $this->esc('key');
+					
+					if (empty($key_addon_printful) || strlen($key_addon_printful) != 36 || count(explode('-', $key_addon_printful)) != 5) {
+						$lumise_msg['status'] = 'error';
+						$lumise_msg['errors'] = array($this->main->lang('The purchase code is not valid'));
+						$this->main->connector->set_session('lumise_msg', $lumise_msg);
+						return;
+					}
+					
+					$check = $this->main->lib->remote_connect(
+						$this->main->cfg->api_url.'updates/verify_addon_printful/',
+						array(), 
+						array(
+							"Revoke: yes",
+							"Key: ".$key_addon_printful,
+							"Referer: ".$_SERVER['HTTP_HOST'],
+				        	"Platform: ".$this->main->connector->platform,
+				        	"Scheme: ".$this->main->cfg->scheme,
+				        	"Cookie: PHPSESSID=".str_replace('=', '', base64_encode($_SERVER['HTTP_HOST']))
+				        )
+					);
+					
+					$check = @simplexml_load_string($check);
+					
+					$resp = (string)$check->response[0];
+					
+					$lumise_msg = $this->main->connector->get_session('lumise_msg');
+					if (!is_array($lumise_msg))
+							$lumise_msg = array();
+					
+					if ($resp == 'anti_spam') {
+						$lumise_msg['status'] = 'error';
+						$lumise_msg['errors'] = array($this->main->lang('You sent too much request, please wait for a few minutes and try again'));
+					}else if ($resp == 'success') {
+						$this->main->set_option('purchase_key_addon_printful', '');
+						$lumise_msg['status'] = 'success';
+						$lumise_msg['msg'] =$this->main->lang('Your purchase code has been revoked successful');
+					}else{
+						$lumise_msg['status'] = 'error';
+						$lumise_msg['errors'] = array($this->main->lang('An error occurred while processing this request, please try again later.').$resp);
+					}
+					
+					$this->main->connector->set_session('lumise_msg', $lumise_msg);
+					
+				break;
+				
+				case 'check-update-addon-printful':
+					
+					$data = $this->main->update->check();
+					
+					if ($data === null || !isset($data['version'])) {
+						
+						$lumise_msg['status'] = 'error';
+						$lumise_msg['errors'] = array($this->main->lang('Something went wrong. We could not check the update this time, please check your connection and try again later.'));
+						$this->main->connector->set_session('lumise_msg', $lumise_msg);
+					}
+					
+				break;
+				
+				case 'do-update-addon-printful':
 					
 					$key = $this->main->get_option('purchase_key');
 					$sys = $this->main->lib->check_sys_update();

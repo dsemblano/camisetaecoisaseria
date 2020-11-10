@@ -398,6 +398,10 @@ class lumise_lib{
 				"name" => $lumise->lang('All categories')
 			));
 		}
+
+		if(!isset($get_cate['name']) || $get_cate['name'] == NULL){
+			$get_cate['name'] = '';
+		}
 		
 		$cate_name = $get_cate['name'];
 		
@@ -1100,6 +1104,10 @@ class lumise_lib{
 		$product['attributes'] = $this->enjson($product['attributes']);
 		
 	    $return_product = $lumise->apply_filters('product', $product);
+
+	    if(isset($product['description']) && isset($product['active_description']) && $product['active_description'] == 1 && $return_product !== null ){
+	    	$return_product['description'] = $product['description'];
+	    }
 		
 		foreach ($product['stages'] as $n => $d) {
 			
@@ -1127,7 +1135,9 @@ class lumise_lib{
 			}
 		}
 		
-		$return_product['stages'] = $this->enjson($return_product['stages']);
+		if(!empty($return_product)){
+			$return_product['stages'] = $this->enjson($return_product['stages']);
+		}
 		
 		return ($return_product !== null && isset($return_product['id']) ? $return_product : $product);
 		
@@ -2037,10 +2047,21 @@ class lumise_lib{
 		global $lumise;
 		
 		$product = $this->get_product();
+
 		$has_template = 0;
 		
 		if ($product !== null) {
 			
+			// if(isset($product['ext_attributes']) && !empty($product['ext_attributes'])){
+			// 	foreach ($product['ext_attributes'] as $key => $detailArr) {
+			// 		if(strpos($key, ' ') !== false){
+			// 			$newKey = preg_replace('/[ ]+/', '-',  $key);
+			// 			$product['ext_attributes'][$newKey] = $detailArr;
+			// 			unset($product['ext_attributes'][$key]);
+			// 		}
+			// 	}
+			// }
+
 			$product['stages'] = $lumise->lib->dejson($product['stages']);
 			$product['attributes'] = $lumise->lib->dejson($product['attributes']);
 
@@ -2455,7 +2476,9 @@ class lumise_lib{
 		    'file_put_contents()' => true,
 		    'file_get_contents()' => true,
 		    'memory_limit' => 0,
-		    'post_max_size' => 0
+		    'post_max_size' => 0,
+		    'upload_max_size' => 0,
+		    'max_execution_time' => 0
 	    );
 	    
 		$ml = ini_get('memory_limit');
@@ -2463,6 +2486,12 @@ class lumise_lib{
 		
 		$pmz = ini_get('post_max_size');
 		$check['post_max_size'] = (int)str_replace('M', '', $pmz);
+
+		$umz = ini_get('upload_max_size');
+		$check['upload_max_size'] = (int)str_replace('M', '', $umz);
+
+		$met = ini_get('max_execution_time');
+		$check['max_execution_time'] = (int)$met;
 		
 		if (!ini_get('allow_url_fopen') && ini_get('allow_url_fopen') != -1)
 			$check['allow_url_fopen'] = false;

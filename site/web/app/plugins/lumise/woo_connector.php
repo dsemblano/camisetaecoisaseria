@@ -112,6 +112,14 @@ if(!class_exists('lumise_connector')){
 			    }
 			
 			    $data_store   = WC_Data_Store::load( 'product' );
+
+			    // foreach ($_POST as $key => $detail) {
+			    // 	if(strpos($key, 'attribute_') !== false && strlen($key) > 10 ){
+			    // 		// unset($_POST[$key]);
+			    // 		$_POST[strtolower($key)] = $detail;
+			    // 	}
+			    // }
+			    // $variation_id = $data_store->find_matching_product_variation( $variable_product, ['attribute_%e4%ba%a7%e5%93%81' => 'Red'] );
 			    $variation_id = $data_store->find_matching_product_variation( $variable_product, wp_unslash( $_POST ) );
 			    $variation    = $variation_id ? $variable_product->get_available_variation( $variation_id ) : false;
 			   
@@ -124,6 +132,16 @@ if(!class_exists('lumise_connector')){
 			    }
 				
 				$products = $this->get_product(array(), 'variable:'.$variation['lumise']);
+
+				// if(isset($products[0]['ext_attributes']) && !empty($products[0]['ext_attributes'])){
+				// 	foreach ($products[0]['ext_attributes'] as $key => $detailArr) {
+				// 		if(strpos($key, ' ') !== false){
+				// 			$newKey = preg_replace('/[ ]+/', '-',  $key);
+				// 			$products[0]['ext_attributes'][$newKey] = $detailArr;
+				// 			unset($products[0]['ext_attributes'][$key]);
+				// 		}
+				// 	}
+				// }
 				
 				echo json_encode(array(
 					"success" => true,
@@ -288,7 +306,9 @@ if(!class_exists('lumise_connector')){
 						if (isset($cms_product[0])) {
 							
 							$data['name'] = $lumise->lang($cms_product[0]->post_title);
-							$data['description'] = $lumise->lang($cms_product[0]->post_content);
+							if(!isset($data['description']) || $data['description'] == '' || $data['description'] == null){
+								$data['description'] = $lumise->lang($cms_product[0]->post_content);
+							}
 							if(function_exists('wc_get_product')){
 								$_product = wc_get_product( $data['product'] );
 								if(!empty($_product)) $data['price'] = $_product->get_price();
@@ -927,29 +947,123 @@ if(!class_exists('lumise_connector')){
 					$product = wc_get_product($pid);
 					
 					$stages = $lumise->lib->dejson($data['stages']);
+					foreach ($stages as $stageID => $stageData) {
+						if(isset($stageData->template) && isset($stageData->template->id)){
+							$tempalteStages = $wpdb->get_results(
+								sprintf(
+									"SELECT * FROM `%s` WHERE `ID`=%d",
+									$lumise->db->prefix.'templates',
+									(Int)$stageData->template->id
+								), ARRAY_A
+							);
+							if($tempalteStages != null && count($tempalteStages) == 1 ){
+								$stages->$stageID->template->upload = $tempalteStages[0]['upload'];
+							}
+						}
+					}
+					$newStage = base64_encode(urlencode(json_encode($stages)));
 					
 					$woo_product = wc_get_product( $pid );
 					$woo_product_parent = wc_get_product( $woo_product->get_parent_id() );
+
+					$ext_attributes = array();
+					$ext_attribute_name = array();
+					$ext_list_variation = array();
+
+					if( !empty($woo_product_parent->get_variation_attributes()) ){
+						$ext_attributes = $woo_product_parent->get_variation_attributes();
+						$all_attribute = $woo_product_parent->get_attributes();
+
+						// foreach all product variation child
+						foreach ($woo_product_parent->get_children() as $key => $product_child) {
+							$single_variation = new WC_Product_Variation($product_child);
+							$variation_data  = $single_variation->get_variation_attributes();
+
+							// foreach all attribute in variation
+							foreach ($variation_data as $keyAttribute => $detailAttribute) {
+								$ext_list_variation[$product_child][substr($keyAttribute, 10, strlen($keyAttribute))] = $detailAttribute;
+							}
+						}
+
+						// foreach all variation
+						foreach ($ext_attributes as $keyNameVariation => $detailVariation) {
+							
+							// foreach all attribute
+							foreach ($all_attribute as $id_attribute => $detailAttribute) {
+								// repleace variation name to attribute name
+								if($detailAttribute['data']['name'] == $keyNameVariation){
+									unset($ext_attributes[$keyNameVariation]);
+									$ext_attributes[$id_attribute] = $detailVariation;
+									if(strpos($keyNameVariation, 'pa_') !== false){
+										$keyNameVariation =  substr($keyNameVariation, 3, strlen($keyNameVariation));
+									}
+									$ext_attribute_name[$id_attribute] = $keyNameVariation;
+								}
+							}
+
+						}
+					}
+
 					
+					// name for variation product with 3 variation
+					$product_name = $product->get_name();
+
+					if(isset($_POST['product_base']) && strpos($_POST['product_base'], 'variable') !== false){
+						$product_id = intval(preg_replace('/[^0-9]+/mi', '', $_POST['product_base']));
+						$product_temp = wc_get_product( $product_id );
+						$productAttribute = $product_temp->get_variation_attributes();
+
+						if($productAttribute != NULL && count($productAttribute) >= 3){
+							$newname = ' - ';
+							foreach ($productAttribute as $index => $detailAttribute) {
+								$newname .= $detailAttribute.', ';
+							}
+							$newname = substr($newname, 0, -2);
+							$product_name .= $newname;
+						}
+					}
+
 					$products[0] = array( 
 						'id' => 'variable:'.$pid,
 						'product' => isset($_POST['product_cms']) ? $_POST['product_cms'] : '',
 						'cms_id' => isset($_POST['product_cms']) ? $_POST['product_cms'] : '',
 						'color' => 'red',
-						'name' => $product->get_name(), 
+						'name' => $product_name, 
 						'sku' => $product->get_sku(), 
 						'price' => $product->get_price(), 
 						'description' => $product->get_description(), 
-						'stages' => $data['stages'],
+						// 'stages' => $data['stages'],
+						'stages' => $newStage,
 						'printings' => $data['printing'],
 						'attributes' => array(),
 						'variations' => array(),
-						'ext_attributes' => $woo_product_parent->get_variation_attributes(),
+						// 'ext_attributes' => $woo_product_parent->get_variation_attributes(),
+						'ext_attributes' => $ext_attributes,
+						'ext_attribute_name' => $ext_attribute_name,
+						'ext_list_variation' => $ext_list_variation,
 						'ext_attributes_value' => $woo_product->get_attributes(),
 						'ext_attributes_callback' => "
 							let selects = wrp.find('div.lumise-cart-field.ext-attribute select'); 
 							selects.on('change', function(e) {
-								
+							// let selects = wrp.find('button#select_variable'); 
+							// let optionsData = wrp.find('div.lumise-cart-field.ext-attribute select');
+							// selects.on('click', function(e) {
+								let product_base_check = lumise.fn.url_var('product_base', '');
+								if(product_base_check.indexOf('variable:') != -1){
+									let last_attribute = true;
+
+									$('div.lumise-cart-field.ext-attribute select').each(function() {
+										if($(this).val() == '' || $(this).val() == null){
+											last_attribute = false;
+										}
+									});
+
+									// not last attribute, not to server
+									if(last_attribute == false){
+										return false;
+									}
+								}
+
 								let sel = this,
 									val = this.value,
 									post_data = {
@@ -964,12 +1078,19 @@ if(!class_exists('lumise_connector')){
 								post_data['attribute_'+this.name] = val;
 								
 								selects.each(function() {
-									if (post_data['attribute_'+this.name] === undefined) {
-										post_data['attribute_'+this.name] = this.value;
+									var attribute_name = 'attribute_'+this.name;
+									// if(attribute_name.indexOf(' ') != -1){
+									// 	attribute_name = attribute_name.split(' ').join('-');
+									// }
+									if (post_data[attribute_name] === undefined) {
+										post_data[attribute_name] = this.value;
 									}
 								});
 								
 								sel.value = sel.getAttribute('data-value');
+
+								let thisValue = $(this).val();
+								let thisName = $(this).attr('name');
 								
 								lumise.f('Loading variation..');
 								
@@ -984,6 +1105,39 @@ if(!class_exists('lumise_connector')){
 											lumise.fn.notice(res.message, 'error', 5000);
 										} else {
 											lumise.render.product(res.data);
+
+											if(product_base_check.indexOf('variable:') != -1 && sessionStorage.getItem('LUMISE-ATTRIBUTE-VARIATION') != null && sessionStorage.getItem('LUMISE-ATTRIBUTE-VARIATION') != '' && sessionStorage.getItem('LUMISE-ATTRIBUTE-VARIATION') != 'undefined'){
+
+												let list_selected = {};
+												$('div.lumise-cart-field.ext-attribute select').each(function() {
+													if($(this).val() != '' || $(this).val() != null){
+														list_selected[$(this).attr('name')] = $(this).val();
+													}
+												});
+
+												let attribute_variation_data = JSON.parse(sessionStorage.getItem('LUMISE-ATTRIBUTE-VARIATION'));
+
+												// foreach list variation
+												$.each(attribute_variation_data, function(attribute_name, attribute_arr){
+													
+													$('select[name=\"'+attribute_name+'\"] option').remove();
+													$('select[name=\"'+attribute_name+'\"]').html('<option value=\"\">Choose an option</option>');
+
+													$.each(attribute_arr, function(index, detail){
+														let existAttribute = $('select[name=\"'+attribute_name+'\"] option[value=\"'+detail+'\"]').length;
+														let selected = '';
+														if(detail == list_selected[attribute_name]){
+															selected = 'selected';
+														}
+														if(existAttribute == 0){
+															$('select[name=\"'+attribute_name+'\"]').append('<option '+selected+' value=\"'+detail+'\">'+detail+'</option>');
+														}
+													});
+
+
+												});
+											}
+
 										};
 										
 										lumise.f(false);

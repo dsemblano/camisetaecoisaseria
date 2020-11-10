@@ -2043,6 +2043,8 @@ html body .lumise-stages-wrp div.lumise_tabs div.lumise_tab_content{
     transition: all ease 250ms;
     position: relative;
     left: 0px;
+    overflow-x: scroll;
+    width: 100vw !important;
 }
 .lumise-stages-wrp .lumise_tab_nav>li{top: 0px !important;}
 .lumise-stages-wrp .lumise_tab_nav li.ui-sortable-helper a{
@@ -4241,6 +4243,10 @@ html body .lumise_wrapper .lumise_tab_nav li a span+i:before{
 #lumise-updates p{
     line-height: 28px;
 }
+#lumise-license ul li{
+    font-size: 16px;
+    line-height: 24px;
+}
 #lumise-license h1, #lumise-updates h1{
     font-size: 23px;
     font-weight: 400;
@@ -5580,3 +5586,11 @@ span.lumise-msg-invalid{
     text-decoration: underline;
 }
 /*=================END==================*/
+#lumise-list-colors #lumise-list-colors-body .col .colors-ul{
+    width: 100%;
+}
+.style_color_btn{
+    width: 100%;
+    position: relative;
+    display: inline-block;
+}

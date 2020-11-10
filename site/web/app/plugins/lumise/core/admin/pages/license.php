@@ -9,6 +9,9 @@
 
 	$key_addon_vendor = $lumise->get_option('purchase_key_addon_vendor');
 	$key_valid_addon_vendor = ($key_addon_vendor === null || empty($key_addon_vendor) || strlen($key_addon_vendor) != 36 || count(explode('-', $key_addon_vendor)) != 5) ? false : true;
+
+	$key_addon_printful = $lumise->get_option('purchase_key_addon_printful');
+	$key_valid_addon_printful = ($key_addon_printful === null || empty($key_addon_printful) || strlen($key_addon_printful) != 36 || count(explode('-', $key_addon_printful)) != 5) ? false : true;
 ?>
 
 <style type="text/css">
@@ -47,6 +50,7 @@
 				<li class="active"><a href="#lumise-tab-license-plugin">License verification</a></li>
 				<li><a href="#lumise-tab-addon-bundle">License addon bundle</a></li>
 				<li><a href="#lumise-tab-addon-vendor">License addon vendor</a></li>
+				<li><a href="#lumise-tab-addon-printful">License addon printful</a></li>
 			</ul>
 			<div class="lumise_tabs">
 				<div class="lumise_tab_content active" id="lumise-tab-license-plugin" >
@@ -149,6 +153,44 @@
 						<?php } else { ?>
 						<input type="password" name="key" size="58" value="<?php echo $key_addon_vendor; ?>" placeholder="<?php echo $lumise->lang('Enter your purchase code'); ?>" />
 						<input type="hidden" name="do_action" value="verify-license-addon-vendor" />
+						<button type="submit" class="lumise_btn primary loaclik">
+							<?php echo $lumise->lang('Verify Now'); ?>
+						</button>
+						&nbsp; 
+						<a class="lumise_btn" href="https://codecanyon.net/item/vendors-design-launcher-addon-for-lumise-product-designer/24082588" target=_blank>
+							<?php echo $lumise->lang('Buy a license'); ?>
+						</a>
+						<?php } ?>
+					</form>
+
+				</div>
+
+				<div class="lumise_tab_content" id="lumise-tab-addon-printful" >
+					
+					<?php if ($key_valid_addon_printful): ?>
+						<div class="lumise-update-notice success">
+							<?php echo $lumise->lang('Your license has been verified, now your Lumise will be updated automatically and have access to all features'); ?>.
+						</div>
+					<?php endif; ?>
+					<form action="" method="POST" id="lumise-license-form-addon-printful">
+						<?php if ($key_valid_addon_printful) { ?>
+						<input type="password" name="key" readonly size="58" value="<?php echo $key_addon_printful; ?>" placeholder="<?php echo $lumise->lang('Enter your purchase code'); ?>" />
+						<input type="hidden" name="do_action" value="revoke-license-addon-printful" />
+						<button type="submit" class="lumise_btn danger">
+							<?php echo $lumise->lang('Revoke this license'); ?>
+						</button>
+						<script type="text/javascript">
+							jQuery('#lumise-license-form-addon-printful').on('submit', function(e) {
+								if (!confirm("<?php echo $lumise->lang('Are you sure? After revoking the license you can use it to verify another domain but you will not be able to use it to verify this domain again'); ?>.")) {
+									e.preventDefault();
+								} else {
+									jQuery('#lumise-license-form-addon-printful button.lumise_btn').html('<i style="font-size: 16px;" class="fa fa-circle-o-notch fa-spin fa-fw"></i> please wait..');
+								}
+							});
+						</script>
+						<?php } else { ?>
+						<input type="password" name="key" size="58" value="<?php echo $key_addon_printful; ?>" placeholder="<?php echo $lumise->lang('Enter your purchase code'); ?>" />
+						<input type="hidden" name="do_action" value="verify-license-addon-printful" />
 						<button type="submit" class="lumise_btn primary loaclik">
 							<?php echo $lumise->lang('Verify Now'); ?>
 						</button>

@@ -310,6 +310,7 @@ CREATE TABLE IF NOT EXISTS `lumise_products` (
   `thumbnail_url` varchar(255) NOT NULL DEFAULT '',
   `template` varchar(11) NOT NULL DEFAULT '',
   `description` text NOT NULL DEFAULT '',
+  `active_description` int(1) NULL DEFAULT '0',
   `stages` text NOT NULL,
   `variations` text NOT NULL DEFAULT '',
   `attributes` text NOT NULL DEFAULT '',
@@ -317,16 +318,14 @@ CREATE TABLE IF NOT EXISTS `lumise_products` (
   `order` int(11) NOT NULL DEFAULT 0,
   `active` int(1) NOT NULL DEFAULT 1,
   `author` varchar(255) NOT NULL DEFAULT '',
-  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `updated` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `created` datetime NULL DEFAULT '0000-00-00 00:00:00',
+  `updated` datetime NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`),
   KEY `id` (`id`),
   KEY `price` (`price`),
   KEY `product` (`product`),
   KEY `active` (`active`),
-  KEY `order` (`order`),
-  KEY `created` (`created`),
-  KEY `updated` (`updated`)
+  KEY `order` (`order`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 CHARSET=utf8mb4;
 
 --

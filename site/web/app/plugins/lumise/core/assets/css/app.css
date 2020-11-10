@@ -8897,3 +8897,45 @@ ul.lumise-left-nav{
     max-height: calc(100vh - 56px);
 }
 /*===COMMIT===*/
+button#select_variable{
+    background: transparent;
+    color: #eee;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    border: 1px solid #eee;
+    font-size: 15px;
+    margin-bottom: 18px;
+}
+button#select_variable:focus{
+    outline:0;
+}
+button#select_variable:hover{
+    background: #eee;
+    color: #000;
+}
+#lumise-product-attributes button#select_variable{
+    border: 1px solid #afafaf;
+    color: #262626;
+}
+button.btn_tempo{
+    background: transparent;
+    color: #eee;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    border: 1px solid #eee;
+    font-size: 15px;
+    margin-bottom: 18px;
+}
+button.btn_tempo:focus{
+    outline:0;
+}
+button.btn_tempo:hover{
+    background: #eee;
+    color: #000;
+}
+#lumise-product-attributes button.btn_tempo{
+    border: 1px solid #afafaf;
+    color: #262626;
+}

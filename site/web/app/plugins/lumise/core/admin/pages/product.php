@@ -51,6 +51,14 @@
 					'label' => $lumise->lang('Description')
 				),
 				array(
+					'type' => 'toggle',
+					'name' => 'active_description',
+					'label' => $lumise->lang('Active description'),
+					'default' => 'no',
+					'value' => null,
+					'desc' => $lumise->lang('Show description on editor design.')
+				),
+				array(
 					'type' => 'categories',
 					'cate_type' => 'products',
 					'name' => 'categories',
