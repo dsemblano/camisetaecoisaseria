@@ -68,6 +68,7 @@
     "wpackagist-plugin/woocommerce-xml-csv-product-import":">=1.4.7",
     "wpackagist-plugin/woocommerce-services":">=1.25.0",
     "wpackagist-plugin/click-to-chat-for-whatsapp":"3.0.3",
+    "wpackagist-plugin/wp-dbmanager":">=2.80.3",
     "wpackagist-plugin/wps-hide-login":">=1.5.4.2"
   },
   "require-dev": {

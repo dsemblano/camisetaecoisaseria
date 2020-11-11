@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8102ef052ffbd4bf8c644461bf625447",
+    "content-hash": "8e3a30f38822290d082762bc752118ad",
     "packages": [
         {
             "name": "composer/installers",
@@ -1022,15 +1022,15 @@
         },
         {
             "name": "wpackagist-plugin/woocommerce",
-            "version": "4.6.2",
+            "version": "4.7.0",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/woocommerce/",
-                "reference": "tags/4.6.2"
+                "reference": "tags/4.7.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/woocommerce.4.6.2.zip"
+                "url": "https://downloads.wordpress.org/plugin/woocommerce.4.7.0.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -1148,15 +1148,15 @@
         },
         {
             "name": "wpackagist-plugin/woocommerce-services",
-            "version": "1.25.1",
+            "version": "1.25.2",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/woocommerce-services/",
-                "reference": "tags/1.25.1"
+                "reference": "tags/1.25.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/woocommerce-services.1.25.1.zip"
+                "url": "https://downloads.wordpress.org/plugin/woocommerce-services.1.25.2.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -1201,6 +1201,24 @@
             "homepage": "https://wordpress.org/plugins/wp-all-import/"
         },
         {
+            "name": "wpackagist-plugin/wp-dbmanager",
+            "version": "2.80.3",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/wp-dbmanager/",
+                "reference": "tags/2.80.3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/wp-dbmanager.2.80.3.zip"
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/wp-dbmanager/"
+        },
+        {
             "name": "wpackagist-plugin/wp-enable-webp",
             "version": "1.0",
             "source": {
@@ -1238,15 +1256,15 @@
         },
         {
             "name": "wpackagist-plugin/wp-smushit",
-            "version": "3.7.1",
+            "version": "3.7.2",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/wp-smushit/",
-                "reference": "tags/3.7.1"
+                "reference": "tags/3.7.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/wp-smushit.3.7.1.zip"
+                "url": "https://downloads.wordpress.org/plugin/wp-smushit.3.7.2.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -1280,12 +1298,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "065a018d3b5c2c84a53db3347cca4e1b7fa362a6"
+                "reference": "e440567339d5fe93d9525e377c5e686b0b08bcca"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/065a018d3b5c2c84a53db3347cca4e1b7fa362a6",
-                "reference": "065a018d3b5c2c84a53db3347cca4e1b7fa362a6",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/e440567339d5fe93d9525e377c5e686b0b08bcca",
+                "reference": "e440567339d5fe93d9525e377c5e686b0b08bcca",
                 "shasum": ""
             },
             "conflict": {
@@ -1587,7 +1605,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-11-01T20:01:47+00:00"
+            "time": "2020-11-07T16:07:08+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",
