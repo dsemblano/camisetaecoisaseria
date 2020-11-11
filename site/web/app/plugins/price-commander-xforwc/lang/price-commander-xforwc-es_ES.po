@@ -1,0 +1,395 @@
+# Copyright (C) 2020 Price Commander for WooCommerce
+# This file is distributed under the same license as the Price Commander for WooCommerce package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Price Commander for WooCommerce 1.0.2\n"
+"Report-Msgid-Bugs-To: https://help.xforwoocommerce.com\n"
+"POT-Creation-Date: 2020-02-12 21:31:06+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2020-02-12 21:31:06+00:00\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"X-Poedit-KeywordsList: esc_html__;esc_html_e;esc_html_x:1,2c\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SearchPath-0: ..\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"Language: es\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: includes/class-settings.php:80 includes/class-settings.php:97
+#: includes/class-settings.php:129
+msgid "Price Commander"
+msgstr ""
+
+#. #-#-#-#-#  price-commander-xforwc-en_UK.pot (Price Commander for WooCommerce 1.0.2)  #-#-#-#-#
+#. Plugin Name of the plugin/theme
+#: includes/class-settings.php:80 includes/class-settings.php:81
+#: price-commander-xforwc.php:153
+msgid "Price Commander for WooCommerce"
+msgstr ""
+
+#: includes/class-settings.php:81
+msgid "Settings page for Price Commander for WooCommerce!"
+msgstr ""
+
+#: includes/class-settings.php:84
+msgid "Visit XforWooCommerce.com"
+msgstr ""
+
+#: includes/class-settings.php:88
+msgid "Get help"
+msgstr ""
+
+#: includes/class-settings.php:93
+msgid "Dashboard"
+msgstr ""
+
+#: includes/class-settings.php:94
+msgid "Dashboard Overview"
+msgstr ""
+
+#: includes/class-settings.php:98
+msgid "Price Commander Overview"
+msgstr ""
+
+#: includes/class-settings.php:109
+msgid "Visit XforWooCommerce.com store, demos and knowledge base."
+msgstr ""
+
+#: includes/class-settings.php:114
+msgid "Help Center"
+msgstr ""
+
+#: includes/class-settings.php:115
+msgid "Need support? Visit the Help Center."
+msgstr ""
+
+#: includes/class-settings.php:120
+msgid "Automatic Updates"
+msgstr ""
+
+#: includes/class-settings.php:121
+msgid ""
+"Get automatic updates, by downloading and installing the Envato Market "
+"plugin."
+msgstr ""
+
+#: includes/class-settings.php:293
+msgid "Command panel"
+msgstr ""
+
+#: includes/class-settings.php:320
+msgid "Set new prices"
+msgstr ""
+
+#: includes/class-settings.php:321
+msgid "Clear selection"
+msgstr ""
+
+#: includes/class-settings.php:322
+msgid "Reset operands"
+msgstr ""
+
+#: includes/class-settings.php:329
+msgid "Enter keywords"
+msgstr ""
+
+#: includes/class-settings.php:332
+msgid "Title"
+msgstr ""
+
+#: includes/class-settings.php:333
+msgid "Latest"
+msgstr ""
+
+#: includes/class-settings.php:348
+msgid "Product"
+msgstr ""
+
+#: includes/class-settings.php:349
+msgid "Regular price"
+msgstr ""
+
+#: includes/class-settings.php:350
+msgid "Sale price"
+msgstr ""
+
+#: includes/class-settings.php:351
+msgid "Schedule sale"
+msgstr ""
+
+#: includes/class-settings.php:379
+msgid "Start sale"
+msgstr ""
+
+#: includes/class-settings.php:380
+msgid "End sale"
+msgstr ""
+
+#: includes/class-settings.php:382
+msgid "Set"
+msgstr ""
+
+#: includes/class-settings.php:383
+msgid "Cancel"
+msgstr ""
+
+#: includes/class-settings.php:384
+msgid "Exit"
+msgstr ""
+
+#: includes/svx-settings/svx-settings.php:141
+msgid "Plugin not registered!"
+msgstr ""
+
+#: includes/svx-settings/svx-settings.php:143
+msgid ""
+"license is not registered. Please register! Click Register now button to "
+"start."
+msgstr ""
+
+#: includes/svx-settings/svx-settings.php:144
+msgid "Need help? Visit this link"
+msgstr ""
+
+#: includes/svx-settings/svx-settings.php:144
+msgid "How to register?"
+msgstr ""
+
+#: includes/svx-settings/svx-settings.php:146
+msgid "Register now"
+msgstr ""
+
+#: includes/svx-settings/svx-settings.php:152
+msgid "Connecting to server"
+msgstr ""
+
+#: includes/svx-settings/svx-settings.php:154
+msgid "OK"
+msgstr ""
+
+#: includes/svx-settings/svx-settings.php:155
+msgid "Remove license"
+msgstr ""
+
+#: includes/svx-settings/svx-settings.php:156
+#: includes/svx-settings/svx-settings.php:188
+msgid "License details"
+msgstr ""
+
+#: includes/svx-settings/svx-settings.php:157
+msgid "Extend support"
+msgstr ""
+
+#: includes/svx-settings/svx-settings.php:163
+msgid "Confirm key"
+msgstr ""
+
+#: includes/svx-settings/svx-settings.php:164
+msgid "Get key"
+msgstr ""
+
+#: includes/svx-settings/svx-settings.php:220
+#: includes/svx-settings/svx-settings.php:229
+msgid "Save"
+msgstr ""
+
+#: includes/svx-settings/svx-settings.php:258
+msgid "Export"
+msgstr ""
+
+#: includes/svx-settings/svx-settings.php:258
+msgid "Import"
+msgstr ""
+
+#: includes/svx-settings/svx-settings.php:258
+msgid "Backup"
+msgstr ""
+
+#: includes/svx-settings/svx-settings.php:258
+msgid "Restore"
+msgstr ""
+
+#: includes/svx-settings/svx-settings.php:258
+msgid "Reset"
+msgstr ""
+
+#: includes/svx-settings/svx-settings.php:266
+msgid "Add +"
+msgstr ""
+
+#: includes/svx-settings/svx-settings.php:306
+msgid "Configure"
+msgstr ""
+
+#: includes/svx-settings/svx-settings.php:314
+#: includes/svx-settings/svx-settings.php:335
+msgid "Add Item +"
+msgstr ""
+
+#: includes/svx-settings/svx-settings.php:343
+msgid "Include/Exclude Manager"
+msgstr ""
+
+#: includes/svx-settings/svx-settings.php:344
+msgid "Exclude"
+msgstr ""
+
+#: includes/svx-settings/svx-settings.php:345
+msgid "Include"
+msgstr ""
+
+#: includes/svx-settings/svx-settings.php:357
+msgid "Terms Manager"
+msgstr ""
+
+#: includes/svx-settings/svx-settings.php:364
+msgid "Custom Order"
+msgstr ""
+
+#: includes/svx-settings/svx-settings.php:373
+msgid "Type"
+msgstr ""
+
+#: includes/svx-settings/svx-settings.php:375
+msgid "None"
+msgstr ""
+
+#: includes/svx-settings/svx-settings.php:376
+msgid "Plain Text"
+msgstr ""
+
+#: includes/svx-settings/svx-settings.php:377
+msgid "Color"
+msgstr ""
+
+#: includes/svx-settings/svx-settings.php:378
+msgid "Thumbnail"
+msgstr ""
+
+#: includes/svx-settings/svx-settings.php:379
+msgid "Select Box"
+msgstr ""
+
+#: includes/svx-settings/svx-settings.php:381
+#: includes/svx-settings/svx-settings.php:389
+msgid "System Select"
+msgstr ""
+
+#: includes/svx-settings/svx-settings.php:382
+msgid "Live Select"
+msgstr ""
+
+#: includes/svx-settings/svx-settings.php:386
+msgid "Input Field"
+msgstr ""
+
+#: includes/svx-settings/svx-settings.php:387
+msgid "Checkbox"
+msgstr ""
+
+#: includes/svx-settings/svx-settings.php:388
+msgid "Textarea"
+msgstr ""
+
+#: includes/svx-settings/svx-settings.php:406
+msgid "Style"
+msgstr ""
+
+#: includes/svx-settings/svx-settings.php:408
+msgid "Border"
+msgstr ""
+
+#: includes/svx-settings/svx-settings.php:409
+msgid "Background"
+msgstr ""
+
+#: includes/svx-settings/svx-settings.php:410
+msgid "Round"
+msgstr ""
+
+#: includes/svx-settings/svx-settings.php:414
+msgid "Normal"
+msgstr ""
+
+#: includes/svx-settings/svx-settings.php:418
+msgid "Active"
+msgstr ""
+
+#: includes/svx-settings/svx-settings.php:422
+msgid "Disabled"
+msgstr ""
+
+#: includes/svx-settings/svx-settings.php:426
+msgid "Out of stock"
+msgstr ""
+
+#: includes/svx-settings/svx-settings.php:433
+msgid "Show labels"
+msgstr ""
+
+#: includes/svx-settings/svx-settings.php:440
+msgid "Swatch size"
+msgstr ""
+
+#: includes/svx-settings/svx-settings.php:458
+#: includes/svx-settings/svx-settings.php:523
+msgid "Name"
+msgstr ""
+
+#: includes/svx-settings/svx-settings.php:464
+msgid "Meta value"
+msgstr ""
+
+#: includes/svx-settings/svx-settings.php:471
+#: includes/svx-settings/svx-settings.php:529
+msgid "Value"
+msgstr ""
+
+#: includes/svx-settings/svx-settings.php:486
+msgid "Min"
+msgstr ""
+
+#: includes/svx-settings/svx-settings.php:488
+msgid "Max"
+msgstr ""
+
+#: includes/svx-settings/svx-settings.php:495
+msgid "Count"
+msgstr ""
+
+#: includes/svx-settings/svx-settings.php:502
+#: includes/svx-settings/svx-settings.php:550
+msgid "Tooltip"
+msgstr ""
+
+#: includes/svx-settings/svx-settings.php:537
+msgid "Add Image +"
+msgstr ""
+
+#: includes/svx-settings/svx-settings.php:544
+msgid "Price"
+msgstr ""
+
+#: price-commander-xforwc.php:66
+msgid ""
+"This plugin requires WooCommerce. Download it from WooCommerce official "
+"website"
+msgstr ""
+
+#. #-#-#-#-#  price-commander-xforwc-en_UK.pot (Price Commander for WooCommerce 1.0.2)  #-#-#-#-#
+#. Plugin URI of the plugin/theme
+#. #-#-#-#-#  price-commander-xforwc-en_UK.pot (Price Commander for WooCommerce 1.0.2)  #-#-#-#-#
+#. Author URI of the plugin/theme
+msgid "https://xforwoocommerce.com"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid "XforWooCommerce Themes and Plugins! Visit https://xforwoocommerce.com"
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "7VX LLC, USA CA"
+msgstr ""
