@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bbd68528a4da889a0a2b4fe2d4ab844a",
+    "content-hash": "8e3a30f38822290d082762bc752118ad",
     "packages": [
         {
             "name": "composer/installers",
@@ -785,24 +785,6 @@
             },
             "type": "wordpress-plugin",
             "homepage": "https://wordpress.org/plugins/click-to-chat-for-whatsapp/"
-        },
-        {
-            "name": "wpackagist-plugin/elex-bulk-edit-products-prices-attributes-for-woocommerce-basic",
-            "version": "1.0.9",
-            "source": {
-                "type": "svn",
-                "url": "https://plugins.svn.wordpress.org/elex-bulk-edit-products-prices-attributes-for-woocommerce-basic/",
-                "reference": "trunk"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/elex-bulk-edit-products-prices-attributes-for-woocommerce-basic.zip?timestamp=1604406051"
-            },
-            "require": {
-                "composer/installers": "~1.0"
-            },
-            "type": "wordpress-plugin",
-            "homepage": "https://wordpress.org/plugins/elex-bulk-edit-products-prices-attributes-for-woocommerce-basic/"
         },
         {
             "name": "wpackagist-plugin/flexible-checkout-fields",
