@@ -21,7 +21,7 @@
         <div class="container-up">
           <div class="flex items-center py-2 md:py-0 leading-tight w-full">
             <img src="@asset('images/home/block1/algodao.png')" alt=" ícone 100% algodão certificado" />
-            <span class="ml-4 text-xs md:text-lg"><p>100% algodão</p><p>orgânico certificado</p></span>
+            <span class="ml-4 text-xs md:text-lg"><p>100% algodão</span>
           </div>
           <div class="flex items-center py-2 md:py-0 leading-tight w-full">
             <img src="@asset('images/home/block1/produtosprontaentrega.png')" alt="ícone produtos pronta entrega.png" />
