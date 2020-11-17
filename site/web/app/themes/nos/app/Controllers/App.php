@@ -43,6 +43,18 @@ class App extends Controller
         return get_categories($args);
     }
 
+    public function subCategoriesColab() {
+        $cat_prod = 'faca-sua-camiseta';
+        $product_cat_ID = get_term_by('slug', $cat_prod, 'product_cat')->term_id;
+        $args = array(
+            'show_option_none' => '',
+            'hide_empty' => 0,
+            'parent' => $product_cat_ID,
+            'taxonomy' => 'product_cat'
+        );
+        return get_categories($args);
+    }
+
     public function NosProducts() {
             $nos_products = wc_get_products(array(
                 'limit' => -1,

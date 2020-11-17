@@ -17,9 +17,9 @@
               $imgprod = $img->get_image($size = 'produtos', array('class'=>'imgprod p-6'));
             @endphp
             {!! $imgprod !!}
-            <h2>
+            <h3>
               {!! $img->get_title() !!}
-            </h2>
+            </h3>
             <span class="price">{!! $img->get_price_html() !!}</span>
           </a>
         </li>
