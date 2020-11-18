@@ -66,7 +66,7 @@ module.exports = {
         'heateor_sss_horizontal_sharing', 'blockhome',
         'banner', 'nav-links', 'page-numbers', 'current',
         'lumise-button', 'lumise-list-button', 'button',
-        '.flex-control-thumbs', 'woocommerce-tabs',
+        'flex-control-thumbs', 'woocommerce-tabs',
         "my-whitelisted-selector", "lazyloaded", "is-active",
         ...whitelister("node_modules/tailwindcss/css/preflight.css"),
       ],
