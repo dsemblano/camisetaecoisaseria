@@ -20,6 +20,12 @@
 
       @include font-light;
     }
+
+    div.images {
+      .flex-control-thumbs {
+        margin-top: 3em;
+      }
+    }
   }
 
   ul.products li.product a {

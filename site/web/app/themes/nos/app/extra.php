@@ -384,3 +384,12 @@ add_action('woocommerce_email_customer_details', 'cpf_email', 30, 3 );
         wp_dequeue_style( 'wp-block-library' );
     }
     add_action( 'wp_print_styles', 'wps_deregister_styles', 100 );
+
+
+    // Remove the additional information tab
+    function woo_remove_product_tabs($tabs)
+    {
+        unset($tabs['additional_information']);
+        return $tabs;
+    }
+    add_filter('woocommerce_product_tabs', 'woo_remove_product_tabs', 98);
