@@ -9,5 +9,5 @@
 }
 
 .woocommerce-tabs {
-  margin-bottom: 4em;
+  @apply mb-8 border-t border-grey-light;
 }
