@@ -15,10 +15,15 @@
     }
 
     .woocommerce-product-details__short-description,
-    .posted_in {
+    .posted_in,
+    .variations_form {
       @apply my-4 pt-4 border-t border-grey-light text-base leading-relaxed text-black tracking-wide;
 
       @include font-light;
+    }
+
+    .posted_in {
+      border-top: 1px solid transparent;
     }
 
     div.images {
@@ -32,6 +37,10 @@
 
       float: left;
       width: 100%;
+
+      h2 {
+        padding-top: 1rem;
+      }
     }
 
     .related.products {
