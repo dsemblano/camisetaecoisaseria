@@ -54,7 +54,6 @@
     "wpackagist-plugin/instagram-feed":">=2.4.6",
     "wpackagist-plugin/sassy-social-share":">=3.3.4",   
     "wpackagist-plugin/wp-mail-smtp":">=1.8.1",
-    "wpackagist-plugin/flexible-checkout-fields":">=2.7.0",
     "wpackagist-plugin/woo-parcelas-com-e-sem-juros":">=1.5",
     "wpackagist-plugin/autodescription":">=4.0.4",
     "wpackagist-plugin/woocommerce-pagarme":">=2.0.17",
@@ -70,6 +69,7 @@
     "wpackagist-plugin/click-to-chat-for-whatsapp":"3.0.3",
     "wpackagist-plugin/wp-dbmanager":">=2.80.3",
     "wpackagist-plugin/product-blocks":">=1.0.9",
+    "wpackagist-plugin/woo-variation-swatches":">=1.1.1",
     "wpackagist-plugin/wps-hide-login":">=1.5.4.2"
   },
   "require-dev": {
