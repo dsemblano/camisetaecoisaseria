@@ -59,6 +59,8 @@ let colors = {
   'grey-lighter': '#f1f5f8',
   'grey-lightest': '#f8fafc',
   'white': '#ffffff',
+  'h': '#2e2e2e',
+  'p': '#333333',
 
   'red-darkest': '#3b0d0c',
   'red-darker': '#621b18',

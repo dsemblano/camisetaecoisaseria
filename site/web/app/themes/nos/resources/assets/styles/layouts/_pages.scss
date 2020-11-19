@@ -1,7 +1,7 @@
 .content p {
-  @apply mb-3 leading-relaxed text-black tracking-wide;
+  @apply mb-3 leading-relaxed text-p tracking-wide;
 
-  @include font-light;
+  @include font-regular;
 
   .has-medium-font-size {
     @apply text-base;
