@@ -272,54 +272,54 @@ function yourtheme_setup()
 
 //
 // prazo entrega no email
-function my_wc_custom_cart_shipping_notice()
-{
-    echo '<tr class="shipping-notice"><td colspan="2"><small>';
-    _e('<strong>Atenção:</strong> O prazo de entrega começa a contar a partir da aprovação do pagamento.', 'my-text-domain');
-    echo '</small></td></tr>';
-}
-
-add_action('woocommerce_cart_totals_after_shipping', 'my_wc_custom_cart_shipping_notice');
-add_action('woocommerce_review_order_after_shipping', 'my_wc_custom_cart_shipping_notice');
-
-/**
- * Adds a custom message about how long will take to delivery in emails.
- *
- * @param  WC_Order $order         Order data.
- * @param  bool     $sent_to_admin True if is an admin email.
- */
-function my_wc_custom_email_shipping_notice($order, $sent_to_admin)
-{
-    if ($sent_to_admin) {
-        return;
-    }
-
-    _e('<strong>Atenção:</strong> O prazo de entrega começa a contar a partir da aprovação do pagamento.', 'my-text-domain');
-}
-
-add_action('woocommerce_email_after_order_table', 'my_wc_custom_email_shipping_notice', 100, 2);
-
-// Remove Additional Information
-
-// add_filter( 'woocommerce_product_tabs', 'bbloomer_remove_product_tabs', 9999 );
-
-// function bbloomer_remove_product_tabs( $tabs ) {
-//     unset( $tabs['additional_information'] );
-//     return $tabs;
+// function my_wc_custom_cart_shipping_notice()
+// {
+//     echo '<tr class="shipping-notice"><td colspan="2"><small>';
+//     _e('<strong>Atenção:</strong> O prazo de entrega começa a contar a partir da aprovação do pagamento.', 'my-text-domain');
+//     echo '</small></td></tr>';
 // }
 
-// CPF email
-function cpf_email( $order, $sent_to_admin, $plain_text ) {
+// add_action('woocommerce_cart_totals_after_shipping', 'my_wc_custom_cart_shipping_notice');
+// add_action('woocommerce_review_order_after_shipping', 'my_wc_custom_cart_shipping_notice');
 
-    if ($order->billing_cpf){
-        echo '<br><p> <strong>CPF: </strong>'. $order->billing_cpf.'</p>';
-    }
-    if ($order->billing_cnpj){
-        echo '<br><p> <strong>CNPJ: </strong>'. $order->billing_cnpj. '</p>';
-    }
+// /**
+//  * Adds a custom message about how long will take to delivery in emails.
+//  *
+//  * @param  WC_Order $order         Order data.
+//  * @param  bool     $sent_to_admin True if is an admin email.
+//  */
+// function my_wc_custom_email_shipping_notice($order, $sent_to_admin)
+// {
+//     if ($sent_to_admin) {
+//         return;
+//     }
 
-}
-add_action('woocommerce_email_customer_details', 'cpf_email', 30, 3 );
+//     _e('<strong>Atenção:</strong> O prazo de entrega começa a contar a partir da aprovação do pagamento.', 'my-text-domain');
+// }
+
+// add_action('woocommerce_email_after_order_table', 'my_wc_custom_email_shipping_notice', 100, 2);
+
+// // Remove Additional Information
+
+// // add_filter( 'woocommerce_product_tabs', 'bbloomer_remove_product_tabs', 9999 );
+
+// // function bbloomer_remove_product_tabs( $tabs ) {
+// //     unset( $tabs['additional_information'] );
+// //     return $tabs;
+// // }
+
+// // CPF email
+// function cpf_email( $order, $sent_to_admin, $plain_text ) {
+
+//     if ($order->billing_cpf){
+//         echo '<br><p> <strong>CPF: </strong>'. $order->billing_cpf.'</p>';
+//     }
+//     if ($order->billing_cnpj){
+//         echo '<br><p> <strong>CNPJ: </strong>'. $order->billing_cnpj. '</p>';
+//     }
+
+// }
+// add_action('woocommerce_email_customer_details', 'cpf_email', 30, 3 );
 
 /**
  * Async load CSS.
