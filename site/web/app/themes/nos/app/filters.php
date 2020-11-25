@@ -90,45 +90,45 @@ add_filter('comments_template', function ($comments_template) {
     return $comments_template;
 }, 100);
 
-// REMOVE WP EMOJI
-remove_action('wp_head', 'print_emoji_detection_script', 7);
-remove_action('wp_print_styles', 'print_emoji_styles');
+// // REMOVE WP EMOJI
+// remove_action('wp_head', 'print_emoji_detection_script', 7);
+// remove_action('wp_print_styles', 'print_emoji_styles');
 
-remove_action('admin_print_scripts', 'print_emoji_detection_script');
-remove_action('admin_print_styles', 'print_emoji_styles');
+// remove_action('admin_print_scripts', 'print_emoji_detection_script');
+// remove_action('admin_print_styles', 'print_emoji_styles');
 
-/**
- * Inject critical assets in head as early as possible
- */
-add_action('wp_head', function (): void {
-    if ('development' === env('WP_ENV')) {
-        return;
-    }
+// /**
+//  * Inject critical assets in head as early as possible
+//  */
+// add_action('wp_head', function (): void {
+//     if ('development' === env('WP_ENV')) {
+//         return;
+//     }
 
-    if (is_front_page()) {
-        // $critical_CSS = locate_asset('styles/critical-home.css');
-        $critical_CSS = 'styles/critical-home.css';
-    } elseif (is_singular()) {
-        // $critical_CSS = locate_asset('styles/critical-singular.css');
-        $critical_CSS = 'styles/critical-singular.css';
-    } else {
-        // $critical_CSS = locate_asset('styles/critical-landing.css');
-        $critical_CSS = 'styles/critical-landing.css';
-    }
+//     if (is_front_page()) {
+//         // $critical_CSS = locate_asset('styles/critical-home.css');
+//         $critical_CSS = 'styles/critical-home.css';
+//     } elseif (is_singular()) {
+//         // $critical_CSS = locate_asset('styles/critical-singular.css');
+//         $critical_CSS = 'styles/critical-singular.css';
+//     } else {
+//         // $critical_CSS = locate_asset('styles/critical-landing.css');
+//         $critical_CSS = 'styles/critical-landing.css';
+//     }
 
-    // if (file_exists($critical_CSS)) {
-    if (file_exists(locate_asset($critical_CSS))) {
-        echo '<style id="critical-css">' . get_file_contents($critical_CSS) . '</style>';
-    }
-}, 1);
+//     // if (file_exists($critical_CSS)) {
+//     if (file_exists(locate_asset($critical_CSS))) {
+//         echo '<style id="critical-css">' . get_file_contents($critical_CSS) . '</style>';
+//     }
+// }, 1);
 
-// Woobe plugin
-add_filter('woobe_filter_include_children', function($include, $tax) {
-    $alow = ['product_cat', 'pa_color'];
+// // Woobe plugin
+// add_filter('woobe_filter_include_children', function($include, $tax) {
+//     $alow = ['product_cat', 'pa_color'];
 
-    if (in_array($tax, $alow)) {
-        $include = true;
-    }
+//     if (in_array($tax, $alow)) {
+//         $include = true;
+//     }
 
-    return $include;
-}, 10, 2);
+//     return $include;
+// }, 10, 2);
