@@ -120,6 +120,10 @@
       // box-shadow: 0 3px 3px rgba(0, 0, 0, 0.2);
     }
 
+    li > a:not(:last-child)::after {
+      content: " ▾";
+    }
+
     li:hover > ul {
       display: block;
     }
