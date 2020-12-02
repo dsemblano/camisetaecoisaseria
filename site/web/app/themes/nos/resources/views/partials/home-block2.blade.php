@@ -12,6 +12,5 @@
 
   @if (has_nav_menu('primary_navigation'))
   {!! wp_nav_menu(['theme_location' => 'primary_navigation', 'menu_class' => 'nav flex flex-col md:flex-row uppercase text-white py-5 text-lg2']) !!}
-  {{-- @include('partials/components.socialshare') --}}
   @endif
 </nav>
