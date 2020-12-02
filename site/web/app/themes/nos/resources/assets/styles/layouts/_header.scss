@@ -8,10 +8,6 @@
 
 .banner .nav a {
   @apply inline-block px-4 py-2 border-none;
-
-  &:hover {
-    color: darken(white, 30%);
-  }
 }
 
 .banner {
@@ -116,6 +112,11 @@
       top: 2em;
       left: 0;
       z-index: 99999;
+      visibility: hidden;
+      opacity: 0;
+      min-width: 5rem;
+      // transition: all 0.5s ease;
+      // margin-top: 1rem;
       // width: 180px;
       // box-shadow: 0 3px 3px rgba(0, 0, 0, 0.2);
     }
@@ -124,12 +125,33 @@
       content: " ▾";
     }
 
-    li:hover > ul {
+    li:hover > ul,
+    li:focus-within > ul,
+    li ul:hover,
+    li ul:focus {
       display: block;
+      visibility: visible;
+      opacity: 1;
     }
   }
 
   li {
     position: relative;
+    // transition-duration: 0.5s;
+
+    ul li {
+      clear: both;
+      width: 100%;
+    }
+
+    &:focus-within a {
+      outline: none;
+    }
+
+    &:hover,
+    &:focus-within {
+      font-weight: bold;
+      cursor: pointer;
+    }
   }
 }
