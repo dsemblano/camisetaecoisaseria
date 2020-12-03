@@ -4,6 +4,7 @@
       @include('partials/components.logo')
     </h1>
     @include('partials.home-block2')
+    @include('partials/components.logoimprima')
     {{-- @include('partials/components.socialshare') --}}
   </div>
 </header>
