@@ -27,7 +27,7 @@
                   $imgprod = $img->get_image($size = 'produtos', array('class'=>'imgprod w-full'));
                 @endphp
                 {!! $imgprod !!}
-                <h2 class="mt-3 h-12 text-center">
+                <h2 class="text-xl mt-3 h-12 text-center">
                   {!! $img->get_title() !!}
                 </h2>
               </a>
