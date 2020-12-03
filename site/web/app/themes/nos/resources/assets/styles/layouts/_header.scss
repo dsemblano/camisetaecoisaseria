@@ -15,8 +15,12 @@
   top: 0;
   z-index: 99999;
 
-  img {
+  .brand img {
     max-height: 5rem;
+  }
+
+  .brand_imprima img {
+    max-height: 4rem;
   }
 }
 
