@@ -10,7 +10,7 @@
         </div>
       </figure>
   </div>
-    <div class="blockhome3-right flex flex-wrap -mx-2 overflow-hidden">
+    <div class="blockhome3-right flex flex-wrap -mx-2 overflow-hidden sm:-mx-4">
       {{-- @foreach ($sub_categories as $sub)
         @php
           $destaques_produtos = wc_get_products(array(
@@ -22,7 +22,7 @@
         @endphp --}}
         @foreach ($home_products as $img)
           {{-- @php $img_prod = wp_get_attachment_url($img->get_image_id(), $size = 'homeblock3' ) @endphp --}}
-              <a class="linkimgprod my-2 px-2 w-full overflow-hidden sm:my-4 sm:px-4 sm:w-1/3" href="{!! $img->get_permalink() !!}">
+              <a class="linkimgprod my-2 px-2 w-1/2 overflow-hidden sm:my-4 sm:px-4 sm:w-1/3" href="{!! $img->get_permalink() !!}">
                 @php
                   $imgprod = $img->get_image($size = 'produtos', array('class'=>'imgprod w-full'));
                 @endphp
