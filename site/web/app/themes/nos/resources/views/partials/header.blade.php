@@ -3,7 +3,7 @@
     <h1 class="mb-0 w-1/25 md:w-15">
       @include('partials/components.logo')
     </h1>
-    <div class="class">
+    <div class="flex flex-row w-full">
       @include('partials.home-block2')
       {!! do_shortcode('[ht-ctc-chat]') !!}
     </div>
