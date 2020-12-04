@@ -3,7 +3,10 @@
     <h1 class="mb-0 w-1/25 md:w-15">
       @include('partials/components.logo')
     </h1>
-    @include('partials.home-block2')
+    <div class="class">
+      @include('partials.home-block2')
+      {!! do_shortcode('[ht-ctc-chat]') !!}
+    </div>
     @include('partials/components.logoimprima')
     {{-- @include('partials/components.socialshare') --}}
   </div>
