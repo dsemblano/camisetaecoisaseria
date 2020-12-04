@@ -8,14 +8,14 @@
     </h1>
     <div class="hidden xl:flex xl:flex-row xl:w-full">
       @include('partials.home-block2')
-      <div class="whatsapp">
+      {{-- <div class="whatsapp">
         {!! do_shortcode('[ht-ctc-chat]') !!}
-      </div>
+      </div> --}}
     </div>
     @include('partials/components.logoimprima')
-    <div class="whatsapp xl:hidden">
+    {{-- <div class="whatsapp xl:hidden">
       {!! do_shortcode('[ht-ctc-chat]') !!}
-    </div>
+    </div> --}}
     {{-- @include('partials/components.socialshare') --}}
   </div>
 </header>
