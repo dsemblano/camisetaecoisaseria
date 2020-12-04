@@ -1,5 +1,5 @@
 <header class="banner bg-pureblack pt-3 pb-1">
-  <div class="container flex flex-row justify-between items-center">
+  <div class="container flex flex-row justify-between">
     <div class="md:flex md:flex-row md:w-full xl:hidden">
       @include('partials.home-block2')
     </div>
