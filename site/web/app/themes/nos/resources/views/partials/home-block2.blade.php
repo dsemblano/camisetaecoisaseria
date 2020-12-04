@@ -1,4 +1,4 @@
-<nav id="navigation" class="blockhome nav-primary text-center bg-pureblack md:w-4/5 md:flex md:justify-between">
+<nav id="navigation" class="blockhome nav-primary w-full">
   <button class="hamburger hamburger--vortex" type="button" aria-label="Menu" aria-controls="navigation">
     <span class="hamburger-box">
       <span class="hamburger-inner"></span>
@@ -11,6 +11,6 @@
   </a> --}}
 
   @if (has_nav_menu('primary_navigation'))
-  {!! wp_nav_menu(['theme_location' => 'primary_navigation', 'menu_class' => 'nav flex flex-col md:flex-row uppercase text-white py-5 text-lg2']) !!}
+  {!! wp_nav_menu(['theme_location' => 'primary_navigation', 'menu_class' => 'nav flex flex-col md:flex-row uppercase text-white py-5 text-lg2 justify-around text-center']) !!}
   @endif
 </nav>

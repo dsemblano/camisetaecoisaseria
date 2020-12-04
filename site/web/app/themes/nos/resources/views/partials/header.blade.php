@@ -6,7 +6,7 @@
     <h1 class="mb-0 w-1/25 md:w-15">
       @include('partials/components.logo')
     </h1>
-    <div class="hidden xl:flex xl:flex-row xl:w-full">
+    <div class="hidden xl:flex xl:flex-row xl:w-full items-center">
       @include('partials.home-block2')
       {{-- <div class="whatsapp">
         {!! do_shortcode('[ht-ctc-chat]') !!}
