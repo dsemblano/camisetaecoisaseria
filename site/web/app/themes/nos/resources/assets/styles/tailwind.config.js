@@ -662,6 +662,7 @@ module.exports = {
     'full': '100%',
     'screen': '100vh',
     '12': '3rem',
+    '16': '4rem',
     '20': '5rem',
   },
 
