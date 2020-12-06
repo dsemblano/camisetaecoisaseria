@@ -1,6 +1,6 @@
 <header class="banner bg-pureblack pt-4 pb-1">
-  <div class="container flex flex-row lg:justify-between">
-    <div class="md:flex md:flex-row md:w-full justify-around xl:hidden">
+  <div class="container flex flex-row justify-around lg:justify-between">
+    <div class="md:flex md:flex-row md:w-full xl:hidden">
       @include('partials.home-block2')
     </div>
     <h1>
