@@ -1,9 +1,9 @@
 <header class="banner bg-pureblack pt-4 pb-1">
-  <div class="container flex flex-row justify-between">
-    <div class="md:flex md:flex-row md:w-full xl:hidden">
+  <div class="container flex flex-row lg:justify-between">
+    <div class="md:flex md:flex-row md:w-full justify-around xl:hidden">
       @include('partials.home-block2')
     </div>
-    <h1 class="mb-0 w-1/25 md:w-15">
+    <h1>
       @include('partials/components.logo')
     </h1>
     <div class="hidden xl:flex xl:flex-row xl:w-full items-center">
