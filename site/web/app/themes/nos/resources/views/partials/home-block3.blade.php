@@ -5,7 +5,7 @@
       <figure class="order-2 items-end">
         <div class="imprima-button text-center">
           <a href="/design-editor">
-            <button class="btn-estudio">CRIE OUTROS PRODUTOS</button>
+            <button class="btn-estudio">CRIE A SUA AQUI</button>
           </a>
         </div>
       </figure>
