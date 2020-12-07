@@ -2,13 +2,13 @@
   <div class="blockhome-3-left mt-4 mb-8 px-2 w-full overflow-hidden md:w-1/2 text-md m-auto text-center leading-none">
       <h2 class="md:text-4xl text-pureblack">Crie e Customize</h2>
       <p class="md:text-2xl mb-6">todos os produtos</p>
-      <figure class="order-2 items-end">
+      {{-- <figure class="order-2 items-end">
         <div class="imprima-button text-center">
           <a href="/design-editor">
             <button class="btn-estudio">CRIE A SUA AQUI</button>
           </a>
         </div>
-      </figure>
+      </figure> --}}
   </div>
     <div class="blockhome3-right flex flex-wrap -mx-2 overflow-hidden sm:-mx-4">
       {{-- @foreach ($sub_categories as $sub)
