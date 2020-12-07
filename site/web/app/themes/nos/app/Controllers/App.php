@@ -92,6 +92,20 @@ class App extends Controller
         return $destaques_produtos;
     }
 
+
+    public function ParentCategory() {
+        $parent_category = wc_get_products(array(
+            'limit' => 9,
+            'status'=> 'publish',
+            'orderby' => 'rand',
+            'category' => 'camiseta-e-coisa-seria'
+        ));
+
+        // var_dump($destaques_produtos);
+
+        return $parent_category;
+    }
+
     // public function destaquesProdutos() {
     //     $get_categories = App::subcats();
     //     $args2 = array(
