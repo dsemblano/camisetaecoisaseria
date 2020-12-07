@@ -16,11 +16,11 @@
 
 @php do_action( 'woocommerce_before_cart' ); @endphp
 
-<style>
+{{-- <style>
     .woocommerce-cart table.cart .size-woocommerce_thumbnail {
     display: none;
   }
-</style>
+</style> --}}
 
 <form class="woocommerce-cart-form" action="@php echo esc_url( wc_get_cart_url() ); @endphp" method="post">
   @php
