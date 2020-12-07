@@ -402,7 +402,7 @@ function yourtheme_setup()
     }
 
     // To change add to cart text on product archives(Collection) page
-    add_filter( 'woocommerce_product_add_to_cart_text', 'woocommerce_custom_product_add_to_cart_text' );
-    function woocommerce_custom_product_add_to_cart_text() {
-        return __( 'Compre', 'woocommerce' );
-    }
+    // add_filter( 'woocommerce_product_add_to_cart_text', 'woocommerce_custom_product_add_to_cart_text' );
+    // function woocommerce_custom_product_add_to_cart_text() {
+    //     return __( 'Compre', 'woocommerce' );
+    // }
