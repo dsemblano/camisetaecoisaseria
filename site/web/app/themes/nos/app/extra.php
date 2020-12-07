@@ -410,3 +410,6 @@ function yourtheme_setup()
     // function woocommerce_custom_product_add_to_cart_text() {
     //     return __( 'Compre', 'woocommerce' );
     // }
+
+    // Remove product_meta
+    remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_meta', 40 );
