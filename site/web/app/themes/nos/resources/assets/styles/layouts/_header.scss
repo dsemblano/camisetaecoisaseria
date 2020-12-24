@@ -3,11 +3,27 @@
 
   @include font-light;
 
-  text-transform: capitalize;
+  background: $gradient-blk1b;
 }
 
 .banner .nav a {
   @apply inline-block px-3 py-2 border-none;
+}
+
+.class2 {
+  bottom: 2rem;
+}
+
+header.banner {
+  position: absolute;
+  background-color: transparent;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+}
+
+header.banner > div {
+  background-color: transparent;
 }
 
 .banner {
@@ -40,7 +56,7 @@
       opacity: 0;
       pointer-events: none;
       transition: opacity 300ms;
-      background-color: black;
+      // background-color: black;
       position: absolute;
       width: 100%;
       left: 0;
@@ -103,7 +119,7 @@
 // Menu
 .menu-menu-container {
   ul {
-    @apply text-base bg-pureblack;
+    @apply text-base;
 
     ul {
       display: none;

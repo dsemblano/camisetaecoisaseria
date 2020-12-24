@@ -69,6 +69,7 @@
     "wpackagist-plugin/wp-dbmanager":">=2.80.3",
     "wpackagist-plugin/product-blocks":">=1.0.9",
     "wpackagist-plugin/woo-variation-swatches":">=1.1.1",
+    "wpackagist-plugin/smart-woocommerce-search":">=2.0.1",
     "wpackagist-plugin/wps-hide-login":">=1.5.4.2"
   },
   "require-dev": {
