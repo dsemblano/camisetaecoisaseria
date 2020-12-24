@@ -11,6 +11,6 @@
   </a> --}}
 
   @if (has_nav_menu('primary_navigation'))
-  {!! wp_nav_menu(['theme_location' => 'primary_navigation', 'menu_class' => 'nav flex uppercase flex-col md:flex-row text-white py-5 text-lg2 font-bold justify-around text-center md:text-left']) !!}
+  {!! wp_nav_menu(['theme_location' => 'primary_navigation', 'menu_class' => 'nav flex uppercase flex-col md:flex-row text-white font-bold justify-around text-center md:text-left']) !!}
   @endif
 </nav>

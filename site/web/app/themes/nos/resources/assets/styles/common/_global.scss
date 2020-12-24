@@ -48,6 +48,10 @@ $large-mq: 1024px;
   font-family: "clearsans_thin", sans-serif;
 }
 
+@mixin font-Opensans() {
+  font-family: "Open Sans", sans-serif;
+}
+
 // Media Queries
 
 /* Large desktops and laptops */
@@ -291,6 +295,9 @@ ul {
 // }
 
 // Font face
+
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans&display=swap");
+
 @font-face {
   font-family: "clear_sansregular";
   src: url("../fonts/clearsans/clearsans_regular/ClearSans-Regular-webfont.eot");
