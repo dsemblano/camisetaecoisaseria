@@ -1,4 +1,4 @@
-<section class="blockhome blockhome-1 h-screen flex flex-col justify-end">
+<section class="blockhome blockhome-1 h-screen flex flex-col justify-end border-solid border-black border-b-2">
 
   {{-- <div class="blockhome-1-container h-slidelg container flex flex-col justify-center items-start pt-8 md:pt-16 md:pb-2">
     @include('partials/components.btn-customize')

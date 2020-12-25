@@ -222,9 +222,10 @@
 
 .blockhome-1 {
   // background: $gradient-blk1a, url("../images/home/block1/nosteefty.jpg");
-  background-image: url("../images/home/block1/nosteefty.jpg");
-  background-size: cover;
-  background-position: center center;
+  // background-image: url("../images/home/block1/nosteefty.jpg");
+  // background-size: cover;
+  // background-position: center center;
+  background: url("../images/home/block1/nosteefty.jpg") no-repeat scroll 0 0/cover;
   // background-size: cover;
   // background-position: 20% center;
 
