@@ -3,7 +3,7 @@
     <div class="md:flex md:flex-row md:w-full lg:hidden class1">
       @include('partials.home-block2')
     </div>
-    <h1 class="ml-12 xl:ml-0">
+    <h1 class="ml-12 xl:ml-0 logoimprima">
       @include('partials/components.logo')
     </h1>
     <div class="hidden lg:flex lg:flex-row lg:w-full items-center class2 relative">
