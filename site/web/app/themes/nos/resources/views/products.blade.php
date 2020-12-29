@@ -8,7 +8,7 @@
   @include('partials.page-header')
 
   <div class="content products container">
-    <section class="category-products flex flex-col my-12 border-solid border-gray border-b-1 pb-6">
+    <section class="category-products flex flex-col lg:my-12 border-solid border-gray border-b-1 pb-6">
       <ul class="flex flex-wrap -mx-4 p-0 text-center">
       @foreach ($sub_categories as $sub)
           {{-- <h2 class="page-header-allcategories text-center">

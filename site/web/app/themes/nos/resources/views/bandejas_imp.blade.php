@@ -8,7 +8,7 @@
   @include('partials.page-header')
 
   <div class="content products container">
-    <section class="category-products flex flex-col my-12 border-solid border-gray border-b-1 pb-6">
+    <section class="category-products flex flex-col lg:my-12 border-solid border-gray border-b-1 pb-6">
       <ul class="nos_products flex flex-wrap -mx-4 p-0 text-center">
         @foreach ($bandejas_imp as $img)
         <li class="my-4 px-4 w-1/2 overflow-hidden sm:w-1/4 md:w-1/4">
