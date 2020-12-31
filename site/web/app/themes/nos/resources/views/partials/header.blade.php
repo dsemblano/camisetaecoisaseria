@@ -10,7 +10,7 @@
     <div class="w-2/4 overflow-hidden pb-4 md:flex md:flex-row lg:hidden text-center class1">
       @include('partials.home-block2')
     </div>
-    <div class="w-1/4 overflow-hidden hidden lg:flex lg:flex-row lg:w-full h-full items-center menu-desktop relative">
+    <div class="w-1/4 hidden lg:flex lg:flex-row lg:w-full h-full items-center menu-desktop relative">
       @include('partials.home-block2')
       {{-- <div class="whatsapp">
         {!! do_shortcode('[ht-ctc-chat]') !!}
