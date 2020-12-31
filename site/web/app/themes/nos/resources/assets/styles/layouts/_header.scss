@@ -168,3 +168,15 @@ header.banner > div {
     }
   }
 }
+
+// css header other pages than home
+.header-pages {
+  nav ul.nav li .sub-menu {
+    background-color: inherit;
+
+    li {
+      background-color: inherit;
+    }
+  }
+}
+

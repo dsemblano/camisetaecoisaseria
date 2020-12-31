@@ -1,7 +1,7 @@
 @if (is_front_page())
-    <header class="banner absolute bg-transparent">
+    <header class="banner header-home absolute bg-transparent">
   @else
-    <header class="banner relative bg-grey-darkest">
+    <header class="banner header-pages relative bg-grey-darkest">
 @endif
   <div class="container h-16 lg:h-32 pt-4 max-w-4xl lg:px-0 flex flex-row justify-around lg:justify-between items-center">
     <h1 class="w-1/4 overflow-hidden lg:w-auto lg:ml-12 xl:ml-0 logoimprima">
