@@ -318,3 +318,14 @@
     margin-top: 2rem;
   }
 }
+
+// only home
+
+.home .menu-menu-container ul {
+  li:hover > ul,
+  li:focus-within > ul,
+  li ul:hover,
+  li ul:focus {
+    background: $gradient-blk1b;
+  }
+}
