@@ -29,7 +29,7 @@
                   @endphp
                   {{-- {!! $product->get_image() !!} --}}
                   {!! $imgprod !!}
-                  <h2 class="text-sm my-3 h-8 md:h-6">
+                  <h2 class="text-sm my-3 h-8 md:h-6 overflow-auto">
                     {!! $product->get_title() !!}
                   </h2>
 
