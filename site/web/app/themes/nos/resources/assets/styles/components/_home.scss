@@ -12,13 +12,13 @@
   left: 1em;
 
   input {
-    @include font-regular;
+    @include font-Opensans;
 
     font-style: italic;
   }
 
   h3 {
-    @include font-regular;
+    @include font-Opensans;
 
     letter-spacing: 0.2rem;
   }
@@ -248,7 +248,7 @@
       }
 
       span {
-        @include font-light;
+        @include font-Opensans;
 
         width: 100%;
       }
@@ -274,7 +274,7 @@
   }
 
   .citacao {
-    @include font-light;
+    @include font-Opensans;
 
     // .citacao-container .hidden {
     //   padding: 0 1.5rem 0 2rem;
@@ -292,7 +292,7 @@
 
 .blockhome-3 {
   p {
-    @include font-light;
+    @include font-Opensans;
   }
 }
 
