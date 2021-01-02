@@ -1,5 +1,5 @@
-<section class="blockhome blockhome-3 container flex flex-col overflow-hidden mt-8">
-  <div class="blockhome-3-left mt-4 mb-8 px-2 w-full overflow-hidden md:w-1/2 text-md m-auto text-center leading-none">
+<section class="blockhome blockhome-3 container flex flex-col overflow-hidden my-8">
+  <div class="blockhome-3-left w-full overflow-hidden md:w-1/2 text-md m-auto text-center leading-none">
       <h2 class="md:text-4xl text-pureblack">Crie e Customize</h2>
       <p class="md:text-2xl mb-6">todos os produtos</p>
       {{-- <figure class="order-2 items-end">
@@ -37,12 +37,12 @@
   </div>
 </section>
 
-<section class="blockhome blockhome-3 mt-8 border-solid border-black border-t-2">
+<section class="blockhome blockhome-3 my-8 border-solid border-black border-t-2">
   <div class="container flex flex-col overflow-hidden">
     <div
-      class="blockhome-3-left mt-4 mb-8 px-2 w-full overflow-hidden md:w-1/2 text-md m-auto text-center leading-none">
-      <h2 class="md:text-4xl text-pureblack mt-4 mb-8 px-2 ">Camiseta É Coisa Séria</h2>
-      <figure class="order-2 items-end">
+      class="blockhome-3-left my-8 w-full overflow-hidden md:w-1/2 text-md m-auto text-center leading-none">
+      <h2 class="md:text-4xl text-pureblack">Camiseta É Coisa Séria</h2>
+      <figure class="order-2 mt-8 items-end">
         <div class="imprima-button text-center">
           <a href="/camiseta-e-coisa-seria">
             <button class="btn-estudio">Veja todos os produtos</button>
