@@ -177,6 +177,10 @@ header.banner > div {
     li {
       background-color: inherit;
     }
+
+    li:hover {
+      background: $gradient-blk1-hover;
+    }
   }
 }
 

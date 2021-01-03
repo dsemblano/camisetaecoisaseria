@@ -327,5 +327,9 @@
   li ul:hover,
   li ul:focus {
     background: $gradient-blk1b;
+
+    &:hover li {
+      background: $gradient-blk1-hover;
+    }
   }
 }
