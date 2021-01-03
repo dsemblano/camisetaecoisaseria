@@ -738,15 +738,15 @@
         },
         {
             "name": "wpackagist-plugin/autodescription",
-            "version": "4.1.2",
+            "version": "4.1.3",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/autodescription/",
-                "reference": "trunk"
+                "reference": "tags/4.1.3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/autodescription.zip?timestamp=1606880304"
+                "url": "https://downloads.wordpress.org/plugin/autodescription.4.1.3.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -756,7 +756,7 @@
         },
         {
             "name": "wpackagist-plugin/automatic-translator-addon-for-loco-translate",
-            "version": "2.1.2",
+            "version": "2.1.3",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/automatic-translator-addon-for-loco-translate/",
@@ -774,15 +774,15 @@
         },
         {
             "name": "wpackagist-plugin/click-to-chat-for-whatsapp",
-            "version": "3.1",
+            "version": "3.2.3",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/click-to-chat-for-whatsapp/",
-                "reference": "tags/3.1"
+                "reference": "tags/3.2.3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/click-to-chat-for-whatsapp.3.1.zip"
+                "url": "https://downloads.wordpress.org/plugin/click-to-chat-for-whatsapp.3.2.3.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -792,15 +792,15 @@
         },
         {
             "name": "wpackagist-plugin/instagram-feed",
-            "version": "2.6.1",
+            "version": "2.6.2",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/instagram-feed/",
-                "reference": "trunk"
+                "reference": "tags/2.6.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/instagram-feed.zip?timestamp=1607433522"
+                "url": "https://downloads.wordpress.org/plugin/instagram-feed.2.6.2.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -810,15 +810,15 @@
         },
         {
             "name": "wpackagist-plugin/loco-translate",
-            "version": "2.4.6",
+            "version": "2.5.0",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/loco-translate/",
-                "reference": "tags/2.4.6"
+                "reference": "tags/2.5.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/loco-translate.2.4.6.zip"
+                "url": "https://downloads.wordpress.org/plugin/loco-translate.2.5.0.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -828,15 +828,15 @@
         },
         {
             "name": "wpackagist-plugin/product-blocks",
-            "version": "1.0.9",
+            "version": "1.1.1",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/product-blocks/",
-                "reference": "tags/1.0.9"
+                "reference": "tags/1.1.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/product-blocks.1.0.9.zip"
+                "url": "https://downloads.wordpress.org/plugin/product-blocks.1.1.1.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -918,15 +918,15 @@
         },
         {
             "name": "wpackagist-plugin/smart-woocommerce-search",
-            "version": "2.0.1",
+            "version": "2.0.2",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/smart-woocommerce-search/",
-                "reference": "tags/2.0.1"
+                "reference": "tags/2.0.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/smart-woocommerce-search.2.0.1.zip"
+                "url": "https://downloads.wordpress.org/plugin/smart-woocommerce-search.2.0.2.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -936,7 +936,7 @@
         },
         {
             "name": "wpackagist-plugin/super-socializer",
-            "version": "7.13.6",
+            "version": "7.13.10",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/super-socializer/",
@@ -944,7 +944,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/super-socializer.zip?timestamp=1607338386"
+                "url": "https://downloads.wordpress.org/plugin/super-socializer.zip?timestamp=1608123293"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -1134,15 +1134,15 @@
         },
         {
             "name": "wpackagist-plugin/woocommerce-pagarme",
-            "version": "2.3.0",
+            "version": "2.4.1",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/woocommerce-pagarme/",
-                "reference": "tags/2.3.0"
+                "reference": "tags/2.4.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/woocommerce-pagarme.2.3.0.zip"
+                "url": "https://downloads.wordpress.org/plugin/woocommerce-pagarme.2.4.1.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -1320,12 +1320,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "d5961914bf7f90e81af509b81e51450bff419815"
+                "reference": "a2c04f857299a7119e96448249a9dd5954e099c1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/d5961914bf7f90e81af509b81e51450bff419815",
-                "reference": "d5961914bf7f90e81af509b81e51450bff419815",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/a2c04f857299a7119e96448249a9dd5954e099c1",
+                "reference": "a2c04f857299a7119e96448249a9dd5954e099c1",
                 "shasum": ""
             },
             "conflict": {
@@ -1459,7 +1459,7 @@
                 "phpmussel/phpmussel": ">=1,<1.6",
                 "phpmyadmin/phpmyadmin": "<4.9.6|>=5,<5.0.3",
                 "phpoffice/phpexcel": "<1.8.2",
-                "phpoffice/phpspreadsheet": "<1.8",
+                "phpoffice/phpspreadsheet": "<1.16",
                 "phpunit/phpunit": ">=4.8.19,<4.8.28|>=5.0.10,<5.6.3",
                 "phpwhois/phpwhois": "<=4.2.5",
                 "phpxmlrpc/extras": "<0.6.1",
@@ -1482,8 +1482,8 @@
                 "scheb/two-factor-bundle": ">=0,<3.26|>=4,<4.11",
                 "sensiolabs/connect": "<4.2.3",
                 "serluck/phpwhois": "<=4.2.6",
-                "shopware/core": "<=6.3.2",
-                "shopware/platform": "<=6.3.2",
+                "shopware/core": "<=6.3.4",
+                "shopware/platform": "<=6.3.4",
                 "shopware/shopware": "<5.6.9",
                 "silverstripe/admin": ">=1.0.3,<1.0.4|>=1.1,<1.1.1",
                 "silverstripe/assets": ">=1,<1.4.7|>=1.5,<1.5.2",
@@ -1633,7 +1633,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-12-08T15:02:56+00:00"
+            "time": "2020-12-31T19:24:22+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",
