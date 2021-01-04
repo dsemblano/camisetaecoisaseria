@@ -187,6 +187,7 @@ header.banner > div {
 .home {
   .bg-mobile {
     background-position: center -25px;
+    min-height: -webkit-fill-available;
   }
 
   .bg-desktop {
