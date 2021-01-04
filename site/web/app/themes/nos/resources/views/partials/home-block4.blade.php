@@ -44,3 +44,5 @@
   </ul>
   @include('partials/components.ribbon-algodao')
 </section>
+
+@include('partials/home-insta')
