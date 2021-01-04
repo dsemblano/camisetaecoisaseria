@@ -112,8 +112,16 @@ $large-mq: 1024px;
 // }
 // end Media Queries
 
+html {
+  height: -webkit-fill-available;
+}
+
 body {
   background-color: #f7f7f7;
+  min-height: 100vh;
+
+  /* mobile viewport bug fix */
+  min-height: -webkit-fill-available;
 }
 
 h1,
