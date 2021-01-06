@@ -1,0 +1,59 @@
+// Media Queries
+
+/* Large desktops and laptops */
+@media (min-width: 1200px) {
+  .banner {
+    background-color: orange !important;
+  }
+}
+
+// /* Landscape tablets and medium desktops */
+@media (min-width: 992px) and (max-width: 1199px) {
+  .banner {
+    background-color: red !important;
+  }
+}
+
+// /* Portrait tablets and small desktops */
+@media (min-width: 768px) and (max-width: 991px) {
+  .banner {
+    background-color: blue !important;
+  }
+}
+
+// /* Landscape phones and portrait tablets */
+@media (max-width: 767px) {
+  .banner {
+    background-color: green !important;
+  }
+}
+
+// /* Portrait phones and smaller */
+@media (max-width: 480px) {
+  .banner,
+  .row {
+    background-color: yellow !important;
+  }
+}
+
+/* ----------- Non-Retina Screens ----------- */
+@media screen
+  and (min-device-width: 1200px)
+  and (max-device-width: 1600px)
+  and (-webkit-min-device-pixel-ratio: 1) {
+  main.main {
+    background-color: gray;
+  }
+}
+
+// /* ----------- Retina Screens ----------- */
+@media screen
+  and (min-device-width: 1200px)
+  and (max-device-width: 1600px)
+  and (-webkit-min-device-pixel-ratio: 2)
+  and (min-resolution: 192dpi) {
+  main.main {
+    background-color: pink;
+  }
+}
+// end Media Queries
