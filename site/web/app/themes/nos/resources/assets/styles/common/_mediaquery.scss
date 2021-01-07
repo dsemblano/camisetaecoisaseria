@@ -7,7 +7,7 @@
   }
 
   .blockhome-1 {
-    background: url("../images/home/block1/bg/nosteefty.jpg") center / cover;
+    background: url("../images/home/block1/bg/1920x1080.jpg") center / cover;
   }
 }
 
@@ -22,6 +22,10 @@
 @media (min-width: 768px) and (max-width: 991px) {
   .banner {
     // background-color: blue !important;
+  }
+
+  .blockhome-1 {
+    background: url("../images/home/block1/bg/768x1024.jpg") center / cover;
   }
 }
 
@@ -51,6 +55,10 @@
   and (-webkit-min-device-pixel-ratio: 1) {
   main.main {
     // background-color: gray;
+  }
+
+  .blockhome-1 {
+    background: url("../images/home/block1/bg/1280x800.jpg") center / cover;
   }
 }
 
