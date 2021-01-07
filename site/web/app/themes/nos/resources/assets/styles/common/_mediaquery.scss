@@ -2,45 +2,30 @@
 
 /* Large desktops and laptops */
 @media (min-width: 1200px) {
-  .banner {
-    // background-color: orange !important;
-  }
-
-  .blockhome-1 {
-    background-image: url(http://localhost:3000/app/themes/nos/dist/images/home/block1/bg/nosteefty.jpg);
-    background-position: 50%;
-    background-size: cover;
-  }
+  // .blockhome-1 {
+  //   background-image: url(http://localhost:3000/app/themes/nos/dist/images/home/block1/bg/nosteefty.jpg);
+  //   background-position: 50%;
+  //   background-size: cover;
+  // }
 }
 
 // /* Landscape tablets and medium desktops */
-@media (min-width: 992px) and (max-width: 1199px) {
-  .banner {
-    // background-color: red !important;
-  }
-}
+// @media (min-width: 992px) and (max-width: 1199px) {
+// //
+// }
 
 // /* Portrait tablets and small desktops */
-@media (min-width: 768px) and (max-width: 991px) {
-  .banner {
-    // background-color: blue !important;
-  }
-}
+// @media (min-width: 768px) and (max-width: 991px) {
+// //
+// }
 
 // /* Landscape phones and portrait tablets */
-@media (max-width: 767px) {
-  .banner {
-    // background-color: green !important;
-  }
-}
+// @media (max-width: 767px) {
+// //
+// }
 
 // /* Portrait phones and smaller */
 @media (max-width: 480px) {
-  .banner,
-  .row {
-    // background-color: yellow !important;
-  }
-
   .blockhome-1 {
     background-image: url(http://localhost:3000/app/themes/nos/dist/images/home/block1/bg/mobile.jpg);
     background-position: 50%;
@@ -53,19 +38,21 @@
   and (min-device-width: 1200px)
   and (max-device-width: 1600px)
   and (-webkit-min-device-pixel-ratio: 1) {
-  main.main {
-    // background-color: gray;
-  }
+  // .blockhome-1 {
+  //   background-image: url(http://localhost:3000/app/themes/nos/dist/images/home/block1/bg/mobile.jpg);
+  //   background-position: 50%;
+  //   background-size: cover;
+  // }
 }
 
 // /* ----------- Retina Screens ----------- */
-@media screen
-  and (min-device-width: 1200px)
-  and (max-device-width: 1600px)
-  and (-webkit-min-device-pixel-ratio: 2)
-  and (min-resolution: 192dpi) {
-  main.main {
-    // background-color: pink;
-  }
-}
+// @media screen
+//   and (min-device-width: 1200px)
+//   and (max-device-width: 1600px)
+//   and (-webkit-min-device-pixel-ratio: 2)
+//   and (min-resolution: 192dpi) {
+//   main.main {
+//     // background-color: pink;
+//   }
+// }
 // end Media Queries
