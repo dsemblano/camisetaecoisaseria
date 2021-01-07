@@ -3,7 +3,7 @@
 /* Large desktops and laptops */
 @media (min-width: 1200px) {
   .blockhome-1 {
-    background-image: url(http://localhost:3000/app/themes/nos/dist/images/home/block1/bg/nosteefty.jpg);
+    background-image: url(http://localhost:3000/app/themes/nos/dist/images/nosteefty.jpg);
     background-position: 50%;
     background-size: cover;
   }
@@ -12,7 +12,7 @@
 // /* Landscape tablets and medium desktops */
 @media (min-width: 992px) and (max-width: 1199px) {
   .blockhome-1 {
-    background-image: url(http://localhost:3000/app/themes/nos/dist/images/home/block1/bg/mobile.jpg);
+    background-image: url(http://localhost:3000/app/themes/nos/dist/images/mobile.jpg);
     background-position: 50%;
     background-size: cover;
   }
@@ -21,7 +21,7 @@
 // /* Portrait tablets and small desktops */
 @media (min-width: 768px) and (max-width: 991px) {
   .blockhome-1 {
-    background-image: url(http://localhost:3000/app/themes/nos/dist/images/home/block1/bg/mobile.jpg);
+    background-image: url(http://localhost:3000/app/themes/nos/dist/images/mobile.jpg);
     background-position: 50%;
     background-size: cover;
   }
@@ -30,7 +30,7 @@
 // /* Landscape phones and portrait tablets */
 @media (max-width: 767px) {
   .blockhome-1 {
-    background-image: url(http://localhost:3000/app/themes/nos/dist/images/home/block1/bg/mobile.jpg);
+    background-image: url(http://localhost:3000/app/themes/nos/dist/images/mobile.jpg);
     background-position: 50%;
     background-size: cover;
   }
@@ -44,7 +44,7 @@
   }
 
   .blockhome-1 {
-    background-image: url(http://localhost:3000/app/themes/nos/dist/images/home/block1/bg/mobile.jpg);
+    background-image: url(http://localhost:3000/app/themes/nos/dist/images/mobile.jpg);
     background-position: 50%;
     background-size: cover;
   }
@@ -56,7 +56,7 @@
   and (max-device-width: 1600px)
   and (-webkit-min-device-pixel-ratio: 1) {
   .blockhome-1 {
-    background-image: url(http://localhost:3000/app/themes/nos/dist/images/home/block1/bg/mobile.jpg);
+    background-image: url(http://localhost:3000/app/themes/nos/dist/images/mobile.jpg);
     background-position: 50%;
     background-size: cover;
   }
@@ -70,7 +70,7 @@
   and (min-resolution: 192dpi) {
   main.main {
     .blockhome-1 {
-      background-image: url(http://localhost:3000/app/themes/nos/dist/images/home/block1/bg/mobile.jpg);
+      background-image: url(http://localhost:3000/app/themes/nos/dist/images/mobile.jpg);
       background-position: 50%;
       background-size: cover;
     }
