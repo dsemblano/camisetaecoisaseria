@@ -2,30 +2,30 @@
 
 /* Large desktops and laptops */
 @media (min-width: 1200px) {
-  .blockhome-1 {
-    background-image: url(http://localhost:3000/app/themes/nos/dist/images/nosteefty.jpg);
-  }
+  // .blockhome-1 {
+  //   background-image: url(http://localhost:3000/app/themes/nos/dist/images/nosteefty.jpg);
+  // }
 }
 
 // /* Landscape tablets and medium desktops */
 @media (min-width: 992px) and (max-width: 1199px) {
-  .blockhome-1 {
-    background-image: url(http://localhost:3000/app/themes/nos/dist/images/mobile.jpg);
-  }
+  // .blockhome-1 {
+  //   background-image: url(http://localhost:3000/app/themes/nos/dist/images/mobile.jpg);
+  // }
 }
 
 // /* Portrait tablets and small desktops */
 @media (min-width: 768px) and (max-width: 991px) {
-  .blockhome-1 {
-    background-image: url(http://localhost:3000/app/themes/nos/dist/images/mobile.jpg);
-  }
+  // .blockhome-1 {
+  //   background-image: url(http://localhost:3000/app/themes/nos/dist/images/mobile.jpg);
+  // }
 }
 
 // /* Landscape phones and portrait tablets */
 @media (max-width: 767px) {
-  .blockhome-1 {
-    background-image: url(http://localhost:3000/app/themes/nos/dist/images/mobile.jpg);
-  }
+  // .blockhome-1 {
+  //   background-image: url(http://localhost:3000/app/themes/nos/dist/images/mobile.jpg);
+  // }
 }
 
 // /* Portrait phones and smaller */
@@ -35,26 +35,27 @@
   //   background-color: yellow !important;
   // }
   .blockhome-1 {
-    background-image: url(http://localhost:3000/app/themes/nos/dist/images/mobile.jpg);
+    // background-image: url(http://localhost:3000/app/themes/nos/dist/images/mobile.jpg);
+    background-color: red;
   }
 }
 
 /* ----------- Non-Retina Screens ----------- */
 @media screen and (min-device-width: 1200px) and (max-device-width: 1600px) and (-webkit-min-device-pixel-ratio: 1) {
-  .blockhome-1 {
-    background-image: url(http://localhost:3000/app/themes/nos/dist/images/mobile.jpg);
-  }
+  // .blockhome-1 {
+  //   background-image: url(http://localhost:3000/app/themes/nos/dist/images/mobile.jpg);
+  // }
 }
 
 // /* ----------- Retina Screens ----------- */
 @media screen and (min-device-width: 1200px) and (max-device-width: 1600px) and (-webkit-min-device-pixel-ratio: 2) and (min-resolution: 192dpi) {
-  main.main {
-    .blockhome-1 {
-      background-image: url(http://localhost:3000/app/themes/nos/dist/images/mobile.jpg);
-      background-position: 50%;
-      background-size: cover;
-    }
-  }
+  // main.main {
+  //   .blockhome-1 {
+  //     background-image: url(http://localhost:3000/app/themes/nos/dist/images/mobile.jpg);
+  //     background-position: 50%;
+  //     background-size: cover;
+  //   }
+  // }
 }
 
 // end Media Queries
