@@ -5,6 +5,12 @@
   .banner {
     // background-color: orange !important;
   }
+
+  .blockhome-1 {
+    background-image: url(http://localhost:3000/app/themes/nos/dist/images/home/block1/bg/nosteefty.jpg);
+    background-position: center;
+    background-size: cover;
+  }
 }
 
 // /* Landscape tablets and medium desktops */
@@ -36,7 +42,9 @@
   }
 
   .blockhome-1 {
-    background: url(http://localhost:3000/app/themes/nos/dist/images/home/block1/bg/mobile.jpg) center / cover;
+    background-image: url(http://localhost:3000/app/themes/nos/dist/images/home/block1/bg/mobile.jpg);
+    background-position: center;
+    background-size: cover;
   }
 }
 
