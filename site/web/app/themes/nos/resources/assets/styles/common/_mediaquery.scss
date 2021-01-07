@@ -38,6 +38,11 @@
 
 // /* Portrait phones and smaller */
 @media (max-width: 480px) {
+  .banner,
+  .row {
+    background-color: yellow !important;
+  }
+
   .blockhome-1 {
     background-image: url(http://localhost:3000/app/themes/nos/dist/images/home/block1/bg/mobile.jpg);
     background-position: 50%;
