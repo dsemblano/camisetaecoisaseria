@@ -581,16 +581,16 @@
         },
         {
             "name": "symfony/polyfill-ctype",
-            "version": "v1.20.0",
+            "version": "v1.22.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-ctype.git",
-                "reference": "f4ba089a5b6366e453971d3aad5fe8e897b37f41"
+                "reference": "c6c942b1ac76c82448322025e084cadc56048b4e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/f4ba089a5b6366e453971d3aad5fe8e897b37f41",
-                "reference": "f4ba089a5b6366e453971d3aad5fe8e897b37f41",
+                "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/c6c942b1ac76c82448322025e084cadc56048b4e",
+                "reference": "c6c942b1ac76c82448322025e084cadc56048b4e",
                 "shasum": ""
             },
             "require": {
@@ -602,7 +602,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "1.20-dev"
+                    "dev-main": "1.22-dev"
                 },
                 "thanks": {
                     "name": "symfony/polyfill",
@@ -640,7 +640,7 @@
                 "portable"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-ctype/tree/v1.20.0"
+                "source": "https://github.com/symfony/polyfill-ctype/tree/v1.22.0"
             },
             "funding": [
                 {
@@ -656,7 +656,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-10-23T14:02:19+00:00"
+            "time": "2021-01-07T16:49:33+00:00"
         },
         {
             "name": "vlucas/phpdotenv",
@@ -764,7 +764,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/automatic-translator-addon-for-loco-translate.zip?timestamp=1607690970"
+                "url": "https://downloads.wordpress.org/plugin/automatic-translator-addon-for-loco-translate.zip?timestamp=1609843490"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -774,15 +774,15 @@
         },
         {
             "name": "wpackagist-plugin/click-to-chat-for-whatsapp",
-            "version": "3.2.3",
+            "version": "3.2.4",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/click-to-chat-for-whatsapp/",
-                "reference": "tags/3.2.3"
+                "reference": "tags/3.2.4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/click-to-chat-for-whatsapp.3.2.3.zip"
+                "url": "https://downloads.wordpress.org/plugin/click-to-chat-for-whatsapp.3.2.4.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -918,15 +918,15 @@
         },
         {
             "name": "wpackagist-plugin/smart-woocommerce-search",
-            "version": "2.0.2",
+            "version": "2.0.3",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/smart-woocommerce-search/",
-                "reference": "tags/2.0.2"
+                "reference": "tags/2.0.3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/smart-woocommerce-search.2.0.2.zip"
+                "url": "https://downloads.wordpress.org/plugin/smart-woocommerce-search.2.0.3.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -936,7 +936,7 @@
         },
         {
             "name": "wpackagist-plugin/super-socializer",
-            "version": "7.13.10",
+            "version": "7.13.11",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/super-socializer/",
@@ -944,7 +944,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/super-socializer.zip?timestamp=1608123293"
+                "url": "https://downloads.wordpress.org/plugin/super-socializer.zip?timestamp=1609841565"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -1026,7 +1026,7 @@
         },
         {
             "name": "wpackagist-plugin/woo-variation-swatches",
-            "version": "1.1.2",
+            "version": "1.1.4",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/woo-variation-swatches/",
@@ -1034,7 +1034,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/woo-variation-swatches.zip?timestamp=1606397026"
+                "url": "https://downloads.wordpress.org/plugin/woo-variation-swatches.zip?timestamp=1610468439"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -1044,15 +1044,15 @@
         },
         {
             "name": "wpackagist-plugin/woocommerce",
-            "version": "4.8.0",
+            "version": "4.9.0",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/woocommerce/",
-                "reference": "tags/4.8.0"
+                "reference": "tags/4.9.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/woocommerce.4.8.0.zip"
+                "url": "https://downloads.wordpress.org/plugin/woocommerce.4.9.0.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -1134,15 +1134,15 @@
         },
         {
             "name": "wpackagist-plugin/woocommerce-pagarme",
-            "version": "2.4.1",
+            "version": "2.5.0",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/woocommerce-pagarme/",
-                "reference": "tags/2.4.1"
+                "reference": "tags/2.5.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/woocommerce-pagarme.2.4.1.zip"
+                "url": "https://downloads.wordpress.org/plugin/woocommerce-pagarme.2.5.0.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -1170,15 +1170,15 @@
         },
         {
             "name": "wpackagist-plugin/woocommerce-services",
-            "version": "1.25.4",
+            "version": "1.25.5",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/woocommerce-services/",
-                "reference": "tags/1.25.4"
+                "reference": "tags/1.25.5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/woocommerce-services.1.25.4.zip"
+                "url": "https://downloads.wordpress.org/plugin/woocommerce-services.1.25.5.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
