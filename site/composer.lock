@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f8f33b3f2dea765f41278c5992f33ba3",
+    "content-hash": "0b0ec3b1025bd99a0370e4887bc26620",
     "packages": [
         {
             "name": "composer/installers",
@@ -1131,6 +1131,24 @@
             },
             "type": "wordpress-plugin",
             "homepage": "https://wordpress.org/plugins/woocommerce-gateway-paypal-express-checkout/"
+        },
+        {
+            "name": "wpackagist-plugin/woocommerce-menu-bar-cart",
+            "version": "2.9.6",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/woocommerce-menu-bar-cart/",
+                "reference": "tags/2.9.6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/woocommerce-menu-bar-cart.2.9.6.zip"
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/woocommerce-menu-bar-cart/"
         },
         {
             "name": "wpackagist-plugin/woocommerce-pagarme",
