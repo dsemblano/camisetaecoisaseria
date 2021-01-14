@@ -25,5 +25,21 @@
 }
 
 .woocommerce-cart .cart-collaterals .shipping-calculator-button {
-  @apply mt-0;
+  @apply mt-0 font-thin text-white;
+
+  margin: 0;
+  line-height: 1;
+  cursor: pointer;
+  position: relative;
+  text-decoration: none;
+  overflow: visible;
+  padding: 0.618em 1em;
+  border-radius: 3px;
+  left: auto;
+  background-color: $button-cart;
+  border: 0;
+  display: inline-block;
+  background-image: none;
+  box-shadow: none;
+  text-shadow: none;
 }

@@ -23,6 +23,12 @@
 
 // Cart
 .woocommerce {
+  a.button {
+    @apply font-thin text-white;
+
+    background-color: $button-cart;
+  }
+
   table.shop_table {
     border: 1px solid $green-nos;
 
