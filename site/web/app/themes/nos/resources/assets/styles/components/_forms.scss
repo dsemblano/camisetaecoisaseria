@@ -24,9 +24,9 @@
 // Cart
 .woocommerce {
   a.button {
-    @apply font-thin text-white;
+    @apply font-thin text-white bg-grey-darkest;
 
-    background-color: $button-cart;
+    // background-color: $button-cart;
   }
 
   table.shop_table {
