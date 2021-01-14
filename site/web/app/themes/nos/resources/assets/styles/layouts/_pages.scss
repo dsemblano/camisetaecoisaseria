@@ -8,6 +8,10 @@
   }
 }
 
+.coupon {
+  @apply flex;
+}
+
 .woocommerce-tabs {
   @apply mb-8 border-t border-grey-light;
 }
