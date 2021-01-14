@@ -132,19 +132,3 @@ add_filter('woobe_filter_include_children', function($include, $tax) {
 
     return $include;
 }, 10, 2);
-
-// Cart messages
-add_filter('gettext', 'Behrooz_woo_translations', 20, 3);
-add_filter('ngettext', 'Behrooz_woo_translations', 20, 3);
-function Behrooz_woo_translations( $translation, $text, $domain ) {
-
-    // Put your custom text here in a key => value pair
-    $custom_text = array(
-        'Enter your address to view shipping options.' => 'Digite o CEP abaixo',
-    );
-
-    if( array_key_exists( $translation, $custom_text ) ) {
-        $translation = $custom_text[$translation];
-    }
-    return $translation;
-}
