@@ -43,6 +43,10 @@
     // background-color: yellow !important;
   }
 
+  .cart-collaterals {
+    @apply flex flex-col-reverse;
+  }
+
   .blockhome-1 {
     background: url("../images/home/block1/bg/mobile.jpg") center / cover;
   }
