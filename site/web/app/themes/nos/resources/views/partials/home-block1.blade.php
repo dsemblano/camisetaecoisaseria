@@ -1,10 +1,4 @@
 <section class="blockhome blockhome-1 h-screen flex flex-col justify-end border-solid border-grey-nos border-b-2">
-
-  {{-- <div class="blockhome-1-container h-slidelg container flex flex-col justify-center items-start pt-8 md:pt-16 md:pb-2">
-    @include('partials/components.btn-customize')
-    @include('partials/components.dtg')
-  </div> --}}
-
   <div class="block1-down-container mt-8">
     <div class="block1-down w-full">
       <div class="container text-sm md:ml-auto md:text-xl text-left text-white font-bold w-full">

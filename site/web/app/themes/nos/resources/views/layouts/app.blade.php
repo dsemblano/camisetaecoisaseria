@@ -6,50 +6,28 @@
   @include('partials.facebook')
   @php do_action('get_header') @endphp
   @include('partials.header')
-  <div class="wrap" role="document">
-    <main class="main">
-      @yield('content')
-    </main>
+
+  @if (is_front_page())
+    <div class="wrap" role="document">
+      <main class="main">
+        {{-- @include('partials.home-block1') --}}
+  @else
+    <div class="wrap my-8" role="document">
+      <main class="main container">
+  @endif
+
+        @yield('content')
+      </main>
     @if (App\display_sidebar())
     <aside class="sidebar">
       @include('partials.sidebar')
     </aside>
     @endif
-  </div>
+    </div>
   @php do_action('get_footer') @endphp
   @include('partials.footer')
   @php wp_footer() @endphp
-  <script>
-      jQuery(document).ready(function($){
-        // browser window scroll (in pixels) after which the "back to top" link is shown
-        var offset = 300,
-          //browser window scroll (in pixels) after which the "back to top" link opacity is reduced
-          offset_opacity = 1200,
-          //duration of the top scrolling animation (in ms)
-          scroll_top_duration = 700,
-          //grab the "back to top" link
-          $back_to_top = $('.cd-top');
-
-        //hide or show the "back to top" link
-        $(window).scroll(function(){
-          ( $(this).scrollTop() > offset ) ? $back_to_top.addClass('cd-is-visible') : $back_to_top.removeClass('cd-is-visible cd-fade-out');
-          if( $(this).scrollTop() > offset_opacity ) {
-            $back_to_top.addClass('cd-fade-out');
-          }
-        });
-
-        //smooth scroll to top
-        $back_to_top.on('click', function(event){
-          event.preventDefault();
-          $('body,html').animate({
-            scrollTop: 0 ,
-            }, scroll_top_duration
-          );
-        });
-
-      });
-    </script>
-    <a href="#0" class="cd-top">Top</a>
+  @include('partials/components.arrowhome')
 </body>
 
 </html>
