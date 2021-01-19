@@ -1,11 +1,20 @@
-.content p {
+%subtitle {
   @apply leading-relaxed text-p tracking-wide my-5;
 
   @include font-Opensans;
+}
+
+.content p {
+  @extend %subtitle;
 
   .has-medium-font-size {
     @apply text-base;
   }
+}
+
+.alert,
+.alert-warning {
+  @extend %subtitle;
 }
 
 .coupon {

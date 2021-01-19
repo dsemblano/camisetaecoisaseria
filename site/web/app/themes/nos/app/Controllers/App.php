@@ -23,10 +23,10 @@ class App extends Controller
             return get_the_archive_title();
         }
         if (is_search()) {
-            return sprintf(__('Search Results for %s', 'sage'), get_search_query());
+            return sprintf(__('Resultados para %s', 'sage'), get_search_query());
         }
         if (is_404()) {
-            return __('Not Found', 'sage');
+            return __('404 erro - Página não encontrada', 'sage');
         }
         return get_the_title();
     }
