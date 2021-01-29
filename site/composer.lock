@@ -799,15 +799,15 @@
         },
         {
             "name": "wpackagist-plugin/instagram-feed",
-            "version": "2.6.2",
+            "version": "2.7",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/instagram-feed/",
-                "reference": "tags/2.6.2"
+                "reference": "tags/2.7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/instagram-feed.2.6.2.zip"
+                "url": "https://downloads.wordpress.org/plugin/instagram-feed.2.7.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -943,7 +943,7 @@
         },
         {
             "name": "wpackagist-plugin/super-socializer",
-            "version": "7.13.11",
+            "version": "7.13.12",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/super-socializer/",
@@ -951,7 +951,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/super-socializer.zip?timestamp=1609841565"
+                "url": "https://downloads.wordpress.org/plugin/super-socializer.zip?timestamp=1611747412"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -1033,7 +1033,7 @@
         },
         {
             "name": "wpackagist-plugin/woo-variation-swatches",
-            "version": "1.1.5",
+            "version": "1.1.6",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/woo-variation-swatches/",
@@ -1041,7 +1041,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/woo-variation-swatches.zip?timestamp=1610549769"
+                "url": "https://downloads.wordpress.org/plugin/woo-variation-swatches.zip?timestamp=1611759714"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -1051,15 +1051,15 @@
         },
         {
             "name": "wpackagist-plugin/woocommerce",
-            "version": "4.9.1",
+            "version": "4.9.2",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/woocommerce/",
-                "reference": "tags/4.9.1"
+                "reference": "tags/4.9.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/woocommerce.4.9.1.zip"
+                "url": "https://downloads.wordpress.org/plugin/woocommerce.4.9.2.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -1195,15 +1195,15 @@
         },
         {
             "name": "wpackagist-plugin/woocommerce-services",
-            "version": "1.25.5",
+            "version": "1.25.6",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/woocommerce-services/",
-                "reference": "tags/1.25.5"
+                "reference": "tags/1.25.6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/woocommerce-services.1.25.5.zip"
+                "url": "https://downloads.wordpress.org/plugin/woocommerce-services.1.25.6.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -1345,12 +1345,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "600038234d7523270505fc1bfc442fbe813b8f2d"
+                "reference": "7263d7d73a4de68760e05f3eda5eee73b59f0f6d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/600038234d7523270505fc1bfc442fbe813b8f2d",
-                "reference": "600038234d7523270505fc1bfc442fbe813b8f2d",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/7263d7d73a4de68760e05f3eda5eee73b59f0f6d",
+                "reference": "7263d7d73a4de68760e05f3eda5eee73b59f0f6d",
                 "shasum": ""
             },
             "conflict": {
@@ -1416,6 +1416,8 @@
                 "ezsystems/repository-forms": ">=2.3,<2.3.2.1",
                 "ezyang/htmlpurifier": "<4.1.1",
                 "firebase/php-jwt": "<2",
+                "flarum/sticky": ">=0.1-beta.14,<=0.1-beta.15",
+                "flarum/tags": "<=0.1-beta.13",
                 "fooman/tcpdf": "<6.2.22",
                 "fossar/tcpdf-parser": "<6.2.22",
                 "friendsofsymfony/oauth2-php": "<1.3",
@@ -1494,7 +1496,7 @@
                 "prestashop/autoupgrade": ">=4,<4.10.1",
                 "prestashop/contactform": ">1.0.1,<4.3",
                 "prestashop/gamification": "<2.3.2",
-                "prestashop/productcomments": ">=4,<4.2",
+                "prestashop/productcomments": ">=4,<4.2.1",
                 "prestashop/ps_facetedsearch": "<3.4.1",
                 "privatebin/privatebin": "<1.2.2|>=1.3,<1.3.2",
                 "propel/propel": ">=2-alpha.1,<=2-alpha.7",
@@ -1531,6 +1533,7 @@
                 "slim/slim": "<2.6",
                 "smarty/smarty": "<3.1.33",
                 "socalnick/scn-social-auth": "<1.15.2",
+                "socialiteproviders/steam": "<1.1",
                 "spoonity/tcpdf": "<6.2.22",
                 "squizlabs/php_codesniffer": ">=1,<2.8.1|>=3,<3.0.1",
                 "ssddanbrown/bookstack": "<0.29.2",
@@ -1659,7 +1662,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-01-19T21:21:59+00:00"
+            "time": "2021-01-29T18:18:11+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",
