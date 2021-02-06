@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0b0ec3b1025bd99a0370e4887bc26620",
+    "content-hash": "707a4b92e42b6f05fd2174231e7f7394",
     "packages": [
         {
             "name": "composer/installers",
@@ -354,15 +354,15 @@
         },
         {
             "name": "roots/wordpress",
-            "version": "5.6",
+            "version": "5.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/WordPress/WordPress.git",
-                "reference": "5.6"
+                "reference": "5.6.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/WordPress/WordPress/zipball/5.6"
+                "url": "https://api.github.com/repos/WordPress/WordPress/zipball/5.6.1"
             },
             "require": {
                 "php": ">=5.3.2",
@@ -405,7 +405,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2020-12-08T22:15:57+00:00"
+            "time": "2021-02-03T21:15:13+00:00"
         },
         {
             "name": "roots/wordpress-core-installer",
@@ -781,15 +781,15 @@
         },
         {
             "name": "wpackagist-plugin/click-to-chat-for-whatsapp",
-            "version": "3.2.5",
+            "version": "3.2.6",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/click-to-chat-for-whatsapp/",
-                "reference": "tags/3.2.5"
+                "reference": "tags/3.2.6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/click-to-chat-for-whatsapp.3.2.5.zip"
+                "url": "https://downloads.wordpress.org/plugin/click-to-chat-for-whatsapp.3.2.6.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -871,7 +871,7 @@
         },
         {
             "name": "wpackagist-plugin/sassy-social-share",
-            "version": "3.3.16",
+            "version": "3.3.19",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/sassy-social-share/",
@@ -879,7 +879,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/sassy-social-share.zip?timestamp=1607584913"
+                "url": "https://downloads.wordpress.org/plugin/sassy-social-share.zip?timestamp=1612426999"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -1033,7 +1033,7 @@
         },
         {
             "name": "wpackagist-plugin/woo-variation-swatches",
-            "version": "1.1.6",
+            "version": "1.1.7",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/woo-variation-swatches/",
@@ -1041,7 +1041,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/woo-variation-swatches.zip?timestamp=1611759714"
+                "url": "https://downloads.wordpress.org/plugin/woo-variation-swatches.zip?timestamp=1612279140"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -1285,15 +1285,15 @@
         },
         {
             "name": "wpackagist-plugin/wp-mail-smtp",
-            "version": "2.5.1",
+            "version": "2.6.0",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/wp-mail-smtp/",
-                "reference": "tags/2.5.1"
+                "reference": "tags/2.6.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/wp-mail-smtp.2.5.1.zip"
+                "url": "https://downloads.wordpress.org/plugin/wp-mail-smtp.2.6.0.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -1321,15 +1321,15 @@
         },
         {
             "name": "wpackagist-plugin/wps-hide-login",
-            "version": "1.6.1",
+            "version": "1.7",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/wps-hide-login/",
-                "reference": "tags/1.6.1"
+                "reference": "tags/1.7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/wps-hide-login.1.6.1.zip"
+                "url": "https://downloads.wordpress.org/plugin/wps-hide-login.1.7.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -1345,12 +1345,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "7263d7d73a4de68760e05f3eda5eee73b59f0f6d"
+                "reference": "f7d723a10c7cb36e11430182f5813ecb1b887da0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/7263d7d73a4de68760e05f3eda5eee73b59f0f6d",
-                "reference": "7263d7d73a4de68760e05f3eda5eee73b59f0f6d",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/f7d723a10c7cb36e11430182f5813ecb1b887da0",
+                "reference": "f7d723a10c7cb36e11430182f5813ecb1b887da0",
                 "shasum": ""
             },
             "conflict": {
@@ -1434,7 +1434,7 @@
                 "guzzlehttp/guzzle": ">=4-rc.2,<4.2.4|>=5,<5.3.1|>=6,<6.2.1",
                 "illuminate/auth": ">=4,<4.0.99|>=4.1,<=4.1.31|>=4.2,<=4.2.22|>=5,<=5.0.35|>=5.1,<=5.1.46|>=5.2,<=5.2.45|>=5.3,<=5.3.31|>=5.4,<=5.4.36|>=5.5,<5.5.10",
                 "illuminate/cookie": ">=4,<=4.0.11|>=4.1,<=4.1.99999|>=4.2,<=4.2.99999|>=5,<=5.0.99999|>=5.1,<=5.1.99999|>=5.2,<=5.2.99999|>=5.3,<=5.3.99999|>=5.4,<=5.4.99999|>=5.5,<=5.5.49|>=5.6,<=5.6.99999|>=5.7,<=5.7.99999|>=5.8,<=5.8.99999|>=6,<6.18.31|>=7,<7.22.4",
-                "illuminate/database": "<6.20.12|>=7,<7.30.3|>=8,<8.22.1",
+                "illuminate/database": "<6.20.14|>=7,<7.30.4|>=8,<8.24",
                 "illuminate/encryption": ">=4,<=4.0.11|>=4.1,<=4.1.31|>=4.2,<=4.2.22|>=5,<=5.0.35|>=5.1,<=5.1.46|>=5.2,<=5.2.45|>=5.3,<=5.3.31|>=5.4,<=5.4.36|>=5.5,<5.5.40|>=5.6,<5.6.15",
                 "illuminate/view": ">=7,<7.1.2",
                 "ivankristianto/phpwhois": "<=4.3",
@@ -1445,7 +1445,7 @@
                 "kitodo/presentation": "<3.1.2",
                 "kreait/firebase-php": ">=3.2,<3.8.1",
                 "la-haute-societe/tcpdf": "<6.2.22",
-                "laravel/framework": "<6.20.12|>=7,<7.30.3|>=8,<8.22.1",
+                "laravel/framework": "<6.20.14|>=7,<7.30.4|>=8,<8.24",
                 "laravel/socialite": ">=1,<1.0.99|>=2,<2.0.10",
                 "league/commonmark": "<0.18.3",
                 "librenms/librenms": "<1.53",
@@ -1662,7 +1662,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-01-29T18:18:11+00:00"
+            "time": "2021-02-02T10:05:32+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",
