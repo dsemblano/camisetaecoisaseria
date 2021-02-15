@@ -871,7 +871,7 @@
         },
         {
             "name": "wpackagist-plugin/sassy-social-share",
-            "version": "3.3.19",
+            "version": "3.3.20",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/sassy-social-share/",
@@ -879,7 +879,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/sassy-social-share.zip?timestamp=1612426999"
+                "url": "https://downloads.wordpress.org/plugin/sassy-social-share.zip?timestamp=1613030880"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -943,7 +943,7 @@
         },
         {
             "name": "wpackagist-plugin/super-socializer",
-            "version": "7.13.12",
+            "version": "7.13.13",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/super-socializer/",
@@ -951,7 +951,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/super-socializer.zip?timestamp=1611747412"
+                "url": "https://downloads.wordpress.org/plugin/super-socializer.zip?timestamp=1612871926"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -1033,7 +1033,7 @@
         },
         {
             "name": "wpackagist-plugin/woo-variation-swatches",
-            "version": "1.1.7",
+            "version": "1.1.9",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/woo-variation-swatches/",
@@ -1041,7 +1041,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/woo-variation-swatches.zip?timestamp=1612279140"
+                "url": "https://downloads.wordpress.org/plugin/woo-variation-swatches.zip?timestamp=1613068183"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -1051,15 +1051,15 @@
         },
         {
             "name": "wpackagist-plugin/woocommerce",
-            "version": "4.9.2",
+            "version": "5.0.0",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/woocommerce/",
-                "reference": "tags/4.9.2"
+                "reference": "tags/5.0.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/woocommerce.4.9.2.zip"
+                "url": "https://downloads.wordpress.org/plugin/woocommerce.5.0.0.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -1195,15 +1195,15 @@
         },
         {
             "name": "wpackagist-plugin/woocommerce-services",
-            "version": "1.25.6",
+            "version": "1.25.7",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/woocommerce-services/",
-                "reference": "tags/1.25.6"
+                "reference": "tags/1.25.7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/woocommerce-services.1.25.6.zip"
+                "url": "https://downloads.wordpress.org/plugin/woocommerce-services.1.25.7.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -1321,15 +1321,15 @@
         },
         {
             "name": "wpackagist-plugin/wps-hide-login",
-            "version": "1.7",
+            "version": "1.8",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/wps-hide-login/",
-                "reference": "tags/1.7"
+                "reference": "tags/1.8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/wps-hide-login.1.7.zip"
+                "url": "https://downloads.wordpress.org/plugin/wps-hide-login.1.8.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -1345,12 +1345,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "f7d723a10c7cb36e11430182f5813ecb1b887da0"
+                "reference": "5f40d4d577a71466f9723122251b46bdaf634709"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/f7d723a10c7cb36e11430182f5813ecb1b887da0",
-                "reference": "f7d723a10c7cb36e11430182f5813ecb1b887da0",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/5f40d4d577a71466f9723122251b46bdaf634709",
+                "reference": "5f40d4d577a71466f9723122251b46bdaf634709",
                 "shasum": ""
             },
             "conflict": {
@@ -1467,7 +1467,7 @@
                 "october/backend": ">=1.0.319,<1.0.470",
                 "october/cms": "= 1.0.469|>=1.0.319,<1.0.469",
                 "october/october": ">=1.0.319,<1.0.466",
-                "october/rain": ">=1.0.319,<1.0.468",
+                "october/rain": "<1.0.472|>=1.1,<1.1.2",
                 "onelogin/php-saml": "<2.10.4",
                 "oneup/uploader-bundle": "<1.9.3|>=2,<2.1.5",
                 "openid/php-openid": "<2.3",
@@ -1511,7 +1511,7 @@
                 "sensiolabs/connect": "<4.2.3",
                 "serluck/phpwhois": "<=4.2.6",
                 "shopware/core": "<=6.3.4",
-                "shopware/platform": "<=6.3.4",
+                "shopware/platform": "<=6.3.5",
                 "shopware/shopware": "<5.6.9",
                 "silverstripe/admin": ">=1.0.3,<1.0.4|>=1.1,<1.1.1",
                 "silverstripe/assets": ">=1,<1.4.7|>=1.5,<1.5.2",
@@ -1662,7 +1662,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-02-02T10:05:32+00:00"
+            "time": "2021-02-10T03:02:31+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",
