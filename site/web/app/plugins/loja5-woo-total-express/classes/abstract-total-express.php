@@ -21,7 +21,6 @@ abstract class Loja5_Shipping_Total_Express extends WC_Shipping_Method {
 		$this->init_settings();
 		$this->init_form_fields();
 
-		$this->shipping_class_id  = (int) $this->get_option( 'shipping_class_id', '-1' );
         $this->title              = $this->get_option( 'title' );
         $this->pagar              = $this->get_option( 'pagar' );
         $this->fator              = $this->get_option( 'fator' );
@@ -62,14 +61,6 @@ abstract class Loja5_Shipping_Total_Express extends WC_Shipping_Method {
 				'type'    => 'title',
 				'default' => '',
 			),
-			'shipping_class_id' => array(
-				'title'       => __( 'Classe de Entrega', 'loja5-woo-total-express' ),
-				'type'        => 'select',
-				'description' => __( 'Caso precise usar classes de entrega.', 'loja5-woo-total-express' ),
-				'default'     => '',
-				'class'       => 'wc-enhanced-select',
-				'options'     => $this->get_shipping_classes_options(),
-			),
 		    'prazo' => array(
 				'title' => "Prazo Extra",
 				'type' => 'text',
@@ -77,9 +68,9 @@ abstract class Loja5_Shipping_Total_Express extends WC_Shipping_Method {
 				'default' => '1'
 		    ),
 			'taxa' => array(
-				'title' => "Taxa Extra %",
+				'title' => "Taxa Extra",
 				'type' => 'text',
-				'description' => "Valor em % de uma Taxa extra caso queira cobrar.",
+				'description' => "Valor em R$ de uma Taxa extra caso queira cobrar.",
 				'default' => '0.00'
 		    ),
             'peso_minimo' => array(
@@ -175,58 +166,20 @@ abstract class Loja5_Shipping_Total_Express extends WC_Shipping_Method {
     	}
         return array('real'=>round($peso_real, 2),'cubado'=>round($peso_cubado, 2),'volume'=>$volume);
     }
-	
-	protected function has_only_selected_shipping_class( $package ) {
-		$only_selected = true;
-		if ( -1 === $this->shipping_class_id ) {
-			return $only_selected;
-		}
-		foreach ( $package['contents'] as $item_id => $values ) {
-			$product = $values['data'];
-			$qty     = $values['quantity'];
-
-			if ( $qty > 0 && $product->needs_shipping() ) {
-				if ( $this->shipping_class_id !== $product->get_shipping_class_id() ) {
-					$only_selected = false;
-					break;
-				}
-			}
-		}
-		return $only_selected;
-	}
-	
-	protected function get_shipping_classes_options() {
-		$shipping_classes = WC()->shipping->get_shipping_classes();
-		$options          = array(
-			'-1' => __( 'Qualquer Classe', 'loja5-woo-jadlog' ),
-			'0'  => __( 'Nenhuma Classe', 'loja5-woo-jadlog' ),
-		);
-		if ( ! empty( $shipping_classes ) ) {
-			$options += wp_list_pluck( $shipping_classes, 'name', 'term_id' );
-		}
-		return $options;
-	}
 
 	public function calculate_shipping( $package = array() ) {
 		$config = new Loja5_Shipping_Total_Express_Legacy();
-		//ativo
+		
         if ( 'yes' !== $this->enabled ) {
             return;
         }
-        //brazil
+        
         if ( '' === $package['destination']['postcode'] || 'BR' !== $package['destination']['country'] ) {
 			return;
 		}
-		//classe
-		if ( ! $this->has_only_selected_shipping_class( $package ) ) {
-			return;
-		}
-		//cep
-		if(!isset($package['destination']['postcode']) || strlen(preg_replace('/\D/', '', $package['destination']['postcode']))!=8){
-			return;
-		}
-		//pesos
+        
         $peso = $this->calcular_pesos($package);
+        
         //pega o peso para uso 
         if($this->peso_calculo=='cubado'){
             if($peso['real'] > $peso['cubado']){
@@ -251,39 +204,24 @@ abstract class Loja5_Shipping_Total_Express extends WC_Shipping_Method {
         
         if(isset($calculo->ValorServico)){
             $calculo_total = (float)str_replace(',','.',str_replace('.','',$calculo->ValorServico));
-			$calculo_total = $frete_limpo = number_format($calculo_total, 2, '.', '');
+			$calculo_total = number_format($calculo_total, 2, '.', '');
             if(isset($calculo->Prazo)){
-				$prazo_dias = ((int)$this->prazo+$calculo->Prazo);
-                $prazo = 'em at&eacute; '.$prazo_dias.' dia(s)';
+                $prazo = 'em at&eacute; '.((int)$this->prazo+$calculo->Prazo).' dia(s)';
             }else{
-				$prazo_dias = 15;
-				$prazo = 'em at&eacute; 15 dias';
+				$prazo = '';
 			}				
             if($calculo_total > 0){
-				if((float)$this->taxa  > 0){
-					$calculo_total += (($frete_limpo/100)*(float)$this->taxa);
-				}
-				if($config->settings['exibir_prazo']=='titulo'){
-					$this->add_rate(array(
-						'code'	=> 'total-express',
-						'id' 	=> $this->id,
-						'label' => $this->title.' '.$prazo.'',
-						'cost' 	=> $calculo_total
-					));
-				}else{
-					$this->add_rate(array(
-						'code'	=> 'total-express',
-						'id' 	=> $this->id,
-						'label' => $this->title,
-						'meta_data' => array('prazo_total' => $prazo_dias),
-						'cost' 	=> $calculo_total
-					));
-				}
+                $calculo_total += (float)$this->taxa;
+                $this->add_rate(array(
+                    'code'	=> 'total-express',
+                    'id' 	=> $this->id,
+                    'label' => $this->title.' '.$prazo.'',
+                    'cost' 	=> $calculo_total
+                ));
             }else{
                 return;
             }
         }else{
-			$this->log->add( $this->id, 'Total express '.$this->title.' retornou sem servicos! ' );
             return;
         }
 
@@ -291,7 +229,9 @@ abstract class Loja5_Shipping_Total_Express extends WC_Shipping_Method {
 	
 	public function calcular_frete($pack,$peso){
 	    global $woocommerce;
+        
         $config = new Loja5_Shipping_Total_Express_Legacy();
+        
         $request = array();
 		$request['TipoServico'] = strtoupper($this->code);
         $request['CepDestino'] = preg_replace('/\D/', '', $pack['destination']['postcode']);
@@ -299,9 +239,11 @@ abstract class Loja5_Shipping_Total_Express extends WC_Shipping_Method {
         $request['ValorDeclarado'] = number_format($pack['contents_cost'], 2, '.', '');
 		$request['TipoEntrega'] = 0;
 		$request['ServicoCOD'] = (bool)$config->settings['pagar'];
+        
         if ( 'yes' === $this->debug ) {
             $this->log->add( $this->id, 'Total express '.$this->title.' envio: ' . print_r($request,true) );
         }
+        
         $soap_opt = array();
         $soap_opt['stream_context'] = stream_context_create(array('http' => array('protocol_version' => 1.0) ) );
         $soap_opt['encoding']    = 'UTF-8';
@@ -310,12 +252,15 @@ abstract class Loja5_Shipping_Total_Express extends WC_Shipping_Method {
 		$soap_opt['connection_timeout'] = 10;
         $soap_opt['login'] = html_entity_decode(trim($config->settings['login']), ENT_QUOTES, 'UTF-8');
         $soap_opt['password'] = html_entity_decode(trim($config->settings['senha']), ENT_QUOTES, 'UTF-8');
+
 		$client = new SoapClient($this->uri,$soap_opt);
 		try { 
 			$info = $client->__call("calcularFrete", array($request));
+            
             if ( 'yes' === $this->debug ) {
                 $this->log->add( $this->id, 'Total Express '.$this->title.' resultado: ' . print_r($info,true) );
             }
+                
             if(isset($info->CodigoProc)){
                 if($info->CodigoProc==1){
                     return $info->DadosFrete;
@@ -332,7 +277,14 @@ abstract class Loja5_Shipping_Total_Express extends WC_Shipping_Method {
                 return false;
             }
 		} catch (SoapFault $fault) { 
-			$this->log->add( $this->id, 'Total Express '.$this->title.' fault: ' . print_r( $fault->faultstring, true ) );
+            if ( 'yes' === $this->debug ) {
+                $this->log->add( $this->id, 'Total Express '.$this->title.' fault: ' . print_r( $fault->faultstring, true ) );
+            }
+			if(function_exists('wc_add_notice')){
+                wc_add_notice("Erro Total Express: ".$fault->faultstring."");
+			}else{
+                $woocommerce->add_error("Erro Total Express: ".$fault->faultstring."");
+			}
 			return false; 
 		}
 	}
