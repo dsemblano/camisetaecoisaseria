@@ -229,7 +229,7 @@ class lumise_tmpl_register {
 		$arg = $this->color_options();
 		
 		$color_options = $this->build_form( $arg );
-		
+
 		$arg['extend']['content'] = '<input type="checkbox" data-op-name="is_multiple" \'+(data.multiple ? "checked" : "")+\' id="multiple-\'+random_id+\'" /> \
 			<label for="multiple-\'+random_id+\'">'.$lumise->lang('Allow select multiple colors').'</label>';
 		$arg['extend']['return'] = 'values.multiple = wrp.find(\'input[data-op-name="is_multiple"]\').prop(\'checked\');';
@@ -409,7 +409,7 @@ EOF
 		return <<<EOF
 			
 			var data = {}, random_id = new Date().getTime().toString(36);	
-				
+			
 			try {	
 				if (typeof values === 'string')
 					data = JSON.parse(values);

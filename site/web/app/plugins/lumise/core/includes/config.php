@@ -363,6 +363,8 @@ class lumise_cfg extends lumise_tmpl_register{
 
 			}else{
 				$this->active_language = $lumise->connector->get_session('lumise-active-lang');
+
+				$this->active_language_frontend = $lumise->connector->get_session('lumise-active-lang');
 				
 				if (
 					!isset($this->active_language) ||
