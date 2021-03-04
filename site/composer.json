@@ -39,7 +39,7 @@
     "roots/wordpress": "5.6.2",
     "roots/wp-config": "1.0.0",
     "roots/wp-password-bcrypt": "1.0.0",
-    "wpackagist-plugin/woocommerce":">=3.7.1",
+    "wpackagist-plugin/woocommerce":"=4.6.2",
     "wpackagist-plugin/woocommerce-gateway-paypal-express-checkout":">=1.6.17",
     "wpackagist-plugin/woocommerce-correios":">=3.8.0",
     "wpackagist-plugin/woocommerce-pagseguro":">=2.14.0",

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2c383f22b5e1e9a5eccd955ebb26001b",
+    "content-hash": "00ce849c050402aefb22b6408fad116c",
     "packages": [
         {
             "name": "composer/installers",
@@ -1012,15 +1012,15 @@
         },
         {
             "name": "wpackagist-plugin/click-to-chat-for-whatsapp",
-            "version": "3.2.6",
+            "version": "3.2.7",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/click-to-chat-for-whatsapp/",
-                "reference": "tags/3.2.6"
+                "reference": "tags/3.2.7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/click-to-chat-for-whatsapp.3.2.6.zip"
+                "url": "https://downloads.wordpress.org/plugin/click-to-chat-for-whatsapp.3.2.7.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -1030,15 +1030,15 @@
         },
         {
             "name": "wpackagist-plugin/instagram-feed",
-            "version": "2.8.1",
+            "version": "2.8.2",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/instagram-feed/",
-                "reference": "tags/2.8.1"
+                "reference": "tags/2.8.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/instagram-feed.2.8.1.zip"
+                "url": "https://downloads.wordpress.org/plugin/instagram-feed.2.8.2.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -1048,15 +1048,15 @@
         },
         {
             "name": "wpackagist-plugin/loco-translate",
-            "version": "2.5.0",
+            "version": "2.5.1",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/loco-translate/",
-                "reference": "tags/2.5.0"
+                "reference": "tags/2.5.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/loco-translate.2.5.0.zip"
+                "url": "https://downloads.wordpress.org/plugin/loco-translate.2.5.1.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -1264,7 +1264,7 @@
         },
         {
             "name": "wpackagist-plugin/woo-variation-swatches",
-            "version": "1.1.10",
+            "version": "1.1.12",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/woo-variation-swatches/",
@@ -1272,7 +1272,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/woo-variation-swatches.zip?timestamp=1613483164"
+                "url": "https://downloads.wordpress.org/plugin/woo-variation-swatches.zip?timestamp=1614698547"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -1282,15 +1282,15 @@
         },
         {
             "name": "wpackagist-plugin/woocommerce",
-            "version": "5.0.0",
+            "version": "4.6.2",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/woocommerce/",
-                "reference": "tags/5.0.0"
+                "reference": "tags/4.6.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/woocommerce.5.0.0.zip"
+                "url": "https://downloads.wordpress.org/plugin/woocommerce.4.6.2.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -1426,15 +1426,15 @@
         },
         {
             "name": "wpackagist-plugin/woocommerce-services",
-            "version": "1.25.7",
+            "version": "1.25.8",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/woocommerce-services/",
-                "reference": "tags/1.25.7"
+                "reference": "tags/1.25.8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/woocommerce-services.1.25.7.zip"
+                "url": "https://downloads.wordpress.org/plugin/woocommerce-services.1.25.8.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -1552,15 +1552,15 @@
         },
         {
             "name": "wpackagist-plugin/wps-hide-login",
-            "version": "1.8.3",
+            "version": "1.8.4",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/wps-hide-login/",
-                "reference": "tags/1.8.3"
+                "reference": "tags/1.8.4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/wps-hide-login.1.8.3.zip"
+                "url": "https://downloads.wordpress.org/plugin/wps-hide-login.1.8.4.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -1576,12 +1576,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "a6bfc5a1416f0dde1f53b7737b2cf983352737b8"
+                "reference": "0745f820eed6cb92603ca44a9c137ff8ce315e86"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/a6bfc5a1416f0dde1f53b7737b2cf983352737b8",
-                "reference": "a6bfc5a1416f0dde1f53b7737b2cf983352737b8",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/0745f820eed6cb92603ca44a9c137ff8ce315e86",
+                "reference": "0745f820eed6cb92603ca44a9c137ff8ce315e86",
                 "shasum": ""
             },
             "conflict": {
@@ -1647,6 +1647,7 @@
                 "ezsystems/platform-ui-assets-bundle": ">=4.2,<4.2.3",
                 "ezsystems/repository-forms": ">=2.3,<2.3.2.1",
                 "ezyang/htmlpurifier": "<4.1.1",
+                "facade/ignition": "<=2.5.1,>=2.0|<=1.16.13",
                 "firebase/php-jwt": "<2",
                 "flarum/sticky": ">=0.1-beta.14,<=0.1-beta.15",
                 "flarum/tags": "<=0.1-beta.13",
@@ -1895,7 +1896,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-02-26T20:02:39+00:00"
+            "time": "2021-03-03T23:02:20+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",
