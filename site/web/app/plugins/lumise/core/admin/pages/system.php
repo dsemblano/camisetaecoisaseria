@@ -15,7 +15,7 @@
 					echo '<li class="'.($val > 250 ? 'true' : 'false').'">'.$key.' ('.$val.'MB)'.($val > 250 ? '' : ' <small>The value should be greater than 250MB</small>').'</li>';
 				} else if ($key == 'post_max_size') {
 					echo '<li class="'.($val > 100 ? 'true' : 'false').'">'.$key.' ('.$val.'MB)'.($val > 100 ? '' : ' <small>The value should be greater than 100MB</small>').'</li>';
-				} else if ($key == 'upload_max_filesize') {
+				} else if ($key == 'upload_max_size') {
 					echo '<li class="'.($val > 100 ? 'true' : 'false').'">'.$key.' ('.$val.'MB)'.($val > 100 ? '' : ' <small>The value should be greater than 100MB</small>').'</li>';
 				} else if ($key == 'max_execution_time') {
 					echo '<li class="'.($val > 600 ? 'true' : 'false').'">'.$key.' ('.$val.'Second)'.($val > 600 ? '' : ' <small>The value should be greater than 600</small>').'</li>';

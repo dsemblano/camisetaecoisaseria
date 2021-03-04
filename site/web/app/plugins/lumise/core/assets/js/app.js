@@ -173,7 +173,35 @@ jQuery(document).ready(function($) {
 		},
 
 		itemInStage: function(action){
-			lumise.actions.do('price_action', action);
+			let product_base = lumise.fn.url_var('product_base', '');
+			let product_cms = lumise.fn.url_var('product_cms', '');
+			let stageName = lumise.stage().name;
+
+			let session_name = product_base+'_'+product_cms+'_'+stageName+'_canvasBase';
+			let countObj = lumise.stage().canvas.getObjects().length-1;
+
+			// console.log(JSON.stringify(lumise.cart.price));
+
+			var getPriceStage = parseFloat($('div#lumise-stage-nav li[data-stage="'+stageName+'"]').attr('data-additional_price'));
+			if(isNaN(getPriceStage) || getPriceStage == undefined || getPriceStage == 'undefined' || getPriceStage.toString().trim() == ''){
+				getPriceStage = 0;
+			}
+			
+			if(action == 'add'){
+				if(sessionStorage.getItem(session_name) === null){
+					sessionStorage.setItem(session_name, lumise.stage().canvas.getObjects().length-1);
+				}
+				if(getPriceStage != 0 && getPriceStage > 0 && sessionStorage.getItem(session_name) == countObj ){
+					lumise.cart.price.base = lumise.cart.price.base+getPriceStage;
+				}
+			}
+
+			if(action == 'del' && sessionStorage.getItem(session_name) !== null && sessionStorage.getItem(session_name) == countObj-1){
+				sessionStorage.removeItem(session_name);
+				if(getPriceStage != 0 && getPriceStage > 0){
+					lumise.cart.price.base = lumise.cart.price.base-getPriceStage;
+				}
+			}
 		},
 		
 		extends : {
@@ -242,10 +270,6 @@ jQuery(document).ready(function($) {
 						top = -(height + scaleOffset) / 2,
 						methodName = this.transparentCorners ? 'stroke' : 'fill',
 						active = lumise.stage().canvas.getActiveObject();
-
-					if(active == undefined){
-						return this;
-					}
 
 					ctx.save();
 						
@@ -1656,7 +1680,6 @@ jQuery(document).ready(function($) {
 						
 						image.setSrc(cdata, function(){
 							image.set({height: _h, width: _w});
-							lumise.stack.save();
 							return callback(image);
 						});
 						
@@ -5592,7 +5615,7 @@ jQuery(document).ready(function($) {
 						lumise.templates.load({
 							upload: lumise.templates.storage[ops[0].id],
 							id: ops[0].id,
-							price: lumise.apply_filters('template_price', ops[0].price, ops)
+							price: ops[0].price
 						});
 						if (lumise.stage().template !== undefined)
 							lumise.stage().template.loaded = true;
@@ -5701,22 +5724,6 @@ jQuery(document).ready(function($) {
 						){
 							objects[item]['price'] = 0;
 							objects[item]['template'] = [tmp.id, !isNaN(tmp.price) ? parseFloat(tmp.price) : 0];
-						}
-						if(
-							objects[item] !== null 
-							&& typeof objects[item]['type'] !== 'undefined'
-							&& (objects[item]['type'] == 'i-text' || objects[item]['type'] == 'text-fx' || objects[item]['type'] == 'curvedText')
-						){
-							let targetText = objects[item]['text']; 
-							let reg = /(\&\#x([a-zA-Z0-9]+)\;)/gm;
-
-							let res = targetText.replace(reg, function (character_detect) {
-								console.log(character_detect);
-								character_detect = character_detect.substring(6, character_detect.length-1);
-								let charCode = String.fromCodePoint(character_detect);
-								return charCode;
-							});
-							objects[item]['text'] = res;
 						}
 					}
 				};
@@ -6568,7 +6575,6 @@ jQuery(document).ready(function($) {
 							
 						};
 						
-						data.objects[i] = lumise.apply_filters('before_import_object', data.objects[i]);
 						if (data.objects[i] !== undefined) {
 							
 							lumise.f(lumise.i('importing'));
@@ -6604,10 +6610,6 @@ jQuery(document).ready(function($) {
  								
  									var do_add = function() {
 	 									
-	 									if(data.objects[i].resource == 'cliparts'){
-	 										data.objects[i] = lumise.apply_filters('clipart_filter', data.objects[i]);
-	 									}
-
 	 									lumise.objects.lumise[data.objects[i].type](
 											data.objects[i],
 											function (obj) {
@@ -6695,13 +6697,11 @@ jQuery(document).ready(function($) {
 								// load stage thumb after load cart
 								lumise.data.stages[lumise.render.stage_nav()].screenshot = lumise.tools.toImage({
 									stage: lumise.data.stages[lumise.render.stage_nav()],
-									// is_bg: (save == 'cart' || save == 'share') ? 'full' : false, 
+									//is_bg: (save == 'cart' || save == 'share') ? 'full' : false, 
 									is_bg: 'full', 
 									multiplier: 1/window.devicePixelRatio
 								});
-								lumise.tools.save();
-								// lumise.active_stage(lumise.render.stage_nav());
-								// data.stages[s].screenshot = $('#lumise-stage-nav ul li[data-stage="'+s+'"] img[data-stage="'+s+'"]').attr('src');
+								lumise.active_stage(lumise.render.stage_nav());
 							}
 							
 						}
@@ -8579,24 +8579,6 @@ jQuery(document).ready(function($) {
 
 						});
 
-						// fix error special char when save file .lumi
-						if(data != undefined && data.stages != undefined && data.stages.lumise != undefined && data.stages.lumise.data != undefined && data.stages.lumise.data.objects != undefined && data.stages.lumise.data.objects.length > 0){
-							console.log(JSON.stringify(data.stages.lumise.data.objects));
-							// $.each(data.stages.lumise.data.objects, function(index, detailObj){
-							data.stages.lumise.data.objects.map(function(detailObj, index){
-								if(detailObj.type == 'i-text' || detailObj.type == 'text-fx' || detailObj.type == 'curvedText'){
-									let targetText = detailObj.text; 
-									let reg = /([^a-zA-Z0-9 ])/gm;
-
-									let res = targetText.replace(reg, function (character_detect) {
-										let charCode = "&#x000"+character_detect.codePointAt(0)+';';
-										return charCode;
-									});
-									detailObj.text = res;
-									data.stages.lumise.data.objects[index] = detailObj;
-								}
-							});
-						}
 						lumise.fn.download(
 							'data:application/octet-stream;charset=utf-16le;base64,'+btoa(JSON.stringify(data).replace(/[\u{0080}-\u{FFFF}]/gu,(v) => {return encodeURIComponent(v);})),
 							name+'.lumi'
@@ -9034,20 +9016,7 @@ jQuery(document).ready(function($) {
 								new lumise.cliparts.import(id, img_opt, 'prepend');
 							
 						} else if (saveas !== false) {
-							let _URL = window.URL || window.webkitURL;
-							img_preview_check = new Image();
-							let objectUrl = _URL.createObjectURL(file);
-					        img_preview_check.onload = function() {
-					            let check_img = lumise.fn.check_upload_dimensions(img_preview_check);
-					            delete img_preview_check;
-					            if (img_opt === null){
-					            	return null;
-					            }
-					            new lumise.cliparts.import(id, img_opt, 'prepend');
-					        };
-					        img_preview_check.src = objectUrl;
-
-							// new lumise.cliparts.import(id, img_opt, 'prepend');
+							new lumise.cliparts.import(id, img_opt, 'prepend');
 				    	};
 				    	
 				    	if (typeof callback == 'function')
@@ -9398,7 +9367,7 @@ jQuery(document).ready(function($) {
 					return;
 
 				if (corner == 'tl') {
-					lumise.itemInStage('remove');
+					
 					lumise.tools.discard();
 					lumise.stack.save();
 					
@@ -10019,8 +9988,7 @@ jQuery(document).ready(function($) {
 						bg = bg.splice(bg.length - 6);
 					} else mo = '';
 					
-					// $('#lumise-count-colors i').html(mo).css({background: 'linear-gradient(to right, '+bg.join(', ')+')'}).attr({title: 'Used '+bg.length+' colors'});
-					$('#lumise-count-colors i').html(mo).css({background: 'linear-gradient(to right, '+bg.join(', ')+')'}).attr({title: 'Used '+mo+' colors'});
+					$('#lumise-count-colors i').html(mo).css({background: 'linear-gradient(to right, '+bg.join(', ')+')'}).attr({title: 'Used '+bg.length+' colors'});
 					
 					lumise.actions.do('updated', states);
 					
@@ -10469,9 +10437,6 @@ jQuery(document).ready(function($) {
 			
 			process_variations : function(values, el) {
 				// hash : b7384613351cb126e25f6d2de13b0224
-				if(lumise.cart.printing.current != null){
-					sessionStorage.setItem('LUMISE-PRINT-VALUE', lumise.cart.printing.current);
-				}
 				lumise.cart.printing.current = null;
 
 				let stages = lumise.ops.product_data.stages,
@@ -10662,7 +10627,6 @@ jQuery(document).ready(function($) {
 					return new_stages;
 					
 				var curent_designs = lumise.fn.export().stages;
-				curent_designs = lumise.apply_filters('filter_current_design', curent_designs, new_stages);
 				
 				Object.keys(curent_designs).map(function(c, i) {
 					if (typeof curent_designs[c].data == 'string'){
@@ -10987,26 +10951,8 @@ jQuery(document).ready(function($) {
 						}
 
 						if(save == 'cart'){
-							// take screenshoot
-							let take_screenshot = false;
-							lumise.data.stages[s].canvas.getObjects().map(function(obj){
-								if(obj.evented === true){
-									take_screenshot = true;
-								}
-							});
-							if(data.stages[s].data != undefined && take_screenshot == false){
-								delete data.stages[s].data;
-								if(data.stages[s].image != undefined){
-									data.stages[s].screenshot = data.stages[s].image;
-									lumise.data.stages[s].screenshot = data.stages[s].screenshot;
-								}
-							}
-							if(take_screenshot == true){
-								data.stages[s].screenshot = $('#lumise-stage-nav ul li[data-stage="'+s+'"] img[data-stage="'+s+'"]').attr('src');
-								lumise.data.stages[s].screenshot = data.stages[s].screenshot;
-							}
-							// data.stages[s].screenshot = $('#lumise-stage-nav ul li[data-stage="'+s+'"] img[data-stage="'+s+'"]').attr('src');
-							// 	lumise.data.stages[s].screenshot = data.stages[s].screenshot;
+							data.stages[s].screenshot = $('#lumise-stage-nav ul li[data-stage="'+s+'"] img[data-stage="'+s+'"]').attr('src');
+							lumise.data.stages[s].screenshot = data.stages[s].screenshot;
 						}
 						
 						stage.canvas.set('viewportTransform', view_port);
@@ -12722,6 +12668,7 @@ jQuery(document).ready(function($) {
 										export_print_file 	= function(s) {
 											
 											start_render++;
+											
 											lumise.active_stage(s, function() {
 												
 												$('#LumiseDesign').attr({
@@ -12753,16 +12700,7 @@ jQuery(document).ready(function($) {
 															if (Object.keys(lumise.data.stages)[start_render] !== undefined) {
 																export_print_file (Object.keys(lumise.data.stages)[start_render]);
 															} else {
-																lumise.active_stage(first_stage);
-																lumise.data.stages[first_stage].screenshot = lumise.tools.toImage({
-																	stage: lumise.data.stages[first_stage],
-																	is_bg: 'full', 
-																	multiplier: 1/window.devicePixelRatio
-																});
-																
-																$('#lumise-stage-nav img[data-stage="'+first_stage+'"]').attr({
-																	src: lumise.data.stages[first_stage].screenshot
-																});
+																lumise.active_stage(current_stage);
 																lumise.fn.set_url('share', null);
 																return lumise.f(false);;
 																// return lumise.cart.process_add_cart(cart_design);
@@ -12776,10 +12714,10 @@ jQuery(document).ready(function($) {
 											});
 												
 										};
+
+									$('#LumiseDesign').attr({'data-processing': 'true', 'data-msg': 'Preparing cart data'});
 									
-									if (Object.keys(lumise.data.stages)[start_render] !== undefined && Object.keys(lumise.data.stages).length-1 > 0) {
-										export_print_file(first_stage);
-									}
+									export_print_file(first_stage);
 
 									$('#lumise-general-status').html(
 										'<span>\
@@ -12802,7 +12740,7 @@ jQuery(document).ready(function($) {
 						
 					} 
 					// hash : 5fecb5125fdb9c9cf8f2e54802cfb020
-					else if (lumise.fn.url_var('cart', '') !== '' && sessionStorage.getItem("LUMISE-START-NEW") !== null && sessionStorage.getItem('LUMISE-START-NEW') === true) 
+					else if (lumise.fn.url_var('cart', '') !== '' && sessionStorage.getItem("LUMISE-START-NEW") !== null && sessionStorage.getItem('kLUMISE-START-NEW') === true) 
 					{
 						sessionStorage.setItem('LUMISE-START-NEW', false);
 						lumise.f('Processing..');
@@ -12837,107 +12775,6 @@ jQuery(document).ready(function($) {
 						
 						return;
 						
-					} else if(lumise.fn.url_var('cart', '') !== ''){
-						lumise.indexed.get(lumise.fn.url_var('cart'), 'cart', function(res){
-							// load all stage 
-							var cart_design = lumise.fn.export('cart'),
-								start_render 		= 0,
-								current_stage		= lumise.current_stage,
-								first_stage 		= Object.keys(lumise.data.stages)[start_render],
-								export_print_file 	= function(s) {
-									start_render++;
-									lumise.active_stage(s, function() {
-
-										$('#LumiseDesign').attr({
-											'data-processing': 'true',
-											'data-msg': lumise.i('render')
-										});
-											
-										lumise.get.el('zoom').val('100').trigger('input');
-
-										let psize = lumise.get.size();
-										
-										lumise.f(false);
-
-										lumise.fn.download_design({
-											type: 'png',
-											orien: psize.o,
-											height: psize.h,
-											width: psize.w,
-											include_base: false,
-											with_base: lumise.data.stages[s].include_base,
-											callback: function(data) {
-												
-												lumise.fn.uncache_large_images(null, true);
-												
-												cart_design.stages[s].print_file = data;
-
-												lumise.actions.do('load_object_stages');
-												
-												if (Object.keys(lumise.data.stages)[start_render] !== undefined) {
-													// if(lumise.data.stages[Object.keys(lumise.data.stages)[start_render]].data == undefined){
-													// 	start_render++;
-													// }
-													export_print_file (Object.keys(lumise.data.stages)[start_render]);
-												} else {
-													lumise.active_stage(Object.keys(lumise.data.stages)[0]);
-													lumise.data.stages[first_stage].screenshot = lumise.tools.toImage({
-														stage: lumise.data.stages[first_stage],
-														is_bg: 'full', 
-														multiplier: 1/window.devicePixelRatio
-													});
-													
-													$('#lumise-stage-nav img[data-stage="'+first_stage+'"]').attr({
-														src: lumise.data.stages[first_stage].screenshot
-													});
-													lumise.stack.save();
-													return lumise.f(false);
-													// return lumise.cart.process_add_cart(cart_design);
-												}
-
-												// setTimeout(function (){
-												// 	// lumise.stack.save();
-												// 	if (Object.keys(lumise.data.stages)[start_render] !== undefined) {
-												// 		if(lumise.data.stages[Object.keys(lumise.data.stages)[start_render]].data == undefined){
-												// 			start_render++;
-												// 		}
-												// 		export_print_file (Object.keys(lumise.data.stages)[start_render]);
-												// 	} else {
-												// 		lumise.active_stage(Object.keys(lumise.data.stages)[0]);
-												// 		lumise.data.stages[first_stage].screenshot = lumise.tools.toImage({
-												// 			stage: lumise.data.stages[first_stage],
-												// 			is_bg: 'full', 
-												// 			multiplier: 1/window.devicePixelRatio
-												// 		});
-														
-												// 		$('#lumise-stage-nav img[data-stage="'+first_stage+'"]').attr({
-												// 			src: lumise.data.stages[first_stage].screenshot
-												// 		});
-												// 		lumise.stack.save();
-												// 		return lumise.f(false);
-												// 		// return lumise.cart.process_add_cart(cart_design);
-												// 	}
-												// }, 650);
-												
-											}	
-										});
-										
-									});
-										
-								};
-							
-							if (Object.keys(lumise.data.stages)[start_render] !== undefined && Object.keys(lumise.data.stages).length-1 > 0) {
-								export_print_file(first_stage);
-							}
-
-							$('#lumise-general-status').html(
-								'<span>\
-									<i class="lumisex-android-checkmark-circle"></i> '+
-									lumise.i(136)+
-								'</span>'
-							);
-
-						});
 					}
 					
 					stage.screenshot = lumise.tools.toImage({
@@ -14408,15 +14245,10 @@ jQuery(document).ready(function($) {
 					if (this.sub !== undefined && this.sub.length > 0)
 						return true;
 					var l = (this.l+((e.originalEvent.pageX ? e.originalEvent.pageX : e.originalEvent.touches[0].pageX)-this.x));
-					if (l > 0){
+					if (l > 0)
 						l = l*0.1;
-					}
-					else if (this.offsetWidth + l < this.w && l <= 0 ){
-						l = 0.1;
-					}
-					else if (this.offsetWidth + l < this.w){
+					else if (this.offsetWidth + l < this.w)
 						l = (this.w - this.offsetWidth)+((l-(this.w - this.offsetWidth))*0.1);
-					}
 					this.style.left = Math.round(l)+'px';
 					e.preventDefault();
 				})
@@ -14483,7 +14315,7 @@ jQuery(document).ready(function($) {
 			if (typeof callback != 'function')
 				callback = function(){};
 
-			if (name === '' || name == undefined)
+			if (name === '')
 				return callback();
 				
 			this.current_stage = name;
@@ -14573,7 +14405,7 @@ jQuery(document).ready(function($) {
 						lumise.actions.do('active_stage', stage);
 					});
 					delete stage.data;
-				} else lumise.actions.do('active_stage', stage);
+				} else lumise.actions.do('active_stage', stage);;
 				
 				lumise.fn.stage_nav(name, stage.product.width/stage.product.height);
 				
@@ -15265,7 +15097,7 @@ jQuery(document).ready(function($) {
 						lumise.cart.price.template[s] = 0;
 						
 						canvas.getObjects().map(function (obj){
-							// lumise.actions.do('load_object_stages', obj);
+							
 							if (obj.evented == true) {
 								if (obj.price !== undefined && parseFloat(obj.price) > 0)
 									lumise.cart.price.attr += parseFloat(obj.price);
@@ -16063,13 +15895,6 @@ jQuery(document).ready(function($) {
 							sessionStorage.setItem('LUMISE-PRINT-DROPDOWN', 'true');
 						}
 
-						// if have same print option and exist old print value
-						if(sessionStorage["LUMISE-PRINT-VALUE"]){
-							lumise.cart.printing.current = parseInt(sessionStorage.getItem("LUMISE-PRINT-VALUE"));
-							lumise.cart.calc();
-							localStorage.removeItem("LUMISE-PRINT-VALUE");
-						}
-
 						wrp.find('div.lumise_radios').append(new_op);
 
 						if (print.active === true)
@@ -16750,8 +16575,7 @@ jQuery(document).ready(function($) {
 						mo = (stage_colors.length-6)+'+';
 				}
 				
-				// $('#lumise-count-colors i').html(mo).css({background: 'linear-gradient(to right, '+bg.join(', ')+')'});
-				$('#lumise-count-colors i').html(mo).css({background: 'linear-gradient(to right, '+bg.join(', ')+')'}).attr({title: 'Used '+mo+' colors'});;
+				$('#lumise-count-colors i').html(mo).css({background: 'linear-gradient(to right, '+bg.join(', ')+')'});
 				
 			});
 			

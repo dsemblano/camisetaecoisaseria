@@ -4,7 +4,7 @@ Plugin Name: Lumise - Product Designer Tool
 Plugin URI: https://www.lumise.com/
 Description: The professional solution for designing & printing online
 Author: King-Theme
-Version: 1.9.8
+Version: 1.9.7
 Author URI: http://king-theme.com/
 */
 
@@ -837,9 +837,7 @@ class lumise_woocommerce {
 		
 		if	(isset($config['btn_list']) && !$config['btn_list']) 
 			return $html;
-		if($product == null){
-			return $html;
-		}
+		
 		$pid = $product->get_id();
 		
 		$product_base = get_post_meta($pid, 'lumise_product_base', true);

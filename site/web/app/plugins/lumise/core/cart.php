@@ -241,8 +241,6 @@ class lumise_cart extends lumise_lib
 				                if (!empty($tem_id)) {
 		                    		$template = $this->get_template( $tem_id );
 									$template_price += ( $template['price'] > 0 ) ? $template['price'] : 0;
-									// filter template price
-									$template_price = $lumise->apply_filters('cart-process-template-price', $template_price, $item->cms_id);
 								}
 		                    }
 	                    }
@@ -348,7 +346,7 @@ class lumise_cart extends lumise_lib
 						$extra_price_addons += ($res === false)? 0: floatval($res['price']);
 					}
 				}
-
+					
 				$items_cart[ $cart_id ] = array(
 	                'id'            => $item->product_id,
 	                'cart_id'       => $cart_id,
@@ -548,9 +546,6 @@ class lumise_cart extends lumise_lib
 				                if (!empty($tem_id)) {
 		                    		$template = $this->get_template( $tem_id );
 									$template_price += ( $template['price'] > 0 ) ? $template['price'] : 0;
-
-									// filter template price
-									$template_price = $lumise->apply_filters('cart-process-template-price', $template_price, $item->cms_id);
 								}
 		                    }
 	                    }
@@ -710,15 +705,12 @@ class lumise_cart extends lumise_lib
         }
         
         // $resources = $this->resources( $ids );
-
+        
         $cart_total = 0;
         foreach( $items_cart as $key => $item ) {
             foreach ( $item[ 'resource' ] as $res ){
                 // $item[ 'price' ][ 'resource' ] += floatval( $resources[ $res['id'] ][ 'price' ] );
                 $type = preg_replace('/[^a-zA-Z0-9]+/i', '', $res['type']);
-                if(isset($resource_ids[ $type.'_'.$res['id'] ][ 'price' ]) && $type == 'cliparts' && floatval( $resource_ids[ $type.'_'.$res['id'] ][ 'price' ] ) > 0){
-                	$resource_ids[ $type.'_'.$res['id'] ][ 'price' ] = $lumise->apply_filters('cart-process-clipart-price', floatval( $resource_ids[ $type.'_'.$res['id'] ][ 'price' ] ), $item['product_cms']);
-                }
                 $item[ 'price' ][ 'resource' ] += floatval( $resource_ids[ $type.'_'.$res['id'] ][ 'price' ] );
                 $items_cart[ $key ][ 'price' ]['resource'] = $item['price']['resource'];
             }

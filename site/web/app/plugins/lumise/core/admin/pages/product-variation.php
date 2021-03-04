@@ -185,8 +185,6 @@
 					window.frameElement.parentNode.removeChild(window.frameElement);
 					
 					btn.parent().attr('data-empty', 'false').removeClass('hasFrame');
-
-					inp.val(localStorage.getItem('LUMISE-VARIATION-COPY')).change();
 					
 				break;
 				case 'apply': 

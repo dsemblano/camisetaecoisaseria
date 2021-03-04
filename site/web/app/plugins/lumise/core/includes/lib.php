@@ -2441,18 +2441,13 @@ class lumise_lib{
 			return false;
 	
 		$dirPath = rtrim( $dirPath, '/\\' ).DS;
-
-		if ( !defined('ABSPATH') ){
-			define('ABSPATH', dirname(__FILE__) . '/');
-		}
-
-		if (! is_dir($dirPath)) {
-	        return false;
-	    }
 	
 		if (defined(ABSPATH) && $dirPath == ABSPATH)
 			return false;
-
+	
+	    if (! is_dir($dirPath)) {
+	        return false;
+	    }
 	
 	    $files = scandir($dirPath, 1);
 	
@@ -2482,7 +2477,7 @@ class lumise_lib{
 		    'file_get_contents()' => true,
 		    'memory_limit' => 0,
 		    'post_max_size' => 0,
-		    'upload_max_filesize' => 0,
+		    'upload_max_size' => 0,
 		    'max_execution_time' => 0
 	    );
 	    
@@ -2492,8 +2487,8 @@ class lumise_lib{
 		$pmz = ini_get('post_max_size');
 		$check['post_max_size'] = (int)str_replace('M', '', $pmz);
 
-		$umz = ini_get('upload_max_filesize');
-		$check['upload_max_filesize'] = (int)str_replace('M', '', $umz);
+		$umz = ini_get('upload_max_size');
+		$check['upload_max_size'] = (int)str_replace('M', '', $umz);
 
 		$met = ini_get('max_execution_time');
 		$check['max_execution_time'] = (int)$met;
