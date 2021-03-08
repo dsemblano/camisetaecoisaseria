@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "00ce849c050402aefb22b6408fad116c",
+    "content-hash": "0676392c5c584b7e01a91f89b2f1adab",
     "packages": [
         {
             "name": "composer/installers",
@@ -1027,6 +1027,24 @@
             },
             "type": "wordpress-plugin",
             "homepage": "https://wordpress.org/plugins/click-to-chat-for-whatsapp/"
+        },
+        {
+            "name": "wpackagist-plugin/fatal-error-notify",
+            "version": "1.4.3",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/fatal-error-notify/",
+                "reference": "tags/1.4.3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/fatal-error-notify.1.4.3.zip"
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/fatal-error-notify/"
         },
         {
             "name": "wpackagist-plugin/instagram-feed",
