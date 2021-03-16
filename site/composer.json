@@ -72,6 +72,7 @@
     "wpackagist-plugin/woo-variation-swatches":">=1.1.1",
     "wpackagist-plugin/smart-woocommerce-search":">=2.0.1",
     "wpackagist-plugin/fatal-error-notify":">=1.4.3",
+    "wpackagist-plugin/livechat-woocommerce":">=2.1.2",
     "wpackagist-plugin/wps-hide-login":">=1.5.4.2"
   },
   "require-dev": {
