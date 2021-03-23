@@ -44,7 +44,7 @@
       <h2 class="md:text-4xl text-pureblack">Camiseta É Coisa Séria</h2>
       <figure class="order-2 mt-8 items-end">
         <div class="imprima-button text-center">
-          <a href="/camiseta-e-coisa-seria">
+          <a href="/colecao-coisa-seria">
             <button class="btn-estudio">Veja todos os produtos</button>
           </a>
         </div>
