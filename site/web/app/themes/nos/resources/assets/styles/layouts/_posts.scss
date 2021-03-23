@@ -14,10 +14,11 @@
       @apply mt-1 text-base;
     }
 
-    .woocommerce-product-details__short-description,
+    .woocommerce-product-details__short-description p,
     .posted_in,
+    .woocommerce-tabs .panel p,
     .variations_form {
-      @apply my-4 pt-4 border-t border-grey-light text-base leading-relaxed text-black tracking-wide;
+      @apply mb-5 text-base leading-relaxed text-black tracking-wide;
 
       @include font-Opensans;
     }
