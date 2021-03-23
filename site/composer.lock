@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f6aa31d3f32969d82820b8205d316b00",
+    "content-hash": "757eeff4ddf9d5beb6061c2bd1ace639",
     "packages": [
         {
             "name": "composer/installers",
@@ -1065,24 +1065,6 @@
             "homepage": "https://wordpress.org/plugins/instagram-feed/"
         },
         {
-            "name": "wpackagist-plugin/livechat-woocommerce",
-            "version": "2.1.5",
-            "source": {
-                "type": "svn",
-                "url": "https://plugins.svn.wordpress.org/livechat-woocommerce/",
-                "reference": "tags/2.1.5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/livechat-woocommerce.2.1.5.zip"
-            },
-            "require": {
-                "composer/installers": "~1.0"
-            },
-            "type": "wordpress-plugin",
-            "homepage": "https://wordpress.org/plugins/livechat-woocommerce/"
-        },
-        {
             "name": "wpackagist-plugin/loco-translate",
             "version": "2.5.2",
             "source": {
@@ -1225,6 +1207,24 @@
             },
             "type": "wordpress-plugin",
             "homepage": "https://wordpress.org/plugins/super-socializer/"
+        },
+        {
+            "name": "wpackagist-plugin/tawkto-live-chat",
+            "version": "0.5.3",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/tawkto-live-chat/",
+                "reference": "tags/0.5.3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/tawkto-live-chat.0.5.3.zip"
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/tawkto-live-chat/"
         },
         {
             "name": "wpackagist-plugin/woo-cart-abandonment-recovery",
