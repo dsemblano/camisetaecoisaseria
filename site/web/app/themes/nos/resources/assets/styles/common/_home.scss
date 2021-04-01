@@ -1,0 +1,339 @@
+// .hover01 figure:hover img {
+// 	-webkit-transform: scale(1.3);
+// 	transform: scale(1.3);
+// }
+
+.dtg-button {
+  left: 1rem;
+  top: 0;
+}
+
+.email-input {
+  left: 1em;
+
+  input {
+    @include font-Opensans;
+
+    font-style: italic;
+  }
+
+  h3 {
+    @include font-Opensans;
+
+    letter-spacing: 0.2rem;
+  }
+}
+
+.blockhome3-right {
+  a {
+    .imgprod {
+      @extend %imgeffect;
+
+      background-color: white;
+    }
+
+    &:hover .imgprod {
+      @extend %hoverimgeffect;
+    }
+  }
+}
+
+.blockhome-4 {
+  p {
+    @include font-bold;
+
+    font-size: 1.5rem;
+    color: white;
+    position: relative; //tsst
+    left: 0;
+    top: 50%;
+
+    // font-size: 1rem;
+    // line-height: 1.5;
+    // padding: 0 1em 0 1em;
+  }
+
+  ul {
+    display: flex;
+    justify-content: space-between;
+    align-content: space-between;
+
+    li {
+      .img-container {
+        position: relative;
+
+        // &::after {
+        //   // background: rgba(238, 238, 238, 0.85);
+        //   content: " ";
+        //   display: block;
+        //   width: 100%;
+        //   height: 100%;
+        //   position: absolute;
+        //   top: 0;
+        //   left: 0;
+        //   background: rgba(250, 250, 250, 0);
+        //   -webkit-transition: all 0.27s cubic-bezier(0.3, 0.1, 0.58, 1);
+        //   -moz-transition: all 0.27s cubic-bezier(0.3, 0.1, 0.58, 1);
+        //   -o-transition: all 0.27s cubic-bezier(0.3, 0.1, 0.58, 1);
+        //   -ms-transition: all 0.27s cubic-bezier(0.3, 0.1, 0.58, 1);
+        //   transition: all 0.27s cubic-bezier(0.3, 0.1, 0.58, 1);
+        // }
+
+        .blockhome4-img {
+          opacity: 1;
+          display: block;
+          width: 100%;
+          // height: 100vh;
+          // max-height: 20em;
+          transition: 0.5s ease;
+          backface-visibility: hidden;
+
+          // @include media("<=tablet") {
+          //   opacity: 0.3;
+          // }
+        }
+
+        .text-over {
+          opacity: 0;
+          position: absolute;
+          padding-top: 4em;
+          height: 140px;
+          top: 92%;
+          left: 0;
+          width: 100%;
+          overflow: hidden;
+          text-align: center;
+
+          // @include media("<=tablet") {
+          //   opacity: 1;
+          // }
+        }
+
+        // &:hover .blockhome4-img {
+        //   opacity: 0.3;
+        //   // background-color: red;
+        // }
+
+        &:hover .text-over,
+        &:focus .text-over,
+        &:active .text-over {
+          opacity: 1;
+          background-color: rgba(51, 51, 51, 0.7);
+          -webkit-transition: all 0.27s cubic-bezier(0.3, 0.1, 0.58, 1);
+          -moz-transition: all 0.27s cubic-bezier(0.3, 0.1, 0.58, 1);
+          -o-transition: all 0.27s cubic-bezier(0.3, 0.1, 0.58, 1);
+          -ms-transition: all 0.27s cubic-bezier(0.3, 0.1, 0.58, 1);
+          transition: all 0.27s cubic-bezier(0.3, 0.1, 0.58, 1);
+          height: 100%;
+          top: 0;
+          // background-color: yellowgreen;
+        }
+      }
+
+      h3 {
+        @include font-bold;
+
+        font-size: 1.9rem;
+      }
+    }
+  }
+}
+
+.res-circle {
+  width: 12%;
+  border-radius: 50%;
+  line-height: 0;
+  background: $green-nos;
+  position: relative;
+
+  &::after {
+    content: "";
+    display: block;
+    padding-bottom: 100%;
+  }
+
+  .circle-txt {
+    position: absolute;
+    bottom: 50%;
+    width: 100%;
+    text-align: center;
+    font-family: arial, sans-serif;
+    font-size: 2em;
+    font-weight: bold;
+  }
+}
+
+.sigainsta {
+  height: 1rem;
+  width: 100%;
+
+  @include media(">phone", "<tablet") {
+    height: 8rem;
+  }
+
+  @include media(">=tablet") {
+    top: -2em;
+  }
+
+  .insta-hr {
+    @include media("<tablet") {
+      display: none;
+    }
+
+    border-top: 1px solid #dae1e7;
+    width: 100%;
+    position: absolute;
+    top: 6em;
+    left: 0;
+    text-align: center;
+
+    @include media(">950px") {
+      top: 4.5rem;
+      width: 80%;
+    }
+  }
+
+  .title-insta {
+    text-align: center;
+    width: auto;
+    right: 1em;
+    top: 6em;
+
+    img {
+      width: 35%;
+    }
+
+    @include media("<tablet") {
+      top: 1em;
+      right: 0;
+
+      img {
+        width: 65%;
+      }
+    }
+
+    @include media(">=tablet") {
+      right: 3em;
+      top: 2em;
+      text-align: right;
+    }
+  }
+}
+
+.blockhome-1 {
+  // background: $gradient-blk1a, url("../images/home/block1/nosteefty.jpg");
+  // background-image: url("../images/home/block1/nosteefty.jpg");
+  // background-size: cover;
+  // background-position: center center;
+  background: url("../images/home/block1/bg/768x1024.jpg") center / cover;
+  // background-size: cover;
+  // background-position: 20% center;
+
+  .block1-left {
+    @include font-bold;
+  }
+
+  .block1-down {
+    // background: $gradient-blk1b;
+
+    .container {
+      line-height: 30px;
+      // padding: 1rem 0.5rem 1rem 0.5rem;
+      display: inline-flex;
+
+      @include media(">=tablet") {
+        padding-right: 1rem;
+        padding-left: 1rem;
+        display: flex;
+      }
+
+      span {
+        @include font-Opensans;
+
+        width: 100%;
+      }
+
+      @include media(">=tablet") {
+        padding: 1rem 4rem 1rem 0;
+      }
+
+      .container-up {
+        width: 100%;
+        height: auto;
+
+        @include media(">=tablet") {
+          width: 50%;
+          display: inherit;
+        }
+
+        // img {
+        //   height: 2rem;
+        // }
+      }
+    }
+  }
+
+  .citacao {
+    @include font-Opensans;
+
+    // .citacao-container .hidden {
+    //   padding: 0 1.5rem 0 2rem;
+    // }
+
+    // @include media("<=tablet") {
+    //   padding: 1em 0 1em 1em;
+    // }
+
+    // .block1-down-logos {
+    //   padding: 0.4rem 0 0.2rem 0;
+    // }
+  }
+}
+
+.blockhome-3 {
+  p {
+    @include font-Opensans;
+  }
+}
+
+// fix for iphone 5 and less resolution
+@include media("<=phone") {
+  .instagram {
+    margin-bottom: 0;
+    height: 25rem;
+    padding-bottom: 0;
+
+    .instagram-container {
+      position: relative;
+      bottom: 13em;
+    }
+  }
+}
+
+// Galeria Instagram
+.insta-gallery-feed {
+  margin-top: 18rem;
+
+  @include media(">phone") {
+    margin-top: 2rem;
+  }
+}
+
+// only home
+
+.home .menu-menu-container ul {
+  li:hover > ul,
+  li:focus-within > ul,
+  li ul:hover,
+  li ul:focus {
+    background: $gradient-blk1b;
+  }
+
+  .sub-menu {
+    @apply p-0;
+
+    li:hover {
+      background: inherit;
+    }
+  }
+}

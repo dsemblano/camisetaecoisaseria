@@ -1,0 +1,54 @@
+.btn {
+  @apply bg-primary rounded my-3 px-4 py-3 text-white leading-none;
+
+  transition: 0.2s ease;
+}
+
+.imprima-button h2 {
+  @include font-Opensans;
+
+  @apply text-white;
+
+  font-size: 1rem;
+}
+
+// botão principal home
+.btn-estudio,
+.woocommerce .wpmc-nav-wrapper button {
+  @apply bg-green-nos-button py-4 px-4 rounded-lg text-white mb-2;
+
+  &:hover {
+    @apply bg-green;
+  }
+
+  @include font-bold;
+}
+
+a.lumise-button.lumise-list-button {
+  background-color: $green-nos-button !important;
+}
+
+.woocommerce ul.products li.product .button {
+  margin: 1em 1em 1em 0 !important;
+}
+
+.btn-estudio-products,
+.woocommerce button.button.alt,
+.woocommerce a.button.alt,
+body.woocommerce .products .product .lumise-list-button {
+  @apply bg-green-nos-button text-white text-xs;
+
+  display: inline-block;
+  transition: all 0.3s ease 0s;
+  line-height: 1;
+  width: auto;
+  padding: 12px 20px;
+  border-radius: 2px;
+  margin: 0 2px;
+
+  &:hover {
+    @apply bg-green;
+  }
+
+  @include font-bold;
+}

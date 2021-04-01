@@ -1,0 +1,43 @@
+.main-carousel {
+  // height: 70vh;
+  // background-color: green;
+
+  .flickity-button {
+    top: 7rem;
+
+    @include media(">phone", "<tablet") {
+      top: 5rem;
+    }
+
+    @include media(">tablet", "<950px") {
+      // background-color: violet;
+      top: 8rem;
+    }
+
+    @include media(">950px") {
+      top: 12rem; // antes era 12rem
+    }
+  }
+
+  .flickity-page-dots {
+    top: 7rem;
+
+    @include media(">phone", "<tablet") {
+      // background-color: yellowgreen;
+    }
+
+    // @include media(">phone", "<=tablet") {
+    //   background-color: orange;
+    //   top: 8rem;
+    // }
+
+    @include media(">tablet", "<950px") {
+      // background-color: violet;
+      top: 15rem;
+    }
+
+    @include media(">950px") {
+      top: 24rem;
+    }
+  }
+}
