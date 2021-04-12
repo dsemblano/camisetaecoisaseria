@@ -31,24 +31,3 @@ a.lumise-button.lumise-list-button {
 .woocommerce ul.products li.product .button {
   margin: 1em 1em 1em 0 !important;
 }
-
-.btn-estudio-products,
-.woocommerce button.button.alt,
-.woocommerce a.button.alt,
-body.woocommerce .products .product .lumise-list-button {
-  @apply bg-green-nos-button text-white text-xs;
-
-  display: inline-block;
-  transition: all 0.3s ease 0s;
-  line-height: 1;
-  width: auto;
-  padding: 12px 20px;
-  border-radius: 2px;
-  margin: 0 2px;
-
-  &:hover {
-    @apply bg-green;
-  }
-
-  @include font-bold;
-}
