@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "757eeff4ddf9d5beb6061c2bd1ace639",
+    "content-hash": "3414b0ce62938d0f5d17285d667ee033",
     "packages": [
         {
             "name": "composer/installers",
@@ -411,16 +411,16 @@
         },
         {
             "name": "roots/wordpress",
-            "version": "5.6.2",
+            "version": "5.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/WordPress/WordPress.git",
-                "reference": "5.6.2"
+                "reference": "5.7.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/WordPress/WordPress/zipball/5.6.2",
-                "reference": "5.6.2"
+                "url": "https://api.github.com/repos/WordPress/WordPress/zipball/refs/tags/5.7.1",
+                "reference": "5.7.1"
             },
             "require": {
                 "php": ">=5.3.2",
@@ -444,15 +444,6 @@
                 "cms",
                 "wordpress"
             ],
-            "support": {
-                "docs": "https://developer.wordpress.org/",
-                "forum": "https://wordpress.org/support/",
-                "irc": "irc://irc.freenode.net/wordpress",
-                "issues": "https://core.trac.wordpress.org/",
-                "rss": "https://wordpress.org/news/feed/",
-                "source": "https://core.trac.wordpress.org/browser",
-                "wiki": "https://codex.wordpress.org/"
-            },
             "funding": [
                 {
                     "url": "https://github.com/roots",
@@ -463,7 +454,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2021-02-22T15:12:53+00:00"
+            "time": "2021-04-15T02:11:19+00:00"
         },
         {
             "name": "roots/wordpress-core-installer",
@@ -1153,15 +1144,15 @@
         },
         {
             "name": "wpackagist-plugin/smart-woocommerce-search",
-            "version": "2.2.3",
+            "version": "2.2.4",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/smart-woocommerce-search/",
-                "reference": "tags/2.2.3"
+                "reference": "tags/2.2.4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/smart-woocommerce-search.2.2.3.zip"
+                "url": "https://downloads.wordpress.org/plugin/smart-woocommerce-search.2.2.4.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
