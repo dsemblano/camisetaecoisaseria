@@ -4266,7 +4266,6 @@
 									
 								data.thumbn = scre;
 								if (result.indexOf('data:application/octet-stream') > -1) {	
-		       	
 									var deco = JSON.parse(decodeURIComponent(atob(result.split('base64,')[1]))),
 										scre = deco.stages[Object.keys(deco.stages)[0]].screenshot;
 									

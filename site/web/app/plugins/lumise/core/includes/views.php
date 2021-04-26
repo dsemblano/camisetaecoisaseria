@@ -1686,13 +1686,13 @@ class lumise_views extends lumise_lib {
 		<div class="lumise_form_group lumise_field_input">
 			<span><?php echo $this->main->lang('Admin password'); ?></span>
 			<div class="lumise_form_content">
-				<input type="password" placeholder="<?php echo $this->main->lang('Enter new password'); ?>" name="admin_password" value="" />
+				<input type="password" placeholder="<?php echo $this->main->lang('Enter new password'); ?>" name="admin_password" value="" autocomplete="new-password"/>
 			</div>
 		</div>
 		<div class="lumise_form_group lumise_field_input">
 			<span> &nbsp; </span>
 			<div class="lumise_form_content">
-				<input type="password" placeholder="<?php echo $this->main->lang('Re-Enter new password'); ?>" name="re_admin_password" value="" />
+				<input type="password" placeholder="<?php echo $this->main->lang('Re-Enter new password'); ?>" name="re_admin_password" value="" autocomplete="new-password"/>
 			</div>
 		</div>
 	<?php
@@ -3636,7 +3636,7 @@ public function order_designs($data, $attr = true) {
 				$temps = new stdClass();
 
 				foreach ($tempsData as $key => $detail) {
-					if(isset($detail->template)){
+					if(isset($detail->template) && isset($detail->template->id)){
 						$detailtemplate = $lumise->lib->get_template($detail->template->id);
 						if($detailtemplate != null){
 							$tempsData->$key->template->screenshot = $detailtemplate['screenshot'];

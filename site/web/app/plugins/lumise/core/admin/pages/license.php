@@ -49,8 +49,12 @@
 			<ul class="lumise_tab_nav_remake">
 				<li class="active"><a href="#lumise-tab-license-plugin">License verification</a></li>
 				<li><a href="#lumise-tab-addon-bundle">License addon bundle</a></li>
+				<?php if ($lumise->connector->platform == 'woocommerce'): ?>
 				<li><a href="#lumise-tab-addon-vendor">License addon vendor</a></li>
+				<?php endif; ?>
+				<?php if ($lumise->connector->platform == 'woocommerce'): ?>
 				<li><a href="#lumise-tab-addon-printful">License addon printful</a></li>
+				<?php endif; ?>
 			</ul>
 			<div class="lumise_tabs">
 				<div class="lumise_tab_content active" id="lumise-tab-license-plugin" >
@@ -127,6 +131,7 @@
 					</form>
 
 				</div>
+				<?php if ($lumise->connector->platform == 'woocommerce'): ?>
 				<div class="lumise_tab_content" id="lumise-tab-addon-vendor" >
 					
 					<?php if ($key_valid_addon_vendor): ?>
@@ -162,9 +167,10 @@
 						</a>
 						<?php } ?>
 					</form>
-
 				</div>
+				<?php endif; ?>
 
+				<?php if ($lumise->connector->platform == 'woocommerce'): ?>
 				<div class="lumise_tab_content" id="lumise-tab-addon-printful" >
 					
 					<?php if ($key_valid_addon_printful): ?>
@@ -200,8 +206,8 @@
 						</a>
 						<?php } ?>
 					</form>
-
 				</div>
+				<?php endif; ?>
 			</div>
 		</div>
 
