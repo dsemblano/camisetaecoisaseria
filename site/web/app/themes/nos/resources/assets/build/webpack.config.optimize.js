@@ -63,7 +63,7 @@ module.exports = {
         'figcaption', 'blockquote', 'alignright', 'aligncenter', 'alignleft',
         'instagram-pics', 'heateor_sss_sharing_container',
         'heateorSssWhatsappBackground', 'heateorSssSMSBackground',
-        'heateor_sss_horizontal_sharing', 'blockhome',
+        'heateor_sss_horizontal_sharing', 'blockhome', 'woocommerce-product-details__short-description',
         'banner', 'nav-links', 'page-numbers', 'current', 'wc-block-grid__product-add-to-cart',
         'lumise-button', 'lumise-list-button', 'button', 'woocommerce-tabs', 'panel',
         'flex-control-thumbs', 'woocommerce-tabs', 'menu-menu-container', 'mob-menu-header-holder',

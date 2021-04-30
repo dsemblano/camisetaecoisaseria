@@ -53,7 +53,9 @@ $large-mq: 1024px;
 }
 
 html {
-  height: -webkit-fill-available;
+  // height: -webkit-fill-available;
+  height: -moz-available;
+  height: stretch;
 }
 
 body {
@@ -61,7 +63,9 @@ body {
   min-height: 100vh;
 
   /* mobile viewport bug fix */
-  min-height: -webkit-fill-available;
+  // min-height: -webkit-fill-available;
+  min-height: -moz-available;
+  min-height: stretch;
 }
 
 h1,
@@ -281,5 +285,9 @@ ul {
 
 // Tawk widget
 .gallery img {
+  display: none;
+}
+
+.woocommerce div.product .woocommerce-tabs ul.tabs {
   display: none;
 }

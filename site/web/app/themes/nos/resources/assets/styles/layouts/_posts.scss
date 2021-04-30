@@ -9,12 +9,15 @@
       width: auto;
     }
 
-    p.price,
-    span.price {
-      @apply mt-1 text-base;
+    .fswp_installments_price {
+      @apply mt-2 mb-4 text-base;
     }
 
-    .woocommerce-product-details__short-description p,
+    // p.price {
+    //   margin-bottom: 1em;
+    // }
+
+    .woocommerce-product-details__short-description,
     .posted_in,
     .woocommerce-tabs .panel,
     .woocommerce-tabs .panel p,
@@ -61,6 +64,6 @@
   }
 }
 
-a#lumise-customize-button {
-  @apply mt-4;
-}
+// a#lumise-customize-button {
+//   @apply mt-4;
+// }
