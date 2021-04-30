@@ -13,7 +13,7 @@
       @php dynamic_sidebar('sidebar-footerup') @endphp
   </div>
 
-  <div class="footer-down bg-pureblack w-full pt-2 mt-4">
+  <div class="footer-down bg-pureblack w-full py-6 mt-4">
     <div class="container flex flex-row md:flex-row items-center justify-between">
       @include('partials/components.logo')
       {{-- <nav class="nav-secondary bg-pureblack">
@@ -21,8 +21,8 @@
         {!! wp_nav_menu(['theme_location' => 'secondary_navigation', 'menu_class' => 'nav flex flex-col md:flex-row text-white py-5 text-2xl capitalize']) !!}
         @endif
       </nav> --}}
+      @php dynamic_sidebar('sidebar-footer') @endphp
       @include('partials/components.socialshare')
     </div>
-    @php dynamic_sidebar('sidebar-footer') @endphp
   </div>
 </footer>
