@@ -65,7 +65,7 @@ module.exports = {
         'heateorSssWhatsappBackground', 'heateorSssSMSBackground',
         'heateor_sss_horizontal_sharing', 'blockhome',
         'banner', 'nav-links', 'page-numbers', 'current',
-        'lumise-button', 'lumise-list-button', 'button',
+        'lumise-button', 'lumise-list-button', 'button', 'mobmenu',
         'flex-control-thumbs', 'woocommerce-tabs', 'menu-menu-container',
         "my-whitelisted-selector", "lazyloaded", "is-active",
         ...whitelister("node_modules/tailwindcss/css/preflight.css"),
