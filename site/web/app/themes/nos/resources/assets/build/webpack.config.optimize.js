@@ -64,7 +64,7 @@ module.exports = {
         'instagram-pics', 'heateor_sss_sharing_container',
         'heateorSssWhatsappBackground', 'heateorSssSMSBackground',
         'heateor_sss_horizontal_sharing', 'blockhome',
-        'banner', 'nav-links', 'page-numbers', 'current',
+        'banner', 'nav-links', 'page-numbers', 'current', 'wc-block-grid__product-add-to-cart',
         'lumise-button', 'lumise-list-button', 'button', 'woocommerce-tabs', 'panel',
         'flex-control-thumbs', 'woocommerce-tabs', 'menu-menu-container', 'mob-menu-header-holder',
         "my-whitelisted-selector", "lazyloaded", "is-active",
