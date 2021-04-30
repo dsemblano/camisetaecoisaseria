@@ -14,7 +14,7 @@
   </div>
 
   <div class="footer-down bg-pureblack w-full py-6 mt-4">
-    <div class="container flex flex-row md:flex-row items-center justify-between">
+    <div class="container flex flex-col md:flex-row items-center justify-between">
       @include('partials/components.logo')
       {{-- <nav class="nav-secondary bg-pureblack">
         @if (has_nav_menu('secondary_navigation'))
