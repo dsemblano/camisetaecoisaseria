@@ -18,6 +18,11 @@ header.banner {
   left: 50%;
   transform: translateX(-50%);
   width: 100%;
+  z-index: 1;
+
+  .logoimprima {
+    margin: 0 0 0.2em 1em;
+  }
 }
 
 header.banner > div {
