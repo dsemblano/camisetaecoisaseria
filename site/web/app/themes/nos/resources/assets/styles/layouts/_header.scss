@@ -10,6 +10,12 @@
   @apply inline-block px-3 py-2 border-none;
 }
 
+.mob-menu-header-holder.mobmenu {
+  position: absolute;
+  left: 1em !important;
+  top: 0.5em;
+}
+
 .class2 {
   bottom: 2rem;
 }
@@ -22,6 +28,9 @@ header.banner {
 
   .logoimprima {
     margin: 0 0 0.2em 1em;
+    position: relative;
+    left: 2em;
+    top: 0.1em;
   }
 }
 
