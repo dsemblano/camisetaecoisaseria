@@ -28,10 +28,18 @@ header.banner {
 
   @media (max-width: 767px) {
     .logoimprima {
+      position: relative;
+      left: 3em;
+      top: 0.1em;
+    }
+  }
+
+  @media (min-width: 768px) and (max-width: 991px) {
+    .logoimprima {
       margin: 0 0 0.2em 1em;
       position: relative;
-      left: 1em;
-      top: 0.1em;
+      left: 4em;
+      top: 1em;
     }
   }
 }
