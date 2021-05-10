@@ -26,11 +26,13 @@ header.banner {
   width: 100%;
   z-index: 1;
 
-  .logoimprima {
-    margin: 0 0 0.2em 1em;
-    position: relative;
-    left: 2em;
-    top: 0.1em;
+  @media (max-width: 767px) {
+    .logoimprima {
+      margin: 0 0 0.2em 1em;
+      position: relative;
+      left: 1em;
+      top: 0.1em;
+    }
   }
 }
 
