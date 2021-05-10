@@ -11,6 +11,6 @@
   </a> --}}
 
   @if (has_nav_menu('primary_navigation'))
-  {!! wp_nav_menu(['theme_location' => 'primary_navigation', 'menu_class' => 'nav flex pt-4 pl-4 flex-col md:flex-row bg-grey-darkest bg-opacity-20 md:bg-transparent text-white font-bold text-left relative -top-4']) !!}
+  {!! wp_nav_menu(['theme_location' => 'primary_navigation', 'menu_class' => 'nav flex justify-around flex-col md:flex-row bg-grey-darkest bg-opacity-20 md:bg-transparent text-white font-bold text-left relative -top-4']) !!}
   @endif
 </nav>
