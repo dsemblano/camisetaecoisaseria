@@ -44,7 +44,7 @@
     "wpackagist-plugin/woocommerce-correios":">=3.8.0",
     "wpackagist-plugin/woocommerce-pagseguro":">=2.14.0",
     "wpackagist-plugin/regenerate-thumbnails":">=3.1.1",
-    "wpackagist-plugin/super-socializer":">=7.13.5",
+    "wpackagist-plugin/super-socializer":">=7.13.18",
     "wpackagist-plugin/side-cart-woocommerce":">=1.0.2",
     "wpackagist-plugin/woocommerce-menu-bar-cart":">=2.9.6",
     "wpackagist-plugin/loco-translate":">=2.3.3",
