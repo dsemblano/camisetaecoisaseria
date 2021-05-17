@@ -50,7 +50,6 @@
     "wpackagist-plugin/loco-translate":">=2.3.3",
     "wpackagist-plugin/wp-enable-webp":">=1.0",
     "wpackagist-plugin/automatic-translator-addon-for-loco-translate":">=2.1.1",
-    "wpackagist-plugin/wp-smushit":">=3.3.1",
     "wpackagist-plugin/smart-slider-3":">=3.3.24",
     "wpackagist-plugin/instagram-feed":">=2.5.4",
     "wpackagist-plugin/sassy-social-share":">=3.3.4",   
@@ -74,7 +73,7 @@
     "wpackagist-plugin/fatal-error-notify":">=1.4.3",
     "wpackagist-plugin/tawkto-live-chat":">=0.5.3",
     "wpackagist-plugin/mobile-menu":">=2.8.1.8",
-    "wpackagist-plugin/webp-converter-for-media":">=3.0.1",
+    "wpackagist-plugin/warp-imagick":">=1.6.2",
     "wpackagist-plugin/wps-hide-login":">=1.5.4.2"
   },
   "require-dev": {

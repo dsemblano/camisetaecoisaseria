@@ -132,3 +132,13 @@ add_filter('woobe_filter_include_children', function($include, $tax) {
 
     return $include;
 }, 10, 2);
+
+// add_filter(‘webpc_dir_path’, function ($path, $directory) {
+//     switch ($directory) {
+//     case ‘uploads’:
+//     return ‘/wp-content/uploads’;
+//     case ‘webp’:
+//     return ‘/wp-content/uploads-webpc’;
+//     }
+//     return $path;
+// }, 10, 2);

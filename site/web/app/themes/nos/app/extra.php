@@ -413,3 +413,14 @@ function yourtheme_setup()
 
     // Remove product_meta
     remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_meta', 40 );
+
+
+// add_filter(‘webpc_dir_path’, function ($path, $directory) {
+//     switch ($directory) {
+//     case ‘uploads’:
+//     return ‘/wp-content/uploads’;
+//     case ‘webp’:
+//     return ‘/wp-content/uploads-webpc’;
+//     }
+//     return $path;
+// }, 10, 2);

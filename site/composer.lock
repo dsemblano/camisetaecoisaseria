@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "23fd724b7d47e943b6751be33b852457",
+    "content-hash": "bceddf3119f0e7e45d563a536a78f888",
     "packages": [
         {
             "name": "composer/installers",
@@ -1052,15 +1052,15 @@
         },
         {
             "name": "wpackagist-plugin/mobile-menu",
-            "version": "2.8.2.1",
+            "version": "2.8.2.2",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/mobile-menu/",
-                "reference": "tags/2.8.2.1"
+                "reference": "tags/2.8.2.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/mobile-menu.2.8.2.1.zip"
+                "url": "https://downloads.wordpress.org/plugin/mobile-menu.2.8.2.2.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -1213,22 +1213,22 @@
             "homepage": "https://wordpress.org/plugins/tawkto-live-chat/"
         },
         {
-            "name": "wpackagist-plugin/webp-converter-for-media",
-            "version": "3.0.1",
+            "name": "wpackagist-plugin/warp-imagick",
+            "version": "1.6.2",
             "source": {
                 "type": "svn",
-                "url": "https://plugins.svn.wordpress.org/webp-converter-for-media/",
-                "reference": "tags/3.0.1"
+                "url": "https://plugins.svn.wordpress.org/warp-imagick/",
+                "reference": "tags/1.6.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/webp-converter-for-media.3.0.1.zip"
+                "url": "https://downloads.wordpress.org/plugin/warp-imagick.1.6.2.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
             },
             "type": "wordpress-plugin",
-            "homepage": "https://wordpress.org/plugins/webp-converter-for-media/"
+            "homepage": "https://wordpress.org/plugins/warp-imagick/"
         },
         {
             "name": "wpackagist-plugin/woo-cart-abandonment-recovery",
@@ -1573,24 +1573,6 @@
             "homepage": "https://wordpress.org/plugins/wp-mail-smtp/"
         },
         {
-            "name": "wpackagist-plugin/wp-smushit",
-            "version": "3.8.4",
-            "source": {
-                "type": "svn",
-                "url": "https://plugins.svn.wordpress.org/wp-smushit/",
-                "reference": "tags/3.8.4"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/wp-smushit.3.8.4.zip"
-            },
-            "require": {
-                "composer/installers": "~1.0"
-            },
-            "type": "wordpress-plugin",
-            "homepage": "https://wordpress.org/plugins/wp-smushit/"
-        },
-        {
             "name": "wpackagist-plugin/wps-hide-login",
             "version": "1.8.5",
             "source": {
@@ -1616,12 +1598,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "5ffdb87f627ff16cc392e30515a1fe069cddc3e2"
+                "reference": "802f84bd40ad4487f84d52fccb6f9c8bd0da9b97"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/5ffdb87f627ff16cc392e30515a1fe069cddc3e2",
-                "reference": "5ffdb87f627ff16cc392e30515a1fe069cddc3e2",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/802f84bd40ad4487f84d52fccb6f9c8bd0da9b97",
+                "reference": "802f84bd40ad4487f84d52fccb6f9c8bd0da9b97",
                 "shasum": ""
             },
             "conflict": {
@@ -1729,7 +1711,7 @@
                 "laravel/framework": "<6.20.26|>=7,<8.40",
                 "laravel/socialite": ">=1,<1.0.99|>=2,<2.0.10",
                 "league/commonmark": "<0.18.3",
-                "lexik/jwt-authentication-bundle": ">=2,<2.10.7|>=2.11,<2.11.3",
+                "lexik/jwt-authentication-bundle": "<2.10.7|>=2.11,<2.11.3",
                 "librenms/librenms": "<21.1",
                 "livewire/livewire": ">2.2.4,<2.2.6",
                 "magento/community-edition": ">=2,<2.2.10|>=2.3,<2.3.3",
@@ -1960,7 +1942,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-05-13T21:03:10+00:00"
+            "time": "2021-05-17T21:03:21+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",

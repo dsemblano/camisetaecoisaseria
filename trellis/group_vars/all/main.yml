@@ -12,6 +12,7 @@ ntp_manage_config: true
 ssh_client_ip_lookup: false
 php_extensions_custom:
   php7.4-soap: "{{ apt_package_state }}"
+  php-imagick: "{{ apt_package_state }}"
 letsencrypt_contact_emails:
   - dsemblano@gmail.com
 www_root: /srv/www
