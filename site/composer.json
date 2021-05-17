@@ -74,6 +74,7 @@
     "wpackagist-plugin/fatal-error-notify":">=1.4.3",
     "wpackagist-plugin/tawkto-live-chat":">=0.5.3",
     "wpackagist-plugin/mobile-menu":">=2.8.1.8",
+    "wpackagist-plugin/webp-converter-for-media":">=3.0.1",
     "wpackagist-plugin/wps-hide-login":">=1.5.4.2"
   },
   "require-dev": {
