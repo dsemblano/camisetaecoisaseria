@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3a7313c8ef1dc96ec5f43a4d5635861b",
+    "content-hash": "06794bf0ceb186cb7ee8a6baf29d22ad",
     "packages": [
         {
             "name": "composer/installers",
@@ -1141,24 +1141,6 @@
             "homepage": "https://wordpress.org/plugins/sassy-social-share/"
         },
         {
-            "name": "wpackagist-plugin/side-cart-woocommerce",
-            "version": "2.1",
-            "source": {
-                "type": "svn",
-                "url": "https://plugins.svn.wordpress.org/side-cart-woocommerce/",
-                "reference": "tags/2.1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/side-cart-woocommerce.2.1.zip"
-            },
-            "require": {
-                "composer/installers": "~1.0"
-            },
-            "type": "wordpress-plugin",
-            "homepage": "https://wordpress.org/plugins/side-cart-woocommerce/"
-        },
-        {
             "name": "wpackagist-plugin/smart-slider-3",
             "version": "3.4.1.17",
             "source": {
@@ -1193,24 +1175,6 @@
             },
             "type": "wordpress-plugin",
             "homepage": "https://wordpress.org/plugins/smart-woocommerce-search/"
-        },
-        {
-            "name": "wpackagist-plugin/super-socializer",
-            "version": "7.13.18",
-            "source": {
-                "type": "svn",
-                "url": "https://plugins.svn.wordpress.org/super-socializer/",
-                "reference": "trunk"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/super-socializer.zip?timestamp=1621234914"
-            },
-            "require": {
-                "composer/installers": "~1.0"
-            },
-            "type": "wordpress-plugin",
-            "homepage": "https://wordpress.org/plugins/super-socializer/"
         },
         {
             "name": "wpackagist-plugin/tawkto-live-chat",
@@ -1267,24 +1231,6 @@
             "homepage": "https://wordpress.org/plugins/woo-cart-abandonment-recovery/"
         },
         {
-            "name": "wpackagist-plugin/woo-parcelas-com-e-sem-juros",
-            "version": "1.5",
-            "source": {
-                "type": "svn",
-                "url": "https://plugins.svn.wordpress.org/woo-parcelas-com-e-sem-juros/",
-                "reference": "trunk"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/woo-parcelas-com-e-sem-juros.zip?timestamp=1569723026"
-            },
-            "require": {
-                "composer/installers": "~1.0"
-            },
-            "type": "wordpress-plugin",
-            "homepage": "https://wordpress.org/plugins/woo-parcelas-com-e-sem-juros/"
-        },
-        {
             "name": "wpackagist-plugin/woo-payment-discounts",
             "version": "1.3.0",
             "source": {
@@ -1319,24 +1265,6 @@
             },
             "type": "wordpress-plugin",
             "homepage": "https://wordpress.org/plugins/woo-picpay/"
-        },
-        {
-            "name": "wpackagist-plugin/woo-variation-swatches",
-            "version": "1.1.17",
-            "source": {
-                "type": "svn",
-                "url": "https://plugins.svn.wordpress.org/woo-variation-swatches/",
-                "reference": "trunk"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/woo-variation-swatches.zip?timestamp=1620475988"
-            },
-            "require": {
-                "composer/installers": "~1.0"
-            },
-            "type": "wordpress-plugin",
-            "homepage": "https://wordpress.org/plugins/woo-variation-swatches/"
         },
         {
             "name": "wpackagist-plugin/woocommerce",
@@ -1411,24 +1339,6 @@
             "homepage": "https://wordpress.org/plugins/woocommerce-extra-checkout-fields-for-brazil/"
         },
         {
-            "name": "wpackagist-plugin/woocommerce-gateway-paypal-express-checkout",
-            "version": "2.1.1",
-            "source": {
-                "type": "svn",
-                "url": "https://plugins.svn.wordpress.org/woocommerce-gateway-paypal-express-checkout/",
-                "reference": "tags/2.1.1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/woocommerce-gateway-paypal-express-checkout.2.1.1.zip"
-            },
-            "require": {
-                "composer/installers": "~1.0"
-            },
-            "type": "wordpress-plugin",
-            "homepage": "https://wordpress.org/plugins/woocommerce-gateway-paypal-express-checkout/"
-        },
-        {
             "name": "wpackagist-plugin/woocommerce-menu-bar-cart",
             "version": "2.9.7",
             "source": {
@@ -1499,42 +1409,6 @@
             },
             "type": "wordpress-plugin",
             "homepage": "https://wordpress.org/plugins/woocommerce-services/"
-        },
-        {
-            "name": "wpackagist-plugin/woocommerce-xml-csv-product-import",
-            "version": "1.4.8",
-            "source": {
-                "type": "svn",
-                "url": "https://plugins.svn.wordpress.org/woocommerce-xml-csv-product-import/",
-                "reference": "tags/1.4.8"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/woocommerce-xml-csv-product-import.1.4.8.zip"
-            },
-            "require": {
-                "composer/installers": "~1.0"
-            },
-            "type": "wordpress-plugin",
-            "homepage": "https://wordpress.org/plugins/woocommerce-xml-csv-product-import/"
-        },
-        {
-            "name": "wpackagist-plugin/wp-all-import",
-            "version": "3.5.7",
-            "source": {
-                "type": "svn",
-                "url": "https://plugins.svn.wordpress.org/wp-all-import/",
-                "reference": "tags/3.5.7"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/wp-all-import.3.5.7.zip"
-            },
-            "require": {
-                "composer/installers": "~1.0"
-            },
-            "type": "wordpress-plugin",
-            "homepage": "https://wordpress.org/plugins/wp-all-import/"
         },
         {
             "name": "wpackagist-plugin/wp-dbmanager",
@@ -1616,12 +1490,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "5a791bd14e78af5fc2184a370a72e828ff477263"
+                "reference": "b690895fa1530e85397d5070517e45e098be6d18"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/5a791bd14e78af5fc2184a370a72e828ff477263",
-                "reference": "5a791bd14e78af5fc2184a370a72e828ff477263",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/b690895fa1530e85397d5070517e45e098be6d18",
+                "reference": "b690895fa1530e85397d5070517e45e098be6d18",
                 "shasum": ""
             },
             "conflict": {
@@ -1904,6 +1778,7 @@
                 "yiisoft/yii2-gii": "<2.0.4",
                 "yiisoft/yii2-jui": "<2.0.4",
                 "yiisoft/yii2-redis": "<2.0.8",
+                "yoast-seo-for-typo3/yoast_seo": "<7.2.1",
                 "yourls/yourls": "<1.7.4",
                 "zendesk/zendesk_api_client_php": "<2.2.11",
                 "zendframework/zend-cache": ">=2.4,<2.4.8|>=2.5,<2.5.3",
@@ -1961,7 +1836,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-05-21T15:03:46+00:00"
+            "time": "2021-05-21T19:22:20+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",
