@@ -1,15 +1,18 @@
 composer_keep_updated: true
 apt_cache_valid_time: 3600
 php_max_execution_time: 700
-php_upload_max_filesize: 300M
 upload_max_filesize : 300M
 upload_max_size: 300M
+php_upload_max_filesize: 300M
+php_post_max_size: 300M
 apt_package_state: present
 apt_security_package_state: latest
 apt_dev_package_state: latest
 ntp_timezone: Etc/UTC
 ntp_manage_config: true
 ssh_client_ip_lookup: false
+php_memory_limit: 768M
+php_max_input_time: 1000
 php_extensions_custom:
   php7.4-soap: "{{ apt_package_state }}"
   php-imagick: "{{ apt_package_state }}"

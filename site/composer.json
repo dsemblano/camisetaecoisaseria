@@ -74,6 +74,7 @@
     "wpackagist-plugin/tawkto-live-chat":">=0.5.3",
     "wpackagist-plugin/mobile-menu":">=2.8.1.8",
     "wpackagist-plugin/warp-imagick":">=1.6.2",
+    "wpackagist-plugin/query-monitor":">=3.7.1",
     "wpackagist-plugin/wps-hide-login":">=1.5.4.2"
   },
   "require-dev": {
