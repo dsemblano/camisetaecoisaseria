@@ -59,8 +59,6 @@
     "wpackagist-plugin/woo-cart-abandonment-recovery":">=1.2.7",
     "wpackagist-plugin/woo-payment-discounts":">=1.2.0",
     "wpackagist-plugin/woocommerce-services":">=1.25.0",
-    "wpackagist-plugin/click-to-chat-for-whatsapp":">=3.0.3",
-    "wpackagist-plugin/wp-dbmanager":">=2.80.3",
     "wpackagist-plugin/product-blocks":">=1.0.9",
     "wpackagist-plugin/smart-woocommerce-search":">=2.0.1",
     "wpackagist-plugin/fatal-error-notify":">=1.4.3",

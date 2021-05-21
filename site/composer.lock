@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "06794bf0ceb186cb7ee8a6baf29d22ad",
+    "content-hash": "00fc7d302194c07affd8042201a116fa",
     "packages": [
         {
             "name": "composer/installers",
@@ -979,24 +979,6 @@
             "homepage": "https://wordpress.org/plugins/automatic-translator-addon-for-loco-translate/"
         },
         {
-            "name": "wpackagist-plugin/click-to-chat-for-whatsapp",
-            "version": "3.3.3",
-            "source": {
-                "type": "svn",
-                "url": "https://plugins.svn.wordpress.org/click-to-chat-for-whatsapp/",
-                "reference": "tags/3.3.3"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/click-to-chat-for-whatsapp.3.3.3.zip"
-            },
-            "require": {
-                "composer/installers": "~1.0"
-            },
-            "type": "wordpress-plugin",
-            "homepage": "https://wordpress.org/plugins/click-to-chat-for-whatsapp/"
-        },
-        {
             "name": "wpackagist-plugin/fatal-error-notify",
             "version": "1.4.3",
             "source": {
@@ -1409,24 +1391,6 @@
             },
             "type": "wordpress-plugin",
             "homepage": "https://wordpress.org/plugins/woocommerce-services/"
-        },
-        {
-            "name": "wpackagist-plugin/wp-dbmanager",
-            "version": "2.80.3",
-            "source": {
-                "type": "svn",
-                "url": "https://plugins.svn.wordpress.org/wp-dbmanager/",
-                "reference": "tags/2.80.3"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/wp-dbmanager.2.80.3.zip"
-            },
-            "require": {
-                "composer/installers": "~1.0"
-            },
-            "type": "wordpress-plugin",
-            "homepage": "https://wordpress.org/plugins/wp-dbmanager/"
         },
         {
             "name": "wpackagist-plugin/wp-enable-webp",
