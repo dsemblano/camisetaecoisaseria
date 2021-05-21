@@ -65,7 +65,7 @@ module.exports = {
         'heateorSssWhatsappBackground', 'heateorSssSMSBackground', 'mob-menu-header-holder', 'mobmenu',
         'heateor_sss_horizontal_sharing', 'blockhome', 'woocommerce-product-details__short-description',
         'banner', 'nav-links', 'page-numbers', 'current', 'wc-block-grid__product-add-to-cart',
-        'lumise-button', 'lumise-list-button', 'button', 'woocommerce-tabs', 'panel',
+        'lumise-button', 'lumise-list-button', 'button', 'woocommerce-tabs', 'panel', 'update_totals_on_change',
         'flex-control-thumbs', 'woocommerce-tabs', 'menu-menu-container', 'mob-menu-header-holder',
         "my-whitelisted-selector", "lazyloaded", "is-active",
         ...whitelister("node_modules/tailwindcss/css/preflight.css"),
