@@ -66,7 +66,7 @@ module.exports = {
         'mob-menu-header-holder', 'mobmenu', 'mobmenul-container', 'mobmenu-left-bt', 'mobmenu-trigger-action',
         'mob-icon-menu-3', 'mob-menu-icon',
         'heateor_sss_horizontal_sharing', 'blockhome', 'woocommerce-product-details__short-description',
-        'banner', 'nav-links', 'page-numbers', 'current', 'wc-block-grid__product-add-to-cart',
+        'banner', 'nav-links', 'page-numbers', 'current', 'wc-block-grid__product-add-to-cart', 'woocommerce-breadcrumb',
         'lumise-button', 'lumise-list-button', 'button', 'woocommerce-tabs', 'panel', 'update_totals_on_change',
         'flex-control-thumbs', 'woocommerce-tabs', 'menu-menu-container', 'mob-menu-header-holder',
         "my-whitelisted-selector", "lazyloaded", "is-active",
