@@ -69,7 +69,7 @@ module.exports = {
         'banner', 'nav-links', 'page-numbers', 'current', 'wc-block-grid__product-add-to-cart', 'woocommerce-breadcrumb',
         'lumise-button', 'lumise-list-button', 'button', 'woocommerce-tabs', 'panel', 'update_totals_on_change',
         'flex-control-thumbs', 'woocommerce-tabs', 'menu-menu-container', 'mob-menu-header-holder',
-        "my-whitelisted-selector", "lazyloaded", "is-active",
+        "my-whitelisted-selector", "lazyloaded", "is-active", 'ysm-search-widget',
         ...whitelister("node_modules/tailwindcss/css/preflight.css"),
       ],
       whitelistPatternsChildren: [/^gfield/, /^gform/, /^woocommerce-product-gallery/, /^ginput/, /^banner/, /^nav-primary/, /^hamburger/],
