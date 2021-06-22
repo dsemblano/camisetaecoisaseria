@@ -72,7 +72,7 @@ module.exports = {
         "my-whitelisted-selector", "lazyloaded", "is-active",
         ...whitelister("node_modules/tailwindcss/css/preflight.css"),
       ],
-      whitelistPatternsChildren: [/^gfield/, /^gform/, /^ginput/, /^banner/, /^nav-primary/, /^hamburger/],
+      whitelistPatternsChildren: [/^gfield/, /^gform/, /^woocommerce-product-gallery/, /^ginput/, /^banner/, /^nav-primary/, /^hamburger/],
     }),
     new HtmlCriticalWebpackPlugin({
       base: config.paths.dist,
