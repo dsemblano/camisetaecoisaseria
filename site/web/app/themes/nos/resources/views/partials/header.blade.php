@@ -22,4 +22,6 @@
     </div> --}}
     {{-- @include('partials/components.socialshare') --}}
   </div>
+  @include('partials/components.search')
 </header>
+
