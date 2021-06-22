@@ -221,11 +221,11 @@ header.banner > div {
   form {
     background-color: rgba(0, 0, 0, 0.3);
 
-    .search-field[type="search"] {
-      color: white;
+    .search-field {
+      color: white !important;
     }
 
-    .ysm-search-widget .search-submit::before {
+    .search-submit {
       color: white;
     }
   }
