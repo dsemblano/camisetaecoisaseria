@@ -217,9 +217,16 @@ header.banner > div {
   width: 100%;
   display: flex;
   justify-content: center;
+  margin-top: 1em;
 
   form {
     background-color: rgba(0, 0, 0, 0.3);
+    width: 75%;
+
+    ::placeholder {
+      color: white !important;
+      opacity: 1;
+    }
 
     .search-field {
       color: white !important;
@@ -227,6 +234,12 @@ header.banner > div {
 
     .search-submit {
       color: white;
+    }
+  }
+
+  @include media(">=tablet") {
+    form {
+      width: 35%;
     }
   }
 }
