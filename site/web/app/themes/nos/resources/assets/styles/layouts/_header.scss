@@ -217,4 +217,16 @@ header.banner > div {
   width: 100%;
   display: flex;
   justify-content: center;
+
+  form {
+    background-color: rgba(0, 0, 0, 0.3);
+
+    .search-field[type="search"] {
+      color: white;
+    }
+
+    .ysm-search-widget .search-submit::before {
+      color: white;
+    }
+  }
 }
