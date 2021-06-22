@@ -72,7 +72,7 @@ module.exports = {
         "my-whitelisted-selector", "lazyloaded", "is-active", 'ysm-search-widget',
         ...whitelister("node_modules/tailwindcss/css/preflight.css"),
       ],
-      whitelistPatternsChildren: [/^gfield/, /^gform/, /^woocommerce-product-gallery/, /^ginput/, /^banner/, /^nav-primary/, /^hamburger/],
+      whitelistPatternsChildren: [/^gfield/, /^gform/, /^woocommerce-product-gallery/, /^ysm-search-widget/, /^ginput/, /^banner/, /^nav-primary/, /^hamburger/],
     }),
     new HtmlCriticalWebpackPlugin({
       base: config.paths.dist,
