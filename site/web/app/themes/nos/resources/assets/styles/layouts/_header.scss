@@ -217,11 +217,12 @@ header.banner > div {
   width: 100%;
   display: flex;
   justify-content: center;
-  margin-top: 0.5em;
   padding-bottom: 1em;
+  position: relative;
+  bottom: 0;
 
   form {
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(179, 178, 178, 0.3);
     width: 75%;
 
     ::placeholder {
@@ -237,8 +238,12 @@ header.banner > div {
       color: white;
     }
   }
+}
 
-  @include media(">=tablet") {
+@include media(">=desktop") {
+  .ysm-search-widget {
+    bottom: 2em;
+
     form {
       width: 35%;
     }
