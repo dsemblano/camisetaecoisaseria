@@ -213,7 +213,7 @@ header.banner > div {
   left: 0 !important;
 }
 
-.ysm-search-widget {
+.ysm-search-widget-2 {
   width: 100%;
   display: flex;
   justify-content: center;
@@ -241,7 +241,7 @@ header.banner > div {
 }
 
 @include media(">=desktop") {
-  .ysm-search-widget {
+  .ysm-search-widget-2 {
     bottom: 2em;
 
     form {
