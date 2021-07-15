@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cfd99fbf9d0612dea5a2e1b6165f05e9",
+    "content-hash": "b806402d20ac0fe309454cc407a1fd32",
     "packages": [
         {
             "name": "composer/installers",
@@ -1097,7 +1097,7 @@
         },
         {
             "name": "wpackagist-plugin/sassy-social-share",
-            "version": "3.3.21",
+            "version": "3.3.22",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/sassy-social-share/",
@@ -1105,7 +1105,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/sassy-social-share.zip?timestamp=1625108336"
+                "url": "https://downloads.wordpress.org/plugin/sassy-social-share.zip?timestamp=1626245890"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -1241,15 +1241,15 @@
         },
         {
             "name": "wpackagist-plugin/woocommerce",
-            "version": "4.6.2",
+            "version": "4.9.3",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/woocommerce/",
-                "reference": "tags/4.6.2"
+                "reference": "tags/4.9.3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/woocommerce.4.6.2.zip"
+                "url": "https://downloads.wordpress.org/plugin/woocommerce.4.9.3.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -1367,15 +1367,15 @@
         },
         {
             "name": "wpackagist-plugin/woocommerce-services",
-            "version": "1.25.16",
+            "version": "1.25.17",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/woocommerce-services/",
-                "reference": "tags/1.25.16"
+                "reference": "tags/1.25.17"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/woocommerce-services.1.25.16.zip"
+                "url": "https://downloads.wordpress.org/plugin/woocommerce-services.1.25.17.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -1463,12 +1463,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "88c4d972f82b364386c98eebecf38512708a4de4"
+                "reference": "fc5e5d772af47d035df8178172391259b6e30566"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/88c4d972f82b364386c98eebecf38512708a4de4",
-                "reference": "88c4d972f82b364386c98eebecf38512708a4de4",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/fc5e5d772af47d035df8178172391259b6e30566",
+                "reference": "fc5e5d772af47d035df8178172391259b6e30566",
                 "shasum": ""
             },
             "conflict": {
@@ -1641,7 +1641,7 @@
                 "phpunit/phpunit": ">=4.8.19,<4.8.28|>=5.0.10,<5.6.3",
                 "phpwhois/phpwhois": "<=4.2.5",
                 "phpxmlrpc/extras": "<0.6.1",
-                "pimcore/pimcore": "<6.8.8",
+                "pimcore/pimcore": "<10.0.7",
                 "pocketmine/pocketmine-mp": "<3.15.4",
                 "pressbooks/pressbooks": "<5.18",
                 "prestashop/autoupgrade": ">=4,<4.10.1",
@@ -1827,7 +1827,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-07-12T17:14:45+00:00"
+            "time": "2021-07-13T18:03:10+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",
