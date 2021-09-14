@@ -14,6 +14,12 @@
   }
 }
 
+@media (width: 1366px) {
+  .banner {
+    background-color: yellowgreen !important;
+  }
+}
+
 // /* Portrait tablets and small desktops */
 @media (min-width: 768px) and (max-width: 991px) {
   .banner {
