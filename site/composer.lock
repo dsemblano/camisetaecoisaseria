@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "144b7a111f122e7f7b92882bf0860ce2",
+    "content-hash": "0a27608e41cc44b53ded6c0de8d1b80f",
     "packages": [
         {
             "name": "composer/installers",
@@ -1083,7 +1083,7 @@
         },
         {
             "name": "wpackagist-plugin/sassy-social-share",
-            "version": "dev-trunk",
+            "version": "3.3.25",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/sassy-social-share/",
@@ -1097,8 +1097,7 @@
                 "composer/installers": "~1.0 || ~2.0"
             },
             "type": "wordpress-plugin",
-            "homepage": "https://wordpress.org/plugins/sassy-social-share/",
-            "time": "2021-10-15T19:23:01+00:00"
+            "homepage": "https://wordpress.org/plugins/sassy-social-share/"
         },
         {
             "name": "wpackagist-plugin/smart-slider-3",
@@ -1228,18 +1227,18 @@
         },
         {
             "name": "wpackagist-plugin/woocommerce",
-            "version": "4.9.3",
+            "version": "5.8.0",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/woocommerce/",
-                "reference": "tags/4.9.3"
+                "reference": "tags/5.8.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/woocommerce.4.9.3.zip"
+                "url": "https://downloads.wordpress.org/plugin/woocommerce.5.8.0.zip"
             },
             "require": {
-                "composer/installers": "~1.0"
+                "composer/installers": "~1.0 || ~2.0"
             },
             "type": "wordpress-plugin",
             "homepage": "https://wordpress.org/plugins/woocommerce/"
