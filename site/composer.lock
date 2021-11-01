@@ -4,7 +4,11 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
+<<<<<<< HEAD
     "content-hash": "a97d306161505d6e1b8541ec5c001880",
+=======
+    "content-hash": "0a27608e41cc44b53ded6c0de8d1b80f",
+>>>>>>> 3f605deb277c19c556fe3b5f971642500d10b377
     "packages": [
         {
             "name": "composer/installers",
@@ -1101,6 +1105,7 @@
         },
         {
             "name": "wpackagist-plugin/smart-slider-3",
+<<<<<<< HEAD
             "version": "3.5.1.1",
             "source": {
                 "type": "svn",
@@ -1110,6 +1115,17 @@
             "dist": {
                 "type": "zip",
                 "url": "https://downloads.wordpress.org/plugin/smart-slider-3.3.5.1.1.zip"
+=======
+            "version": "3.5.1.0",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/smart-slider-3/",
+                "reference": "tags/3.5.1.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/smart-slider-3.3.5.1.0.zip"
+>>>>>>> 3f605deb277c19c556fe3b5f971642500d10b377
             },
             "require": {
                 "composer/installers": "~1.0 || ~2.0"
@@ -1245,15 +1261,15 @@
         },
         {
             "name": "wpackagist-plugin/woocommerce",
-            "version": "4.9.3",
+            "version": "5.8.0",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/woocommerce/",
-                "reference": "tags/4.9.3"
+                "reference": "tags/5.8.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/woocommerce.4.9.3.zip"
+                "url": "https://downloads.wordpress.org/plugin/woocommerce.5.8.0.zip"
             },
             "require": {
                 "composer/installers": "~1.0 || ~2.0"
