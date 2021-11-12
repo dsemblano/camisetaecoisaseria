@@ -43,6 +43,17 @@ $items = $lumise->addons->load_installed();
 				</form>
 			</div>
 		</div>
+		<div id="license_noticesModal" class="modal">
+		  <div class="modal-content">
+		    <span class="close">&times;</span>
+		    <p>Enter your purchase code to activate the addon</p>
+		    <div class="modal-footer">
+			    <a id="link-addon-bundle" href="<?php echo admin_url('?page=lumise&lumise-page=license'); ?>#lumise-tab-addon-bundle" class="link-to-license">Enter your license now</a>
+			    <a id="link-addon-printful" href="<?php echo admin_url('?page=lumise&lumise-page=license'); ?>#lumise-tab-addon-printful" class="link-to-license">Enter your license now</a>
+			    <a id="link-addon-vendor" href="<?php echo admin_url('?page=lumise&lumise-page=license'); ?>#lumise-tab-addon-vendor" class="link-to-license">Enter your license now</a>
+			</div>
+		  </div>
+		</div>
 		<form action="" method="post" class="lumise_form" enctype="multipart/form-data">
 			<table class="lumise_table lumise_addons">
 				<thead>
@@ -73,6 +84,7 @@ $items = $lumise->addons->load_installed();
 								$actives = array();
 								
 							foreach ($items as $item) {
+								$check_verify = $lumise->addons->lumise_check_verify_lincense($item['Slug']);
 								echo '<tr>';
 								echo '<td class="lumise_check">'.
 											'<div class="lumise_checkbox">'.
@@ -104,7 +116,7 @@ $items = $lumise->addons->load_installed();
 								} else {
 									echo '<td>'.$item['Version'].'</td>';
 									echo '<td>'.$item['Compatible'].'+</td>';
-									echo '<td><a href="#" class="lumise_action" data-type="addons" data-action="switch_active" data-status="'.(isset($actives[$item['Slug']]) ? $actives[$item['Slug']] : 0).'" data-id="'.$item['Slug'].'">';
+									echo '<td><a href="#" class="lumise_action" data-type="addons" data-action="switch_active" data-status="'.(isset($actives[$item['Slug']]) ? $actives[$item['Slug']] : 0).'" data-id="'.$item['Slug'].'" check-license ="'.(isset($check_verify) ? (int)$check_verify : 0).'">';
 									echo (
 										isset($actives[$item['Slug']]) && $actives[$item['Slug']] == 1 ? 
 										'<em class="pub">'.$lumise->lang('Active').'</em>' : 
@@ -123,3 +135,19 @@ $items = $lumise->addons->load_installed();
 		</form>
 	</div>
 </div>
+<script>
+	let modal = $("#license_noticesModal");
+	let btn = $(".myBtn");
+	let span = $(".close")[0];
+
+	span.addEventListener("click", function(event) {
+	 	modal.css('display', 'none');
+		$(".link-to-license").css('display', 'none');
+	});
+	window.addEventListener("click", function(event) {
+	 	if (event.target.id == 'license_noticesModal') {
+	    	modal.css('display', 'none');
+	    	$(".link-to-license").css('display', 'none');
+		}
+	});
+</script>

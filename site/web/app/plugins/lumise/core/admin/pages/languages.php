@@ -405,6 +405,7 @@
 					}
 				},
 				success: function(res){
+                    // console.log(res);
 					location.reload();
 				}
 			});
@@ -508,11 +509,14 @@
 									txt = txt.replace(/\"\-\"/g, '.');
 									data_post[id] = txt;
 								} else {
-									 $('#lumise-lang-text-'+id).after(' <i class="fa fa-check"></i>');
-									 done++;
+									if(Number.isInteger(parseInt(id))){
+										$('#lumise-lang-text-'+id).after(' <i class="fa fa-check"></i>');
+									}
+									done++;
 									translating.html(done);
-									if (done == list.length)
+									if (done == list.length){
 										$('#lumise-translating-wrp').css({color: 'green'}).html('Translate complete!');
+									}
 								}
 							});
 							

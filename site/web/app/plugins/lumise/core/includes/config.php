@@ -269,7 +269,7 @@ class lumise_cfg extends lumise_tmpl_register{
 			(function_exists('session_status') && session_status() == PHP_SESSION_NONE) ||
 			(function_exists('session_id') && session_id() == '')
 		) {
-			@session_start(['read_and_close' => true]);
+			@session_start();
 		}
 
 		if(!defined('DS'))

@@ -243,11 +243,13 @@ jQuery(document).ready(function($) {
 						methodName = this.transparentCorners ? 'stroke' : 'fill',
 						active = lumise.stage().canvas.getActiveObject();
 
-					if(active == undefined){
-						return this;
-					}
+					// if(active == undefined){
+					// 	return this;
+					// }
 
-					ctx.save();
+					if(active != undefined){
+						ctx.save();
+					}
 						
 					if (this.hasRotatingPoint) {
 						
@@ -448,23 +450,6 @@ jQuery(document).ready(function($) {
 
 					return cu;
 
-			      var n = Math.round((target.getAngle() % 360) / 45);
-
-			      if (n < 0) {
-			        n += 8; // full circle ahead
-			      }
-			      n += cursorOffset[corner];
-			      if (e[this.altActionKey] && cursorOffset[corner] % 2 === 0) {
-			        //if we are holding shift and we are on a mx corner...
-			        n += 2;
-			      }
-			      // normalize n to be from 0 to 7
-			      n %= 8;
-
-				  if (corner == 'tl')
-				  	return 'pointer';
-
-			      return this.cursorMap[n];
 
 			    },
 
@@ -1271,30 +1256,6 @@ jQuery(document).ready(function($) {
 					return callback(lumise.objects.text(ops));
 					
 					
-					ops.src = 'data:image/svg+xml;base64,'+btoa(lumise.fn.buildText(ops));
-					
-					return this.svg(ops, callback);
-					
-					/*var svg_text = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="100" height="100" viewBox="0 0 100 100" xml:space="preserve"><text font-family="Roboto" font-size="30" font-weight="normal" style="stroke: none; stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(25,25,112);" direction="rtl" text-anchor="end"><tspan x="0" y="50" fill="#191970" direction="rtl" text-anchor="end">&#x0061;&#x0062;&#x0035;&#x0040;&#x0021;</tspan></text></svg>';
-					
-					svg_text = '<svg  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 500 500">\
-								    <path id="curve" fill="transparent" d="M73.2,148.6c4-6.1,65.5-96.8,178.6-95.6c111.3,1.2,170.8,90.3,175.1,97" />\
-								    <text width="500" font-size="40">\
-								      <textPath xlink:href="#curve">\
-								        Dangerous Curves Ahead\
-								      </textPath>\
-								    </text>\
-								  </svg>';
-								  
-					svg_text = '<svg width="140.453125" height="70.265625" viewBox="58.984375 0 140.453125 70.265625" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="0.843894627118865"><text fill="#FF0000" stroke="none" stroke-width="0" stroke-linecap="round" stroke-linejoin="round" x="" y="" text-anchor="start" font-size="24px" font-family="arial" pattclass="none" data-textcurve="180" data-itemzoom="1 1" data-textspacing="11"><textPath xlink:href="#textPath-item-0"><tspan dy="-11">Hello world</tspan></textPath></text></g><defs><path id="textPath-item-0" d="M 91.609375 70.1074415696873 A 37.5605665696873 37.5605665696873 0 0 1 166.7305081393746 70.1074415696873"></path></defs></svg>';
-					
-					ops.src = 'data:image/svg+xml;base64,'+btoa(svg_text);
-					
-					return this.image(ops, callback);*/
-					
-					ops.editable = false;
-						
-					callback(lumise.objects.text(ops));
 					
 				},
 
@@ -1665,9 +1626,7 @@ jQuery(document).ready(function($) {
 				},
 
 				'qrcode' : function(ops, callback) {
-
 					this.image(ops, callback);
-
 				},
 
 				'svg' : function(ops, callback) {
@@ -1709,38 +1668,6 @@ jQuery(document).ready(function($) {
 						
 						return lumise.objects.lumise.image(ops, callback);
 						
-						/*
-						*	Apply a solution to fix SVG for FireFox
-						*	Try to add width & height attributes in <svg>
-						*/
-						
-						fabric.loadSVGFromURL(ops.src, function(objects, options) {
-							
-							delete ops.type;
-							delete ops.width;
-							delete ops.height;
-							
-					        var shape = fabric.util.groupSVGElements(objects, options),
-					        	editzone = lumise.stage().edit_zone;
-							
-					        if (ops.height === undefined) {
-								ops.width = shape.width;
-								ops.height = shape.height;
-								if (ops.scaleX == 1 && ops.width > editzone.width) {
-									ops.scaleX = (editzone.width*0.8)/ops.width;
-									ops.scaleY = (editzone.width*0.8)/ops.width;
-								};
-							};
-							
-							shape.set(ops);
-							
-				       		shape.set('clipTo', function(ctx) {
-					            return lumise.objects.clipto(ctx, shape);
-					        });
-					        
-					        callback(shape);
-							
-					    });
 							
 					};
 						
@@ -2672,7 +2599,7 @@ jQuery(document).ready(function($) {
 						
 						var act = this.getAttribute('data-tool'),
 							cb = this.getAttribute('data-callback');
-						
+
 						if (this.getAttribute('data-load')) {
 							if (typeof lumise.design.nav.load[this.getAttribute('data-load')] == 'function')
 								lumise.design.nav.load[this.getAttribute('data-load')](e);
@@ -2696,7 +2623,7 @@ jQuery(document).ready(function($) {
 						}
 
 						lumise.fn.navigation(this, e);
-						
+
 						if (cb && typeof lumise.design.nav.callback[cb] == 'function')
 							lumise.design.nav.callback[cb](this, e);
 
@@ -2904,7 +2831,7 @@ jQuery(document).ready(function($) {
 
 						var c = lumise.stage().canvas,
 							a = c.getActiveObject();
-
+                        console.log(a);
 						/*if (a.type == 'text-fx' && e.isTrigger !== undefined)
 							return;*/
 
@@ -3147,8 +3074,7 @@ jQuery(document).ready(function($) {
 							].map(function(p){
 								if (props[p[0]] === undefined)
 									props[p[0]] = p[1];
-							});
-
+							});  
 							newobj = new fabric.CurvedText(active.text.trim(), props);
 
 							lumise.fn.switch_type (newobj);
@@ -3156,18 +3082,18 @@ jQuery(document).ready(function($) {
 							canvas.renderAll();
 
 						}else{
-
 							props['text'] = active.text.trim();
 							delete props['type'];
 
 							props['clipTo'] = function(ctx) {
 					            return lumise.objects.clipto(ctx, newobj);
 					        };
-
+		
 							if (effect == 'normal')
 								return lumise.fn.switch_type(lumise.objects.text(props));
 
 							if (props['bridge'] === undefined) {
+                         
 								props['bridge'] ={
 									curve: -2.5,
 									offsetY: 0.5,
@@ -3178,6 +3104,7 @@ jQuery(document).ready(function($) {
 							}
 
 							props.bridge.oblique = (effect == 'oblique');
+                        
 
 							if (effect == 'oblique')
 								lumise.get.el('text-fx-trident').closest('li[data-func="text-fx"]').hide();
@@ -3202,8 +3129,10 @@ jQuery(document).ready(function($) {
 								active._originalElement.src = dataSrc;
 						
 							}else{
+                                console.log('testds')
 								lumise.objects.lumise['text-fx'](props, lumise.fn.switch_type);
 							}
+   
 
 						}
 
@@ -3211,7 +3140,6 @@ jQuery(document).ready(function($) {
 					},
 
 					editText : function(e){
-
 						var c = lumise.stage().canvas,
 							a = c.getActiveObject(),
 							t = this,
@@ -3219,12 +3147,8 @@ jQuery(document).ready(function($) {
 								c.renderAll();
 								lumise.get.el('workspace').find('.lumise-edit-text').val(t.value);
 							};
-
 						if (a) {
-
 							if (!e.isTrigger) {
-
-
 								switch (a.type) {
 									case 'curvedText' :
 										a.setText(this.value);
@@ -3247,10 +3171,9 @@ jQuery(document).ready(function($) {
 											'name': a.name ? a.name : this.value,
 											'fill': a.fill
 										});
-
+										
 										return delete qrcode;
 
-									break;
 									case 'text-fx':
 										a.set('text', this.value);
 									break;
@@ -3278,11 +3201,11 @@ jQuery(document).ready(function($) {
 								$(_this.parentNode).find('[data-align].selected').removeClass('selected');
 								$(_this).addClass('selected');
 								a.set('textAlign', _this.getAttribute('data-align'));
-								var origin_x = _this.getAttribute('data-align');
-								if(origin_x != 'left' && origin_x != 'right'){
-									origin_x = 'center';
-								}
-								a.set('originX', origin_x);
+								// var origin_x = _this.getAttribute('data-align');
+								// if(origin_x != 'left' && origin_x != 'right'){
+								// 	origin_x = 'center';
+								// }
+								// a.set('originX', origin_x);
 								lumise.get.el('text-align').attr({'class': 'lumisex-align-'+(_this.getAttribute('data-align') ? _this.getAttribute('data-align') : 'center')});
 
 							}else if (fm) {
@@ -3602,6 +3525,7 @@ jQuery(document).ready(function($) {
 					},
 
 					exit_drawing : function(){
+						lumise.tools.save();
 						lumise.get.el('left .lumise-left-nav li[data-tab="layers"]').trigger('click');
 					},
 
@@ -3632,7 +3556,7 @@ jQuery(document).ready(function($) {
 						switch (act) {
 
 							case 'edit' :
-							
+
 								if (id == 'new' || is_save) {
 									
 									let is_empty_design = true;
@@ -3659,7 +3583,7 @@ jQuery(document).ready(function($) {
 									return lumise.fn.notice(lumise.i(109), 'success', 3500);;
 									
 								};
-								
+
 								lumise.indexed.get(id, 'dumb', function(res){
 									if (res !== null) {
 										lumise.fn.set_url('cart', null);
@@ -3822,7 +3746,7 @@ jQuery(document).ready(function($) {
 										'button[data-func="print"]'],
 									stage = lumise.stage(),
 									size = (stage !== undefined && stage.size !== undefined ? stage.size : '');
-								
+
 								inps = $('#lumise-print-nav').find(inps.join(','));
 								
 								pcfg.format = format;
@@ -3951,14 +3875,15 @@ jQuery(document).ready(function($) {
 							var psize = lumise.get.size();
 							
 							lumise.fn.uncache_large_images(function() {
-								
+					
+
 								lumise.f(false);
 										
 								lumise.fn.download_design({
 									type: 'png',
 									orien: psize.o,
-									height: psize.h,
-									width: psize.w,
+									height: psize.h/2,
+									width: psize.w/2,
 									include_base: include_base,
 									callback: function(data) {
 										
@@ -4137,7 +4062,6 @@ jQuery(document).ready(function($) {
 							
 							case 'nav' : 
 								return e.data.nav(e);
-							break;
 							
 							case 'pagination' : 
 								load_history(el.data('p'));
@@ -4457,14 +4381,14 @@ jQuery(document).ready(function($) {
 						$(e.target).closest('#lumise-stage-nav').length === 0 && 
 						lumise.get.el('stage-nav').hasClass('stages-expand')
 					)lumise.get.el('stage-nav').removeClass('stages-expand').removeClass('preview-designs');
-					
 					var el = $(e.target);
-					
 					if (e.target.tagName != 'INPUT' && el.closest('div.lumise_color_picker').length === 0)
 						$('#lumise-color-picker-header i').click();
+                        
 						
 					if (el.hasClass('close') || el.closest('div#lumise-x-thumbn-preview,[data-prevent-click="true"]').length === 0) {
 						lumise.get.el('x-thumbn-preview').hide();
+                       
 					}else if (
 						!lumise.ops.preventClick &&
 						!el.hasClass('upper-canvas') &&
@@ -4484,7 +4408,6 @@ jQuery(document).ready(function($) {
 							lumise.fn.navigation('clear');
 						else lumise.tools.discard();
 					};
-					
 					delete lumise.ops.preventClick;
 					
 					$('iframe').each(function(){
@@ -4528,43 +4451,24 @@ jQuery(document).ready(function($) {
 						return lumise.actions.do('key-esc');
 
 					switch (e.keyCode) {
-						case 8: return lumise.actions.do('key-delete', e); break;
-						case 46: return lumise.actions.do('key-delete', e); break;
-						case 13: return lumise.actions.do('key-enter', e); break;
-						case 27: return lumise.actions.do('key-esc', e); break;
-						case 37:
+						case 8: return lumise.actions.do('key-delete', e);						case 46: return lumise.actions.do('key-delete', e);						case 13: return lumise.actions.do('key-enter', e);						case 27: return lumise.actions.do('key-esc', e);						case 37:
 						case 38:
 						case 39:
-						case 40: return lumise.actions.do('key-move', e); break;
-
+						case 40: return lumise.actions.do('key-move', e);
 					};
 
 					if (e.metaKey === true || e.ctrlKey === true) {
 						
 						switch (e.keyCode) {
-							case 48: return lumise.actions.do('ctrl-0', e); break;
-							case 65: return lumise.actions.do('ctrl-a', e); break;
-							case 68: return lumise.actions.do('ctrl-d', e); break;
-							case 69: return lumise.actions.do('ctrl-e', e); break;
-							case 79: return lumise.actions.do('ctrl-o', e); break;
-							case 80: return lumise.actions.do('ctrl-p', e); break;
-							case 83:
+							case 48: return lumise.actions.do('ctrl-0', e);							case 65: return lumise.actions.do('ctrl-a', e);							case 68: return lumise.actions.do('ctrl-d', e);							case 69: return lumise.actions.do('ctrl-e', e);							case 79: return lumise.actions.do('ctrl-o', e);							case 80: return lumise.actions.do('ctrl-p', e);							case 83:
 								if (e.shiftKey === true)
 									return lumise.actions.do('ctrl-shift-s', e);
 								else return lumise.actions.do('ctrl-s', e);
-							break;
 							case 90:
 								if (e.shiftKey === false)
 									return lumise.actions.do('ctrl-z');
 								else return lumise.actions.do('ctrl-shift-z');
-							break;
-							case 61: return lumise.actions.do('ctrl+', e); break;
-							case 173: return lumise.actions.do('ctrl-', e); break;
-							case 107: return lumise.actions.do('ctrl+', e); break;
-							case 109: return lumise.actions.do('ctrl-', e); break;
-							case 187: return lumise.actions.do('ctrl+', e); break;
-							case 189: return lumise.actions.do('ctrl-', e); break;
-						}
+							case 61: return lumise.actions.do('ctrl+', e);							case 173: return lumise.actions.do('ctrl-', e);							case 107: return lumise.actions.do('ctrl+', e);							case 109: return lumise.actions.do('ctrl-', e);							case 187: return lumise.actions.do('ctrl+', e);							case 189: return lumise.actions.do('ctrl-', e);						}
 
 					}
 
@@ -4937,7 +4841,7 @@ jQuery(document).ready(function($) {
 			my_designs : {
 				
 				import : function(file) {
-					
+
 					if (
 						typeof file != 'object' || 
 						(
@@ -5190,9 +5094,8 @@ jQuery(document).ready(function($) {
 					},
 
 					qrcode: function(){
-						
 						var fill_default = lumise.get.color('invert');
-			
+
 						if (lumise.data.colors !== undefined && lumise.data.colors !== '') {
 							fill_default = lumise.data.colors.split(',')[0];
 							if (fill_default.indexOf(':') > -1)
@@ -5208,37 +5111,6 @@ jQuery(document).ready(function($) {
 						});
 						return;
 
-						lumise.tools.lightbox({
-							width: 500,
-							content: '<div id="lumise-create-qrcode" class="lumise-lightbox-form">\
-										<h3 class="title">'+lumise.i('10')+'</h3>\
-										<p>\
-											<label>'+lumise.i('11')+':</label>\
-											<input name="text" type="text" placeholder="'+lumise.i('11')+'" /></p>\
-										<p>\
-											<label>'+lumise.i('12')+':</label>\
-											<input name="color" type="search" placeholder="'+lumise.i('13')+'" value="'+fill_default+'" />\
-										</p>\
-										<p class="right"><button class="primary">'+lumise.i('10')+'</button></p>\
-									</div>'
-						});
-
-						new jscolor.color(lumise.fn.q('#lumise-create-qrcode input[name="color"]'), {});
-						$('#lumise-create-qrcode button').on('click', function(e){
-
-							var text = lumise.fn.q('#lumise-create-qrcode input[name="text"]').value,
-								color = lumise.fn.q('#lumise-create-qrcode input[name="color"]').value;
-
-							if (text === '')
-								return $('#lumise-create-qrcode input[name="text"]').shake();
-							if (color === '')
-								return $('#lumise-create-qrcode input[name="color"]').shake();
-
-							lumise.objects.qrcode(text, color);
-							lumise.get.el('left .lumise-left-nav li[data-tab="layers"]').trigger('click');
-
-						});
-						lumise.fn.q('#lumise-create-qrcode input[name="text"]').focus();
 
 					},
 
@@ -5289,10 +5161,6 @@ jQuery(document).ready(function($) {
 						
 						return lumise.render.refresh_my_designs();
 						
-						if (!$('#lumise-saved-designs').attr('data-load')) {
-							lumise.render.refresh_my_designs();
-							$('#lumise-saved-designs').attr({'data-load': 'true'});
-						}
 
 					},
 					
@@ -5777,7 +5645,7 @@ jQuery(document).ready(function($) {
 			uploads : [],
 
 			add : function(el, ops) {
-				
+
 				if (!el.getAttribute('data-ops'))
 					return;
 				
@@ -5904,13 +5772,14 @@ jQuery(document).ready(function($) {
 					if (lumise.xitems.ops[ops] !== undefined)
 						ops = $.extend(true, [], lumise.xitems.ops[ops]);
 					else ops = JSON.parse(ops);
-					
+
 					if (ops[0].type == 'shape')
 						ops[0].url = 'data:image/svg+xml;base64,'+btoa(t.innerHTML.trim());
 					else if (ops[0].url === undefined)
 						ops[0].url = lumise.cliparts.storage[ops[0].id] || lumise.cliparts.uploads[ops[0].id];
 					
 					if (ops[0].url && ops[0].url.indexOf('dumb-') === 0) {
+						
 						lumise.indexed.get(ops[0].url.split('dumb-')[1], 'dumb', function(res){
 							if (res !== null & res !== undefined) {
 								lumise.cliparts.uploads[ops[0].id] = res[0];
@@ -5925,14 +5794,14 @@ jQuery(document).ready(function($) {
 					}
 					
 				}]];
-
 				lumise.get.el('left').find('ul.lumise-list-items li.lumise-clipart:not([draggable="true"])').each(function(){
-
+					
 					if (this.getAttribute('draggable'))
 						return;
-
+						
 					this.setAttribute('draggable', true);
 					var _this = this;
+
 					events.map(function(ev){
 						_this.addEventListener(ev[0], ev[1], false);
 					});
@@ -5963,11 +5832,11 @@ jQuery(document).ready(function($) {
 			},
 
 			import : function(id, ops, dir) {
-				
+
 		    	var do_import = function() {
 					
 					lumise.cliparts.uploads[id] = ops.url;
-
+                  
 				    if (ops.thumbn && typeof ops.thumbn == 'string' && ops.thumbn.indexOf('data:image') === 0)
 				    	ops.thumbn = lumise.fn.url2blob(ops.thumbn);
 
@@ -6218,7 +6087,7 @@ jQuery(document).ready(function($) {
 			},
 
 			export : function(stage) {
-				
+
 				if (!stage || !stage.canvas)
 					return null;
 
@@ -6460,7 +6329,6 @@ jQuery(document).ready(function($) {
 			},
 
 			import : function (data, callback) {
-				
 				if (!data || !data.objects) {
 					lumise.ops.importing = false;
 					return callback();
@@ -6475,7 +6343,7 @@ jQuery(document).ready(function($) {
 				var stage = lumise.stage(),
 					canvas = stage.canvas,
 					do_import = function(i) {
-						
+
 						if (i === -1) {
 							/*Scann and load all fonts before importing*/
 							var gfonts = [], custom = [], families = [], cfo, uco;
@@ -6569,6 +6437,7 @@ jQuery(document).ready(function($) {
 						};
 						
 						data.objects[i] = lumise.apply_filters('before_import_object', data.objects[i]);
+
 						if (data.objects[i] !== undefined) {
 							
 							lumise.f(lumise.i('importing'));
@@ -6578,7 +6447,6 @@ jQuery(document).ready(function($) {
 
 								delete data.objects[i].clipTo;
 								delete data.objects[i].active;
-
 								data.objects[i] = $.extend({
 									stroke: '',
 									strokeWidth: 0,
@@ -6590,9 +6458,8 @@ jQuery(document).ready(function($) {
 									left: stage.limit_zone.left + (stage.limit_zone.width/2),
 									top: stage.limit_zone.top + (stage.limit_zone.height/2)
 								}, data.objects[i]);
-								
 								if (lumise.objects.lumise[data.objects[i].type]) {
-
+                                  
 									data.objects[i].top += yCenter;
 									data.objects[i].left += xCenter;
  									if (
@@ -6601,48 +6468,84 @@ jQuery(document).ready(function($) {
  										data.objects[i].src.indexOf('blob:') !== 0 &&
  										data.objects[i].src.indexOf('data:image/') !== 0
  									) data.objects[i].src = lumise.data.upload_url+data.objects[i].src;
- 								
  									var do_add = function() {
 	 									
 	 									if(data.objects[i].resource == 'cliparts'){
 	 										data.objects[i] = lumise.apply_filters('clipart_filter', data.objects[i]);
 	 									}
 
+	 									if( 
+	 										(
+	 											data.objects[i].type == 'i-text' 
+	 											|| data.objects[i].type == 'text-fx'
+	 											|| data.objects[i].type == 'curvedText'
+	 										) 
+	 										&& data.objects[i].text.indexOf('&#') != -1 
+	 									){
+
+	 										let targetText = data.objects[i].text; 
+											let reg = /(\&\#x([a-zA-Z0-9]+)\;)/gm;
+
+											let res = targetText.replace(reg, function (character_detect) {
+												character_detect = character_detect.substring(6, character_detect.length-1);
+												let charCode = String.fromCodePoint(character_detect);
+												return charCode;
+											});
+											data.objects[i].text = res;
+	 									}
+                                       
 	 									lumise.objects.lumise[data.objects[i].type](
 											data.objects[i],
 											function (obj) {
-
 												if (obj === null) {
 													err = true;
 													return do_import(i+1);
 												};
-												
-												canvas.add(obj);
 
+												canvas.add(obj);
+                                            
+                                             
 												if (obj.type == 'curvedText')
 													obj.set('radius', obj.radius);
 												
-												if (obj.type =='image' && obj.fx !== undefined) {
-
+												
+												if (obj.type == 'qrcode'){
+													var qrcode = lumise.tools.qrcode({
+														text: obj.text,
+														foreground: obj.fill
+													});
+													obj._element.src = qrcode.toDataURL();
+                                                     
+													delete qrcode;
+					                                
+													obj._element.onload = function() {
+														lumise.f(false);
+														do_import(i+1);
+													}
+												}
+											
+												if (obj.type == 'image' && obj.fx !== undefined) {
 											        obj.fxOrigin = obj._originalElement.cloneNode(true);
-
-													setTimeout (function() {
-
-												        lumise.fn.image_fx(obj.fxOrigin, obj.fx, function(cdata, colors){
-
-															obj._element.src = cdata;
-															obj._originalElement.src = cdata;
-
-															obj.colors = colors;
-
-															obj._element.onload = function() {
-																lumise.f(false);
-																do_import(i+1);
-															}
-
-														});
-
-													}, 1);
+                                                        setTimeout (function() {
+                                                            lumise.fn.image_fx(obj.fxOrigin, obj.fx, function(cdata, colors){
+                                                                obj._element.src = cdata;
+                                                                obj._originalElement.src = cdata;
+                                                                obj.colors = colors;
+                                                                let fillOld = obj.fill;
+                                                                delete obj.fill;
+                                                                function hexToRGBA(hex, opacity) {
+                                                                    return 'rgba(' + (hex = hex.replace('#', '')).match(new RegExp('(.{' + hex.length/3 + '})', 'g')).map(function(l) { return parseInt(hex.length%2 ? l+l : l, 16) }).concat(isFinite(opacity) ? opacity : 1).join(',') + ')';
+                                                                }
+                                                                obj.fill = hexToRGBA(fillOld);
+                                                                obj._originalElement.onload = function() {
+                                                                        lumise.f(false);
+                                                                        do_import(i+1);
+                                                                        canvas.setActiveObject(obj);
+                                                                    }
+                                                                });
+                                                        }, 1);
+															
+                                                            
 
 										        }else do_import(i+1);
 
@@ -6725,7 +6628,6 @@ jQuery(document).ready(function($) {
 			},
 
 			imports : function(data, callback) {
-			
 				if (!data || !data.stages) {
 					return lumise.fn.notice(lumise.i(25), 'error');
 				};
@@ -7846,6 +7748,8 @@ jQuery(document).ready(function($) {
 				var newobj = lumise.objects.text(props);
 				props.width = newobj.width;
 				props.height = newobj.height;
+				props.textAlign = 'center';
+
 
 				lumise.objects.lumise['text-fx'](props, lumise.fn.switch_type);
 
@@ -8028,6 +7932,8 @@ jQuery(document).ready(function($) {
 	
 							s.active._element.src = cdata;
 							s.active._originalElement.src = cdata;
+				
+
 							s.active.colors = colors;
 	
 							s.active._element.onload = function() {
@@ -8082,6 +7988,8 @@ jQuery(document).ready(function($) {
 					lumise.fn.image_fx(active.fxOrigin, active.fx, function(cdata, colors){
 
 						active._element.src = cdata;
+			
+
 						active._originalElement.src = cdata;
 						active.colors = colors;
 
@@ -8139,6 +8047,7 @@ jQuery(document).ready(function($) {
 					});
 
 					lumise.tools.save();
+					sessionStorage.removeItem("LUMISE-CHANGE-COLOR");
 				}
 				
 				lumise.actions.do('product-color', color);
@@ -8255,7 +8164,7 @@ jQuery(document).ready(function($) {
 							w = ops.width;
 						
 						if (window.devicePixelRatio == 3 && h*w >= 16777216) {
-							let r = 16777216/h*w;
+							let r = 16777216/(h*w);
 							h = h*r;
 							w = w*r;
 						};
@@ -8444,50 +8353,6 @@ jQuery(document).ready(function($) {
 								
 								
 								
-								lumise.f('Start uploading..');
-			
-								var boundary = "---------------------------7da24f2e50046";
-								var body = '--' + boundary + '\r\n'
-								         + 'Content-Disposition: form-data; name="file";'
-								         + 'filename="temp.txt"\r\n'
-								         + 'Content-type: plain/text\r\n\r\n'
-								         + data.join('<!-----Lumise break page------>') + '\r\n'+ '--'+ boundary + '--';
-								         
-								$.ajax({
-								    contentType: "multipart/form-data; boundary="+boundary,
-								    data	:	 body,
-								    type	:	 "POST",
-								    url		:	 lumise.data.ajax+
-								    	 '&action=render_pdf'+
-								    	 '&ajax=frontend'+
-								    	 '&name='+encodeURIComponent($('#lumise-product header name t').text())+
-								    	 '&nonce=LUMISE-SECURITY:'+lumise.data.nonce,
-								    xhr		:	 function() {
-									    var xhr = new window.XMLHttpRequest();
-									    xhr.upload.addEventListener("progress", function(evt){
-									      if (evt.lengthComputable) {
-									        var percentComplete = evt.loaded / evt.total;
-									        if (percentComplete < 1)
-									       		$('div#LumiseDesign').attr({'data-msg': parseInt(percentComplete*100)+'% upload complete'});
-									       	else $('div#LumiseDesign').attr({'data-msg': lumise.i(159)});
-									      }
-									    }, false);
-									    return xhr;
-									},
-								    success	:	 function (res, status) {
-									    lumise.f(false);
-									    if (res.indexOf('user_data') !== 0 || res.indexOf('.pdf') === -1) {
-										    alert(res);
-										    return;
-									    }
-									    var a = document.createElement('a');
-										a.download = name+'.pdf';
-										a.href = lumise.data.upload_url+res;
-										a.click();
-										delete a;
-									    
-								    }
-								});
 							};
 						
 						if (ops.full === undefined || ops.full !== true) {
@@ -8619,7 +8484,6 @@ jQuery(document).ready(function($) {
 							name.split('.')[1].toUpperCase()
 						, 'notice', 5000);
 						return window.open(URL.createObjectURL(blob), name);
-						delete a;
 					};
 					
 					$('body').append(a);
@@ -8896,16 +8760,6 @@ jQuery(document).ready(function($) {
 					return;
 					
 					
-					var canvas = document.createElement('canvas'), 
-					ctx = canvas.getContext('2d');
-					canvas.width = o._element.width*5;
-					canvas.height = o._element.height*5;
-					ctx.drawImage(o._element, 0, 0, o._element.width*5, o._element.height*5);
-					
-					svg_obj.find('image[id="'+o.id+'"]').get(0).setAttribute(
-						'xlink:href', 
-						canvas.toDataURL('image/png')
-					);
 					
 				});
 				
@@ -9040,7 +8894,7 @@ jQuery(document).ready(function($) {
 					        img_preview_check.onload = function() {
 					            let check_img = lumise.fn.check_upload_dimensions(img_preview_check);
 					            delete img_preview_check;
-					            if (img_opt === null){
+					            if (img_opt === null || check_img == null){
 					            	return null;
 					            }
 					            new lumise.cliparts.import(id, img_opt, 'prepend');
@@ -9198,43 +9052,6 @@ jQuery(document).ready(function($) {
 						return;
 						
 						
-						var s = lumise.stage(),
-							main_canvas = s.canvas,
-							active = image,
-							img = crop.find('img.lumise_crop_img').get(0),
-							type = img.src.indexOf('data:image/jpeg') ? 'jpeg' : 'png',
-							canvas = document.createElement('canvas'),
-							ctx = canvas.getContext('2d'),
-							area = crop.find('div.lumise_crop_selArea'),
-							w = area.width(),
-							h = area.height(),
-							t = area.get(0).offsetTop,
-							l = area.get(0).offsetLeft;
-							
-						canvas.width = w;
-						canvas.height = h;
-						
-						ctx.drawImage(img, -l, -t, area.parent().width(), area.parent().height());
-						
-						var ow = active.width,
-							oh = active.height,
-							src = canvas.toDataURL('image/'+type);
-									
-						delete canvas;
-						delete ctx;
-						
-						active.setSrc(src, function() {
-							active.set({
-								width: ow,
-								height: ow*(h/w),
-								origin_src: src,
-								src: src,
-								type: 'image'
-							});
-							main_canvas.renderAll();
-						});
-							
-						delete canvas;
 						
 					}
 				});
@@ -9273,7 +9090,7 @@ jQuery(document).ready(function($) {
 			},
 			
 			preset_import : function(data, pos, callback) {
-				
+
 				var stage = lumise.stage();
 
 				lumise.f('Loading..');
@@ -9890,7 +9707,6 @@ jQuery(document).ready(function($) {
 			},
 
 			update_state : function() {
-			
 				clearTimeout(lumise.ops.preventDbl);
 				
 				lumise.ops.preventDbl = setTimeout(function() {
@@ -9902,7 +9718,7 @@ jQuery(document).ready(function($) {
 						c;
 					
 					Object.keys(lumise.data.stages).map(function(s){
-	
+						
 						var scolors = [], image = 0, text = 0, clipart = 0, vector = 0, upload=0;
 						
 						objs = [];
@@ -9961,7 +9777,7 @@ jQuery(document).ready(function($) {
 									) {
 										o.price = 0;
 									};
-									
+
 									if (typeof o.resource !== 'undefined') {
 										switch (o.resource) {
 											case 'cliparts':
@@ -9973,8 +9789,10 @@ jQuery(document).ready(function($) {
 											case 'svg':
 												vector++;
 												break;
-											default:
-												
+											case 'images':
+												image++;
+												break;
+											default:	
 										}
 									} else {
 										switch (o.type) {
@@ -10021,7 +9839,7 @@ jQuery(document).ready(function($) {
 					
 					// $('#lumise-count-colors i').html(mo).css({background: 'linear-gradient(to right, '+bg.join(', ')+')'}).attr({title: 'Used '+bg.length+' colors'});
 					$('#lumise-count-colors i').html(mo).css({background: 'linear-gradient(to right, '+bg.join(', ')+')'}).attr({title: 'Used '+mo+' colors'});
-					
+
 					lumise.actions.do('updated', states);
 					
 					lumise.get.el('status').hide();
@@ -10804,7 +10622,7 @@ jQuery(document).ready(function($) {
 			},
 			
 			edit_design : function(ops) {
-				
+
 				lumise.tools.save();
 				lumise.tools.clearAll();
 				
@@ -10983,7 +10801,6 @@ jQuery(document).ready(function($) {
 							if( (data.stages[s].screenshot == undefined || data.stages[s].screenshot == 'undefined' || data.stages[s].screenshot == null) && data.stages[s].image != ''){
 								lumise.data.stages[s].screenshot = data.stages[s].image;
 							}
-							sessionStorage.removeItem("LUMISE-CHANGE-COLOR");
 						}
 
 						if(save == 'cart'){
@@ -11204,7 +11021,7 @@ jQuery(document).ready(function($) {
 				var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
 					days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
 					map = {
-						't': (t.getMonth() < 10 ? '0' : '')+(t.getMonth()+1),
+						't': (t.getMonth() +1 < 10 ? '0' : '')+(t.getMonth()+1),
 						'h': t.getHours(),
 						'm': (t.getMinutes() < 10? '0' : '') + t.getMinutes(),
 						'd': t.getDate(),
@@ -11227,20 +11044,22 @@ jQuery(document).ready(function($) {
 			cart_thumbn : function(id) {
                 
                 lumise.indexed.get(id, 'cart', function(res){
-                    
+
                     if (res === null || res === undefined)
                         return;
                     var objs = Object.keys(res.stages);
+
                     for(var i=0; i< objs.length; i++)
                     {
                         var stage = res.stages[objs[i]];
                         var ratio = 180/stage.product_height;
                         img = '<img data-view="layer" style="height: 180px;width: '+(stage.product_width*ratio)+'px; '+(i>0 ? "display:none;":"")+'" src="'+stage.screenshot+'" />';
                         $('div[data-design-layer="'+id+'"]').append(img);
+
+						if( $('#lumise-cart-items img[data-id="'+id+'"]').length > 0 && i == 0){
+							$('#lumise-cart-items img[data-id="'+id+'"]').attr('src', stage.screenshot);
+						}
                     }
-                    
-                     
-                    
                 });
             },
 			
@@ -11395,64 +11214,6 @@ jQuery(document).ready(function($) {
 					
 					return;
 					
-					var ids = [];
-					group._objects.map(function(o){
-						if (o.id && ids.indexOf(o.id) === -1)
-							ids.push(o.id);
-					});
-					
-					lumise.tools.discard();
-					do_clone(ids);
-					
-					return true;
-					// && confirm(lumise.i('05'))
-					var clones = [];
-						
-					group._objects.map(function(obj){
-						delete obj.clipTo;
-						clones.push(obj.clone() ? obj.clone() : obj);
-					});
-					
-					var new_group = new fabric.Group(clones, {
-						left: group.left,
-						top: group.top,
-						scaleX: group.scaleX*5,
-						scaleY: group.scaleY*5,
-					});
-
-					var ops = {
-							left: group.left,
-							top: group.top,
-							height: group.height,
-							width: group.width,
-							scaleX: group.scaleX,
-							scaleY: group.scaleY,
-							angle: group.angle,
-							name: 'Group objects',
-							text: 'Group objects',
-							src: new_group.toDataURL()
-						};
-
-					new_group.set('scaleX', new_group.scaleX/5);
-					new_group.set('scaleY', new_group.scaleY/5);
-
-					lumise.objects.lumise.image(ops, function(obj){
-
-						var index = canvas.getObjects().indexOf(group._objects[0]);
-
-						lumise.stage().canvas.discardActiveGroup();
-
-						group._objects.map(function(c){
-							canvas.remove(c);
-						});
-
-						canvas.add(obj);
-						obj.moveTo(index);
-
-						lumise.stack.save();
-						lumise.design.layers.build();
-
-					});
 
 				}
 	
@@ -11695,12 +11456,11 @@ jQuery(document).ready(function($) {
 				var crop = $('#lumise-lightbox-content div.lumise_crop_dragArea');
 				
 				crop.on('mousedown touchstart', function(e){
-						
 					if (e.type == 'touchstart') {
-						e.clientX = e.originalEvent.pageX;
-						e.clientY = e.originalEvent.pageY;
+						e.clientX = e.originalEvent.touches[0].pageX;
+						e.clientY = e.originalEvent.touches[0].pageY;
 					}
-					
+
 					var wrp = $(this),
 						lightbox = $('#lumise-lightbox-content'),
 						img = wrp.find('>img').get(0),
@@ -11776,8 +11536,8 @@ jQuery(document).ready(function($) {
 							return true;
 						
 						if (e.type == 'touchmove') {
-							e.clientX = e.originalEvent.pageX;
-							e.clientY = e.originalEvent.pageY;
+							e.clientX = e.originalEvent.touches[0].pageX;
+							e.clientY = e.originalEvent.touches[0].pageY;
 						}
 						
 						var _l = _o.l + (e.clientX - _o.clientX),
@@ -11949,10 +11709,8 @@ jQuery(document).ready(function($) {
 							
 							return $('#lumise-lightbox').remove();
 							
-						break;
 						case 'cancel':
 							return $('#lumise-lightbox').remove();
-						break;
 					}
 
 					$('#lumise-lightbox-content div.lumise_crop_dragArea').
@@ -12676,7 +12434,7 @@ jQuery(document).ready(function($) {
 					});
 					lumise.data.stages = _stages;
 				};
-				
+
 				lumise.data.cfgprinting = vari_data.cfgprinting;
 				
 				if (vari_data.cfgprinting)
@@ -12894,30 +12652,6 @@ jQuery(document).ready(function($) {
 													return lumise.f(false);
 													// return lumise.cart.process_add_cart(cart_design);
 												}
-
-												// setTimeout(function (){
-												// 	// lumise.stack.save();
-												// 	if (Object.keys(lumise.data.stages)[start_render] !== undefined) {
-												// 		if(lumise.data.stages[Object.keys(lumise.data.stages)[start_render]].data == undefined){
-												// 			start_render++;
-												// 		}
-												// 		export_print_file (Object.keys(lumise.data.stages)[start_render]);
-												// 	} else {
-												// 		lumise.active_stage(Object.keys(lumise.data.stages)[0]);
-												// 		lumise.data.stages[first_stage].screenshot = lumise.tools.toImage({
-												// 			stage: lumise.data.stages[first_stage],
-												// 			is_bg: 'full', 
-												// 			multiplier: 1/window.devicePixelRatio
-												// 		});
-														
-												// 		$('#lumise-stage-nav img[data-stage="'+first_stage+'"]').attr({
-												// 			src: lumise.data.stages[first_stage].screenshot
-												// 		});
-												// 		lumise.stack.save();
-												// 		return lumise.f(false);
-												// 		// return lumise.cart.process_add_cart(cart_design);
-												// 	}
-												// }, 650);
 												
 											}	
 										});
@@ -12940,12 +12674,13 @@ jQuery(document).ready(function($) {
 						});
 					}
 					
+
+					setTimeout(lumise.fn.product_color, 1, lumise.get.color());
 					stage.screenshot = lumise.tools.toImage({
 						stage: stage,
 						is_bg: 'full', 
 						multiplier: 1/window.devicePixelRatio
 					});
-					
 					$('#lumise-stage-nav img[data-stage="'+lumise.current_stage+'"]').attr({
 						src: stage.screenshot
 					});
@@ -13020,7 +12755,7 @@ jQuery(document).ready(function($) {
 			},
 			
 			cart_change : function() {
-
+				
 				var current_id = lumise.fn.url_var('cart', ''),
 					btn = lumise.get.el('cart-action'),
 					items = localStorage.getItem('LUMISE-CART-DATA'),
@@ -13046,7 +12781,7 @@ jQuery(document).ready(function($) {
 				}
 				
 				var item, color, qty;
-				
+
 				if (Object.keys(items).length > 0) {
 					Object.keys(items).map(function(id) {
 						item = items[id];
@@ -13108,6 +12843,8 @@ jQuery(document).ready(function($) {
 									'+(id == current_id ? '<small>'+lumise.i(72)+'</small> ' : '')+'\
 								</span>\
 							</li>');
+							setTimeout(lumise.fn.cart_thumbn, 100, id);
+
 							total += parseFloat(item.price_total);
 						}
 					});
@@ -13153,14 +12890,14 @@ jQuery(document).ready(function($) {
 					
 				if (Object.keys(items).length > 0) {
 					Object.keys(items).map(function(id) {
-						
+
 						if (lumise.fn.version_compare('1.7.1', items[id].system_version) > 0) {
 							delete items[id];
 							localStorage.setItem('LUMISE-CART-DATA', JSON.stringify(items));
 							lumise.indexed.delete(id, 'cart');
 							return;
 						};
-							
+						
 						var item = items[id], val, attr = '';
 						
 						Object.keys(item.options).map(function(at) {
@@ -13209,7 +12946,7 @@ jQuery(document).ready(function($) {
 							'<div data-design-layer="'+id+'"></div>',
 							'<span class="product-title"  align="center">'+item.name+'</span>',
 							'</td>',
-							'<td>'+attr+'<strong>'+lumise.i(191)+':</strong> '+item.stages+'</td>',
+							'<td>'+attr+'</td>',
 							'<td data-align="center">'+lumise.fn.price(item.price_total)+'</td>',
 							'<td data-align="center">'+lumise.fn.date('h:m D d M, Y', item.updated)+'</td>',
 							'<td data-align="center">',
@@ -13966,16 +13703,34 @@ jQuery(document).ready(function($) {
 						
 						var stages = lumise.fn.pimage(p.stages.stages !== undefined ? p.stages.stages : p.stages);
 						
-						var cates = '',
-							color = (
-								p.stages.options !== undefined ? p.stages.options.color :
-								(p.stages.colors !== undefined ? p.stages.colors.active : 
-									(typeof p.color == 'string' ? p.color.split(':')[0] : '')
-								)
-							);
+						var color = '';
 						
 						if (stages.colors !== undefined)
 							delete stages.colors;
+							
+						try {
+							var attrs = lumise.fn.dejson(p.attributes);
+						} catch (ex) {
+							var attrs = {};
+						};	
+
+						Object.keys(attrs).map(function(k) {
+							if (
+								attrs[k].type == 'product_color' && 
+								attrs[k].values !== '' &&
+								attrs[k].values !== null
+							) {
+								try {
+									if (typeof attrs[k].values == 'string')
+										attrs[k].values = JSON.parse(attrs[k].values);
+									attrs[k].values.options.map(function(v) {
+										if (v.default)
+											color = v.value;
+									});
+									
+								} catch (ex) {};	
+							}		
+						});	
 							
 						var first = Object.keys(stages)[0],
 							template = '';
@@ -14385,9 +14140,14 @@ jQuery(document).ready(function($) {
 			};
 			
 			if (ww<450) {
-				
+
+				var total_element = 0;
+				$('ul.lumise-left-nav li').each(function(){
+					total_element += parseFloat($(this).outerWidth());
+				});
+
 				lumise.actions.add('first-completed', function(){
-					$('li[data-tab="design"]').trigger('click');
+					$('li[data-tab="product"]').trigger('click');
 				});
 				
 				var wrp = $('div#lumise-left .lumise-left-nav,#lumise-top-tools');
@@ -14408,10 +14168,12 @@ jQuery(document).ready(function($) {
 					if (this.sub !== undefined && this.sub.length > 0)
 						return true;
 					var l = (this.l+((e.originalEvent.pageX ? e.originalEvent.pageX : e.originalEvent.touches[0].pageX)-this.x));
+
+
 					if (l > 0){
 						l = l*0.1;
 					}
-					else if (this.offsetWidth + l < this.w && l <= 0 ){
+					else if (this.offsetWidth + l < this.w && l <= 0 && total_element < ww ){
 						l = 0.1;
 					}
 					else if (this.offsetWidth + l < this.w){
@@ -14437,7 +14199,7 @@ jQuery(document).ready(function($) {
 				});
 				
 				lumise.actions.add('object:added', function(){
-					$('li[data-tab="design"]').trigger('click');
+					$('li[data-tab="product"]').trigger('click');
 					$('div#lumise-left .lumise-left-nav').css({left: '0px'});
 				});
 				lumise.actions.add('selection:cleared', function(){
@@ -14723,7 +14485,7 @@ jQuery(document).ready(function($) {
 			sum					: function (){
 				
 				var price = this.sum_calc();
-				
+
 				return  price.base+price.ext+price.template;
 				
 			},
@@ -14749,7 +14511,7 @@ jQuery(document).ready(function($) {
 			},
 			
 			get_price			: function (f){
-				
+
 				var price	= 0, 
 					sum		= lumise.cart.sum();
 				
@@ -14757,7 +14519,7 @@ jQuery(document).ready(function($) {
 					lumise.cart.qty = 1;
 					
 				price = ( sum + lumise.cart.printing.calc( lumise.cart.qty ) ) * lumise.cart.qty;
-				
+
 				price += lumise.cart.price.fixed;
 				
 				return f === true ? [price, lumise.cart.qty] : price;
@@ -14765,7 +14527,7 @@ jQuery(document).ready(function($) {
 			},
 
 			init				: function () {
-
+				
 				if(lumise.onload == undefined)
 					lumise.cart.render();
 					
@@ -14773,7 +14535,6 @@ jQuery(document).ready(function($) {
 					update printing price when objects changed
 				*/
 				lumise.actions.add('updated', function (data){
-					
 					clearTimeout(lumise.cart.timer);
 					
 					lumise.cart.timer = setTimeout(function (){
@@ -14818,7 +14579,6 @@ jQuery(document).ready(function($) {
 				/*
 				*	Check cart_design empty
 				*/
-				
 				Object.keys(lumise.data.stages).map(function(s) {
 					if (
 						typeof lumise.data.stages[s] !== 'undefined'
@@ -15131,7 +14891,7 @@ jQuery(document).ready(function($) {
 			},
 			
 			calc				: function (states_data) {
-				
+
 				if (states_data == undefined)
 					states_data = lumise.cart.printing.states_data;
 				else
@@ -15149,7 +14909,7 @@ jQuery(document).ready(function($) {
 				
 				var fields = $('.lumise-cart-attributes .lumise-cart-param:not(.disabled)').serializeArray(),
 					attrs = lumise.ops.product_data.attributes;
-				
+
 				fields.map(function (field){
 					
 					if (attrs[field.name] == undefined) 
@@ -15345,6 +15105,7 @@ jQuery(document).ready(function($) {
 	            lumise.f('0% complete');
 					
 				 $.ajax({
+                     
 				    data	:	 formData,
 				    type	:	 "POST",
 				    url		:	 lumise.data.ajax,
@@ -15367,7 +15128,7 @@ jQuery(document).ready(function($) {
 				    success: function (res, status) {
 					    
 					    $('div#LumiseDesign').attr({'data-msg': lumise.i(161)});
-					    
+					    console.log(res);
 					    if (res == '0') {
 						    alert('Error: could not checkout this time');
 					    } else {
@@ -15392,54 +15153,6 @@ jQuery(document).ready(function($) {
 				
 				
 				
-				var boundary = "---------------------------7da24f2e50046";
-				var body = '--' + boundary + '\r\n'
-				         + 'Content-Disposition: form-data; name="file";'
-				         + 'filename="temp.txt"\r\n'
-				         + 'Content-type: plain/text\r\n\r\n'
-				         + data + '\r\n'+ '--'+ boundary + '--';
-				       
-				$.ajax({
-				    contentType: "multipart/form-data; boundary="+boundary,
-				    data: body,
-				    type: "POST",
-				    url: lumise.data.ajax+'&action=upload&ajax=frontend&nonce=LUMISE-SECURITY:'+lumise.data.nonce,
-				    xhr: function() {
-					    var xhr = new window.XMLHttpRequest();
-					    xhr.upload.addEventListener("progress", function(evt){
-					      if (evt.lengthComputable) {
-					        var percentComplete = evt.loaded / evt.total;
-					        if (percentComplete < 1)
-					       		$('div#LumiseDesign').attr({'data-msg': parseInt(percentComplete*100)+'% upload complete'});
-					       	else $('div#LumiseDesign').attr({'data-msg': lumise.i(159)});
-					      }
-					    }, false);
-					    return xhr;
-					},
-				    success: function (res, status) {
-					    
-					    $('div#LumiseDesign').attr({'data-msg': lumise.i(161)});
-					    
-					    res = JSON.parse(res);
-					    
-					    if (res.success !== undefined) {
-						    $('<form>', {
-				                "id": "lumise-checkout",
-				                "method": "POST",
-				                "html": '<input type="hidden" name="file" value="'+res.success+'"/>\
-				                		 <input type="hidden" name="datalen" value="'+data.length+'"/>\
-				                		 <input type="hidden" name="action" value="process"/>\
-				                		 <input type="hidden" name="nonce" value="LUMISE-SECURITY:'+lumise.data.nonce+'"/>',
-				                "action": lumise.data.checkout_url
-				            }).appendTo(document.body).submit();
-					    } else {
-						    alert('Error: could not checkout this time');
-					    }
-				    },
-				    error: function() {
-					    alert('Error: could not checkout this time');
-				    }
-				});
 	            
 	        },
 			
@@ -15448,7 +15161,6 @@ jQuery(document).ready(function($) {
 			*/
 
 			render				: function (data) {
-				
 				var attr = {},
 					wrp = lumise.get.el('cart-attributes');
 				
@@ -15707,7 +15419,6 @@ jQuery(document).ready(function($) {
 							print_detail = false;
 							
 						if (lumise.data.printings.length > 0) {
-							
 							var print = lumise.data.printings.filter(function(p) {
 									return p.id == lumise.cart.printing.current;
 								});
@@ -16065,9 +15776,15 @@ jQuery(document).ready(function($) {
 
 						// if have same print option and exist old print value
 						if(sessionStorage["LUMISE-PRINT-VALUE"]){
-							lumise.cart.printing.current = parseInt(sessionStorage.getItem("LUMISE-PRINT-VALUE"));
-							lumise.cart.calc();
-							localStorage.removeItem("LUMISE-PRINT-VALUE");
+							if(lumise.data.printings.length > 0){
+								$.each(lumise.data.printings, function(index, detail){
+									if(detail.id == sessionStorage["LUMISE-PRINT-VALUE"]){
+										lumise.cart.printing.current = parseInt(sessionStorage.getItem("LUMISE-PRINT-VALUE"));
+										lumise.cart.calc();
+										localStorage.removeItem("LUMISE-PRINT-VALUE");
+									}
+								});
+							}
 						}
 
 						wrp.find('div.lumise_radios').append(new_op);
@@ -16090,7 +15807,7 @@ jQuery(document).ready(function($) {
 				},
 
 	            calc : function (qty) {
-		            
+					
 	                if(
 						lumise.data.printings.length == 0 ||
 						lumise.cart.printing.current == null
@@ -16107,15 +15824,14 @@ jQuery(document).ready(function($) {
 						print_type = '',
 						index = -1,
 						total_res = 0;
-
+					
 					var match_print = lumise.data.printings.filter(function (p){
 						return (lumise.cart.printing.current == p.id);
 					});
-					
+
 					if (match_print.length > 0) {
 						
 						print = match_print[0];
-						
 						if (typeof print.calculate == 'string')
 							print.calculate = lumise.fn.dejson(print.calculate);
 							
@@ -16128,7 +15844,7 @@ jQuery(document).ready(function($) {
 						return 0;
 					
 					var indx = 0;
-					
+
                     for (var s in states_data){
 
 						stage = indx;
@@ -16143,7 +15859,7 @@ jQuery(document).ready(function($) {
 						if(qtys.length == 0) continue;
 
 						qtys.sort(function(a, b){return parseInt(a)-parseInt(b)});
-
+		
 						for (var i=0; i < qtys.length; i++){
 							if(
 								(
@@ -16167,9 +15883,8 @@ jQuery(document).ready(function($) {
 						else
 							rule = rules[stage][qtys[index]];
 
-
 						total_res = 0;
-						
+			
 						for ( var key in states_data[s] ) {
 							
 							var unit = states_data[s][key],
@@ -16220,7 +15935,6 @@ jQuery(document).ready(function($) {
 								return price;
 							
 						}
-						
 						if ( print_type == 'fixed' && total_res > 0 ) {
 							if ( typeof rule['price'] !== 'undefined' ) {
 								price += parseFloat(rule.price);
@@ -17039,19 +16753,6 @@ jQuery(document).ready(function($) {
 				
 				return this;
 				
-				if (w < 1.75 * r) 
-					r = w / 1.75;
-				if (h < 1.75 * r) 
-					r = h / 1.75;
-				
-				this.beginPath();
-				this.moveTo(x+r, y);
-				this.arcTo(x+w, y,   x+w, y+h, r);
-				this.arcTo(x+w, y+h, x,   y+h, r);
-				this.arcTo(x,   y+h, x,   y,   r);
-				this.arcTo(x,   y,   x+w, y,   r);
-				this.closePath();
-				return this;
 			};
 					
 			window.addEventListener('message', function(e) {

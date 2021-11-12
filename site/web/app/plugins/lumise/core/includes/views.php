@@ -52,7 +52,7 @@ class lumise_views extends lumise_lib {
 					<span><?php echo $this->main->lang('Clear all'); ?></span><small>(Ctrl+E)</small>
 				</li>
 				<li data-view="sp"></li>
-				<li data-func="save">
+				<li data-func="save" id="handelSavedg">
 					<span><?php echo $this->main->lang('Save to My Designs'); ?></span><small>(Ctrl+S)</small>
 				</li>
 				<?php 
@@ -581,7 +581,7 @@ class lumise_views extends lumise_lib {
 		if (in_array('back', $components)) {
 		?>
 		<li id="back-btn">
-			<a href="<?php echo $back_link; ?>" class="back_shop"><?php echo $this->main->lang('Back To Shop'); ?></a>
+			<a href="http://localhost/lumise" class="back_shop"><?php echo $this->main->lang('Back To Shop'); ?></a>
 		</li>
 		<?php } ?>
 		<!-- Avalable hook: after_cart -->
@@ -1716,7 +1716,7 @@ class lumise_views extends lumise_lib {
 					$args['value'] === 1 || 
 					$args['value'] == '1' || 
 					(
-						!isset($args['value']) || (isset($args['value']) && !is_numeric($args['value'])) && $args['default'] == 'yes')
+						!isset($args['value']) || (isset($args['value']) && !is_numeric($args['value'])) && isset($args['default']) && $args['default'] == 'yes')
 					)
 					echo 'checked="true"';
 			?> value="1" />
@@ -1859,7 +1859,8 @@ class lumise_views extends lumise_lib {
 					}
 
 				}
-
+               
+               
 			?>
 			<input id="tags" type="text" name="<?php
 				echo isset($args['name']) ? $args['name'] : '';
@@ -2445,7 +2446,7 @@ class lumise_views extends lumise_lib {
 											} else {
 												echo '<div class="editzone-gui">';
 												echo '<strong>';
-												echo '<svg width="100%" height="100%" viewBox="0 -120 1000 300" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><text font-size="120" fill="black" x="80">'.$this->main->lang('Drag to move').'</text><text font-size="80" fill="#555" y="120" x="30%">'.$this->main->lang('Design area').'</text></svg>';
+												echo '<svg width="100%" height="100%" padding="10px" viewBox="0 -120 1000 300" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><text font-size="120" fill="black" x="80">'.$this->main->lang('Drag to move').'</text><text font-size="80" fill="#555" y="120" x="30%">'.$this->main->lang('Design area').'</text></svg>';
 												echo '</strong>';
 												echo '</div>';
 											}
@@ -3686,14 +3687,12 @@ public function order_designs($data, $attr = true) {
 			$key_valid = ($key === null || empty($key) || strlen($key) != 36 || count(explode('-', $key)) != 5) ? false : true;
 			
 			$is_query = explode('?', $this->main->cfg->tool_url);
-			
 			$product = wc_get_product($data['product_cms']);
-			
+          
 			if ($product && $product->get_type() == 'variation') {
 				$data['product_base'] = 'variable:'.$data['product_cms'];
 				$data['product_cms'] = $product->get_parent_id();
 			}
-			
 			
 						
 			$url = $this->main->cfg->url.(isset($is_query[1])? '&':'?');
@@ -3752,7 +3751,8 @@ public function order_designs($data, $attr = true) {
 				}
 
 				if($key_valid) {
-					$html .= '<a href="'.$link.'" target=_blank class="button button-primary">'.$this->main->lang('Download designs as PDF').'</a>  &nbsp; <a href="#" data-href="'.$link.'" target=_blank class="button button-primary" onclick="let r = prompt(\'Enter bleed range in mimilet (Typically it is 2mm)\', \'2\');if (r){this.href = this.dataset.href+\'&bleed=\'+r;return true;}else return false;">'.$this->main->lang('PDF cropmarks & bleed').'</a> &nbsp; ';
+					// $html .= '<a href="'.$link.'" target=_blank class="button button-primary">'.$this->main->lang('Download designs as PDF').'</a>  &nbsp; <a href="#" data-href="'.$link.'" target=_blank class="button button-primary" onclick="let r = prompt(\'Enter bleed range in mimilet (Typically it is 2mm)\', \'2\');if (r){this.href = this.dataset.href+\'&bleed=\'+r;return true;}else return false;">'.$this->main->lang('PDF cropmarks & bleed').'</a> &nbsp; ';
+					$html .= '<a href="'.$link.'" target=_blank class="button button-primary">'.$this->main->lang('Download designs as PDF').'</a>  &nbsp; <a href="'.$link.'&bleed=-1" data-href="'.$link.'&bleed=-1" target=_blank class="button button-primary">'.$this->main->lang('PDF cropmarks & bleed').'</a> &nbsp; ';
 				}
 			}	
 			if($key_valid) {

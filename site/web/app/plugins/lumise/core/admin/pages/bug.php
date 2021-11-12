@@ -28,7 +28,7 @@
 		<?php
 			$lumise->views->detail_header(array(
 				'add' => $lumise->lang('Add new Bbug'),
-				'edit' => '#'.$_GET['id'],
+				'edit' => '#'.isset($_GET['id']) ? intval($_GET['id']) : '',
 				'page' => $section
 			));
 		?>

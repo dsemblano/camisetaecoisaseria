@@ -292,25 +292,42 @@
                         <td><?php echo $lumise->lib->price($item['product_price']);?></td>
                         <td>
 	                        <?php
-		                        
+                               
 		                        if (count($scrs) > 0) {
-
+                                   
 		                        	$key = $lumise->get_option('purchase_key');
 									$key_valid = ($key === null || empty($key) || strlen($key) != 36 || count(explode('-', $key)) != 5) ? false : true;
-									
+                                    
+ 
 			
 									$is_query = explode('?', $lumise->cfg->tool_url);
 													
 									$url = $lumise->cfg->tool_url.(isset($is_query[1])? '&':'?');
-									
+
 									if (!empty($item['design'])) {
 										$url .= '&design_print='.str_replace('.lumi', '', $item['design']);
 										$url .= '&order_print='.$item['order_id'];
-										$url .= '&product_base='.$item['product_base'];
+										if($lumise->connector->platform == 'woocommerce'){
+											$order = wc_get_order($item['order_id']);
+											foreach ( $order->get_items() as $item_id => $order_item ) {
+												if($order_item->get_product_id() == $item['product_id'] && $order_item->get_meta( 'lumise_data', true )){
+													if($order_item->get_variation_id()){
+														$url .= '&product_base='.'variable:'.$order_item->get_variation_id();
+														$url .=  '&product_cms=' . $item['product_id'];
+													}else{
+														$url .= '&product_base='.$item['product_base'];
+														$url .= '&product_cms=' . $item['product_id'];
+													}
+													break;
+												}
+											};
+										}
+										if($lumise->connector->platform == 'php'){
+											$url .= '&product_base='.$item['product_base'];
+										}
 									}
 									
 									$url = str_replace('?&', '?', $url);
-												
 									$html = '<p>';
 									$prtable = false; 
 									

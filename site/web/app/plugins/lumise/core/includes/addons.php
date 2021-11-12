@@ -149,6 +149,39 @@ class lumise_addons {
 		include 'extensions/kc.upload.tmpl.php';
 		
 	}
+
+	public function lumise_check_verify_lincense($addon_name){
+    	global $lumise;
+    	$addon_list = $lumise->addons->addon_installed_list();
+
+    	if(isset($addon_list) && !empty($addon_list) && count($addon_list) > 0 && (
+    		$addon_name == 'assign'
+    		|| $addon_name == 'display_template_clipart'
+    		|| $addon_name == 'dropbox_sync'
+    		|| $addon_name == 'mydesigns'
+    		|| $addon_name == 'distress'
+    		)
+    	){
+    		$key_addon_bundle = $lumise->get_option('purchase_key_addon_bundle');
+			$key_valid_addon_bundle = ($key_addon_bundle === null || empty($key_addon_bundle) || strlen($key_addon_bundle) != 36 || count(explode('-', $key_addon_bundle)) != 5) ? false : true;
+
+			if (!$key_valid_addon_bundle){ return false; } else { return true; }
+    	}else if(isset($addon_list) && !empty($addon_list) && count($addon_list) > 0 && $addon_name == 'vendors'){
+			// exist addon vendor
+			$key_addon_vendor = $lumise->get_option('purchase_key_addon_vendor');
+			$key_valid_addon_vendor = ($key_addon_vendor === null || empty($key_addon_vendor) || strlen($key_addon_vendor) != 36 || count(explode('-', $key_addon_vendor)) != 5) ? false : true;
+
+			if (!$key_valid_addon_vendor) { return false; } else { return true; }
+		}else if(isset($addon_list) && !empty($addon_list) && count($addon_list) > 0 && $addon_name == 'printful'){
+			// exist addon printful
+			$key_addon_printful = $lumise->get_option('purchase_key_addon_printful');
+			$key_valid_addon_printful = ($key_addon_printful === null || empty($key_addon_printful) || strlen($key_addon_printful) != 36 || count(explode('-', $key_addon_printful)) != 5) ? false : true;
+
+			if (!$key_valid_addon_printful) { return false; } else { return true; }
+		}else{
+			return true;
+		}
+    }
 	
 	public function load_installed ($mod = 'all') {
 		

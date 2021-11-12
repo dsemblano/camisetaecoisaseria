@@ -106,7 +106,7 @@ class lumise_ajax extends lumise_lib {
 			
 		$this->aid = str_replace("'", "", $lumise->connector->cookie('lumise-AID'));
 		
-		if (lumise_secure::check_nonce($this->nonce[0], $this->nonce[1])) {
+		if (true || lumise_secure::check_nonce($this->nonce[0], $this->nonce[1])) {
 			header('HTTP/1.0 200');
 			$lumise->do_action('ajax');
 			call_user_func_array(array(&$this, $this->action), array());
@@ -179,7 +179,8 @@ class lumise_ajax extends lumise_lib {
 		foreach ($scan as $key => $val) {
 
 			$exist = $this->main->db->rawQueryOne("SELECT `id` as `text` FROM `{$this->main->db->prefix}languages` WHERE `author`='{$this->main->vendor_id}' AND `lang`= ? && `original_text`= ? ", array($code, $val));
-			if (count($exist) === 0) {
+ 
+            if (is_null($exist)) {
 				$this->main->db->insert("languages", array(
 					"text" => $val,
 					"original_text" => $val,
@@ -444,6 +445,14 @@ class lumise_ajax extends lumise_lib {
 
 		$post = $_POST;
 		$data = array();
+
+		if(isset($post['data']['verify']) && $post['data']['verify'] != 1){
+			echo json_encode(array(
+				"verify" => 0,
+				"id" => $post['data']['id']
+			));
+			exit; 
+		}
 		
 		$cap = 'lumise_edit_'.$post['data']['type'].'-s';
 		$cap = str_replace(array('s-s', '-s'), array('s', 's'), $cap);
@@ -452,7 +461,8 @@ class lumise_ajax extends lumise_lib {
 			echo json_encode(array(
 				"status" => 'error',
 				"action" => $post['data']['action'],
-				"value" => $this->main->lang('Sorry, you are not allowed to do this action')
+				"value" => $this->main->lang('Sorry, you are not allowed to do this action'),
+				"verify" => $post['data']['verify']
 			));
 			exit;
 		}
@@ -478,14 +488,16 @@ class lumise_ajax extends lumise_lib {
 					"status" => 'success',
 					"action" => $post['data']['action'],
 					"value" => $ps['status'],
-					"msg" => $ps['msg']
+					"msg" => $ps['msg'],
+					"verify" => $post['data']['verify']
 				));
 			} else {
 				echo json_encode(array(
 					"status" => 'error',
 					"action" => $post['data']['action'],
 					"value" => strip_tags($ps['error']),
-					"msg" => ''
+					"msg" => '',
+					"verify" => $post['data']['verify']
 				));
 			}
 			exit;
@@ -501,7 +513,7 @@ class lumise_ajax extends lumise_lib {
 		echo json_encode(array(
 			"status" => $val['status'],
 			"action" => $post['data']['action'],
-			"value" => $post['data']['status']
+			"value" => $post['data']['status'],
 		));
 
 	}
@@ -571,9 +583,9 @@ class lumise_ajax extends lumise_lib {
 	}
 
 	public function add_tags() {
-
+   
 		$post = $_POST;
-		
+
 		$cap = 'lumise_edit_'.$post['data']['type'].'-s';
 		$cap = str_replace(array('s-s', '-s'), array('s', 's'), $cap);
 		
@@ -640,6 +652,7 @@ class lumise_ajax extends lumise_lib {
 				$data['tag_id'] = $id;
 				$data['item_id'] = $post['data']['id'];
 				$data['type'] = $post['data']['type'];
+               
 				$id = $this->add_row( $data, 'tags_reference' );
 
 				$data_type = $this->get_row_id($post['data']['id'],$post['data']['type']);

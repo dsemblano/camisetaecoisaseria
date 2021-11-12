@@ -209,7 +209,6 @@ class lumise_admin extends lumise_lib{
 	protected function process_save_reference($args, $id) {
 
 		global $lumise_admin, $lumise;
-
 		$cates = array();
 		$tags = array();
 
@@ -239,8 +238,8 @@ class lumise_admin extends lumise_lib{
 					$post_cates = array_diff($_POST[$field['name']], array(''));
 				else $post_cates = array();
 				
-				$lumise->db->rawQuery("DELETE FROM `{$lumise->db->prefix}categories_reference` WHERE `item_id`=".$id);
-
+				$lumise->db->rawQuery("DELETE FROM `{$lumise->db->prefix}categories_reference` WHERE `item_id`='{$id}' AND `type`='{$field['cate_type']}'");
+				
 				if (is_array($post_cates) && count($post_cates) > 0) {
 					foreach ($post_cates as $cate) {
 						$lumise_admin->add_row(array(
@@ -253,21 +252,21 @@ class lumise_admin extends lumise_lib{
 			}
 		}
 
-		if (count($tags) > 0 && isset($_POST[$field['name']])) {
-
+		if (count($tags) > 0) {
 			foreach ($tags as $field) {
-
-				$post_tags = $_POST[$field['name']];
+				if( !isset($_POST[$field['name']]) || empty($_POST[$field['name']]) ) break;
+				
+				$post_tags = $_POST[$field['name']];	
 				$post_tags = preg_replace('/,\s+,|,\s+/', ',', $post_tags);
 				$post_tags = explode(',', trim($post_tags, ','));
 				$post_tags = array_unique($post_tags);
 
-				$lumise->db->rawQuery("DELETE FROM `{$lumise->db->prefix}tags_reference` WHERE `item_id`=".$id);
+				$lumise->db->rawQuery("DELETE FROM `{$lumise->db->prefix}tags_reference` WHERE `item_id`='{$id}' AND `type`='{$field['tag_type']}'");
 
 				if (is_array($post_tags) && count($post_tags) > 0) {
 					foreach ($post_tags as $tag) {
 
-						$tid = $lumise->db->rawQuery("SELECT `id` FROM `{$lumise->db->prefix}tags` WHERE `author`='{$lumise->vendor_id}' AND `slug`='{$this->slugify($tag)}'");
+						$tid = $lumise->db->rawQuery("SELECT `id` FROM `{$lumise->db->prefix}tags` WHERE `author`='{$lumise->vendor_id}' AND `slug`='{$this->slugify($tag)}' AND `type`='{$field['tag_type']}'");
 
 						if (!isset($tid[0])) {
 							$tid = $this->add_row( array(
@@ -471,7 +470,7 @@ class lumise_admin extends lumise_lib{
 				$lumise->connector->set_session('lumise_msg', array('status' => 'success'));
 
 			}
-			
+				
 			if (isset($id) && is_array($id) && isset($id['error'])) {
 				if (!isset($data['errors']))
 					$data['errors'] = array();

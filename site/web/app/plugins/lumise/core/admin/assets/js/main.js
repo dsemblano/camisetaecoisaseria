@@ -478,7 +478,6 @@
 								$(this).hide();
 								popup_actions('close');
 								return e.preventDefault();	 
-							break;
 							case 'base': 
 								
 								var url = e.target.getAttribute('data-src'),
@@ -924,11 +923,18 @@
 						
 						editcanvas.width = editzone.offsetWidth/ratio;
 						editcanvas.height = editzone.offsetHeight/ratio;
+						if(img.parentNode.style.backgroundColor){
+                            ctx.fillStyle = img.parentNode.style.backgroundColor ;
+                        }else{
+                             ctx.fillStyle = '#ffffff';
+                        }
 						
-						ctx.fillStyle = img.parentNode.style.backgroundColor;
 						ctx.fillRect(0, 0, canvas.width, canvas.height);
-						
-						ectx.drawImage(temp, temp.offsetLeft/ratio, temp.offsetTop/ratio, temp.width/ratio, temp.height/ratio);
+				
+                       
+                        if(temp){
+						    ectx.drawImage(temp, temp.offsetLeft/ratio, temp.offsetTop/ratio, temp.width/ratio, temp.height/ratio);
+                        }
 						
 						let top = parseFloat(editzone.style.marginTop.replace('px', ''))/ratio,
 							left = parseFloat(editzone.style.marginLeft.replace('px', ''))/ratio;
@@ -938,8 +944,10 @@
 						if (isNaN(left))
 							left = 0;
 							
-						left += (canvas.width/2) - (editcanvas.width/2);
-						top += (canvas.height/2) - (editcanvas.height/2);
+						//left += (canvas.width/2) - (editcanvas.width/2);
+						//top += (canvas.height/2) - (editcanvas.height/2);
+						left += editzone.offsetLeft/ratio;
+						top += editzone.offsetTop/ratio;
 						
 						let x = left,
 							y = top,
@@ -967,7 +975,7 @@
 						
 						
 						
-						let dataURL = canvas.toDataURL('image/jpeg', 1).split(','),
+						let dataURL = canvas.toDataURL('image/jpeg', 1).split(',') ?? canvas.toDataURL('image/png', 1).split(',') ?? canvas.toDataURL('image/svg', 1).split(','),
 							binStr = atob(dataURL[1]),
 							len = binStr.length,
 							arr = new Uint8Array(len);
@@ -3374,47 +3382,6 @@
 						
 						return false;
 						
-						var submit_url = LumiseDesign.ajax+'&action=upload&task=files&nonce=LUMISE_ADMIN:'+LumiseDesign.nonce,
-							boundary = "---------------------------7da24f2e50046",
-							body = '--' + boundary + '\r\n'
-						         + 'Content-Disposition: form-data; name="file";'
-						         + 'filename="file.txt"\r\n'
-						         + 'Content-type: plain/text\r\n\r\n'
-						         + btoa(encodeURIComponent(inp.val()))
-						         + '\r\n'
-						         + '--'+ boundary + '--';
-								 
-						$.ajax({
-						    contentType: "multipart/form-data; boundary="+boundary,
-						    data: body,
-						    type: "POST",
-						    url: submit_url,
-						    xhr: function() {
-							    var xhr = new window.XMLHttpRequest();
-							    xhr.upload.addEventListener("progress", function(evt){
-							      if (evt.lengthComputable) {
-							        var percentComplete = evt.loaded / evt.total,
-							        	txt = '<i class="fa fa-spin fa-spinner"></i>  '+parseInt(percentComplete*100)+'% upload complete';
-							        if (percentComplete === 1)
-							        	txt = '<i class="fa fa-spin fa-refresh"></i> Submitting..';
-							       	$('#lumise-files-form-submitting').html(txt);
-							      }
-							    }, false);
-							    return xhr;
-							},
-						    success: function (res, status) {
-							    
-							    if (res.indexOf('Error') === 0) {
-								    alert(res);
-								    return;
-							    };
-							    inp.val(res);
-							    $(form).off('submit').submit();
-							    
-							}
-						});
-						
-						return false;
 						
 					}
 					
@@ -3549,12 +3516,23 @@
 								tabs = $(e.target).closest('div.lumise_tabs').find('div.lumise_tab_content');
 							
 							if (type == 'color') {
-								label = prompt(LumiseDesign.js_lang['152'], (tabs.eq(0).find('thead tr td').length-2));
-								label = label.replace(/\D/g, '');
+                                if(tabs.eq(0).find('thead tr td').length-2 == 0){
+                                    label = prompt(LumiseDesign.js_lang['152'],'Full');
+
+                                }else{
+								    label = prompt(LumiseDesign.js_lang['152'], (tabs.eq(0).find('thead tr td').length-2));
+								    label = label.replace(/\D/g, '');
+
+                                }
+                      
+                         
 								if (tabs.eq(0).find('tbody tr input[data-name="color_'+label+'"]').length > 0)
 									label = '';
 								if (label !== '')
 									label = label+'-color';
+                                if(label === 'Full'){
+                                    label = 'Full-color';
+                                }    
 							} else { 
 								label = prompt(LumiseDesign.js_lang['155'], '');
 								label = encodeURIComponent(
@@ -3591,7 +3569,8 @@
 							
 							$(e.target).closest('div.lumise_tabs').find('div.lumise_tab_content').each(function() {
 								var tabl = $(this).find('table');
-								if (tabl.find('thead tr td').length > (type == 'color' ? 3 : 2)) {
+                              
+								if (tabl.find('thead tr td').length > (type == 'color' ? 2 : 2)) {
 									tabl.find('thead tr td').last().prev().remove();
 									tabl.find('tbody tr').each(function(){
 										$(this).find('td').last().prev().remove();
@@ -3882,6 +3861,7 @@
 			        "action": $(this).attr('data-action'),
 			        "id": $(this).attr('data-id'),
 			        "status": $(this).attr('data-status'),
+			        "verify": $(this).attr('check-license'),
 			    }, that = $(this);
 
 			    that.html('<i class="fa fa-spinner fa-spin"></i>');
@@ -3901,6 +3881,19 @@
 						}
 					},
 					success: function(res){
+
+						if((typeof(res.verify) != "undefined") && (typeof(res.id) != "undefined") && (res.verify == 0)){
+							if(res.id == "vendors"){ 
+								$('#link-addon-vendor').css("display","block"); 
+							}else if(res.id == "printful"){
+								$('#link-addon-printful').css("display","block");
+							}else{
+								$('#link-addon-bundle').css("display","block");
+							}
+							that.html('<em class="un pub">'+lumise.i(86)+'</em>');
+							$('#license_noticesModal').css("display","block");
+							return;
+						}
 						if (res.status == 'success') {
 							if (res.action == 'switch_feature') {
 								if (res.value == 1) {

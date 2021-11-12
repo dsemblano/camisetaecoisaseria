@@ -4,7 +4,7 @@ Plugin Name: Lumise - Product Designer Tool
 Plugin URI: https://www.lumise.com/
 Description: The professional solution for designing & printing online
 Author: King-Theme
-Version: 1.9.8
+Version: 1.9.9
 Author URI: http://king-theme.com/
 */
 
@@ -134,11 +134,13 @@ class lumise_woocommerce {
 			add_action( 'manage_shop_order_posts_custom_column', array(&$this, 'woo_lumise_column_content') );
 	        
 	        add_action( 'admin_notices', array(&$this, 'admin_notices') );
-	        
+
 	        if ($wpdb->get_var("SHOW TABLES LIKE 'lumise_settings'") == 'lumise_settings') {
 
-		        $this->update_core = $wpdb->get_results("SELECT `value` from `lumise_settings` WHERE `key`='last_check_update'"); 
-				$this->update_core = @json_decode($this->update_core[0]->value);
+		        $lumise_update_core = $wpdb->get_results("SELECT `value` from `lumise_settings` WHERE `key`='last_check_update'"); 
+		        if (count($lumise_update_core) == 1) {
+		        	$this->update_core = @json_decode($lumise_update_core[0]->value);
+			    }
 				
 				$current = get_site_transient( 'update_plugins' );
 				
@@ -220,7 +222,10 @@ class lumise_woocommerce {
 		add_filter('woocommerce_cart_item_thumbnail', array(&$this, 'woo_cart_design_thumbnails'), 10, 3);
 		
 		// add meta data attr cart to order
-        add_action('woocommerce_add_order_item_meta', array(&$this, 'woo_add_order_item_meta'), 1, 3);		
+		if ( version_compare( get_option( 'woocommerce_version' ), '3.0', '<' ) ) 
+			add_action('woocommerce_add_order_item_meta', array(&$this, 'woo_add_order_item_meta'), 1, 3);	
+		else
+			add_action('woocommerce_checkout_create_order_line_item',array(&$this, 'woo_checkout_create_order_line_item'), 20, 4);
 		
 		//remove cart item
 		add_action('woocommerce_cart_item_removed', array(&$this, 'woo_cart_item_removed'), 1, 2);
@@ -239,13 +244,13 @@ class lumise_woocommerce {
         add_action('woocommerce_before_calculate_totals', array(&$this, 'woo_calculate_price'), 10, 1);
 		
 		// Add reorder button
-		add_filter( 'woocommerce_my_account_my_orders_actions', array(&$this, 'my_orders_actions'), 999, 2);
+		// add_filter( 'woocommerce_my_account_my_orders_actions', array(&$this, 'my_orders_actions'), 999, 2);
 		
 		/*cart display*/
         add_action( 'woocommerce_cart_item_quantity', array(&$this, 'woo_cart_item_quantity' ), 30, 3);
         add_action( 'woocommerce_checkout_cart_item_quantity', array(&$this, 'woo_checkout_cart_item_quantity' ), 30, 3);
         add_action( 'woocommerce_order_item_quantity_html', array(&$this, 'woo_order_item_quantity_html' ), 30, 3);
-        add_action( 'woocommerce_order_item_meta_start', array(&$this, 'woo_order_item_meta_start' ), 30, 3);
+        // add_action( 'woocommerce_order_item_meta_start', array(&$this, 'woo_order_item_meta_start' ), 30, 3);
 		
         add_filter( 'woocommerce_email_order_item_quantity', array(&$this, 'woo_email_order_item_quantity' ), 30, 2);
 		
@@ -280,7 +285,7 @@ class lumise_woocommerce {
 		}
 		
     }
-
+	
     public function activation() {
 	    
         global $wpdb;
@@ -676,7 +681,11 @@ class lumise_woocommerce {
 		global $lumise, $post;
 		
 		$item_data = $item->get_data();
-		
+        if(!$item->meta_exists('lumise_data')){
+            return;
+        };
+
+       
 		$data = array(
 			"product_cms" => $product->get_ID(),
 			"cart_id" => '',
@@ -685,9 +694,9 @@ class lumise_woocommerce {
 			"order_id" => $post->ID,
 			"item_id" => $item_id
 		);
-		
 		$cart_id = '';
-		
+
+
 		if (count($item_data['meta_data']) > 0) {
 			foreach ($item_data['meta_data'] as $meta_data) {
 				if ($meta_data->key == 'lumise_data') {
@@ -1105,11 +1114,12 @@ class lumise_woocommerce {
 		}
 
 		return $product_image.$design_thumb;
+		
 	}
 	
     //Add custom price to product cms
     public function woo_calculate_price($cart_object) {
-	    
+
 		global $wpdb, $lumise;
 		
         if( !WC()->session->__isset( "reload_checkout" )) {
@@ -1164,29 +1174,29 @@ class lumise_woocommerce {
 					// }
 
 					// variable product change name 
-					if(strpos($cart_item_data['id'], 'variable') !== false){
-						$product_base_id = intval(preg_replace('/[^0-9]+/mi', '', $cart_item_data['product_cms']));
-						$cart_item_data['product_name'] = get_the_title($product_base_id);
+					// if(strpos($cart_item_data['id'], 'variable') !== false){
+					// 	$product_base_id = intval(preg_replace('/[^0-9]+/mi', '', $cart_item_data['product_cms']));
+					// 	$cart_item_data['product_name'] = get_the_title($product_base_id);
 
-						$product_id = intval(preg_replace('/[^0-9]+/mi', '', $cart_item_data['id']));
-						$product = wc_get_product( $product_id );
-						$productAttribute = $product->get_variation_attributes();
-						if($productAttribute != NULL && count($productAttribute) >= 1){
-							$newname = ' - ';
-							foreach ($productAttribute as $index => $detailAttribute) {
-								$newname .= $detailAttribute.', ';
-							}
-							$newname = substr($newname, 0, -2);
-							$value['lumise_data']['product_name'] .= $newname;
-						}
-
-						if ( version_compare( $woo_ver, '3.0', '<' ) ) {
-				            $cart_object->cart_contents[$key]['data']->name = $value['lumise_data']['product_name']; // Before WC 3.0
-				        } else {	
-							$cart_object->cart_contents[$key]['data']->name = $value['lumise_data']['product_name']; // Before WC 3.0
-				            $cart_object->cart_contents[$key]['data']->set_name($value['lumise_data']['product_name']); // WC 3.0+
-				        }
-					}
+					// 	$product_id = intval(preg_replace('/[^0-9]+/mi', '', $cart_item_data['id']));
+					// 	$product = wc_get_product( $product_id );
+					// 	$productAttribute = $product->get_variation_attributes();
+					// 	if($productAttribute != NULL && count($productAttribute) >= 1){
+					// 		$newname = ' - ';
+					// 		foreach ($productAttribute as $index => $detailAttribute) {
+					// 			$newname .= $detailAttribute.', ';
+					// 		}
+					// 		$newname = substr($newname, 0, -2);
+					// 		$value['lumise_data']['product_name'] .= $newname;
+					// 	}
+						
+					// 	if ( version_compare( $woo_ver, '3.0', '<' ) ) {
+				    //         $cart_object->cart_contents[$key]['data']->name = $value['lumise_data']['product_name']; // Before WC 3.0
+				    //     } else {	
+					// 		$cart_object->cart_contents[$key]['data']->name = $value['lumise_data']['product_name']; // Before WC 3.0
+				    //         $cart_object->cart_contents[$key]['data']->set_name($value['lumise_data']['product_name']); // WC 3.0+
+				    //     }
+					// }
 
 					// if(strpos($cart_item_data['id'], 'variable') !== false && isset($cart_item_data['options']) && isset($cart_item_data['attributes']) ){
 					// 	$product_id = intval(preg_replace('/[^0-9]+/mi', '', $cart_item_data['id']));
@@ -1249,7 +1259,7 @@ class lumise_woocommerce {
 					
 					$product_id = $value['product_id'];
 					$product_base_id = $this->get_base_id($product_id);
-                    
+
 					if ($product_base_id != null) {
 						
 						$is_product_base = $lumise->lib->get_product($product_base_id);
@@ -1321,10 +1331,9 @@ class lumise_woocommerce {
 						}
 					}
 
-
 					// variation product template
 					if(isset($value['variation_id']) && intval($value['variation_id']) != 0 && isset($value['variation']) && !empty($value['variation']) && $product_base_id == null ){
-
+						
 						$product_id = intval($value['variation_id']);
 						$product_base_id = 'variable:'.$product_id;
 						$cms_template = get_post_meta($product_id, '_variation_lumise', true );
@@ -1343,12 +1352,13 @@ class lumise_woocommerce {
 							if(isset($cms_template['stages']) && gettype($cms_template['stages']) == 'string'){
 								$cms_template = json_decode(urldecode(base64_decode($cms_template['stages'])), true);
 								foreach ($cms_template as $s => $stage){
-									$template_stages[$s] = intval($stage['template']['id']);
-									
-									if(!in_array($stage['template']['id'], $templates)){
-										$templates[] = intval($stage['template']['id']);
-										$template = $lumise->lib->get_template(intval($stage['template']['id']));
-										$template_price += ($template['price'] > 0)? $template['price'] : 0;
+									if( isset($stage['template']['id']) ){
+										$template_stages[$s] = intval($stage['template']['id']);
+										if(!in_array($stage['template']['id'], $templates)){
+											$templates[] = intval($stage['template']['id']);
+											$template = $lumise->lib->get_template(intval($stage['template']['id']));
+											$template_price += ($template['price'] > 0)? $template['price'] : 0;
+										}
 									}
 								}
 								
@@ -1398,10 +1408,14 @@ class lumise_woocommerce {
         }
 
     }
-    
-	// Add value custom field to order
-    public function woo_add_order_item_meta($item_id, $values, $cart_item_key ) {
+    // Add value custom field to order 
+    public function woo_checkout_create_order_line_item($item, $cart_item_key, $values, $order) {
+		if( isset( $values['lumise_data'] ) )
+			$item->update_meta_data( "lumise_data", $values['lumise_data'] );
+	}
 
+	// Add value custom field to order before WC 3.0
+    public function woo_add_order_item_meta($item_id, $values, $cart_item_key ) {
         if( isset( $values['lumise_data'] ) )
 			wc_add_order_item_meta( $item_id, "lumise_data", $values['lumise_data'] );
     }
@@ -2273,12 +2287,16 @@ class lumise_woocommerce {
 	
 	public function my_orders_actions($actions, $order) {
 		
-		global $lumise;
+		global $lumise, $wpdb;
+
 		
-		$actions['reorder']   = array(
-			'url'  => $lumise->cfg->tool_url.'reorder='.$order->get_id(),
-			'name' => __( 'Reorder', 'woocommerce' ),
-		);
+		$is_lumise = $wpdb->get_results('SELECT `id` FROM `lumise_order_products` WHERE `order_id`='.$order->get_id());
+        if (count($is_lumise) !== 0) {
+	    	$actions['reorder']   = array(
+				'url'  => $lumise->cfg->tool_url.'reorder='.$order->get_id(),
+				'name' => __( 'Reorder', 'woocommerce' ),
+			);
+	    }
 		
 		return $actions;
 		
@@ -2305,7 +2323,7 @@ class lumise_woocommerce {
 		) return;
 		
 		$product_id 	= $product->get_id();
-		
+	
 		$product_base = get_post_meta($product_id, 'lumise_product_base', true);
 		$lumise_customize = get_post_meta($product_id, 'lumise_customize', true);
 		$disable_cartbtn = get_post_meta($product_id, 'lumise_disable_add_cart', true);
@@ -2329,11 +2347,13 @@ class lumise_woocommerce {
 
 		$disable_variation = '';
 		if ($product->is_type( 'variable' )) {
+           
 			$disable_variation = 'disabled';	
 		}
+
 		$class_lumise = apply_filters('lumise_button_customize', 'lumise-customize-button button alt '.$disable_variation.' single_add_to_cart_button_fixed');
 		$link_design = apply_filters( 'lumise_customize_link', $link_design );
-
+ 
 		?>
 		<a name="customize" id="lumise-customize-button" class="<?php echo $class_lumise; ?>" href="<?php echo esc_url($link_design ); ?>" data-href="<?php echo esc_url($link_design ); ?>">
 			<?php echo esc_html($text); ?>
@@ -2344,7 +2364,7 @@ class lumise_woocommerce {
 				$('#lumise-customize-button').closest('form').find('button.single_add_to_cart_button').remove();
 				<?php } ?>
 				<?php if($product->is_type( 'variable' )): ?>
-				$('#lumise-customize-button').click(function(e){
+					$('#lumise-customize-button').click(function(e){
 					var goto = true;
 					$('table.variations tr select').each(function(index, value){
 						if($(this).val() == '' || $(this).val() == 'null' || $(this).val() == ' ' || $(this).val() == null || $(this).val() == undefined || $(this).val() == 'undefined' ){
@@ -2366,11 +2386,15 @@ class lumise_woocommerce {
 					setTimeout(() => {
 						let lm = vari.lumise,
 							hrf = $('#lumise-customize-button').attr('data-href').replace('product_base=variable', 'product_base=variable:'+lm)+'&quantity='+$(this).find('input[name="quantity"]').val();
-						
+						console.log(vari);
 						$('#lumise-customize-button').attr({
 							'href': lm !== '' && lm !== 0 ? hrf : "javascript:alert('This variant has not been configured with Lumise')",
 						}).removeAttr('disabled').removeClass('disabled');
-						
+						if(vari.is_in_stock == false){
+							$('#lumise-customize-button').addClass('disabled');
+                            $("#lumise-customize-button").removeAttr("href");
+
+                        }
 						// If not setup Lumise for this variation ==> disable customize button
 						if (lm === '' || lm === 0) {
 							$('#lumise-customize-button').attr({'disabled': 'disabled'}).addClass('disabled');

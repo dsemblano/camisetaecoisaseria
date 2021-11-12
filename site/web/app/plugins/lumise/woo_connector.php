@@ -507,7 +507,7 @@ if(!class_exists('lumise_connector')){
         }
 
 		public function add_to_cart( $data ) {
-			
+
 			global $woocommerce, $lumise, $lumise_cart_adding;
 			
 			$lumise_cart_adding = true;
@@ -552,8 +552,14 @@ if(!class_exists('lumise_connector')){
 						$extra_option = array(
 							'lumise_data' => $item
 						);
+
+						$variation_id = null;
 						
-						$woocommerce->cart->add_to_cart( $product_id, 1 , null, null, $extra_option );
+						if(strpos($item['id'], 'variable') !== false){
+							$variation_id = intval(preg_replace('/[^0-9]+/mi', '', $item['id']));
+						}
+
+						$woocommerce->cart->add_to_cart( $product_id, 1 , $variation_id, null, $extra_option );
 						
 					}
 					
@@ -1016,9 +1022,13 @@ if(!class_exists('lumise_connector')){
 						if($productAttribute != NULL && count($productAttribute) >= 3){
 							$newname = ' - ';
 							foreach ($productAttribute as $index => $detailAttribute) {
-								$newname .= $detailAttribute.', ';
+								if($detailAttribute != ''){
+									$newname .= $detailAttribute.', ';
+								}
 							}
-							$newname = substr($newname, 0, -2);
+							if($newname != ' - '){
+								$newname = substr($newname, 0, -2);
+							}
 							$product_name .= $newname;
 						}
 					}

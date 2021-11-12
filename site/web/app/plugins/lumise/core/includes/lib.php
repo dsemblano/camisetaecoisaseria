@@ -1488,6 +1488,7 @@ class lumise_lib{
 						$isf++;
 						
 						if (isset($sdata['print_file'])) {
+							// if (isset($sdata['print_file']) && isset($sdata['data']['objects'])) {
 							
 							$scr_file_name = date('Y', $time).DS.date('m', $time).DS.$lumise->generate_id().'-stage'.$isf.'.png';
 
@@ -2619,7 +2620,7 @@ class lumise_lib{
 				    	is_array($attr['values']) &&
 				    	isset($attr['values']['options'])
 				    ) {
-					    $color = $attr['values']['options'][0]['value'];
+					    //$color = $attr['values']['options'][0]['value'];
 					    foreach ($attr['values']['options'] as $op) {
 						   if ($op['default'] == '1')
 						   		$color = $op['value'];
@@ -2738,6 +2739,14 @@ class lumise_lib{
 					}	
 				}
 			}
+		}
+
+		// make tmp folder for tcpdf, make sure not blank pdf
+		if (!is_dir('TCPDF'.DS.'tmp')) {
+			$tcpdf_folder = dirname(__FILE__).DS.'TCPDF'.DS.'tmp';
+			@mkdir($tcpdf_folder, 0777, true);
+			chmod($tcpdf_folder, 0777);
+			define ('K_PATH_CACHE', $tcpdf_folder.DS);
 		}
 		
 		require_once('TCPDF'.DS.'tcpdf.php');

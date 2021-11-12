@@ -996,13 +996,15 @@ div#LumiseDesign #lumise-cart-items ul[data-view="items"] li:last-child {
 
 div#LumiseDesign #lumise-cart-items ul[data-view="items"] li img {
     max-height: 50px;
-    float: left;
     max-width: 150px;
     cursor: pointer;
+    display: block;
+    margin: 0 auto;
 }
 
 div#LumiseDesign #lumise-cart-items ul[data-view="items"] li span[data-view="thumbn"] {
     float: left;
+    min-width: 50px;
     margin-right: 10px;
 }
 
@@ -8758,7 +8760,6 @@ div[data-design-layer] {
 	font-size: 14px;
 	line-height: 34px;
 }
-#
 #lumise-svg-tool div[data-view="customize"] .lumst{
 	float: left;
 	width: calc(100% - 65px);

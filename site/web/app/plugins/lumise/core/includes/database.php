@@ -428,7 +428,7 @@ class MysqliDb
      */
     public function rawQuery($query, $bindParams = null)
     {
-        $params = array(); // Create the empty 0 index
+        $params = array(''); // Create the empty 0 index
         
         $this->_query = $query;
         
@@ -447,8 +447,8 @@ class MysqliDb
         $this->count = $stmt->affected_rows;
         $this->_stmtError = $stmt->error;
         $this->_stmtErrno = $stmt->errno;
-		
-		if(count($params)>0)
+
+		if(count(array_filter($params))>0)
 			$this->_lastQuery = $this->replacePlaceHolders($this->_query, $params);
 		else
 			$this->_lastQuery = $this->_query;
@@ -1702,8 +1702,8 @@ class MysqliDb
         $isInsert = preg_match('/^[INSERT|REPLACE]/', $this->_query);
         $dataColumns = array_keys($tableData);
         if ($isInsert) {
-            if (isset ($dataColumns[0]))
-                $this->_query .= ' (`' . implode($dataColumns, '`, `') . '`) ';
+            if (isset ($dataColumns[0]) && !is_array($dataColumns[0]))
+               $this->_query .= ' (`' . implode( '`, `', $dataColumns ) . '`) ';
             $this->_query .= ' VALUES (';
         } else {
             $this->_query .= " SET ";

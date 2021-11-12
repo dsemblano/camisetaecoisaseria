@@ -10,7 +10,7 @@
 if (!defined('DS'))
 	define('DS', DIRECTORY_SEPARATOR);
 
-define('LUMISE', '1.9.8');
+define('LUMISE', '1.9.9');
 
 class lumise {
 
@@ -176,6 +176,28 @@ class lumise {
 			$this->app = false;
 		}
 		
+		if(isset($_GET['pdf_download']) && !empty($_GET['pdf_download']) && isset($_GET['bleed']) && !empty($_GET['bleed']) && intval($_GET['bleed']) == -1){
+			$link = $this->cfg->tool_url.'&pdf_download='.$_GET['pdf_download'];
+			?>
+			<html>
+				<head>
+					<title>Lumise design</title>
+				</head>
+				<body>
+					<center>Browser will direct in 5 second</center>
+					<script>
+						var bleed = prompt("Enter bleed range in mimilet (Typically it is 2mm)", "2");
+						if (bleed != null) {
+							window.location.href = '<?php echo $link; ?>'+'&bleed='+bleed;
+							// window.location.replace('<?php echo $link; ?>'+'&bleed='+bleed);
+						}
+					</script>
+				</body>
+			</html>
+			<?php
+			die();
+		}
+
 		if (isset($_GET['pdf_download']) && !empty($_GET['pdf_download'])) {
 			$this->lib->pdf_download($_GET['pdf_download']);
 		}
