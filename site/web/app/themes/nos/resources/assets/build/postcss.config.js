@@ -1,7 +1,8 @@
 /* eslint-disable */
 
 const cssnanoConfig = {
-  preset: ['default', { discardComments: { removeAll: true } }]
+  // preset: ['default', { discardComments: { removeAll: true } }]
+  preset: ['default']
 };
 
 module.exports = ({ file, options }) => {
