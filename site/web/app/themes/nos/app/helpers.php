@@ -137,41 +137,41 @@ function display_sidebar()
     return $display;
 }
 
-/**
- * Get the absolute path to an asset.
- *
- * @param string $asset
- *
- * @return string
- */
-function locate_asset($asset): string
-{
-    return trailingslashit(config('assets.path')) . sage('assets')->get($asset);
-}
+// /**
+//  * Get the absolute path to an asset.
+//  *
+//  * @param string $asset
+//  *
+//  * @return string
+//  */
+// function locate_asset($asset): string
+// {
+//     return trailingslashit(config('assets.path')) . sage('assets')->get($asset);
+// }
 
-/**
- * Get the contents of a file.
- *
- * @param string $asset
- *
- * @return string
- */
-function get_file_contents($asset): string
-{
-    /** @var \WP_Filesystem_Base */
-    global $wp_filesystem;
+// /**
+//  * Get the contents of a file.
+//  *
+//  * @param string $asset
+//  *
+//  * @return string
+//  */
+// function get_file_contents($asset): string
+// {
+//     /** @var \WP_Filesystem_Base */
+//     global $wp_filesystem;
 
-    if (empty($wp_filesystem)) {
-        require_once ABSPATH . '/wp-admin/includes/file.php';
-    }
+//     if (empty($wp_filesystem)) {
+//         require_once ABSPATH . '/wp-admin/includes/file.php';
+//     }
 
-    \WP_Filesystem();
+//     \WP_Filesystem();
 
-    $asset_path = locate_asset($asset);
+//     $asset_path = locate_asset($asset);
 
-    if ($wp_filesystem->is_readable($asset_path)) {
-        return $wp_filesystem->get_contents($asset_path);
-    }
+//     if ($wp_filesystem->is_readable($asset_path)) {
+//         return $wp_filesystem->get_contents($asset_path);
+//     }
 
-    return '';
-}
+//     return '';
+// }

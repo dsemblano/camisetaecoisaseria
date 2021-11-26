@@ -28,8 +28,4 @@ return [
     */
 
     'uri' => get_theme_file_uri().'/dist',
-
-    // critical_CSS
-    'path' => get_theme_file_path().'/dist',
-
 ];
