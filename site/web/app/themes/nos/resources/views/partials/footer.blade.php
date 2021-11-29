@@ -22,7 +22,10 @@
         @endif
       </nav> --}}
       @php dynamic_sidebar('sidebar-footer') @endphp
-      @include('partials/components.socialshare')
+      <div class="social__icons flex flex-row items-center">
+        @include('partials/components.socialshare')
+        @include('partials/components.whatsapp')
+      </div>
     </div>
   </div>
 </footer>
