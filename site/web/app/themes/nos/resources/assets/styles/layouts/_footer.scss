@@ -55,6 +55,12 @@ footer.content-info {
       @apply text-center text-white tracking-wider py-2;
 
       font-size: 0.7rem;
+
+      .whatslink:hover {
+        text-decoration: underline;
+        -webkit-text-decoration-color: $green-nos-button;
+        text-decoration-color: $green-nos-button;
+      }
     }
 
     .whatsapp {
