@@ -39,7 +39,7 @@
     "roots/wordpress": "=5.8.3",
     "roots/wp-config": "1.0.0",
     "roots/wp-password-bcrypt": "1.0.0",
-    "wpackagist-plugin/woocommerce":">=5.8.0",
+    "wpackagist-plugin/woocommerce":"=6.1.1",
     "wpackagist-plugin/woocommerce-correios":">=3.8.0",
     "wpackagist-plugin/woocommerce-pagseguro":">=2.14.0",
     "wpackagist-plugin/regenerate-thumbnails":">=3.1.1",
@@ -76,7 +76,11 @@
   },
   "config": {
     "optimize-autoloader": true,
-    "preferred-install": "dist"
+    "preferred-install": "dist",
+    "allow-plugins": {
+      "composer/installers": true,
+      "roots/wordpress-core-installer": true
+    }
   },
   "minimum-stability": "dev",
   "prefer-stable": true,
