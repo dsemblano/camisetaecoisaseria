@@ -113,7 +113,8 @@ class lumise_cfg extends lumise_tmpl_register{
 		'label_stage_2' => 'Back',
 		'label_stage_3' => 'Left',
 		'label_stage_4' => 'Right',
-		'last_update' => ''
+		'toolbars' => array ('replace-image','crop','mask','remove-bg','filter','fill','layer','position','transform','advance-SVG','select-font','text-effect','font-size','line-height','letter-spacing','text-align','font-style'),
+		'last_update' => '',
 	);
 	
 	protected $allows = array(
@@ -882,6 +883,11 @@ class lumise_cfg extends lumise_tmpl_register{
 			'211'=> $lumise->lang('Save your design for later use'),
 			'212'=> $lumise->lang('USE THIS'),
 			'213'=> $lumise->lang('OVERWRITE THIS'),
+			'214'=> $lumise->lang('Failure to add: The maximum number of characters for a text is'),
+			'215'=> $lumise->lang('Failure to add: The minimum number of characters for a text is'),
+			'216'=> $lumise->lang('Failure to add: The maximum dimensions requirement'),
+			'217'=> $lumise->lang('Failure to add: The minimum width requirement'),
+			'218'=> $lumise->lang('Failure to add: The maximum width requirement'),
 	    );
 
 	    $this->default_fonts = $lumise->cfg->settings['google_fonts'];

@@ -46,7 +46,8 @@ class lumise_ajax extends lumise_lib {
 		'setup' => false,
 		'addon' => true,
 		'report_bug' => true,
-		'product_variation' => true
+		'product_variation' => true,
+		'load_layout' => true,
 	);
 	private $actions_get = array(
 		'pdf',
@@ -1522,6 +1523,150 @@ function renderPDF(svgs, url) {
 		exit;
 	}
 	
+	public function load_layout($echo = true){
+		global $lumise;
+		$layouts = [];
+		$printing_id = isset($_POST['printing']) ? intval($_POST['printing']) : 0;
+		$false = function () {  return false; };
+		$true = function () {  return true; };
+		
+		if($printing_id){
+			$printing = $lumise->db->rawQueryOne(
+				"SELECT * FROM `{$lumise->db->prefix}printings` WHERE `author`='{$this->main->vendor_id}' AND `active`='1' AND id=".(Int)$printing_id
+			);
+			$printing = $lumise->apply_filters('printing', $printing, $printing_id);
+			
+			if ($printing && isset($printing['layout']) && !empty($printing['layout'])) {
+				$layout = $lumise->lib->dejson($printing['layout']);
+				
+				$actions = ['file', 'design', 'print', 'share', 'help', 'undo', 'redo', 'zoom', 'preview'];
+				$toolbars = $lumise->cfg->settings['toolbars'];
+
+				$components = $lumise->cfg->settings['components'];
+				if (is_string($components))
+					$components = explode(',', $components);
+
+				$action = array_diff($actions, explode(',', $layout->actions));
+				$component = array_diff($components, $layout->components);
+				$toolbar = array_diff($toolbars,  explode(',', $layout->toolbars));
+				
+				//var_dump($layout->components);
+				foreach($action as $key => $act){
+					switch($act){
+						case 'file':
+							$this->main->add_filter('file-nav', $false);
+							break;
+						case 'design':
+							$this->main->add_filter('design-nav', $false);
+							break;
+						case 'print':
+							$this->main->add_filter('show-print-nav', $true);
+							break;
+						case 'share':
+							$this->main->add_filter('share-nav', $false);
+							break;
+						case 'help':
+							$this->main->add_filter('help-nav', $false);
+							break;
+						case 'undo':
+							$this->main->add_filter('allow_undo', $false);
+							break;
+						case 'redo':
+							$this->main->add_filter('allow_redo', $false);
+							break;
+						case 'zoom':
+							$this->main->add_filter('zoom', $false);
+							break;
+						case 'preview':
+							break;		
+					}
+				}
+				
+				foreach($toolbar as $tool){
+					switch($tool){
+						case 'replace-image':
+							$this->main->add_filter('replace-image', $false);
+							break;
+						case 'crop':
+							$this->main->add_filter('crop-image', $false);
+							break;
+						case 'mask':
+							$this->main->add_filter('select-mask', $false);
+							break;
+						case 'remove-bg':
+							$this->main->add_filter('remove-background', $false);
+							break;	
+						case 'filter':
+							$this->main->add_filter('filter', $false);
+							break;	
+						case 'fill':
+							$this->main->add_filter('fill', $false);
+							break;
+						case 'layer':
+							$this->main->add_filter('layers', $false);
+							break;	
+						case 'position':
+							$this->main->add_filter('position', $false);
+							break;			
+						case 'transform':
+							$this->main->add_filter('transform', $false);
+							break;
+						case 'advance-SVG':
+							$this->main->add_filter('advance-svg', $false);
+							break;
+						case 'text-effect':
+							$this->main->add_filter('text-effect', $false);
+							break;	
+						case 'font-size':
+							$this->main->add_filter('font-size', $false);
+							break;
+						case 'line-height':
+							$this->main->add_filter('line-height', $false);
+							break;
+						case 'letter-spacing':
+							$this->main->add_filter('letter-spacing', $false);
+							break;
+						case 'text-align':
+							$this->main->add_filter('text-align', $false);
+							break;
+						case 'font-style':
+							$this->main->add_filter('font-style', $false);
+							break;
+					}
+				}
+
+				// qrcode
+				if($this->main->cfg->settings['dis_qrcode'] == '1' && in_array('qrcode', explode(',', $layout->actions)))
+					$this->main->add_filter('disable-qrcode', $true);
+								
+				$this->main->add_filter('nav-component', function() use ($layout){
+					return $layout->components; 
+				});
+			}
+			
+		}
+		
+		ob_start();
+			$this->main->display('nav'); 
+		$layouts['navigations'] = ob_get_clean();
+
+		ob_start();
+			$this->main->display('left'); 
+		$layouts['left'] = ob_get_clean();
+
+		ob_start();
+			$this->main->display('tool'); 
+		$layouts['top-tools'] = ob_get_clean();
+		
+		if($echo){
+			echo json_encode($layouts);
+			exit;
+		}else{
+			return $layouts;
+		}
+		
+	}
+
 	public function init() {
 		
 		$settings = $this->main->cfg->settings;
@@ -1569,10 +1714,10 @@ function renderPDF(svgs, url) {
 			"size_default" => $this->main->cfg->size_default,
 			"print_types" => $this->main->lib->get_print_types(),
 			"attributes_cfg" => $this->main->cfg->product_attributes,
+			"layouts" => $this->load_layout(false),
 		);
 		
 		$cfg = $this->main->lib->product_cfg($cfg);
-		
 		if (!empty($settings['custom_js'])) {
 			$custom_js = str_replace(
 				array('<script', '</script>'),
@@ -1583,7 +1728,7 @@ function renderPDF(svgs, url) {
 		}
 		
 		$cfg = $this->main->apply_filters('js_init', $cfg);
-		
+
 		header('Content-Type: application/json');
 		echo json_encode($cfg);
 		exit;

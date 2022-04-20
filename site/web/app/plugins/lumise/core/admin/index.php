@@ -390,8 +390,56 @@ class lumise_router {
 	public function update_notice() {
 		
 		global $lumise;
-		$lpage = isset($_GET['lumise-page']) ? $_GET['lumise-page'] : '';
 		
+		$lpage = isset($_GET['lumise-page']) ? $_GET['lumise-page'] : '';
+
+		if($lumise->connector->platform == 'php'){
+			$key = $lumise->get_option('purchase_key');
+			$key_valid = ($key === null || empty($key) || strlen($key) != 36 || count(explode('-', $key)) != 5) ? false : true;
+
+			if(!$key_valid){
+				?>
+				<div class="lumise_container">
+					<div class="lumise-col lumise-col-12">
+						<div class="lumise-update-notice top warning">
+							<?php echo $lumise->lang('You must verify your purchase code Lumise Product Designer to access to all features'); ?>.
+							<a href="<?php echo $lumise->cfg->admin_url; ?>lumise-page=license"><?php echo $lumise->lang('Enter your license now'); ?> &rarr;</a>
+						</div>
+					</div>
+				</div>
+				<?php
+			}
+			$addon_list = $lumise->addons->addon_installed_list();
+			$actives = $lumise->get_option('active_addons');
+			if ($actives !== null && !empty($actives))
+				$actives = (Array)@json_decode($actives);
+			if( isset($addon_list) && !empty($addon_list) && count($addon_list) > 0 
+				&& (
+					(isset($addon_list['assign']) && isset($actives['assign']))
+					|| (isset($addon_list['display_template_clipart']) && isset($actives['display_template_clipart']))
+					|| (isset($addon_list['dropbox_sync']) && isset($actives['dropbox_sync']))
+					|| (isset($addon_list['distress']) && isset($actives['distress']))
+					|| (isset($addon_list['images']) && isset($actives['images']))
+				)
+			){
+				$key_addon_bundle = $lumise->get_option('purchase_key_addon_bundle');
+				$key_valid_addon_bundle = ($key_addon_bundle === null || empty($key_addon_bundle) || strlen($key_addon_bundle) != 36 || count(explode('-', $key_addon_bundle)) != 5) ? false : true;
+
+				if (!$key_valid_addon_bundle) {
+					?>
+					<div class="lumise_container">
+						<div class="lumise-col lumise-col-12">
+							<div class="lumise-update-notice top warning">
+								<?php echo $lumise->lang('You must verify your purchase code for addon bundle to access to all features'); ?>.
+								<a href="<?php echo $lumise->cfg->admin_url; ?>lumise-page=license#lumise-tab-addon-bundle"><?php echo $lumise->lang('Enter your license now'); ?></a>
+							</div>
+						</div>
+					</div>
+					<?php	
+				}	
+			}
+		}
+
 		if(
 			$lpage != 'updates' && 
 			$lpage != 'license' && 

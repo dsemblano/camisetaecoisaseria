@@ -437,7 +437,7 @@
 	$arg = $lumise->apply_filters('settings_fields', $arg);
 	
 	$fields = $lumise_admin->process_settings_data($arg);
-	
+
 ?>
 
 <div class="lumise_wrapper" id="lumise-<?php echo $section; ?>-page">

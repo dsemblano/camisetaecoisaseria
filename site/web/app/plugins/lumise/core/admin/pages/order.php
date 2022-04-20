@@ -303,10 +303,11 @@
 									$is_query = explode('?', $lumise->cfg->tool_url);
 													
 									$url = $lumise->cfg->tool_url.(isset($is_query[1])? '&':'?');
-
-									if (!empty($item['design'])) {
+									
+                                    if (!empty($item['design'])) {
 										$url .= '&design_print='.str_replace('.lumi', '', $item['design']);
 										$url .= '&order_print='.$item['order_id'];
+										
 										if($lumise->connector->platform == 'woocommerce'){
 											$order = wc_get_order($item['order_id']);
 											foreach ( $order->get_items() as $item_id => $order_item ) {

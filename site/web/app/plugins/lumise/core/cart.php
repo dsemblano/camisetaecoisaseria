@@ -683,6 +683,7 @@ class lumise_cart extends lumise_lib
 	                'options'    	=> $item->options,
 	                'variation'    	=> $item->variation,
 	                'attributes'    => $attributes,
+					'ext_attributes'=> $item->ext_attributes,
 	                'printing'      => $item->printing,
 	                'resource'      => $resource,
 	                'design'        => $item->design,
@@ -710,7 +711,7 @@ class lumise_cart extends lumise_lib
         }
         
         // $resources = $this->resources( $ids );
-
+		
         $cart_total = 0;
         foreach( $items_cart as $key => $item ) {
             foreach ( $item[ 'resource' ] as $res ){
@@ -794,109 +795,139 @@ class lumise_cart extends lumise_lib
 	        
 	        $calc			= json_decode(urldecode(base64_decode($printing['calculate'])), true);
             $rules 			= $calc['values'];
+			$cfgpricing     = $calc['cfgpricing'];
             $states_data 	= $item->states_data;
-			
-            if (empty($rules) && !is_array($rules)) 
-            	return $print_price;
-			
+			//echo "<pre>";
+			//print_r($states_data);
+
+			if (empty($rules) && !is_array($rules)) 
+					return $print_price;
+				
 			$keys = array_keys($rules);
 			
 			$ind_stage = 0;
 			
 			foreach ($states_data as $s => $options){
-                
-                $is_multi = $calc['multi'];
 				
-                if (!$is_multi)
+				$is_multi = $calc['multi'];
+				
+				if (!$is_multi)
 					$ind_stage  = 0;
-                if(!isset($keys[$ind_stage])) continue;
+				if(!isset($keys[$ind_stage])) continue;
 				$stage    	  = $keys[$ind_stage];
-                $rules_stages = $rules[$stage];
-                $qtys		  = array_keys($rules_stages);
+				$rules_stages = $rules[$stage];
+				$qtys		  = array_keys($rules_stages);
 				
-                sort($qtys, SORT_NATURAL);
-                
+				sort($qtys, SORT_NATURAL);
+				
 				$ind_stage++;
 				
-                if (count($qtys) == 0) 
-                	continue;
-                
-                $index = -1;
-                
-                for ($i=0; $i < count($qtys); $i++){
-                    if(
-                        (
-                            intval($qtys[$i] ) < $qty &&
-                            strpos($qtys[$i], '>') === false
-                        ) ||
-                        (
-                            strpos($qtys[$i], '>') !== false &&
-                            (intval(str_replace('>', '', $qtys[$i])) + 1) <= $qty
-                        )
-                    )
-                        $index = $i;
-                }
+				if (count($qtys) == 0) 
+					continue;
+				
+				$index = -1;
+				
+				for ($i=0; $i < count($qtys); $i++){
+					if(
+						(
+							intval($qtys[$i] ) < $qty &&
+							strpos($qtys[$i], '>') === false
+						) ||
+						(
+							strpos($qtys[$i], '>') !== false &&
+							(intval(str_replace('>', '', $qtys[$i])) + 1) <= $qty
+						)
+					)
+						$index = $i;
+				}
 
-                if (isset($qtys[$index + 1]))
-                    $qty_key = $qtys[$index + 1];
-                else
-                    $qty_key = $qtys[$index];
-                    
-                $rule = $rules_stages[$qty_key];
-                
-                
-                $total_res = 0;
-                
-                foreach ($options as $key => $val) {
-	                
-                    $unit 	= $val;
-                    $option = $key;
-                    
-                    if( 
-                        $calc['type'] == 'color' && 
-                        $key == 'colors' && 
-                        count((array)$val) > 0
-                    ){
-                        $unit 	= 1;
-                        $option = count((array)$val).'-color';
-                        $option = (!isset($rule[$option])) ? 'full-color' : $option;
-                    }
+				if (isset($qtys[$index + 1]))
+					$qty_key = $qtys[$index + 1];
+				else
+					$qty_key = $qtys[$index];
+					
+				$rule = $rules_stages[$qty_key];
+				
+				
+				$total_res = 0;
+				
+				foreach ($options as $key => $val) {
+					
+					$unit 	= $val;
+					$option = $key;
+					
+					if( 
+						$calc['type'] == 'color' && 
+						$key == 'colors' && 
+						count((array)$val) > 0
+					){
+						$unit 	= 1;
+						$option = count((array)$val).'-color';
+						$option = (!isset($rule[$option])) ? 'full-color' : $option;
+						$print_price += ((isset($rule[$option]) && $cfgpricing) ? floatval($rule[$option]) : floatval($rule['ppu'])) * count((array)$val);
+					}
+					if( 
+						$calc['type'] == 'character' && 
+						$key == 'character' && 
+						is_object($val)	
+					){
+						$val = json_decode( json_encode($val), true );
+						foreach($val as $k => $v){
+							$character = array_sum($v);
+							$opt = $character.'-character';
+							$print_price += ((isset($rule[$opt]) && $cfgpricing) ? floatval($rule[$opt]) : floatval($rule['ppu'])) * $character;
+						}
+					}
+					
+					if( 
+						$calc['type'] == 'line' && 
+						$key == 'line' && 
+						is_object($val)	
+					){
+						$val = json_decode( json_encode($val), true );
+						foreach($val as $k => $v){
+							$opt = $v.'-line';
+							$print_price += ((isset($rule[$opt]) && $cfgpricing) ? floatval($rule[$opt]) : floatval($rule['ppu'])) * $v;
+						}
+					}
 
-                    if (isset($rule[$option]))
-                        // $print_price += floatval($rule[$option]*$unit);
-                    	$print_price += floatval(floatval($rule[$option])*floatval($unit));
-                    
-                    if (!is_array($val))
-                    	$total_res += $unit;
-                }
-                
-                if(
-                   $calc['type'] == 'fixed' 
-                    && $total_res > 0
-                ){
-                    $print_price += floatval( $rule['price'] );
-                    if( !$is_multi ) return $print_price;
-                }
-                
-                if(
-                    $calc['type'] == 'size' &&
-                    is_object($item->printings_cfg) &&
-                    $total_res > 0
-                ){
-                    $product_size   = '';
-                    
-                    foreach ( $item->printings_cfg as $key => $value ) {
-                        if( $key == $item->printing || $key == '_'.$item->printing) 
-                        	$product_size = $value;
-                    } 
-                    
-                    $print_price += floatval( $rule[ $product_size ] );
-                    
-                    if ( !$is_multi ) 
-                    	return $print_price;
-                }
-            }
-                           
+					if ($calc['type'] != 'color' && isset($rule[$option]))
+						// $print_price += floatval($rule[$option]*$unit);
+						$print_price += floatval(floatval($rule[$option]) * floatval($unit));
+					
+					if (!is_array($val) && !is_object($val))
+						$total_res += $unit;
+				}
+				
+				if(
+				$calc['type'] == 'fixed' 
+					&& $total_res > 0
+				){
+					$print_price += floatval( $rule['price'] );
+					//if( !$is_multi ) return $print_price;
+				}
+				
+				if(
+					$calc['type'] == 'acreage' &&
+					$total_res > 0 && 
+					is_object($options->sizes)
+				){
+					$acreage = $options->sizes->width * $options->sizes->height;
+					$print_price += floatval($acreage) * floatval( $rule['price'] );
+					//if( !$is_multi ) return $print_price;
+				}
+				
+				if(
+					$calc['type'] == 'size' &&
+					is_object($options->sizes) &&
+					$total_res > 0
+				){
+					$product_size  = $options->sizes->size;				
+					$print_price += (isset($rule[$product_size]) && $cfgpricing) ? floatval( $rule[ $product_size ] ) : floatval( $rule['ppu'] );
+					
+					//if ( !$is_multi ) return $print_price;
+				}
+			}              
         }
 		
         return $print_price;

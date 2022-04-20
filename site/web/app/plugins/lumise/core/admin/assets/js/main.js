@@ -427,11 +427,12 @@
 									var v = $(this).find('input.action_check').val().toString(),
 										r = $(this).find('.lumise_radios input[type="radio"]:checked').val();
 									
-									if (this.getAttribute('data-type') == 'size') {
+									/* if (this.getAttribute('data-type') == 'size') {
 										if (r !== null && r !== undefined) {
 											vals['_'+v] = r;
 										}
-									} else vals['_'+v] = '';
+									} else vals['_'+v] = ''; */
+									vals['_'+v] = '';
 								}
 							});
 							
@@ -905,7 +906,7 @@
 					},
 					
 					download_mockup : function(e) {
-						
+					
 						e.preventDefault();
 						
 						let canvas = document.createElement('canvas'),
@@ -931,7 +932,6 @@
 						
 						ctx.fillRect(0, 0, canvas.width, canvas.height);
 				
-                       
                         if(temp){
 						    ectx.drawImage(temp, temp.offsetLeft/ratio, temp.offsetTop/ratio, temp.width/ratio, temp.height/ratio);
                         }
@@ -943,18 +943,18 @@
 							top = 0;
 						if (isNaN(left))
 							left = 0;
-							
+
 						//left += (canvas.width/2) - (editcanvas.width/2);
 						//top += (canvas.height/2) - (editcanvas.height/2);
 						left += editzone.offsetLeft/ratio;
 						top += editzone.offsetTop/ratio;
-						
+
 						let x = left,
 							y = top,
 							width = editcanvas.width,
 							height = editcanvas.height,
 							radius = parseInt(editzone.style.borderRadius.replace('px', ''));
-						
+
 						ctx.save();
 						ctx.beginPath();
 						ctx.moveTo(x + radius, y);
@@ -972,9 +972,7 @@
 						ctx.restore();
 						
 						ctx.drawImage(img, 0, 0);
-						
-						
-						
+
 						let dataURL = canvas.toDataURL('image/jpeg', 1).split(',') ?? canvas.toDataURL('image/png', 1).split(',') ?? canvas.toDataURL('image/svg', 1).split(','),
 							binStr = atob(dataURL[1]),
 							len = binStr.length,
@@ -1967,7 +1965,7 @@
 					},
 					
 					add_variation : function(e) {
-						
+
 						var tmpl = e.data.add_att($(e.target).closest('.lumise-att-layout')),
 							id = tmpl.attr('data-id');
 						
@@ -3392,9 +3390,8 @@
 		printing: {
 			
 			init: function(cfg) {
-				
 				var tab_events = function(wrp) {
-						
+					
 					trigger({
 						
 						el: wrp,
@@ -3402,7 +3399,9 @@
 						events: {
 							'.lumise_tab_nav li': 'active_tab',
 							':click': 'tbody_funcs',
-							'input[data-func="show_detail"]:change': 'show_detail'
+							'input[data-func="show_detail"]:change': 'show_detail',
+							'input[data-func="cfgpricing"]:change': 'cfgpricing',
+							'input[data-func="white-base"]:change,input[data-func="full-color"]:change': 'options',
 						},
 						
 						active_tab: function(e) {
@@ -3457,7 +3456,7 @@
 							
 							if (ul.find('>li').length > cfg.ops.max_stages) {
 								alert(lumise.i(163));
-								return;	
+								return;
 							};
 							
 							ul.find('>li[data-add]').before(
@@ -3525,7 +3524,6 @@
 
                                 }
                       
-                         
 								if (tabs.eq(0).find('tbody tr input[data-name="color_'+label+'"]').length > 0)
 									label = '';
 								if (label !== '')
@@ -3533,7 +3531,20 @@
                                 if(label === 'Full'){
                                     label = 'Full-color';
                                 }    
-							} else { 
+							} else if(type == 'line' || type == 'character'){
+								if(tabs.eq(0).find('thead tr td').length-2 == 0){
+                                    label = prompt(LumiseDesign.js_lang['152'],'Full');
+
+                                }else{
+								    label = prompt(LumiseDesign.js_lang['152'], (tabs.eq(0).find('thead tr td').length-2));
+								    label = label.replace(/\D/g, '');
+                                }
+                      
+								if (tabs.eq(0).find('tbody tr input[data-name="color_'+label+'"]').length > 0)
+									label = '';
+								if (label !== '')
+									label = label+'-'+type;  
+							}else { 
 								label = prompt(LumiseDesign.js_lang['155'], '');
 								label = encodeURIComponent(
 									label.replace(/\"/g, '&quot;').
@@ -3553,9 +3564,7 @@
 									
 									tabl.find('thead tr td').last().before('<td>'+decodeURIComponent(label)+'</td>');
 									tabl.find('tbody tr').each(function(){
-										$(this).find('td').last().before(
-											'<td><input data-name="'+label+'" value="1"></td>'
-									    );
+										$(this).find('td').last().before('<td><input data-name="'+label+'" value="1"></td>');
 									});
 									tabl.parent().scrollLeft(tabl.width());
 								};
@@ -3569,8 +3578,8 @@
 							
 							$(e.target).closest('div.lumise_tabs').find('div.lumise_tab_content').each(function() {
 								var tabl = $(this).find('table');
-                              
-								if (tabl.find('thead tr td').length > (type == 'color' ? 2 : 2)) {
+								
+								if (tabl.find('thead tr td').length > (type == 'color' ? 4 : 3)) {
 									tabl.find('thead tr td').last().prev().remove();
 									tabl.find('tbody tr').each(function(){
 										$(this).find('td').last().prev().remove();
@@ -3578,7 +3587,6 @@
 									tabl.parent().scrollLeft(tabl.width());
 								};
 							});
-							
 							e.preventDefault();
 							
 						},
@@ -3586,9 +3594,52 @@
 						show_detail: function(e) {
 							e.data.el.find('input[data-func="show_detail"]').prop({'checked': this.checked});
 							cfg.ops.show_detail = this.checked ? '1' : '0';
-						}
-						
-						
+						},
+
+						cfgpricing: function(e) {
+							e.data.el.find('input[data-func="cfgpricing"]').prop({'checked': this.checked});
+							cfg.ops.cfgpricing = this.checked ? '1' : '0';
+							var table = $(e.target).closest('.lumise_tab_content').find('table'),
+								content = $(e.target).closest('.lumise_radio_content'),
+								type = content.data('type'),
+								checked = this.checked;
+							if(type == 'color') {
+								if(checked){
+									content.find('div[data-option]').show()
+									content.find('input[data-func="full-color"],input[data-func="white-base"]').trigger('change');	
+								}else content.find('div[data-option]').hide();	
+							}
+							
+							checked ? content.find('a[data-func="add_column"],a[data-func="reduce_column"]').show() : content.find('a[data-func="add_column"],a[data-func="reduce_column"]').hide();
+							
+							table.find('tr').each(function(){
+								if(checked){
+									$(this).find('td:not(:first-child):not(:last-child)').each(function(i){
+										i > 0 ? $(this).removeClass('hidden') : $(this).addClass('hidden');
+									});
+								}else{
+									$(this).find('td:not(:first-child):not(:last-child)').each(function(i){
+										i > 0 ? $(this).removeAttr( 'style' ).addClass('hidden') : $(this).removeClass('hidden');
+									});
+								}
+							});
+						},
+
+						options: function(e){
+							var target = e.target.getAttribute('data-func'),
+								checked = this.checked;
+							$(e.target).prop({'checked': this.checked});
+							
+							var table = $(e.target).closest('.lumise_tab_content').find('table');
+							
+							table.find('tr').each(function(){
+								if(checked && cfg.ops.cfgpricing != 0){
+									$(this).find('td.column-'+(target)+'').show();
+								}else{
+									$(this).find('td.column-'+(target)+'').hide();
+								}
+							});	
+						},
 					}, true);
 				};
 					
@@ -3597,11 +3648,10 @@
 					el: $('.lumise_field_print'),
 					events: {
 						'input[data-func="type"]:change': 'change_type',
-						'input[data-func="multi"]:change': 'change_multi'
+						'input[data-func="multi"]:change': 'change_multi',
 					},
 					
 					change_type: function(e) {
-						
 						var multi = e.data.el.find('input[data-func="multi"]').is(':checked'),
 							content = $(this).closest('.lumise_radios').find('.lumise_radio_content');
 							
@@ -3610,25 +3660,25 @@
 						
 						if (content.html() === '')
 							e.data.render_tabs(e, this);
-						
+
+						$('.lumise_radio_content.lumise-open input[data-func]').trigger('change');	
 					},
 					
 					change_multi: function(e) {
-						
 						e.data.el.find('.lumise_radio_content').attr({'data-multi': this.checked ? 'yes' : 'no'});
 						
 						if (!this.checked) {
 							$(e.data.el).find('.lumise_radio_content.lumise-open').find('.lumise_tab_nav a').first().trigger('click');
 						}
-							
 					},
-					
+
 					render_tabs: function(e, el) {
 						
 						var wrp = $(el).closest('.lumise_radios').find('.lumise_radio_content'),
 							id = new Date().getTime().toString(36),
 							nav = $('<ul class="lumise_tab_nav"></ul>'),
-							tabs = $('<div class="lumise_tabs"></div>');
+							tabs = $('<div class="lumise_tabs"></div>'),
+							opts = $('<div class="tab_option"></div>');
 
 						if (
 							typeof cfg.ops.data[el.value].values != 'object' || 
@@ -3650,7 +3700,39 @@
 							);
 						});	
 						
-						nav.append('<li data-add="stage"><a href="#new"><i class="fa fa-plus"></i></a></li>');		  
+						nav.append('<li data-add="stage"><a href="#new"><i class="fa fa-plus"></i></a></li>');	
+						
+						if(el.value != 'acreage' && el.value != 'fixed' && el.value != 'acreage '){
+							opts.append(
+								'<div data-view="advance">\
+									<div class="lumise-toggle">\
+										<input type="checkbox" data-func="cfgpricing" value="1" '+(
+											cfg.ops.cfgpricing == '1' ? ' checked' : ''
+										)+'>\
+										<span class="lumise-toggle-label" data-on="Yes" data-off="No"></span>\
+										<span class="lumise-toggle-handle"></span>\
+									</div>\
+									<label>Advance option</label>\
+								</div>');
+						}
+						
+						if(el.value == 'color' && !!cfg.ops.data[el.value].options){
+							Object.keys(cfg.ops.data[el.value].options).map(function(s, i) {
+								s == 'ppu' || opts.append(
+								'<div data-option="'+(s)+'" class="hidden">\
+									<div class="lumise-toggle">\
+										<input type="checkbox" data-func="'+(s)+'" value="1" '+(
+											cfg.ops[s.replace('-', '_')] == '1' ? ' checked' : ''
+										)+'>\
+										<span class="lumise-toggle-label" data-on="Yes" data-off="No"></span>\
+										<span class="lumise-toggle-handle"></span>\
+									</div>\
+									<label>'+( cfg.ops.data[el.value].options[s] )+'</label>\
+								</div>');
+							});
+						}
+						wrp.append(opts);
+						
 						wrp.append(nav).append(tabs);
 						
 						tab_events(wrp);
@@ -3673,9 +3755,14 @@
 								if (i>0) delete ops[o];
 							});
 						};
-							
-						Object.keys(ops[Object.keys(ops)[0]]).map(function(o){
-							th += '<td>'+decodeURIComponent(o)+'</td>';
+						if(type == 'acreage' || type == 'fixed' ){
+							cfg.ops.cfgpricing = false;
+						}
+						Object.keys(ops[Object.keys(ops)[0]]).map(function(o,i){
+							var class_name = ['column-' + o];
+							if((cfg.ops.cfgpricing && i == 0) || (!cfg.ops.cfgpricing && i >  0)) 
+								class_name.push('hidden');
+							th += '<td class="'+ class_name.join(' ') +'">'+( cfg.ops.data[type][o] ? decodeURIComponent(cfg.ops.data[type][o]) : decodeURIComponent(o))+'</td>';
 						});
 						
 						var tb = e.data.render_rows(ops);
@@ -3684,7 +3771,7 @@
 						
 						return '<div data-view="table"><table>'+th+tb+'</table></div>\
 								<a href="#" data-func="add_row">'+cfg.ops.langs.aqr+'</a>'+(
-									(type == 'color' || type == 'size') ? 
+									(type == 'color' || type == 'size' || type == 'character' || type == 'line') ? 
 									' <a href="#" data-func="add_column" data-type="'+type+'">'+LumiseDesign.js_lang['153']+'</a> \
 									 <a href="#" data-func="reduce_column" data-type="'+type+'">'+LumiseDesign.js_lang['154']+'</a>' 
 									 : '')+'<input type="checkbox" data-func="show_detail" id="showindt-'+type+'"'+(
@@ -3699,27 +3786,29 @@
 						
 						Object.keys(values).map(function(v) {
 							tb += '<tr><td><input data-name="qty" value="'+v+'" /></td>';
-							Object.keys(values[v]).map(function(c){
-								var val = '';
+							Object.keys(values[v]).map(function(c,i){
+								var val = '',
+									class_name = ['column-' + c];
 								if(typeof values[v][c] !== 'undefined')
 									val = values[v][c];
-										
-								tb += '<td><input data-name="'+c+'" value="'+val+'" /></td>';
+								
+								if((cfg.ops.cfgpricing && i == 0) || (!cfg.ops.cfgpricing && i >  0)) 
+									class_name.push('hidden');
+
+								tb += '<td class="'+ class_name.join(' ') +'"><input data-name="'+c+'" value="'+val+'" /></td>';
 							});
 							tb += '<td><i class="fa fa-times" data-func="delete_row"></i></td></tr>';
 						});
-						
+
 						return tb+'</tbody>';
 						
-					}
-					
+					},
 					
 				}, 'prt');
 					
 				$('.lumise_field_print input[data-func="type"]:checked').trigger('change');
 				
-				$('.lumise_form').on('submit', function() {
-					
+				$('.lumise_form').on('submit', function(e) {
 					$('.lumise_field_print').each(function(){
 						
 						var el = $(this),
@@ -3739,6 +3828,11 @@
 								type: el.find('input[data-func="type"]:checked').val(),
 								show_detail: el.find('.lumise-open input[data-func="show_detail"]').
 											eq(0).is(':checked') ? '1' : '0',
+								white_base: el.find('.lumise-open input[data-func="white-base"]').
+											eq(0).is(':checked') ? '1' : '0',		
+								full_color	: el.find('.lumise-open input[data-func="full-color"]').
+								eq(0).is(':checked') ? '1' : '0',			
+								cfgpricing:	el.find('input[data-func="cfgpricing"]').is(':checked'),
 								values: {}
 							};
 							
@@ -3757,8 +3851,61 @@
 						
 					});
 					
+					$('.lumise_field_advance_option').each(function(){
+						var el = $(this),
+							data = {
+								active: el.find('input[data-func="active"]').is(':checked') ? 1 : 0,
+								values: {}
+							};	
+						//var obj = el.find(":input:not([data-func])").serializeArray();
+						el.find(":input:not([data-func])").each(function(){
+							var name = (this.name.indexOf('[]') > -1 ) ? this.name.split("[]")[0] : this.name,
+								val = this.value,
+								node = data.values[name];
+
+							if(this.type == 'checkbox' || this.type == 'radio'){
+								if(this.name.indexOf('[]') > -1)
+									if(!this.checked) return;
+									else val = this.value;
+								else
+									val = this.checked ? 1 : 0;
+							}
+
+							if ('undefined' !== typeof node && node !== null) {
+								if ($.isArray(node)) {
+									node.push(val);
+								} else {
+									data.values[name] = [node, val];
+								}
+							} else {
+								data.values[name] = val
+							}										
+						});
+						
+						//console.log(data);
+						//e.preventDefault();
+						el.find('input[data-func="data-saved"]').val(btoa(encodeURIComponent(JSON.stringify(data))));	
+					});
+					
 				});
 				
+				trigger({
+					
+					el: $('.lumise_field_advance_option'),
+					events: {
+						'input[data-func="active"]:change': 'change_active'
+					},
+					
+					change_active: function(e) {
+						
+						if (this.checked) 
+							$(this).closest('.lumise_form_content').find('.lumise_form_group').show();
+						else
+							$(this).closest('.lumise_form_content').find('.lumise_form_group').hide();
+					},
+										
+				}, true);
+				$('.lumise_field_advance_option input[data-func="active"]').trigger('change');
 			}
 			
 		},

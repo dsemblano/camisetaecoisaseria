@@ -48,9 +48,9 @@ $items = $lumise->addons->load_installed();
 		    <span class="close">&times;</span>
 		    <p>Enter your purchase code to activate the addon</p>
 		    <div class="modal-footer">
-			    <a id="link-addon-bundle" href="<?php echo admin_url('?page=lumise&lumise-page=license'); ?>#lumise-tab-addon-bundle" class="link-to-license">Enter your license now</a>
-			    <a id="link-addon-printful" href="<?php echo admin_url('?page=lumise&lumise-page=license'); ?>#lumise-tab-addon-printful" class="link-to-license">Enter your license now</a>
-			    <a id="link-addon-vendor" href="<?php echo admin_url('?page=lumise&lumise-page=license'); ?>#lumise-tab-addon-vendor" class="link-to-license">Enter your license now</a>
+			    <a id="link-addon-bundle" href="<?php echo $lumise->cfg->admin_url; ?> ?page=lumise&lumise-page=license#lumise-tab-addon-bundle" class="link-to-license">Enter your license now</a>
+			    <a id="link-addon-printful" href="<?php echo $lumise->cfg->admin_url; ?> ?page=lumise&lumise-page=license#lumise-tab-addon-printful" class="link-to-license">Enter your license now</a>
+			    <a id="link-addon-vendor" href="<?php echo $lumise->cfg->admin_url; ?> ?page=lumise&lumise-page=license#lumise-tab-addon-vendor" class="link-to-license">Enter your license now</a>
 			</div>
 		  </div>
 		</div>

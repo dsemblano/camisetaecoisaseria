@@ -17,7 +17,7 @@ class lumise_views extends lumise_lib {
 		
 		$cfg = $this->main->cfg;
 		$logo = $cfg->settings['logo'];
-		
+
 		if (empty($logo))
 			$logo = $cfg->assets_url.'assets/images/logo.v5.png';
 			
@@ -123,7 +123,7 @@ class lumise_views extends lumise_lib {
 			$alwd = ' data-alwd="'.urlencode($_GET['design_print']).'"';
 		}
 			
-		if (!$this->main->connector->is_admin() && $this->main->cfg->settings['user_print'] != '1')
+		if (!$this->main->connector->is_admin() && $this->main->cfg->settings['user_print'] != '1' || $this->main->apply_filters('show-print-nav', false))
 			$alwd = ' style="display:none;"';
 		
 		ob_start(); 
@@ -410,10 +410,13 @@ class lumise_views extends lumise_lib {
 	<path d="M491.318,235.318H20.682C9.26,235.318,0,244.577,0,256s9.26,20.682,20.682,20.682h470.636    c11.423,0,20.682-9.259,20.682-20.682C512,244.578,502.741,235.318,491.318,235.318z"/><path d="M491.318,78.439H20.682C9.26,78.439,0,87.699,0,99.121c0,11.422,9.26,20.682,20.682,20.682h470.636    c11.423,0,20.682-9.26,20.682-20.682C512,87.699,502.741,78.439,491.318,78.439z"/><path d="M491.318,392.197H20.682C9.26,392.197,0,401.456,0,412.879s9.26,20.682,20.682,20.682h470.636    c11.423,0,20.682-9.259,20.682-20.682S502.741,392.197,491.318,392.197z"/>
 </g><g xmlns="http://www.w3.org/2000/svg" style="display:none;transform:scale(.85) translateY(3px);" id="__x"><path xmlns="http://www.w3.org/2000/svg" d="M505.943,6.058c-8.077-8.077-21.172-8.077-29.249,0L6.058,476.693c-8.077,8.077-8.077,21.172,0,29.249    C10.096,509.982,15.39,512,20.683,512c5.293,0,10.586-2.019,14.625-6.059L505.943,35.306    C514.019,27.23,514.019,14.135,505.943,6.058z"/><path d="M505.942,476.694L35.306,6.059c-8.076-8.077-21.172-8.077-29.248,0c-8.077,8.076-8.077,21.171,0,29.248l470.636,470.636    c4.038,4.039,9.332,6.058,14.625,6.058c5.293,0,10.587-2.019,14.624-6.057C514.018,497.866,514.018,484.771,505.942,476.694z"/></g></svg>
 	<ul data-block="left" data-resp="undo-redo">
-		<li id="lumise-design-undo" title="Ctrl+Z" class="disabled"><?php echo $this->main->lang('Undo'); ?></li>
+		<?php if($this->main->apply_filters('allow_undo', true)) {?>
+		<li id="lumise-design-undo" title="Ctrl+Z" class="disabled"><?php echo $this->main->lang('Undo'); ?></li>		
+		<?php }?>
+		<?php if($this->main->apply_filters('allow_redo', true)) {?>
 		<li id="lumise-design-redo" title="Ctrl+Shift+Z" class="disabled"><?php echo $this->main->lang('Redo'); ?></li>
+		<?php }?>
 	</ul>
-
 	<ul data-block="right">
 		<!-- To add your code here, use the hook $lumise->add_action('before_language', function(){}) -->
 		<!-- Avalable hook: before_language -->
@@ -468,10 +471,13 @@ class lumise_views extends lumise_lib {
 		<?php 
 			$lang_nav = ob_get_contents();
 			ob_end_clean();
+			
 			echo $this->main->apply_filters('lang-nav', $lang_nav);
+			
 		?>
 		<!-- Avalable filters: lang-nav -->
 		<!-- Avalable hook: after_language -->
+		
 		<?php 
 			
 			$this->main->do_action('after_language');
@@ -483,6 +489,7 @@ class lumise_views extends lumise_lib {
 		/* End language component */
 		$this->main->do_action('before_cart');
 		/* Start shop component */	
+		
 		if (in_array('shop', $components)) {
 		
 		?>
@@ -526,6 +533,8 @@ class lumise_views extends lumise_lib {
 			
 			if (is_string($cfg->settings['components']))
 				$components = explode(',', $cfg->settings['components']);
+			
+			$components = $this->main->apply_filters('nav-component', $components);
 				
 			if (in_array('product', $components)) {
 		?>
@@ -537,7 +546,6 @@ class lumise_views extends lumise_lib {
 		</li>
 		<?php		
 			} else {
-				
 		?>
 		<li data-tool="proceed" data-callback="proceed" id="lumise-proceed">
 			<span>
@@ -581,7 +589,7 @@ class lumise_views extends lumise_lib {
 		if (in_array('back', $components)) {
 		?>
 		<li id="back-btn">
-			<a href="http://localhost/lumise" class="back_shop"><?php echo $this->main->lang('Back To Shop'); ?></a>
+			<a href="<?php echo $back_link; ?>" class="back_shop"><?php echo $this->main->lang('Back To Shop'); ?></a>
 		</li>
 		<?php } ?>
 		<!-- Avalable hook: after_cart -->
@@ -632,16 +640,18 @@ class lumise_views extends lumise_lib {
 	<ul class="lumise-top-nav left" data-mode="svg">
 		<!-- Avalable hook: before-tool-svg -->
 		<?php echo $this->main->do_action('before-tool-svg'); ?>
-		<li data-tool="svg" id="lumise-svg-colors" data-callback="svg">
+
+		<?php if($this->main->apply_filters('fill', true)): ?>
+		<li data-tool="svg" id="lumise-svg-colors" data-callback="svg" data-editor="false">
 			<ul data-pos="left" data-view="sub">
 				<li data-view="title">
 					<h3>
 						<span><?php echo $this->main->lang('Fill options'); ?></span>
 						<i class="lumisex-android-close close" title="close"></i>
 					</h3>
-					<p class="flex<?php echo $this->main->cfg->settings['enable_colors'] == '0' ? ' hidden' : ''; ?>">
+					<p class="flex<?php echo ($this->main->cfg->settings['enable_colors'] == '0' && !isset($_POST['printing'])) ? ' hidden' : ''; ?>">
 						<input type="search" placeholder="click to choose color" id="lumise-svg-fill" class="color" />
-						<?php if ($this->main->cfg->settings['enable_colors'] != '0') { ?>
+						<?php if ($this->main->cfg->settings['enable_colors'] != '0' || isset($_POST['printing'])) { ?>
 						<span class="lumise-save-color" data-tip="true" data-target="svg-fill">
 							<i class="lumisex-android-add"></i>
 							<span><?php echo $this->main->lang('Save this color'); ?></span>
@@ -652,14 +662,16 @@ class lumise_views extends lumise_lib {
 				</li>
 			</ul>
 		</li>
+		<?php endif; ?>
+		
 		<!-- Avalable hook: after-tool-svg -->
 		<?php echo $this->main->do_action('after-tool-svg'); ?>
 	</ul>
 
 	<ul class="lumise-top-nav right" data-mode="default">
 		<!-- Avalable hook: before-tool-default -->
-		<?php echo $this->main->do_action('before-tool-default'); ?>
-		<?php if ($this->main->cfg->settings['dis_qrcode'] != '1') { ?>
+		<?php $this->main->do_action('before-tool-default'); ?>
+		<?php if ($this->main->cfg->settings['dis_qrcode'] != '1' || $this->main->apply_filters('disable-qrcode', false)) { ?>
 		<li data-tool="callback" data-callback="qrcode">
 			<span data-tip="true">
 				<i class="lumisex-qrcode-1"></i>
@@ -722,24 +734,29 @@ class lumise_views extends lumise_lib {
 		?>
 		<!-- Avalable filters: options-nav -->
 		<!-- Avalable hook: after-tool-default -->
-		<?php echo $this->main->do_action('after-tool-default'); ?>
+		<?php $this->main->do_action('after-tool-default'); ?>
 	</ul>
-
+	
 	<ul class="lumise-top-nav left" data-mode="image">
 		<!-- Avalable hook: before-tool-image -->
-		<?php echo $this->main->do_action('before-tool-image'); ?>
+		<?php $this->main->do_action('before-tool-image'); ?>
+		<?php if($this->main->apply_filters('replace-image', true)): ?>
 		<li data-tool="callback" data-callback="replace">
 			<span data-tip="true">
 				<i class="lumisex-android-upload"></i>
 				<span><?php echo $this->main->lang('Replace image'); ?></span>
 			</span>
 		</li>
+		<?php endif; ?>
+		<?php if($this->main->apply_filters('crop-image', true)): ?>
 		<li data-tool="callback" data-callback="crop">
 			<span data-tip="true">
 				<i class="lumisex-crop"></i>
 				<span><?php echo $this->main->lang('Crop'); ?></span>
 			</span>
 		</li>
+		<?php endif; ?>
+		<?php if($this->main->apply_filters('select-mask', true)): ?>
 		<li data-tool="masks" data-callback="select_mask">
 			<span data-tip="true">
 				<i class="lumisex-android-star-outline"></i>
@@ -755,6 +772,8 @@ class lumise_views extends lumise_lib {
 				<li data-view="list"></li>
 			</ul>
 		</li>
+		<?php endif; ?>
+		<?php if($this->main->apply_filters('remove-background', true)): ?>
 		<li data-tool="filter">
 			<span data-tip="true">
 				<i class="lumisex-erlenmeyer-flask-bubbles"></i>
@@ -786,6 +805,8 @@ class lumise_views extends lumise_lib {
 				</li>
 			</ul>
 		</li>
+		<?php endif; ?>
+		<?php if($this->main->apply_filters('filter', true)): ?>
 		<li data-tool="advanced">
 			<span data-tip="true">
 				<i class="lumisex-wand"></i>
@@ -832,13 +853,14 @@ class lumise_views extends lumise_lib {
 		<li data-tool="callback" data-callback="imageFXReset">
 			<span data-view="noicon"><?php echo $this->main->lang('Clear Filters'); ?></span>
 		</li>
+		<?php endif; ?>
 		<!-- Avalable hook: after-tool-image -->
-		<?php echo $this->main->do_action('after-tool-image'); ?>
+		<?php $this->main->do_action('after-tool-image'); ?>
 	</ul>
 
 	<ul class="lumise-top-nav left" data-mode="drawing">
 		<!-- Avalable hook: before-tool-drawing -->
-		<?php echo $this->main->do_action('before-tool-drawing'); ?>
+		<?php $this->main->do_action('before-tool-drawing'); ?>
 		<li>
 			<button id="lumise-discard-drawing" class="red mr1">
 				<i class="lumisex-android-close"></i> <?php echo $this->main->lang('Discard drawing (ESC)'); ?>
@@ -864,7 +886,8 @@ class lumise_views extends lumise_lib {
 
 	<ul class="lumise-top-nav right" data-mode="standard">
 		<!-- Avalable hook: before-tool-standard-right -->
-		<?php echo $this->main->do_action('before-tool-standard-right'); ?>
+		<?php $this->main->do_action('before-tool-standard-right'); ?>
+		<?php if($this->main->apply_filters('fill', true)): ?>
 		<li data-tool="fill">
 			<span data-tip="true">
 				<i class="lumisex-paintbucket"></i>
@@ -876,9 +899,9 @@ class lumise_views extends lumise_lib {
 						<span><?php echo $this->main->lang('Fill options'); ?></span>
 						<i class="lumisex-android-close close" title="close"></i>
 					</h3>
-					<p class="flex<?php echo $this->main->cfg->settings['enable_colors'] == '0' ? ' hidden' : ''; ?>">
+					<p class="flex<?php echo ($this->main->cfg->settings['enable_colors'] == '0' && !isset($_POST['printing'])) ? ' hidden' : ''; ?>">
 						<input type="search" placeholder="click to choose color" id="lumise-fill" class="color" data-pos="#fill-ops-sub" />
-						<?php if ($this->main->cfg->settings['enable_colors'] != '0') { ?>
+						<?php if ($this->main->cfg->settings['enable_colors'] != '0' || isset($_POST['printing'])) { ?>
 						<span class="lumise-save-color" data-tip="true" data-target="fill">
 							<i class="lumisex-android-add"></i>
 							<span><?php echo $this->main->lang('Save this color'); ?></span>
@@ -906,9 +929,9 @@ class lumise_views extends lumise_lib {
 				<li data-view="stroke">
 					<h3 class="nob">
 						<span><?php echo $this->main->lang('Stroke color'); ?>: </span>
-						<input type="search" class="color<?php echo $this->main->cfg->settings['enable_colors'] == '0' ? ' hidden' : ''; ?>" placeholder="<?php echo $this->main->lang('Select a color'); ?>"  data-pos="#fill-ops-sub" id="lumise-stroke" />
+						<input type="search" class="color<?php echo ($this->main->cfg->settings['enable_colors'] == '0' && !isset($_POST['printing'])) ? ' hidden' : ''; ?>" placeholder="<?php echo $this->main->lang('Select a color'); ?>"  data-pos="#fill-ops-sub" id="lumise-stroke" />
 					</h3>
-					<?php if ($this->main->cfg->settings['enable_colors'] == '0') {
+					<?php if ($this->main->cfg->settings['enable_colors'] == '0' || isset($_POST['printing']) ) {
 						$colors = explode(':', $this->main->cfg->settings['colors']);
 						if (isset($colors[1])) {
 							$colors = explode(',', $colors[1]);
@@ -925,12 +948,14 @@ class lumise_views extends lumise_lib {
 				</li>
 			</ul>
 		</li>
+		<?php endif;?>
 		<li data-tool="un-group" data-callback="ungroup">
 			<span data-tip="true">
 				<i class="lumisex-link"></i>
 				<span><?php echo $this->main->lang('Ungroup position'); ?></span>
 			</span>
 		</li>
+		<?php if($this->main->apply_filters('layers', true)): ?>
 		<li data-tool="arrange">
 			<span data-tip="true">
 				<i class="lumisex-send-to-back"></i>
@@ -949,6 +974,8 @@ class lumise_views extends lumise_lib {
 				</li>
 			</ul>
 		</li>
+		<?php endif;?>
+		<?php if($this->main->apply_filters('position', true)): ?>
 		<li data-tool="position">
 			<span data-tip="true">
 				<i class="lumisex-android-apps"></i>
@@ -1027,6 +1054,8 @@ class lumise_views extends lumise_lib {
 				</li>
 			</ul>
 		</li>
+		<?php endif;?>
+		<?php if($this->main->apply_filters('transform', true)): ?>
 		<li data-tool="transform">
 			<span data-tip="true">
 				<i class="lumisex-android-options"></i>
@@ -1083,8 +1112,9 @@ class lumise_views extends lumise_lib {
 				</li>
 			</ul>
 		</li>
-		<!-- Avalable hook: before-tool-standard-right -->
-		<?php echo $this->main->do_action('before-tool-standard-right'); ?>
+		<?php endif;?>
+		<!-- Avalable hook: after-tool-standard-right -->
+		<?php echo $this->main->do_action('after-tool-standard-right'); ?>
 	</ul>
 
 	<ul class="lumise-top-nav left" data-mode="text" id="lumise-text-tools">
@@ -1126,6 +1156,7 @@ class lumise_views extends lumise_lib {
 						<textarea type="text" class="nol lumise-edit-text" placeholder="Enter your text"></textarea>
 					</h3>
 				</li>
+				<?php if($this->main->apply_filters('font-size', true)): ?>
 				<li>
 					<h3 class="nob">
 						<span><?php echo $this->main->lang('Font size'); ?>: </span>
@@ -1134,6 +1165,8 @@ class lumise_views extends lumise_lib {
 						</inp>
 					</h3>
 				</li>
+				<?php endif; ?>
+				<?php if($this->main->apply_filters('letter-spacing', true)): ?>
 				<li>
 					<h3 class="nob">
 						<span class="min100"><?php echo $this->main->lang('Letter spacing'); ?> </span>
@@ -1142,6 +1175,8 @@ class lumise_views extends lumise_lib {
 						</inp>
 					</h3>
 				</li>
+				<?php endif; ?>
+				<?php if($this->main->apply_filters('line-height', true)): ?>
 				<li>
 					<h3 class="nob">
 						<span class="min100"><?php echo $this->main->lang('Line height'); ?> </span>
@@ -1150,9 +1185,11 @@ class lumise_views extends lumise_lib {
 						</inp>
 					</h3>
 				</li>
+				<?php endif; ?>
 				<li><button data-func="update-text-fx"><?php echo $this->main->lang('UPDATE TEXT'); ?></button></li>
 			</ul>
 		</li>
+		<?php if($this->main->apply_filters('text-effect', true)): ?>
 		<li data-tool="text-effect">
 			<span data-tip="true">
 				<i class="lumisex-vector"></i>
@@ -1234,7 +1271,9 @@ class lumise_views extends lumise_lib {
 				</li>
 			</ul>
 		</li>
+		<?php endif; ?>
 		<li class="sp"></li>
+		<?php if($this->main->apply_filters('text-align', true)): ?>
 		<li data-tool="text-align">
 			<span data-tip="true">
 				<i class="lumisex-align-center" id="lumise-text-align"></i>
@@ -1249,12 +1288,14 @@ class lumise_views extends lumise_lib {
 				</li>
 			</ul>
 		</li>
+		<?php endif; ?>
 		<li class="text-format" data-format="upper">
 			<span data-tip="true">
 				<i class="lumisex-letter"></i>
 				<span><?php echo $this->main->lang('Uppercase / Lowercase'); ?></span>
 			</span>
 		</li>
+		<?php if($this->main->apply_filters('font-style', true)): ?>
 		<li class="text-format" data-format="bold">
 			<span data-tip="true">
 				<i class="lumisex-bold"></i>
@@ -1273,6 +1314,7 @@ class lumise_views extends lumise_lib {
 				<span><?php echo $this->main->lang('Text underline'); ?></span>
 			</span>
 		</li>
+		<?php endif; ?>
 		<!-- Avalable hook: after-tool-text -->
 		<?php echo $this->main->do_action('after-tool-text'); ?>
 	</ul>
@@ -1289,8 +1331,9 @@ class lumise_views extends lumise_lib {
 		if (is_string($this->main->cfg->settings['components']))
 			$comps = explode(',', $this->main->cfg->settings['components']);
 		
-		$menus = $this->main->cfg->editor_menus;
+		$comps = $this->main->apply_filters('nav-component', $comps);
 		
+		$menus = $this->main->cfg->editor_menus;
 	?>
 	<div id="lumise-left">
 		<div class="lumise-left-nav-wrp">
@@ -1468,7 +1511,7 @@ class lumise_views extends lumise_lib {
 	public function header_message(){
 
 		$lumise_msg = $this->main->connector->get_session('lumise_msg');
-
+		
 		if (isset($lumise_msg['status']) && $lumise_msg['status'] == 'error' && is_array($lumise_msg['errors'])) { ?>
 
 			<div class="lumise_message err">
@@ -1779,7 +1822,7 @@ class lumise_views extends lumise_lib {
 
 		global $lumise, $lumise_admin, $lumise_router;
 
-		$cates = $lumise_admin->get_categories($args['cate_type']);
+		$cates = $lumise_admin->get_categories($args['cate_type'], isset($args['parent']) ? $args['parent'] : null);
 
 		if (count($cates) > 0) {
 			
@@ -1797,7 +1840,7 @@ class lumise_views extends lumise_lib {
 
 			foreach ($cates as $value) {
 
-				$pd = 20*$value['lv'].'px';
+				$pd = 20* (isset($value['lv']) ? $value['lv'] : 0).'px';
 				$checked = '';
 
 				if (isset($dt_id)) {
@@ -1922,13 +1965,12 @@ class lumise_views extends lumise_lib {
 
 
     public function field_checkboxes($args = array()) {
-
 	    if (isset($args['value'])) {
 	    	if (is_string($args['value']))
 	    		$args['value'] = explode(',', $args['value']);
 		}else
-			$args['value'] = array();
-
+			$args['value'] = ( !empty($args['default']) && is_string($args['default']) ) ? explode(',', $args['default']) : array();
+		
 	    if (isset($args['options'])) {
 		    echo '<div class="lumise_checkboxes">';
 		    $options = array_replace(array_flip($args['value']), $args['options']);
@@ -1952,6 +1994,74 @@ class lumise_views extends lumise_lib {
 		<?php }else echo 'missing options';
     }
 
+	public function field_multiselect($args = array()) {
+		if (isset($args['value']))
+	    	$value = $args['value'];
+		else
+			$value = !empty($args['default']) ? $args['default'] : array();
+
+		if (is_string($value)) $value = explode(',', $value);
+
+		if (isset($args['options'])) {
+			$id = uniqid();
+		?>
+		<input name="<?php echo $args['name']; ?>" class="multiselect_field_<?php echo $id; ?>" value="<?php echo implode(',', $value); ?>">	
+		<script type="text/javascript">
+			$(document).ready(function () {
+				var sampleOptions = <?php echo json_encode($args['options']); ?>;
+				$(".multiselect_field_<?php echo $id; ?>").tagit({
+					availableTags: sampleOptions,
+					removeConfirmation : true,
+					autocomplete: {delay: 0, minLength: 2},
+					beforeTagAdded: function(event, ui) {
+						if(sampleOptions.indexOf(ui.tagLabel) == -1){
+							return false;
+						}
+					}
+				});
+				// var ac = $(".multiselect_field_<?php echo $id; ?>").data('uiTagit').tagInput.data('uiAutocomplete');
+				// ac._renderItem = function (ul, item) {
+				// 	console.log(item);
+				// }
+			});
+		</script>
+		<?php }else echo 'missing options';
+	}
+	
+	public function field_filters($args = array()) {
+		// echo "<pre>";
+		// print_r($args);	
+		// echo "</pre>";
+	    if (isset($args['value'])) {
+	    	if (is_string($args['value']))
+	    		$args['value'] = explode(',', $args['value']);
+		}else
+			$args['value'] = !empty($args['default']) ? (is_string($args['default']) ? explode(',', $args['default']) : $args['default']) : array();
+
+		
+	    if (isset($args['options'])) {
+		    echo '<div class="lumise_filters">';
+		    $options = array_replace(array_flip($args['value']), $args['options']);
+		    foreach ($options as $option => $value) {
+			    if (isset($args['options'][$option])) {
+			?>
+				<div class="lumise_checkbox sty2 ">
+					<input type="checkbox" name="<?php
+						echo isset($args['name']) ? $args['name'].'[]' : ''
+					?>" class="action_check" value="<?php echo $option; ?>" <?php
+						if (in_array($option, $args['value']) || (!isset($args['value']) && $args['default'] == $option))
+							echo 'checked="true"';
+					?> id="lumise-filters-<?php echo $option; ?>" />
+						<label for="lumise-filters-<?php echo $option; ?>">
+							<?php echo $value; ?> <em class="check"></em>
+						</label>
+				</div>
+			<?php }} ?>
+				<!-- <input type="checkbox" name="<?php echo $args['name']; ?>[]" checked="true" style="display:none;" value="" /> -->
+			</div>
+			<!-- <a href="#" class="check_all"><?php echo $this->main->lang('Checked all'); ?></a> -->
+		<?php }else echo 'missing options';
+    }
 
     public function field_dropbox($args = array()) {
 	    if (isset($args['options'])) {
@@ -1964,7 +2074,7 @@ class lumise_views extends lumise_lib {
     }
 
     public function field_printing($args = array()) {
-
+		
 		$prints = $this->main->views->get_prints();
 		
 		$inp_val = json_decode(rawurldecode($args['value']), true);
@@ -1998,7 +2108,7 @@ class lumise_views extends lumise_lib {
 					<?php echo $print['title']; ?> <em class="check"></em>
 				</label>
 				<?php
-					if (is_object($calc) && isset($calc->type) && $calc->type == 'size') {
+					/* if (is_object($calc) && isset($calc->type) && $calc->type == 'size') {
 					
 						$first_obj = array_values((Array)$calc->values);
 						
@@ -2032,7 +2142,7 @@ class lumise_views extends lumise_lib {
 							}
 							echo '</div>';
 						}
-					}
+					} */
 				?>
 			</div>
 			<?php
@@ -2699,6 +2809,7 @@ class lumise_views extends lumise_lib {
 							<i class="fa fa-cloud-upload"></i> 
 							<?php echo $this->main->lang('Upload new image'); ?>
 						</button>
+						<a class="lumise-btn" href="https://shop.lumise.com/?utm_source=backendsp&utm_medium=click&utm_campaign=traffic" target="_blank"><?php echo $this->main->lang('See more product pictures'); ?></a>
 						<small><?php echo $this->main->lang('Accept file type: .jpg, .png, .svg (1KB -> 5MB)'); ?></small>
 						<input type="file" class="hidden" id="lumise-product-upload-input" />
 						<?php } ?>
@@ -2785,7 +2896,6 @@ class lumise_views extends lumise_lib {
 	</script>
 	<?php
 	}
-	
 	
 	public function field_variations($args) {
 	?>
@@ -2884,7 +2994,6 @@ class lumise_views extends lumise_lib {
 	<?php
 	}
 	
-	
 	public function field_shape($args) {
 	?><div id="lumise_shape_preview"></div><br />
 		<textarea name="<?php echo isset($args['name']) ? $args['name'] : ''; ?>" id="lumise_shape_content"><?php echo !empty($args['value']) ? $args['value'] : '&lt;svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0,0,100,100"&gt;&lt;polygon points="50 0, 0 100, 100 100"&gt;&lt;/polygon&gt;&lt;/svg&gt;' ?></textarea>
@@ -2906,13 +3015,15 @@ class lumise_views extends lumise_lib {
 		
 		$printing_types = $args['prints_type'];
 		$prices = isset($args['value'])? $this->dejson($args['value']) : json_decode('{"type":"multi", "multi" : "true"}');
-
+		// echo "<pre>";
+		// print_r($prices);
+		// echo "</pre>";
 		$print_type = isset($prices->type)? $prices->type : 'multi';
 
 		if (isset($printing_types[$print_type]) && isset($prices->values)) {
         	$printing_types[$print_type]['values'] = $prices->values;
         }
-        
+		
 		?>
 		<div data-view="multi">
 			<div class="lumise-toggle">
@@ -2947,6 +3058,9 @@ class lumise_views extends lumise_lib {
 					data: <?php echo json_encode( (object) $printing_types ); ?>,
 			   		multi: <?php echo (isset($printing_types['multi_sides']) && $printing_types['multi_sides'] == 1)? 'true' : 'false'; ?>,
 			   		show_detail: '<?php echo isset($prices->show_detail) ? $prices->show_detail : ''; ?>',
+					white_base: '<?php echo isset($prices->white_base) ? $prices->white_base : 1; ?>',
+					full_color: '<?php echo isset($prices->full_color) ? $prices->full_color : 1; ?>',
+					cfgpricing: '<?php echo isset($prices->cfgpricing) ? $prices->cfgpricing : ''; ?>',
 			   		current_type: '<?php echo ($type ? $type : 'multi'); ?>',
 			   		langs: {
 			    		aqr: '<?php echo $this->main->lang('Add Quantity Range'); ?>',
@@ -2961,7 +3075,6 @@ class lumise_views extends lumise_lib {
 	}
 
 	public function field_tabs($args) {
-
 		if (!isset($args['tabs'])) {
 			echo 'Missing option tabs';
 			return;
@@ -3001,13 +3114,356 @@ class lumise_views extends lumise_lib {
 		));
 
 	}
+	public function field_groups($args) {
+		global $lumise;
+	
+	    $value = isset($args['value'])? $this->dejson($args['value']) : json_decode('{}');
+
+	    if (isset($args['fields']) && is_array($args['fields'])) {
+			$fields = $args['fields'];
+			foreach($fields as $key => $field){
+				$fields[$key]['name'] = $args['name']."[{$field['name']}]";
+				
+				if(isset($value->{$field['name']}))
+					$fields[$key]['value'] = $value->{$field['name']};
+			}
+			$this->fields_render($fields);
+		}
+		?>
+		<!-- <input type="hidden" name="<?php echo $args['name']; ?>" data-func="data-saved" value="<?php echo isset($args['value']) ? $args['value'] : ''; ?>" /> -->
+		<?php
+	}
+	public function field_resource($args) {
+		global $lumise;
+	;
+		if (!isset($args['tabs'])) {
+			echo 'Missing option tabs';
+			return;
+		}
+		if(is_array($args['value']) && !count($args['value']))
+			$args['value'] = $args['default'];
+			
+		if (is_string($args['value']))
+			$values = $this->main->lib->dejson($args['value']);
+		else $values = $args['value'];
+
+		if ($values === null)
+			$values = array();
+
+		echo '<div class="lumise_tabs_wrapper lumise_form_settings">';
+		echo '<ul class="lumise_tab_nav">';
+			foreach ($args['tabs'] as $key => $tab ) {
+				echo '<li>';
+				echo '<a href="#lumise-tab-'.$this->slugify($key).'">'.$tab['title'].'</a>';
+				echo '</li>';
+			}
+		echo '</ul>';
+		echo '<div class="lumise_tabs">';
+			foreach ($args['tabs'] as $key => $tab ) {
+			    echo '<div class="lumise_tab_content" id="lumise-tab-'.$this->slugify($key).'">';
+				// if ( isset( $tab['callback'])  && method_exists($this, $tab['callback'])) {
+				// 	call_user_func( array($this,$tab['callback']), $key, $args, ( isset($value[$key]) ? $value[$key] : [] ));
+				// }
+				if (isset($tab['fields']) && is_array($tab['fields'])) {
+					$fields = $tab['fields'];
+					
+					foreach($fields as $k => $field){
+						$fields[$k]['name'] = $args['name']."[$key][{$field['name']}]";
+						
+						if(isset($values->$key->{$field['name']}))
+							$fields[$k]['value'] = $values->$key->{$field['name']};
+					}
+					
+					$this->fields_render($fields);
+				}
+			    echo '</div>';
+		    }
+		echo '</div>';
+		echo '</div>';
+	}
+
+	public function get_resource_fields($fieldset = ''){
+		global $lumise;
+		$fabric = array(
+			array(
+				'type' => 'toggle',
+				'name' => 'movable',
+				'label' => $this->main->lang('Movable'),
+				'default' => 'yes',
+				'value' => null
+			),
+			array(
+				'type' => 'toggle',
+				'name' => 'scalable',
+				'label' => $this->main->lang('Scalable'),
+				'default' => 'yes',
+				'value' => null
+			),
+			array(
+				'type' => 'toggle',
+				'name' => 'removable',
+				'label' => $this->main->lang('Removable'),
+				'default' => 'yes',
+				'value' => null
+			),
+			array(
+				'type' => 'toggle',
+				'name' => 'rotatable',
+				'label' => $this->main->lang('Rotatable'),
+				'default' => 'yes',
+				'value' => null
+			),
+			array(
+				'type' => 'toggle',
+				'name' => 'double',
+				'label' => $this->main->lang('Double'),
+				'default' => 'yes',
+				'value' => null
+			),
+		);
+		if($fieldset == 'font')
+			array_unshift($fabric,array(
+				'type' => 'toggle',
+				'name' => 'editable',
+				'label' => $this->main->lang('Editable'),
+				'default' => 'yes',
+				'value' => null
+			));
+		$fields = array(
+			'font' => array(
+				array(
+					'type' => 'input',
+					'name' => 'min_font_size',
+					'label' => $this->main->lang('Min font size'),
+					'default' => 6,
+				),
+				array(
+					'type' => 'input',
+					'name' => 'max_font_size',
+					'label' => $this->main->lang('Max font size'),
+					'default' => 144,
+				),
+				array(
+					'type' => 'input',
+					'name' => 'min_text_line',
+					'label' => $this->main->lang('Min text line'),
+					//'default' => 1,
+				),
+				array(
+					'type' => 'input',
+					'name' => 'max_text_line',
+					'label' => $this->main->lang('Max text line'),
+					//'default' => 3,
+				),
+				array(
+					'type' => 'input',
+					'name' => 'min_text_letter',
+					'label' => $this->main->lang('Min text letter'),
+					//'default' => 1,
+				),
+				array(
+					'type' => 'input',
+					'name' => 'max_text_letter',
+					'label' => $this->main->lang('Max text letter'),
+					//'default' => 5,
+				),
+				array(
+					'type' => 'input',
+					'name' => 'min_line_height',
+					'label' => $this->main->lang('Min line height'),
+					'default' => 0,
+				),
+				array(
+					'type' => 'input',
+					'name' => 'max_line_height',
+					'label' => $this->main->lang('Max line height'),
+					'default' => 50,
+				),
+				array(
+					'type' => 'input',
+					'name' => 'min_letter_spacing',
+					'label' => $this->main->lang('Min letter spacing'),
+					'default' => 0,
+				),
+				array(
+					'type' => 'input',
+					'name' => 'max_letter_spacing',
+					'label' => $this->main->lang('Max letter spacing'),
+					'default' => 1000,
+				),
+			),
+			'cliparts' => array(
+				array(
+					'type' => 'input',
+					'name' => 'min_width',
+					'label' => $this->main->lang('Min width(px)'),
+				),
+				array(
+					'type' => 'input',
+					'name' => 'max_width',
+					'label' => $this->main->lang('Max width(px)'),
+				),
+				array(
+					'type' => 'input',
+					'name' => 'min_scale',
+					'label' => $this->main->lang('Min scale'),
+					'desc' => $this->main->lang('Minimum allowed scale value of an object'),
+				),
+				array(
+					'type' => 'input',
+					'name' => 'max_scale',
+					'label' => $this->main->lang('Max scale'),
+					'desc' => $this->main->lang('Maximum allowed scale value of an object'),
+				),
+			),
+			'templates' => array(
+				array(
+					'type' => 'input',
+					'name' => 'min_width',
+					'label' => $this->main->lang('Min width(px)'),
+				),
+				array(
+					'type' => 'input',
+					'name' => 'max_width',
+					'label' => $this->main->lang('Max width(px)'),
+				),
+				array(
+					'type' => 'input',
+					'name' => 'min_scale',
+					'label' => $this->main->lang('Min scale'),
+					'desc' => $this->main->lang('Minimum allowed scale value of an object'),
+				),
+				/* array(
+					'type' => 'input',
+					'name' => 'max_scale',
+					'label' => $this->main->lang('Max scale'),
+				), */
+			),
+			'image' => array(
+				array(
+					'type' => 'filters',
+					'name' => 'filter',
+					'label' => $this->main->lang('Filter'),
+					'options' => array(
+						'bnw' => 'Black and White',
+						'satya' => 'Satya',
+						'doris' => 'Doris',
+						'sanna' => 'Sanna',
+						'vintage' => 'Vintage',
+						'gordon' => 'Gordon',
+						'shaan' => 'Shaan',
+						'tonny' => 'Tonny',
+						'peter' => 'Peter',
+						'greg' => 'Greg',
+						'josh' => 'Josh',
+						'karen' => 'Karen',
+						'melissa' => 'Melissa',
+						'salomon' => 'Salomon',
+						'sophia' => 'Sophia',
+						'adrian' => 'Adrian',
+						'roxy' => 'Roxy',
+						'singe' => 'Singe',
+						'borg' => 'Borg',
+						'ventura' => 'Ventura',
+						'andy' => 'Andy',
+						'vivid' => 'Vivid',
+						'purple' => 'Purple',
+						'thresh' => 'Thresh',
+						'aqua' => 'Aqua',
+						'aladin' => 'Aladin',
+						'anne' => 'Anne',
+						'doug' => 'Doug',
+						'earl' => 'Earl',
+						'kevin' => 'Kevin',
+						'polak' => 'Polak',
+						'stan' => 'Stan',
+					),
+					'default' => 'bnw,satya,doris,sanna,vintage,gordon,shaan,tonny,peter,greg,josh,karen,melissa,salomon,sophia,adrian,roxy,singe,borg,ventura,andy,vivid,purple,thresh,aqua,aladin,anne,doug,earl,kevin,polak,stan'
+				),
+				array(
+					'type' => 'input',
+					'name' => 'min_dimensions',
+					'label' => $this->main->lang('Min dimensions'),
+					'desc' => $this->main->lang('The min width x height in pixel of images can be added'),
+					'default' => '',
+					'placeholder' => $this->main->lang('Enter dimensions width x height (eg: 100x100)'),
+				),
+				array(
+					'type' => 'input',
+					'name' => 'max_dimensions',
+					'label' => $this->main->lang('Max dimensions'),
+					'desc' => $this->main->lang('The max width x height in pixel of images can be added'),
+					'default' => '',
+					'placeholder' => $this->main->lang('Enter dimensions width x height (eg: 500x500)'),
+				),
+				array(
+					'type' => 'input',
+					'name' => 'min_dpi',
+					'label' => $this->main->lang('Min DPI'),
+					//'default' => 72,
+				),
+				array(
+					'type' => 'input',
+					'name' => 'max_dpi',
+					'label' => $this->main->lang('Max DPI'),
+					//'default' => 300,
+				),
+				array(
+					'type' => 'input',
+					'name' => 'min_scale',
+					'label' => $this->main->lang('Min scale'),
+					//'default' => 0.01,
+				),
+				array(
+					'type' => 'input',
+					'name' => 'max_scale',
+					'label' => $this->main->lang('Max scale'),
+					//'default' => 5,
+				),
+			),
+			'shapes' => array(),
+			'background' => array(),
+		);
+		
+		return $fieldset ? array_merge($fields[ $fieldset ], $fabric) : $fields;
+	}
+
+	public function field_advance_option($args) {
+		global $lumise;
+		$advance = (isset($args['value']) && !empty($args['value'])) ? $this->dejson($args['value']) : json_decode('{"active" : false, "values" : {}}');
+		$option_fields = $args['option_fields'];
+		foreach ( $option_fields as $key => $field  ) {
+			$type = isset( $field['type'] ) ? $field['type'] : 'input';
+			$values = $advance->values;
+			switch ( $type ) {
+				//case 'toggle':
+					//$option_fields[$key]['value'] = isset($values->{$field['name']}) ? $values->{$field['name']} : ''; 
+				default:
+					$option_fields[$key]['value'] = isset($values->{$field['name']}) ? $values->{$field['name']} : null; 
+					break;
+			}
+		}
+		?>
+		<div data-view="active">
+			<div class="lumise-toggle">
+				<input type="checkbox" data-func="active" <?php echo ((isset($advance->active) && $advance->active) ? 'checked' : ''); ?> value="1">
+				<span class="lumise-toggle-label" data-on="Yes" data-off="No"></span>
+				<span class="lumise-toggle-handle"></span>
+			</div>
+		</div>
+		<?php 
+			if(isset($option_fields) && is_array($option_fields))
+				$this->fields_render($option_fields);
+		?>
+		<input type="hidden" name="<?php echo $args['name']; ?>" data-func="data-saved" value="<?php echo isset($args['value']) ? $args['value'] : ''; ?>" />
+		<?php
+	}
 
 	public function field_google_fonts($args) {
 	?>
 	<div class="lumise-field-google_fonts">
 		<ul>
 			<?php
-				
 				$fonts = json_decode(htmlspecialchars_decode(trim($args['value'])), true);
 				
 				if (is_array($fonts) && count($fonts) > 0) {
@@ -3188,7 +3644,7 @@ EOF;
 		}
 	}
 	
-public function order_designs($data, $attr = true) {
+	public function order_designs($data, $attr = true) {
 		
 		global $lumise_printings, $lumise;
 		
@@ -3736,7 +4192,7 @@ public function order_designs($data, $attr = true) {
 <b><a target="_blank" href="'.$this->main->cfg->admin_url.'lumise-page=license"style="font-weight: 700; text-decoration: underline; font-style: italic;">Enter purchase code now</a></b></br>
 <span>Notice: Each License can only be used for one domain.</br><a href="https://codecanyon.net/licenses/standard" target="blank" style="font-weight: 700; text-decoration: underline; font-style: italic;">Click to learn more about license term in Envato.</a></span>').'</font></p>';
 			}
-			
+	
 			if (!empty($pdfid)) {
 
 				$link = $this->main->cfg->url;

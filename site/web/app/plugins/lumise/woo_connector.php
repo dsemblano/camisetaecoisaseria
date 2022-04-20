@@ -65,11 +65,13 @@ if(!class_exists('lumise_connector')){
 	            $lumise->add_action('ajax', array(&$this, 'ajax'));
 	            $lumise->add_action('js_init', array(&$this, 'js_init'));
 	            $lumise->add_filter('get_product', array(&$this, 'get_product'));
-	           //$lumise->add_filter('js_init', array(&$this, 'editor_js_init'));
+	            //$lumise->add_filter('js_init', array(&$this, 'editor_js_init'));
+				//$lumise->add_filter('file-nav', function(){return false;});
+				//$lumise->add_filter('design-nav', function(){return false;});
             }
             
         }
-
+		
         public function get_session($name) {
             return isset($_SESSION[$name]) ? $_SESSION[$name] : null;
         }
@@ -554,12 +556,20 @@ if(!class_exists('lumise_connector')){
 						);
 
 						$variation_id = null;
+						$variations = null;
 						
 						if(strpos($item['id'], 'variable') !== false){
 							$variation_id = intval(preg_replace('/[^0-9]+/mi', '', $item['id']));
+							$variations = (array)$item['ext_attributes'];
+							foreach($variations  as $key => $variation){
+								$attribute_key = 'attribute_' . sanitize_title( $key );
+								$variations[$attribute_key] = $variation;
+							}
 						}
-
-						$woocommerce->cart->add_to_cart( $product_id, 1 , $variation_id, null, $extra_option );
+						//$woocommerce->cart->add_to_cart( $product_id, 1 , $variation_id, $variations , $extra_option );
+						if ( false == $woocommerce->cart->add_to_cart( $product_id, 1 , $variation_id, $variations , $extra_option )) {
+							return false;
+						}
 						
 					}
 					
@@ -925,7 +935,7 @@ if(!class_exists('lumise_connector')){
 		}
 		
 		public function get_product($products, $pid) {
-			
+
 			if (
 				$pid !== null &&
 				!empty($pid) &&
@@ -968,26 +978,29 @@ if(!class_exists('lumise_connector')){
 						}
 					}
 					$newStage = base64_encode(urlencode(json_encode($stages)));
-					
+
 					$woo_product = wc_get_product( $pid );
+
 					$woo_product_parent = wc_get_product( $woo_product->get_parent_id() );
 
 					$ext_attributes = array();
 					$ext_attribute_name = array();
 					$ext_list_variation = array();
-
+					$ext_attributes_value = $woo_product->get_attributes();
+					
 					if( !empty($woo_product_parent->get_variation_attributes()) ){
 						$ext_attributes = $woo_product_parent->get_variation_attributes();
 						$all_attribute = $woo_product_parent->get_attributes();
-
+						
 						// foreach all product variation child
 						foreach ($woo_product_parent->get_children() as $key => $product_child) {
 							$single_variation = new WC_Product_Variation($product_child);
 							$variation_data  = $single_variation->get_variation_attributes();
-
-							// foreach all attribute in variation
-							foreach ($variation_data as $keyAttribute => $detailAttribute) {
-								$ext_list_variation[$product_child][substr($keyAttribute, 10, strlen($keyAttribute))] = $detailAttribute;
+							if($single_variation->get_meta('_variation_lumise')){
+								// foreach all attribute in variation
+								foreach ($variation_data as $keyAttribute => $detailAttribute) {
+									$ext_list_variation[$product_child][substr($keyAttribute, 10, strlen($keyAttribute))] = $detailAttribute;
+								}
 							}
 						}
 
@@ -1009,13 +1022,13 @@ if(!class_exists('lumise_connector')){
 
 						}
 					}
-
 					
 					// name for variation product with 3 variation
 					$product_name = $product->get_name();
 
 					if(isset($_POST['product_base']) && strpos($_POST['product_base'], 'variable') !== false){
 						$product_id = intval(preg_replace('/[^0-9]+/mi', '', $_POST['product_base']));
+		
 						$product_temp = wc_get_product( $product_id );
 						$productAttribute = $product_temp->get_variation_attributes();
 
@@ -1031,6 +1044,14 @@ if(!class_exists('lumise_connector')){
 							}
 							$product_name .= $newname;
 						}
+					}
+
+					foreach ( $_POST as $key => $value ) {
+						if ( 'attribute_' !== substr( $key, 0, 10 ) ) {
+							continue;
+						}
+						$ext_attributes_value[ sanitize_title( wp_unslash( str_replace( 'attribute_', '', $key) ) ) ] = wp_unslash( $value );
+						
 					}
 
 					$products[0] = array( 
@@ -1051,9 +1072,9 @@ if(!class_exists('lumise_connector')){
 						'ext_attributes' => $ext_attributes,
 						'ext_attribute_name' => $ext_attribute_name,
 						'ext_list_variation' => $ext_list_variation,
-						'ext_attributes_value' => $woo_product->get_attributes(),
+						'ext_attributes_value' => $ext_attributes_value,
 						'ext_attributes_callback' => "
-							let selects = wrp.find('div.lumise-cart-field.ext-attribute select'); 
+							let selects = wrp.find('div.lumise-cart-field.ext-attribute select');
 							selects.on('change', function(e) {
 							// let selects = wrp.find('button#select_variable'); 
 							// let optionsData = wrp.find('div.lumise-cart-field.ext-attribute select');
@@ -1073,9 +1094,10 @@ if(!class_exists('lumise_connector')){
 										return false;
 									}
 								}
-
+								
 								let sel = this,
 									val = this.value,
+									matching_variations = [];
 									post_data = {
 										nonce: 'LUMISE-SECURITY:'+lumise.data.nonce,
 										ajax: 'frontend',
@@ -1101,60 +1123,80 @@ if(!class_exists('lumise_connector')){
 
 								let thisValue = $(this).val();
 								let thisName = $(this).attr('name');
-								
-								lumise.f('Loading variation..');
-								
-								$.ajax({
-									url: lumise.data.ajax,
-									method: 'POST',
-									data: post_data,
-									dataType: 'JSON',
-									success: function(res) {
-										
-										if (res.success === false) {
-											lumise.fn.notice(res.message, 'error', 5000);
-										} else {
-											lumise.render.product(res.data);
 
-											if(product_base_check.indexOf('variable:') != -1 && sessionStorage.getItem('LUMISE-ATTRIBUTE-VARIATION') != null && sessionStorage.getItem('LUMISE-ATTRIBUTE-VARIATION') != '' && sessionStorage.getItem('LUMISE-ATTRIBUTE-VARIATION') != 'undefined'){
-
-												let list_selected = {};
-												$('div.lumise-cart-field.ext-attribute select').each(function() {
-													if($(this).val() != '' || $(this).val() != null){
-														list_selected[$(this).attr('name')] = $(this).val();
-													}
+								// foreach list variation
+								$.each(lumise.ops.product_data.ext_list_variation, function(p_id, select_data){
+									var match = true;
+									for ( var attr_name in select_data ) {
+										if ( select_data.hasOwnProperty( attr_name ) ) {
+											var val1 = select_data[ attr_name ];
+											var val2 = post_data[ 'attribute_'+attr_name ];
+											if ( val1 !== undefined && val2 !== undefined && val1.length !== 0 && val2.length !== 0 && val1 !== val2 ) {
+												match = false;
+											}
+										}
+									}
+									if(match) matching_variations.push( select_data );
+								});
+								var variation = matching_variations.shift();
+								
+								if(variation){
+									lumise.f('Loading variation..');
+									
+									$.ajax({
+										url: lumise.data.ajax,
+										method: 'POST',
+										data: post_data,
+										dataType: 'JSON',
+										success: function(res) {
+											
+											if (res.success === false) {
+												lumise.fn.notice(res.message, 'error', 5000);
+											} else {
+												lumise.render.product(res.data);
+												
+												Object.keys(res.data.ext_attributes_value).map(function(key) {
+													lumise.fn.set_url('attribute_'+key, res.data.ext_attributes_value[key]);
 												});
 
-												let attribute_variation_data = JSON.parse(sessionStorage.getItem('LUMISE-ATTRIBUTE-VARIATION'));
-
-												// foreach list variation
-												$.each(attribute_variation_data, function(attribute_name, attribute_arr){
-													
-													$('select[name=\"'+attribute_name+'\"] option').remove();
-													$('select[name=\"'+attribute_name+'\"]').html('<option value=\"\">Choose an option</option>');
-
-													$.each(attribute_arr, function(index, detail){
-														let existAttribute = $('select[name=\"'+attribute_name+'\"] option[value=\"'+detail+'\"]').length;
-														let selected = '';
-														if(detail == list_selected[attribute_name]){
-															selected = 'selected';
-														}
-														if(existAttribute == 0){
-															$('select[name=\"'+attribute_name+'\"]').append('<option '+selected+' value=\"'+detail+'\">'+detail+'</option>');
+												if(product_base_check.indexOf('variable:') != -1 && sessionStorage.getItem('LUMISE-ATTRIBUTE-VARIATION') != null && sessionStorage.getItem('LUMISE-ATTRIBUTE-VARIATION') != '' && sessionStorage.getItem('LUMISE-ATTRIBUTE-VARIATION') != 'undefined'){
+													let list_selected = {};
+													$('div.lumise-cart-field.ext-attribute select').each(function() {
+														if($(this).val() != '' || $(this).val() != null){
+															list_selected[$(this).attr('name')] = $(this).val();
 														}
 													});
 
+													let attribute_variation_data = JSON.parse(sessionStorage.getItem('LUMISE-ATTRIBUTE-VARIATION'));
 
-												});
-											}
+													// foreach list variation
+													$.each(attribute_variation_data, function(attribute_name, attribute_arr){
+														
+														$('select[name=\"'+attribute_name+'\"] option').remove();
+														$('select[name=\"'+attribute_name+'\"]').html('<option value=\"\">Choose an option</option>');
 
-										};
-										
-										lumise.f(false);
-										
-									}
-								});
-					
+														$.each(attribute_arr, function(index, detail){
+															let existAttribute = $('select[name=\"'+attribute_name+'\"] option[value=\"'+detail+'\"]').length;
+															let selected = '';
+															if(detail == list_selected[attribute_name]){
+																selected = 'selected';
+															}
+															if(existAttribute == 0){
+																$('select[name=\"'+attribute_name+'\"]').append('<option '+selected+' value=\"'+detail+'\">'+detail+'</option>');
+															}
+														});
+
+													});
+												}
+
+											};
+											
+											lumise.f(false);
+											
+										}
+									});									
+								}
+
 							}).each(function() {
 								this.setAttribute('data-value', this.value);
 							});

@@ -281,6 +281,8 @@ CREATE TABLE IF NOT EXISTS `lumise_printings` (
   `title` varchar(255) NOT NULL,
   `active` int(1) NOT NULL DEFAULT 1,
   `calculate` text NOT NULL DEFAULT '',
+  `resource` text NOT NULL DEFAULT '',
+  `layout` text NOT NULL DEFAULT '',
   `thumbnail` varchar(255) NOT NULL DEFAULT '',
   `upload` varchar(255) NOT NULL DEFAULT '',
   `description` text NOT NULL DEFAULT '',

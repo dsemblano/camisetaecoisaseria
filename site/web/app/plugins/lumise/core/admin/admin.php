@@ -51,7 +51,6 @@ class lumise_admin extends lumise_lib{
 	}
 
 	protected function process_save_data($field, $data) {
-		
 		if (isset($field['type']) && $field['type'] == 'trace')
 			return $data;
 			
@@ -89,8 +88,30 @@ class lumise_admin extends lumise_lib{
 							break;
 					}
 				}
+				if ($field['type'] == 'resource'){
+					$tab_resource = array_combine(array_keys($field['tabs']),array_column($field['tabs'], 'fields'));
+					foreach($tab_resource as $key => $tab_fields){
 
-				if ($field['type'] == 'tabs')
+						foreach($tab_fields as $f){
+							if (isset($data[$field['name']][$key][$f['name']]) && is_array($data[$field['name']][$key][$f['name']])){
+								$data[$field['name']][$key][$f['name']] = array_filter($data[$field['name']][$key][$f['name']]);
+							}
+
+							if(isset($f['type']) && $f['type'] == 'toggle' && !isset($data[$field['name']][$key][$f['name']])){
+								$data[$field['name']][$key][$f['name']] = '0';
+							}
+						}
+					}
+					$data[$field['name']] = $lumise->lib->enjson($data[$field['name']]);
+				}elseif ($field['type'] == 'groups' ){
+					if(isset($field['fields'])){
+						foreach($field['fields'] as $k => $f){
+							if (is_array($data[$field['name']][$f['name']]))
+								$data[$field['name']][$f['name']] = array_filter($data[$field['name']][$f['name']]);
+						}
+					}
+					$data[$field['name']] = $lumise->lib->enjson($data[$field['name']]);
+				}elseif ($field['type'] == 'tabs')	
 					$data[$field['name']] = json_encode($data[$field['name']]);
 				else if (is_array($data[$field['name']]))
 					$data[$field['name']] = implode(',', array_diff($data[$field['name']], array("")));
@@ -320,7 +341,7 @@ class lumise_admin extends lumise_lib{
 		$_cb = isset($_GET['callback']) ? $_GET['callback'] : '';
 
 		if (isset($_id)) {
-
+			
 			$data = $this->get_row_id($_id, $name);
 
 			if (isset($args['tabs'])) {
@@ -335,9 +356,8 @@ class lumise_admin extends lumise_lib{
 				}
 			}
 		}
-
+		
 		if (isset($_POST['lumise-section'])) {
-			
 			$section = $_POST['lumise-section'];
 
 			$data = array(
@@ -406,7 +426,7 @@ class lumise_admin extends lumise_lib{
 					$data = $this->process_save_data($field, $data);
 				}
 			}
-			
+
 			if ($section == 'font') {
 				
 				$fi = 0;
@@ -452,7 +472,11 @@ class lumise_admin extends lumise_lib{
 				$data['created'] = date("Y-m-d").' '.date("H:i:s");
 			
 			$data['updated'] = date("Y-m-d").' '.date("H:i:s");
-			
+
+			/* echo "<pre>";
+			print_r($data);
+			die(); */
+
 			if (count($data['errors']) == 0) {
 
 				unset($data['errors']);
@@ -521,7 +545,7 @@ class lumise_admin extends lumise_lib{
 			}
 			
 		}
-
+		
 		return $args;
 
 	}

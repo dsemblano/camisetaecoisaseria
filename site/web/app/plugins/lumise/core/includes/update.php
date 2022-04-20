@@ -42,12 +42,11 @@ class lumise_update extends lumise_lib {
 				$_SERVER['SERVER_PORT'] == 443
 			) ? 'https' : 'http';
 		$this->api_url = $scheme.'://services.lumise.com/';
-		
+
 		if ($current != LUMISE) {
 			$this->run_updater();
 			$this->main->set_option('current_version', LUMISE);
 		}
-
 	}
 	
 	public function check() {
@@ -197,7 +196,10 @@ class lumise_update extends lumise_lib {
 				$this->main->db->rawQuery($sql_active);
 			}
 		}
-		
+
+		if (version_compare(LUMISE, '1.9.9') >=0 ) {
+			$this->upgrade_1_9_9();
+		}
 		
 		/*
 		*	Create subfolder upload	
@@ -771,6 +773,51 @@ class lumise_update extends lumise_lib {
 		}
 	}
 	
+	public function upgrade_1_9_9(){
+
+		$printings = $this->main->db->rawQuery("SELECT * FROM `{$this->main->db->prefix}printings`");
+		
+		if(count($printings) > 0){
+			foreach ( $printings as $i => $printing ) {
+				$calculate = $this->main->lib->dejson($printing['calculate']);
+				//$calculate = json_decode(json_encode($calculate), true);
+				
+				$calculate = (Array)$calculate;
+				if (
+					!empty($calculate['values']) &&
+					is_object($calculate['values']) &&
+					in_array($calculate['type'], array('color', 'multi', 'line', 'character', 'size'))
+				) {
+					$values = $calculate['values'];
+					$calculate['cfgpricing'] = 1;
+					
+					foreach($values as $stage){
+						foreach($stage as $key => $value){
+							$value = (Array)$value;
+							$stage->{$key} = array('ppu'=>'0') + $value;
+						}
+					}
+					// echo "<pre>";
+					// print_r($calculate);
+					// echo "</pre>";
+				}
+				$this->main->lib->edit_row( 
+					$printing['id'], 
+					array("calculate" => $this->main->lib->enjson($calculate)), 
+					'printings' 
+				);
+			}
+		}
+
+		$columns = array('resource','layout');
+		foreach ($columns as $k => $col) {
+			$columns = $this->main->db->rawQuery("SHOW COLUMNS FROM `{$this->main->db->prefix}printings` LIKE '{$col}'");
+			if(count($columns) == 0){
+				$sql_active = "ALTER TABLE `{$this->main->db->prefix}printings` ADD `{$col}` text NOT NULL AFTER `thumbnail`";
+				$this->main->db->rawQuery($sql_active);
+			}
+		}
+	}
 }
 
 	

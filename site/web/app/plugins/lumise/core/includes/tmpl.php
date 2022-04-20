@@ -630,7 +630,7 @@ EOF;
 				});
 			};
 			
-			el.append('<input type="hidden" name="'+data.id+'" class="lumise-cart-param" value="'+(valid_value ? data.value : '')+'" '+(data.required ? 'required' : '')+' />');
+			el.append('<input type="hidden" name="'+data.id+'" class="color lumise-cart-param" value="'+(valid_value ? data.value : '')+'" '+(data.required ? 'required' : '')+' />');
 			
 			el.find('li[data-color]').on('click', function(e) {
 				$(this).parent().find('li.choosed').removeClass('choosed');

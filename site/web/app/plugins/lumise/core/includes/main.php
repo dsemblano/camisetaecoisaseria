@@ -10,7 +10,7 @@
 if (!defined('DS'))
 	define('DS', DIRECTORY_SEPARATOR);
 
-define('LUMISE', '1.9.9');
+define('LUMISE', '2.0');
 
 class lumise {
 
@@ -91,10 +91,10 @@ class lumise {
 		$this->cfg->init();
 		
 		$this->addons = new lumise_addons($this);
+		
 		$this->logger = new lumise_logger($this->cfg->upload_path . 'logs' . DS . 'debug.log');
 		
 		$this->cfg->apply_filters($this);
-		
 	}
 	
 	public function __get( $name ) {
@@ -358,8 +358,6 @@ class lumise {
 			$this->cfg->active_language = $code;
 			$this->connector->set_session('lumise-active-lang', $code);
 		}
-
-
 	}
 
 	public function set_vendor($id = '') {

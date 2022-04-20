@@ -7,7 +7,7 @@
 *
 */
 
-/*ini_set('display_errors', 1);*/
+ini_set('display_errors', 1);
 	
 class lumise_lib{
 
@@ -68,6 +68,10 @@ class lumise_lib{
 
 	public function esc($name = '', $default = '') {
 		return isset($_POST[$name]) ? (is_array($_POST[$name])? $_POST[$name] : htmlspecialchars($_POST[$name])) : $default;
+	}
+	
+	public function string_to_bool($string) {
+		return is_bool( $string ) ? $string : ( 'yes' === strtolower( $string ) || 1 === $string || 'true' === strtolower( $string ) || '1' === $string );
 	}
 
 	public function check_upload ($time = '') {
@@ -356,11 +360,17 @@ class lumise_lib{
 		$index = (int)htmlspecialchars(isset($_POST['index']) ? $_POST['index'] : 0);
 		$q = htmlspecialchars(isset($_POST['q']) ? $_POST['q'] : '');
 		$limit = (int)htmlspecialchars(isset($_POST['limit']) ? $_POST['limit'] : 48);
-		$cate_name = '';
-		
-		$categories = $this->get_categories($type, $category, '`order` ASC, `name` ASC', true);
+		$include = ! empty( $_POST['include'] ) ? array_map( 'intval', (array) $_POST['include'] ) : array();
+		$cate_name = $search_where = '';
+
+		if ( ! empty( $include ) && is_array( $include ) && empty($category)) {
+			$search_where .= ' AND `id` IN(' . implode( ',', array_map( 'intval', $include ) ) . ') ';
+		}
+
+		$categories = $this->get_categories($type, $category, '`order` ASC, `name` ASC', true, $search_where);
+
 		$parents = $this->get_category_parents($category);
-		
+
 		$query = sprintf(
 			"SELECT `parent`, `name` FROM `%s` WHERE `author`='{$this->main->vendor_id}' AND `id`='%d'",
             $this->sql_esc($lumise->db->prefix."categories"),
@@ -368,8 +378,16 @@ class lumise_lib{
         );
 		
 		$get_cate = $lumise->db->rawQueryOne($query);
+		
 		if ($category !== 0 && count($categories) === 0 && isset($get_cate['parent'])) {
-			$categories = $this->get_categories($type, $get_cate['parent'],'`order` ASC, `name` ASC', true);
+			if($get_cate['parent'] != 0){
+				$categories = $this->get_categories($type, $get_cate['parent'],'`order` ASC, `name` ASC', true);
+			}else{
+				if ( ! empty( $include ) && is_array( $include )){
+					$search_where = ' AND `id` IN(' . implode( ',', array_map( 'intval', $include ) ) . ') ';
+				}
+				$categories = $this->get_categories($type, $get_cate['parent'], '`order` ASC, `name` ASC', true, $search_where);
+			}
 		}
 		
 		$end = false;
@@ -404,7 +422,7 @@ class lumise_lib{
 		}
 		
 		$cate_name = $get_cate['name'];
-		
+
 		if ($category == '{featured}') {
 			$cate_name = "&star; ".$lumise->lang('Featured');
 			$parents = array(array(
@@ -426,11 +444,14 @@ class lumise_lib{
 		foreach ($categories as $key => $val) {
 			$categories[$key]['name'] = $lumise->lang($val['name']);
 		}
-		
+
 		header('Content-Type: application/json');
-		
-		$xitems = $this->get_xitems($category, $q, $index, $type, $limit);
-		
+
+		if ( ! empty( $include ) && is_array( $include ) && empty($category))
+			$xitems = $this->get_xitems($include , $q, $index, $type, $limit);
+		else
+			$xitems = $this->get_xitems($category , $q, $index, $type, $limit);
+
 		$items = $xitems[0];
 		$total = $xitems[1];
 		
@@ -772,12 +793,13 @@ class lumise_lib{
 
 	}
 
-	public function get_categories($type = 'cliparts', $parent = null, $orderby = '`order` ASC', $active = false) {
+	public function get_categories($type = 'cliparts', $parent = null, $orderby = '`order` ASC', $active = false, $search_where ='') {
 
 		global $lumise;
+		if($type == 'distress') $type = 'distressings';
 		
 		$query = sprintf(
-			"SELECT `id`, `name`, `parent`, `thumbnail_url` as `thumbnail` FROM `%s` WHERE `%s`.`author`='%s' AND `type`='%s' %s ORDER BY {$orderby}",
+			"SELECT `id`, `name`, `parent`, `thumbnail_url` as `thumbnail` FROM `%s` WHERE `%s`.`author`='%s' AND `type`='%s' %s {$search_where} ORDER BY {$orderby}",
             $this->sql_esc($lumise->db->prefix."categories"),
             $this->sql_esc($lumise->db->prefix."categories"),
             $this->main->vendor_id,
@@ -791,7 +813,7 @@ class lumise_lib{
 		if ($parent === null)
 			return $this->get_categories_parent($cates);
 		else return $cates;
-		
+
 	}
 
 	public function get_tags($type = 'cliparts') {
@@ -1104,6 +1126,8 @@ class lumise_lib{
 		$product['attributes'] = $this->enjson($product['attributes']);
 		
 	    $return_product = $lumise->apply_filters('product', $product);
+		//var_dump($lumise->filters);die();
+	    //$return_product = $product;
 
 	    if(isset($product['description']) && isset($product['active_description']) && $product['active_description'] == 1 && $return_product !== null ){
 	    	$return_product['description'] = $product['description'];
@@ -1150,7 +1174,6 @@ class lumise_lib{
 		if (!empty($prt) && $prt != '%7B%7D') {
 		    
 		   $cfg = !is_array($prt ) ? json_decode(str_replace(array('\\\''), array("'"), rawurldecode($prt)), true) : $prt;
-			
 		    if (is_array($cfg)) {
 			    
 			    $prints = array_keys($cfg);
@@ -1158,7 +1181,6 @@ class lumise_lib{
 			    foreach ($prints as $i => $k) {
 					$prints[$i] = preg_replace("/[^0-9.]/", "", $k); 
 				}
-				
 				$prints = implode(',', $prints);
 				$query = "SELECT * FROM `{$lumise->db->prefix}printings` WHERE `author`='{$this->main->vendor_id}' AND `id` IN ($prints) ORDER BY field(id, $prints)";
 				
@@ -1195,14 +1217,15 @@ class lumise_lib{
 		return array(
 			'multi' => array(
 				'options' => array(
-					'text' => $lumise->lang('Text'),
-					'clipart' => $lumise->lang('Clipart'),
+					'text'   => $lumise->lang('Text'),
+					'clipart'=> $lumise->lang('Clipart'),
 					'images' => $lumise->lang('Images'),
 					'vector' => $lumise->lang('Vector'),
 					'upload' => $lumise->lang('Upload')
 				),
 				'default' => array(
 					5 => array(
+						'ppu'  => 1,
 						'text' => 1,
 						'clipart' => 1,
 						'images' => 1,
@@ -1210,18 +1233,23 @@ class lumise_lib{
 						'upload' => 1
 					)
 				),
+				'ppu'    => $lumise->lang('Price per resource'),
 				'label' => $lumise->lang('Calculate price with Text, Clipart, Images, Upload'),
 				'desc' => $lumise->lang('Set the price based on quantity range for each text, clipart, images, upload, Vector SVG')
 			),
 			'color' => array(
 				'options' => array(
 					'full-color' => $lumise->lang('Full Color'),
+					//'white-base' => $lumise->lang('White Base'),
 				),
 				'default' => array(
 					1 => array(
-						'full-color' => 1
+						'ppu'		 => 1,
+						'full-color' => 1,
+						//'white-base' => 1,
 					),
 				),
+				'ppu'    => $lumise->lang('Price per color'),
 				'label' => $lumise->lang('Calculate price with one color'),
 				'desc' => $lumise->lang('Allow setup price with one color of area design. Price of printing = Price of one color * colors number.')
 			),
@@ -1235,6 +1263,7 @@ class lumise_lib{
 				),
 				'default' => array(
 					5 => array(
+						'ppu'=> 1,
 						'a0' => 1,
 						'a1' => 1,
 						'a2' => 1,
@@ -1242,6 +1271,7 @@ class lumise_lib{
 						'a4' => 1,
 					),
 				),
+				'ppu' => $lumise->lang('Price of area design'),
 				'label' => $lumise->lang('Calculate price with size of area design'),
 				'desc' => $lumise->lang('Allow setup price with paper size (A0, A1, A2, A3, A4, A5, A6). This size is size of area design.')
 			),
@@ -1256,6 +1286,51 @@ class lumise_lib{
 				),
 				'label' => $lumise->lang('Price Fixed'),
 				'desc' => $lumise->lang('Price is fixed on each view (front, back, left, right) of product design.')
+			),
+			'line' => array(
+				'options' => array(
+					'price' => $lumise->lang('Price'),
+				),
+				'default' => array(
+					5 => array(
+						'ppu'	 => 1,
+						'1-line' => 1,
+						'2-line' => 1,
+						'3-line' => 1,
+					),
+				),
+				'ppu'    => $lumise->lang('Price per line'),
+				'label' => $lumise->lang('Calculate price per line'),
+				'desc' => $lumise->lang('Allow pricing per line.')
+			),
+			'character' => array(
+				'options' => array(
+					'price' => $lumise->lang('Price'),
+				),
+				'default' => array(
+					5 => array(
+						'ppu'	   => 1,
+						'1-character' => 1,
+						'2-character' => 1,
+						'3-character' => 1,
+					),
+				),
+				'ppu'   => $lumise->lang('Price per character'),
+				'label' => $lumise->lang('Calculate price per character'),
+				'desc'  => $lumise->lang('Allow pricing per character.')
+			),
+			'acreage' => array(
+				'options' => array(
+					'price' => $lumise->lang('Price per square inch'),
+				),
+				'default' => array(
+					5 => array(
+						'price' => 1
+					),
+				),
+				'ppu' => $lumise->lang('Price per square inch'),
+				'label' => $lumise->lang('Calculate price with acreage design square inch'),
+				'desc' => $lumise->lang('Allow setup price with acreage design / 1 in²')
 			)
 		);
 	}
@@ -1533,9 +1608,14 @@ class lumise_lib{
 				$design_product = str_replace('.lumi','', $design_file);
 			}
 			
+			$product_base_id = $item['product_id'];
+			if(strpos($item['product_id'], 'variable') !== false){
+				$product_base_id = intval(preg_replace('/[^0-9]+/mi', '', $item['product_id']));
+			}
+			
 			$insert_data = array(
 				'order_id' => $order_id,
-				'product_base' => $item['product_id'],
+				'product_base' => $product_base_id,
 				'product_id' => $item['product_cms'],
 				'cart_id' => $item['cart_id'],
 				'data' => $this->enjson(array(
@@ -2062,13 +2142,52 @@ class lumise_lib{
 			// 		}
 			// 	}
 			// }
-
-			$product['stages'] = $lumise->lib->dejson($product['stages']);
+			if(is_string($product['stages']))
+				$product['stages'] = $lumise->lib->dejson($product['stages']);
 			$product['attributes'] = $lumise->lib->dejson($product['attributes']);
 
 			if (is_array($product['printings'])) {
+				
 				foreach ($product['printings'] as $key => $value) {
 					$product['printings'][$key]['calculate'] = $lumise->lib->dejson($value['calculate']);
+					$product['printings'][$key]['layout'] = $lumise->lib->dejson($value['layout']);
+					$product['printings'][$key]['resource'] = $lumise->lib->dejson($value['resource']);
+					
+					if($product['printings'][$key]['resource']){
+						$resource = $product['printings'][$key]['resource'];
+						foreach($resource as $k => $v){
+							if(isset($v->options)){
+								$options = $lumise->lib->dejson($v->options);
+								$options = $options->active ? $options->values : (object) [];
+	
+								foreach($options as $name => $val){
+									switch($name){
+										case 'min_dimensions':
+										case 'max_dimensions':
+											$options->$name = isset($options->$name) ? explode('x', $options->$name) : '';
+										break;	
+										case 'editable':
+										case 'movable':	
+										case 'removable':	
+										case 'rotatable':	
+										case 'scalable':	
+										case 'double':
+											//$options->$name = $this->string_to_bool($options->$name);
+											$options->$name = $options->$name;
+										break;
+									}
+								}
+								$resource->$k->options = $options;
+							}
+							
+							if(isset($v->color_picker)){
+								$resource->$k->color_picker = $this->string_to_bool($v->color_picker);
+							}
+							
+						}
+						
+						$product['printings'][$key]['resource'] = $resource;
+					}
 				}
 			}
 			

@@ -20,7 +20,6 @@
 			)
 		),
 	), 'bugs');
-
 ?>
 
 <div class="lumise_wrapper">

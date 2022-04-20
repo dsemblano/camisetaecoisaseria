@@ -4,7 +4,7 @@ Plugin Name: Lumise - Product Designer Tool
 Plugin URI: https://www.lumise.com/
 Description: The professional solution for designing & printing online
 Author: King-Theme
-Version: 1.9.9
+Version: 2.0
 Author URI: http://king-theme.com/
 */
 
@@ -208,7 +208,9 @@ class lumise_woocommerce {
 			add_filter( 'woocommerce_available_variation', array(&$this, 'frontstore_variation'), 999, 3);
 			
 		}
-		
+		// Adds body classes
+		add_filter( 'body_class', array( $this, 'lumise_body_class' ), 999 );
+
 		//enqueue style for frontend
 		add_action( 'wp_enqueue_scripts', array(&$this, 'frontend_scripts'), 999);
 		
@@ -375,15 +377,25 @@ class lumise_woocommerce {
 		
 		global $lumise;
 
+		$key = $lumise->get_option('purchase_key');
+		$key_valid = ($key === null || empty($key) || strlen($key) != 36 || count(explode('-', $key)) != 5) ? false : true;
+
+		if(!$key_valid){
+			echo '<div class="wp-notice error" style="margin: 15px 0"><p>'.$lumise->lang('You must verify your purchase code of Lumise Product Designer to access to all features').'. <a href="'.admin_url('?page=lumise&lumise-page=license').'">'.$lumise->lang('Enter your license now').' &rarr;</a></p></div>';
+		}
+
 		$addon_list = $lumise->addons->addon_installed_list();
+		$actives = $lumise->get_option('active_addons');
+		if ($actives !== null && !empty($actives))
+			$actives = (Array)@json_decode($actives);
 
 		if( isset($addon_list) && !empty($addon_list) && count($addon_list) > 0 
 			&& (
-				isset($addon_list['assign']) 
-				|| isset($addon_list['display_template_clipart']) 
-				|| isset($addon_list['dropbox_sync']) 
-				|| isset($addon_list['mydesigns']) 
-				|| isset($addon_list['distress']) 
+				(isset($addon_list['assign']) && isset($actives['assign']))
+				|| (isset($addon_list['display_template_clipart']) && isset($actives['display_template_clipart']))
+				|| (isset($addon_list['dropbox_sync']) && isset($actives['dropbox_sync']))
+				|| (isset($addon_list['mydesigns']) && isset($actives['mydesigns']))
+				|| (isset($addon_list['distress']) && isset($actives['distress']))
 			)
 		){
 
@@ -391,12 +403,12 @@ class lumise_woocommerce {
 			$key_valid_addon_bundle = ($key_addon_bundle === null || empty($key_addon_bundle) || strlen($key_addon_bundle) != 36 || count(explode('-', $key_addon_bundle)) != 5) ? false : true;
 
 			if (!$key_valid_addon_bundle) {
-				echo '<div class="wp-notice error" style="margin: 15px 0"><p>'.$lumise->lang('You must verify your purchase code for addon bundle to access to all features').'. <a href="'.admin_url('?page=lumise&lumise-page=license').'">'.$lumise->lang('Enter your license now').'</a></p></div>';
+				echo '<div class="wp-notice error" style="margin: 15px 0"><p>'.$lumise->lang('You must verify your purchase code for addon bundle to access to all features').'. <a href="'.admin_url('?page=lumise&lumise-page=license#lumise-tab-addon-bundle').'">'.$lumise->lang('Enter your license now').'</a></p></div>';
 			}
 
 		}
 
-		if(isset($addon_list) && !empty($addon_list) && count($addon_list) > 0 && isset($addon_list['vendors'])){
+		if(isset($addon_list) && !empty($addon_list) && count($addon_list) > 0 && isset($addon_list['vendors']) && isset($actives['vendors']) ){
 			// exist addon vendor
 			$key_addon_vendor = $lumise->get_option('purchase_key_addon_vendor');
 			$key_valid_addon_vendor = ($key_addon_vendor === null || empty($key_addon_vendor) || strlen($key_addon_vendor) != 36 || count(explode('-', $key_addon_vendor)) != 5) ? false : true;
@@ -406,7 +418,7 @@ class lumise_woocommerce {
 			}
 		}
 
-		if(isset($addon_list) && !empty($addon_list) && count($addon_list) > 0 && isset($addon_list['printful'])){
+		if(isset($addon_list) && !empty($addon_list) && count($addon_list) > 0 && isset($addon_list['printful']) && isset($actives['printful'])){
 			// exist addon vendor
 			$key_addon_printful = $lumise->get_option('purchase_key_addon_printful');
 			$key_valid_addon_printful = ($key_addon_printful === null || empty($key_addon_printful) || strlen($key_addon_printful) != 36 || count(explode('-', $key_addon_printful)) != 5) ? false : true;
@@ -991,7 +1003,15 @@ class lumise_woocommerce {
 	}
 
 	/** Frontend**/
-	
+
+	// Add body class for lumise
+	public function lumise_body_class($classes){
+		if(is_singular( 'product' )){
+			$classes[] = 'lumise-theme-' . get_option( 'template' );
+		}
+		return $classes;
+	}
+
 	public function frontend_scripts() {
 		
 		wp_register_script('lumise-frontend', plugin_dir_url(__FILE__) . 'woo/assets/js/frontend.js', array('jquery'), LUMISE_WOO, true);
@@ -1020,7 +1040,6 @@ class lumise_woocommerce {
 		){
 			
 			$cart_item_data = $lumise->lib->get_cart_data( $cart_item['lumise_data'] );
-	
 			if ( is_array($cart_item_data ) ){
 				
 				foreach ( $cart_item_data['attributes'] as $aid => $attr ) {
@@ -1114,7 +1133,6 @@ class lumise_woocommerce {
 		}
 
 		return $product_image.$design_thumb;
-		
 	}
 	
     //Add custom price to product cms
@@ -1465,7 +1483,9 @@ class lumise_woocommerce {
 				$cart_data['items'][$item['lumise_data']['cart_id']] = $item['lumise_data'];
 			}
 		}
-		
+		// echo "<pre>"
+		// print_r($cart_data);
+		// die();
 		$cart = $lumise->lib->store_cart($order_id, $cart_data);
 		
 		if ($cart !== true && $cart['error'] == 1) {
@@ -1716,7 +1736,7 @@ class lumise_woocommerce {
 		unset( $item['lumise_data'] );
 	}
 		
-	public function email_customer_designs( $order, $sent_to_admin = false, $plain_text = false ) {
+	public function email_customer_designs( $order, $sent_to_admin = false, $plain_text = false ,$email = '') {
 		
 		if ( ! is_a( $order, 'WC_Order' ) || $plain_text) {
 			return;
@@ -1737,7 +1757,7 @@ class lumise_woocommerce {
 			$order_status = $order->get_status();
 			
 			if ( 
-				$order_status == 'completed' || $order_status == 'processing' ||
+				$order_status == 'completed' ||
 				$sent_to_admin === true
 			) {
 				
@@ -1893,7 +1913,7 @@ class lumise_woocommerce {
 							<tr class="order_item">
 								<td class="td" scope="col" colspan="3">
 								<?php
-									
+								
 									$data = array(
 										"product_cms" => $item['product_id'],
 										"cart_id" => $item['cart_id'],
@@ -1902,7 +1922,7 @@ class lumise_woocommerce {
 										"order_id" => $item['order_id'],
 										"item_id" => ''
 									);
-									
+
 									$lumise->views->order_designs($data, false);
 									
 								?>
@@ -1936,7 +1956,7 @@ class lumise_woocommerce {
 			
 			$order_status = $order->get_status();
 			
-			if( $order_status == 'completed' || $order_status == 'processing' ) {
+			if( $order_status == 'completed' ) {
 				$items = $lumise->lib->get_order_products($order_id);
 
 				?>
@@ -2323,7 +2343,7 @@ class lumise_woocommerce {
 		) return;
 		
 		$product_id 	= $product->get_id();
-	
+			
 		$product_base = get_post_meta($product_id, 'lumise_product_base', true);
 		$lumise_customize = get_post_meta($product_id, 'lumise_customize', true);
 		$disable_cartbtn = get_post_meta($product_id, 'lumise_disable_add_cart', true);
@@ -2351,9 +2371,8 @@ class lumise_woocommerce {
 			$disable_variation = 'disabled';	
 		}
 
-		$class_lumise = apply_filters('lumise_button_customize', 'lumise-customize-button button alt '.$disable_variation.' single_add_to_cart_button_fixed');
+		$class_lumise = apply_filters('lumise_button_customize', 'lumise-customize-button button alt '.$disable_variation.' single_add_to_cart_button');
 		$link_design = apply_filters( 'lumise_customize_link', $link_design );
- 
 		?>
 		<a name="customize" id="lumise-customize-button" class="<?php echo $class_lumise; ?>" href="<?php echo esc_url($link_design ); ?>" data-href="<?php echo esc_url($link_design ); ?>">
 			<?php echo esc_html($text); ?>
@@ -2380,21 +2399,40 @@ class lumise_woocommerce {
 				<?php endif; ?>
 				$('form.variations_form')/*.on('show_variation', function (e) {
 					
-				}).on('hide_variation', function (e) {
-					
-				})*/.on('found_variation', function (e, vari) {
+				})*/.on('hide_variation', function (e) {
+					setTimeout(() => {
+						let form 		= e.data.variationForm,
+							attributes  = form.getChosenAttributes(),
+							url = new URL($('#lumise-customize-button').attr('href'));
+						if (attributes.data != undefined){
+							let attr_filter = Object.keys(attributes.data).map(function(key, index) {
+								url.searchParams.delete(key,'');
+							});
+							$('#lumise-customize-button').attr('href', decodeURIComponent(url));
+						}
+						$('#lumise-customize-button').addClass('disabled');
+					}, 1);	
+				}).on('found_variation', function (e, vari) {
 					setTimeout(() => {
 						let lm = vari.lumise,
 							hrf = $('#lumise-customize-button').attr('data-href').replace('product_base=variable', 'product_base=variable:'+lm)+'&quantity='+$(this).find('input[name="quantity"]').val();
-						console.log(vari);
 						$('#lumise-customize-button').attr({
 							'href': lm !== '' && lm !== 0 ? hrf : "javascript:alert('This variant has not been configured with Lumise')",
 						}).removeAttr('disabled').removeClass('disabled');
 						if(vari.is_in_stock == false){
 							$('#lumise-customize-button').addClass('disabled');
                             $("#lumise-customize-button").removeAttr("href");
-
-                        }
+                        }else{
+							let form 		= e.data.variationForm,
+								attributes  = form.getChosenAttributes(),
+								url = new URL($('#lumise-customize-button').attr('href'));
+							if ( attributes.count && attributes.count === attributes.chosenCount ){
+								let attr_filter = Object.keys(attributes.data).map(function(key, index) {
+									url.searchParams.append(key,attributes.data[key]);
+								});
+								$('#lumise-customize-button').attr('href', decodeURIComponent(url));
+							}
+						}
 						// If not setup Lumise for this variation ==> disable customize button
 						if (lm === '' || lm === 0) {
 							$('#lumise-customize-button').attr({'disabled': 'disabled'}).addClass('disabled');

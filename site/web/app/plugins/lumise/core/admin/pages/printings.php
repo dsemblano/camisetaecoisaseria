@@ -70,7 +70,7 @@
 	}
 
 	// Pagination
-	$per_page = 5;
+	$per_page = 10;
 	if(isset($_SESSION[$prefix.'per_page']))
 		$per_page = $_SESSION[$prefix.'per_page'];
 

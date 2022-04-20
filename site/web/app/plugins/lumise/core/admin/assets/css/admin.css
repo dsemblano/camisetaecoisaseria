@@ -947,6 +947,16 @@ em.lumise_err{
 .lumise_form_settings .lumise_form_group input[type="submit"] {
     margin: 20px 0 0;
 }
+.lumise_form_group.lumise_field_advance_option [data-view="active"] {
+	display: inline-block;
+	width: 100%;
+	margin-bottom: 10px;
+	padding-bottom: 15px;
+	border-bottom: 1px dotted #ccc;
+}
+.lumise_field_advance_option .lumise_field_toggle{
+    width: 50%;
+}
 
 .lumise_form_group {
     float: left;
@@ -1867,6 +1877,17 @@ left: 0px !important;
 .lumise_form_group.lumise_field_print [data-multi="no"] .lumise_tab_nav{
 	display: none;
 }
+.lumise_form_group.lumise_field_print .tab_option{
+    margin:  10px 0;
+    display: flex;
+}
+
+.lumise_form_group.lumise_field_print .tab_option label{
+    padding: 8px 0 0 0;
+    margin: 0px 10px 0 10px;
+    display: inline-block;
+    width: initial;
+}
 .lumise_form_group.lumise_field_print .lumise_tabs{
 	padding: 20px;
 }
@@ -2612,7 +2633,7 @@ color: #848484;
     width: 100%;
 }
 
-.list-cate {
+.list-cate,.lumise_filters {
     float: left;
     width: 100%;
     max-height: 270px;
@@ -3538,7 +3559,8 @@ html body .lumise_wrapper .lumise_tab_nav li a span+i:before{
     line-height: 34px;
 }
 .lumise-popup header h3 button,
-#lumise-popup header h3 button{
+#lumise-popup header h3 button,
+#lumise-popup header h3 .lumise-btn{
 	float: left;
     margin: 0 10px 10px 0;
 }
@@ -4234,6 +4256,13 @@ html body .lumise_wrapper .lumise_tab_nav li a span+i:before{
 .lumise-update-notice.success{
     border-left: 4px solid #22c122;
 }
+.lumise-update-notice.warning{
+    border-left: 4px solid #ca4a1f;
+}
+.lumise-update-notice.warning a{
+    color: #E91E63;
+    text-decoration: underline;
+}
 .lumise-update-notice a{
     text-decoration: none;
 }
@@ -4511,8 +4540,6 @@ html body .lumise_wrapper .lumise_tab_nav li a span+i:before{
     display: block;
 }
 
-
-
 .lumise_radio_content {
     margin-top: 12px;
     overflow: hidden;
@@ -4530,6 +4557,34 @@ html body .lumise_wrapper .lumise_tab_nav li a span+i:before{
 
 .lumise_radio_content.lumise-open {
     max-height: 999px;
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+.lumise_radio_content .print_field{
+    float: left;
+    width: 100%;
+    margin-bottom: 12px;
+}
+.lumise_radio_content .print_field label{
+    display: block;
+    margin-bottom: 5px;
+}
+.lumise_radio_content .print_field_toggle label,.lumise_radio_content .print_field_toggle .tip{
+    line-height: 30px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.lumise_radio_content .print_field_toggle label{
+    margin:0px 0 0 10px;
+}
+
+.lumise_radio_content .print_field_toggle .tip{
+    width: auto;
+    float: none;
+}
+.lumise_radio_content .layout-cfgpricing{
+    margin-top: 15px;
 }
 
 .lumise-order-details{
@@ -4668,9 +4723,6 @@ html body .lumise-button-primary:hover {
     left: 0;
     width: 100%;
     height: 100%;
-    font-family: "Roboto";
-    font-size: 14px;
-    color: #3a3a3a;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }

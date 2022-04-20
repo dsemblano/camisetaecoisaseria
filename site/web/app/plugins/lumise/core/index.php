@@ -54,6 +54,7 @@ $lumise->do_action('editor-header');
 						<i>0+</i>
 					</div>
 				</div>
+				
 				<div id="lumise-zoom-wrp">
 					<i class="lumisex-android-remove" data-zoom="out"></i>
 					<span><?php echo $lumise->lang('Scroll to zoom'); ?></span>
