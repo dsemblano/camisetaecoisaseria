@@ -24,7 +24,7 @@ add_action('wp_enqueue_scripts', function () {
  */
 add_action('after_setup_theme', function () {
     /**
-     * Enable features from Soil when plugin is activated
+     * Enable features from  when plugin is activated
      * @link https://roots.io/plugins/soil/
      */
     add_theme_support('soil-clean-up');
