@@ -15,9 +15,9 @@ ssh_client_ip_lookup: false
 php_memory_limit: 768M
 php_max_input_time: 1000
 php_extensions_custom:
-  php7.4-soap: "{{ apt_package_state }}"
+  php8.1-soap: "{{ apt_package_state }}"
   php-imagick: "{{ apt_package_state }}"
-  php7.4-gd: "{{ apt_package_state }}"
+  php8.1-gd: "{{ apt_package_state }}"
 letsencrypt_contact_emails:
   - dsemblano@gmail.com
 www_root: /srv/www
