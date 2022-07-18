@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "530b5e7e755b335eec3150246a253038",
+    "content-hash": "aeabfd3caa8724aea54984bc42ac2132",
     "packages": [
         {
             "name": "composer/installers",
@@ -1219,6 +1219,24 @@
             "homepage": "https://wordpress.org/plugins/tawkto-live-chat/"
         },
         {
+            "name": "wpackagist-plugin/woo-boleto-paghiper",
+            "version": "2.1.5",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/woo-boleto-paghiper/",
+                "reference": "tags/2.1.5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/woo-boleto-paghiper.2.1.5.zip"
+            },
+            "require": {
+                "composer/installers": "^1.0 || ^2.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/woo-boleto-paghiper/"
+        },
+        {
             "name": "wpackagist-plugin/woo-cart-abandonment-recovery",
             "version": "1.2.18",
             "source": {
@@ -1487,6 +1505,24 @@
             },
             "type": "wordpress-plugin",
             "homepage": "https://wordpress.org/plugins/wp-mail-smtp/"
+        },
+        {
+            "name": "wpackagist-plugin/wp-paypal",
+            "version": "1.2.3.9",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/wp-paypal/",
+                "reference": "trunk"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/wp-paypal.zip?timestamp=1653805865"
+            },
+            "require": {
+                "composer/installers": "^1.0 || ^2.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/wp-paypal/"
         },
         {
             "name": "wpackagist-plugin/wps-hide-login",
@@ -2101,7 +2137,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=7.1"
+        "php": ">=8.1"
     },
     "platform-dev": [],
     "plugin-api-version": "2.3.0"

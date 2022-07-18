@@ -31,7 +31,7 @@
     }
   ],
   "require": {
-    "php": ">=7.1",
+    "php": ">=8.1",
     "composer/installers": "^1.10",
     "vlucas/phpdotenv": "^5.3",
     "oscarotero/env": "^2.1",
@@ -68,6 +68,8 @@
     "wpackagist-plugin/wps-hide-login":">=1.5.4.2",
     "wpackagist-plugin/woocommerce-mercadopago":">=5.3.1",
     "wpackagist-plugin/woo-yapay":">=0.6.3",
+    "wpackagist-plugin/woo-boleto-paghiper":">=2.1.5",
+    "wpackagist-plugin/wp-paypal":">=1.2.3.9",
     "wpackagist-theme/twentyseventeen":">=2.7"
   },
   "require-dev": {
