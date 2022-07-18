@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "aeabfd3caa8724aea54984bc42ac2132",
+    "content-hash": "bfa98edf758c3f8ffdf64979d7fb1b69",
     "packages": [
         {
             "name": "composer/installers",
@@ -1019,6 +1019,24 @@
             },
             "type": "wordpress-plugin",
             "homepage": "https://wordpress.org/plugins/automatic-translator-addon-for-loco-translate/"
+        },
+        {
+            "name": "wpackagist-plugin/datadev-total-express-for-woocommerce",
+            "version": "1.1.3",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/datadev-total-express-for-woocommerce/",
+                "reference": "tags/1.1.3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/datadev-total-express-for-woocommerce.1.1.3.zip"
+            },
+            "require": {
+                "composer/installers": "^1.0 || ^2.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/datadev-total-express-for-woocommerce/"
         },
         {
             "name": "wpackagist-plugin/fatal-error-notify",
