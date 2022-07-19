@@ -96,6 +96,7 @@ module.exports = {
       ],
       penthouse: {
         blockJSRequests: false,
+        timeout:60000,
       },
     }),
   ],
