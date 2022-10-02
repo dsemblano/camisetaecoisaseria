@@ -49,7 +49,7 @@ class lumise_addons {
 		
 		if (!empty($file))
 			$url .= '/'.$file;
-		
+
 		return $url;
 		
 	}
@@ -185,7 +185,7 @@ class lumise_addons {
 	
 	public function load_installed ($mod = 'all') {
 		
-		if (!is_dir($this->path) && !mkdir($this->path, 0755)) {
+		if (!is_dir($this->path) && !wp_mkdir_p($this->path)) {
 			echo '<center><h2 style="color: #888; margin-top: 50px">'.$this->main->lang('Error, could not create extensions folder '.$this->path).'</h2></center>';
 			return;
 		}
@@ -193,7 +193,7 @@ class lumise_addons {
 		$this->process_action();
 		
 		$items = array();
-		$files = @scandir($this->path, 0);
+		$files = scandir($this->path, 0);
 		if($files == FALSE){
 			$files = array();
 		}
@@ -229,12 +229,12 @@ class lumise_addons {
 
 	public function addon_installed_list() {
 		
-		if (!is_dir($this->path) && !mkdir($this->path, 0755)) {
+		if (!is_dir($this->path) && !wp_mkdir_p($this->path)) {
 			return false;
 		}
 		
 		$items = array();
-		$files = scandir($this->path, 0);
+	$files = scandir($this->path, 0);
 		
 		foreach ($files as $file) {
 			
@@ -272,7 +272,7 @@ class lumise_addons {
 		$lib = $this->main->lib;
 		
 		if ($actives !== null && !empty($actives))
-			$actives = (Array)@json_decode($actives);
+			$actives = (Array)json_decode($actives);
 		
 		if (!is_array($actives))
 			$actives = array();
@@ -299,7 +299,7 @@ class lumise_addons {
 						);
 						
 						unset($actives[$name]);
-						$this->main->set_option('active_addons', json_encode($actives));
+						$this->main->set_option('active_addons', wp_json_encode($actives));
 						
 					} else if (version_compare(LUMISE, $data[0]) >= 0) {
 						
@@ -318,7 +318,7 @@ class lumise_addons {
 								'Could not find the PHP classname "lumise_addon_'.$slug.'" in the addon file "/'.$name.DS.'index.php"'
 							);
 							unset($actives[$name]);
-							$this->main->set_option('active_addons', json_encode($actives));
+							$this->main->set_option('active_addons', wp_json_encode($actives));
 						}
 						
 					}else {
@@ -327,13 +327,13 @@ class lumise_addons {
 							'Error: The addon <strong>'.$name.'</strong> does not compatible with your Lumise '.LUMISE
 						);
 						unset($actives[$name]);
-						$this->main->set_option('active_addons', json_encode($actives));
+						$this->main->set_option('active_addons', wp_json_encode($actives));
 					}
 					
 				} else {
 					array_push($this->errors, 'Could not find the extension file /'.$name.DS.'index.php');
 					unset($actives[$name]);
-					$this->main->set_option('active_addons', json_encode($actives));
+					$this->main->set_option('active_addons', wp_json_encode($actives));
 				}
 			}
 		}
@@ -367,12 +367,12 @@ class lumise_addons {
 			$actives = $this->main->get_option( 'active_addons');
 							
 			if ($actives !== null && !empty($actives))
-				$actives = (Array)@json_decode($actives);
+				$actives = (Array)json_decode($actives);
 			
 			if (!is_array($actives))
 				$actives = array();
 			
-			$checked = isset($_POST['id_action']) ? explode(',', $_POST['id_action']) : array();
+			$checked = isset($_POST['id_action']) ? explode(',', wp_unslash($_POST['id_action'])) : array();
 			
 			switch ($_POST['action']){
 				
@@ -453,7 +453,7 @@ class lumise_addons {
 								
 							} else array_push($this->errors, $this->main->lang('Could not unzip'));
 							
-							@unlink($file);
+							wp_delete_file($file);
 							
 						} else {
 							array_push(
@@ -482,10 +482,8 @@ class lumise_addons {
 					
 					$this->main->connector->set_session('lumise_msg', $msg);
 					
-				break;
-				
+				break;	
 			}
-			
 		}
 	
 	}
@@ -496,7 +494,7 @@ class lumise_addons {
 		$msg = ''; $error = '';
 						
 		if ($actives !== null && !empty($actives))
-			$actives = (Array)@json_decode($actives);
+			$actives = (Array)json_decode($actives);
 		
 		if (!is_array($actives))
 			$actives = array();
@@ -541,7 +539,7 @@ class lumise_addons {
 		if (isset($actives[$ext]) && $actives[$ext] !== 1)
 			unset($actives[$ext]);
 		
-		$this->main->set_option('active_addons', json_encode($actives));
+		$this->main->set_option('active_addons', wp_json_encode($actives));
 		
 		return array(
 			"msg" => $msg,
@@ -557,7 +555,7 @@ class lumise_addons {
 		$msg = ''; $ex_class = 'lumise_addon_'.str_replace('-', '_', $ext);
 							
 		if ($actives !== null && !empty($actives))
-			$actives = (Array)@json_decode($actives);
+			$actives = (Array)json_decode($actives);
 		
 		if (!is_array($actives))
 			$actives = array();
@@ -572,7 +570,7 @@ class lumise_addons {
 		if (isset($actives[$ext]))		
 			unset($actives[$ext]);
 		
-		$this->main->set_option('active_addons', json_encode($actives));
+		$this->main->set_option('active_addons', wp_json_encode($actives));
 		
 		return array(
 			"msg" => $msg,

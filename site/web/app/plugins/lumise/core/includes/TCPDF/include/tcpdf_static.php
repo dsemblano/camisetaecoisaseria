@@ -1968,7 +1968,7 @@ class TCPDF_STATIC {
 			if (!self::file_exists($path)) {
 				continue;
 			}
-			$ret = @file_get_contents($path);
+			$ret = file_get_contents($path);
 			if ( $ret != false ) {
 			    return $ret;
 			}

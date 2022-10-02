@@ -79,12 +79,12 @@
 		<title><?php echo (isset($title) ? $title : 'Lumise Control Panel'); ?></title>
 		<?php $lumise->do_action('admin-header'); ?>
 		<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500,700,900" rel="stylesheet">
-		<link rel="stylesheet" href="<?php echo $lumise->cfg->admin_assets_url;?>css/font-awesome.min.css?version=<?php echo LUMISE; ?>">
-		<link rel="stylesheet" href="<?php echo $lumise->cfg->admin_assets_url;?>css/admin.css?version=<?php echo LUMISE; ?>">
-		<link rel="stylesheet" href="<?php echo $lumise->cfg->admin_assets_url;?>css/responsive.css?version=<?php echo LUMISE; ?>">
-		<link rel="stylesheet" href="<?php echo $lumise->cfg->upload_url; ?>user_data/custom.css?version=<?php echo $lumise->cfg->settings['last_update']; ?>">
-		<link rel="stylesheet" href="<?php echo $lumise->cfg->admin_assets_url; ?>css/iframe.css?version=<?php echo LUMISE; ?>" />
-		<script src="<?php echo $lumise->apply_filters('editor/jquery.min.js', $lumise->cfg->assets_url.'assets/js/jquery.min.js?version='.LUMISE); ?>"></script>
+		<link rel="stylesheet" href="<?php echo esc_url(LW()->plugin_url());?>/assets/css/font-awesome.min.css?version=<?php echo LUMISE; ?>">
+		<link rel="stylesheet" href="<?php echo esc_url(LW()->plugin_url());?>/assets/css/admin/admin.min.css?version=<?php echo LUMISE; ?>">
+		<link rel="stylesheet" href="<?php echo esc_url(LW()->plugin_url());?>/assets/css/admin/responsive.min.css?version=<?php echo LUMISE; ?>">
+		<link rel="stylesheet" href="<?php echo esc_url($lumise->cfg->upload_url); ?>user_data/custom.css?version=<?php echo esc_attr($lumise->cfg->settings['last_update']); ?>">
+		<link rel="stylesheet" href="<?php echo esc_url(LW()->plugin_url()); ?>/assets/css/admin/iframe.css?version=<?php echo LUMISE; ?>" />
+		<script src="<?php echo esc_url($lumise->apply_filters('editor/jquery.min.js', $lumise->cfg->assets_url.'assets/js/jquery.min.js?version='.LUMISE)); ?>"></script>
 		<?php $lumise->do_action('editor-header'); ?>
 </head>
 <body class="LumiseDesign">
@@ -94,10 +94,10 @@
 				<button class="lumise-button" is="options-frame">
 					<i class="fa fa-ellipsis-h"></i>
 					<ul>
-						<li data-frame-fn="copy"><?php echo $lumise->lang('Copy this designs config'); ?></li>
-						<li data-frame-fn="paste"><?php echo $lumise->lang('Paste the copied config'); ?></li>
-						<li data-frame-fn="apply"><?php echo $lumise->lang('Apply this for all variations'); ?></li>
-						<li data-frame-fn="remove" style="color:#E91E63;"><?php echo $lumise->lang('Remove this Lumise config'); ?></li>
+						<li data-frame-fn="copy"><?php echo esc_html($lumise->lang('Copy this designs config')); ?></li>
+						<li data-frame-fn="paste"><?php echo esc_html($lumise->lang('Paste the copied config')); ?></li>
+						<li data-frame-fn="apply"><?php echo esc_html($lumise->lang('Apply this for all variations')); ?></li>
+						<li data-frame-fn="remove" style="color:#E91E63;"><?php echo esc_html($lumise->lang('Remove this Lumise config')); ?></li>
 					</ul>
 				</button>
 				<button class="lumise-button" data-frame-fn="close">
@@ -112,17 +112,17 @@
 		url : "<?php echo htmlspecialchars_decode($lumise->cfg->url); ?>",
 		admin_url : "<?php echo htmlspecialchars_decode($lumise->cfg->admin_url); ?>",
 		ajax : "<?php echo htmlspecialchars_decode($lumise->cfg->admin_ajax_url); ?>",
-		assets : "<?php echo $lumise->cfg->assets_url; ?>",
-		jquery : "<?php echo $lumise->cfg->load_jquery; ?>",
-		nonce : "<?php echo lumise_secure::create_nonce('LUMISE_ADMIN'); ?>",
+		assets : "<?php echo esc_js($lumise->cfg->assets_url); ?>",
+		jquery : "<?php echo esc_js($lumise->cfg->load_jquery); ?>",
+		nonce : "<?php echo esc_js(wp_create_nonce( 'lumise_admin_security' )); ?>",
 		filter_ajax: function(ops) {
 			return ops;
 		},
-		js_lang : <?php echo json_encode($lumise->cfg->js_lang); ?>
+		js_lang : <?php echo wp_json_encode($lumise->cfg->js_lang); ?>
 	};
 </script>
-<script src="<?php echo $lumise->cfg->admin_assets_url;?>js/vendors.js?version=<?php echo LUMISE; ?>"></script>
-<script src="<?php echo $lumise->cfg->admin_assets_url;?>js/main.js?version=<?php echo LUMISE; ?>"></script>
+<script src="<?php echo esc_url(LW()->plugin_url() . '/assets/js/admin/vendors.js?version=' . LUMISE);?>"></script>
+<script src="<?php echo esc_url(LW()->plugin_url() . '/assets/js/admin/main.js?version=' . LUMISE);?>"></script>
 <?php $lumise->do_action('editor-footer'); ?>
 <script type="text/javascript">
 (function() {
@@ -130,7 +130,6 @@
 		$('body.LumiseDesign').css('overflow-y', 'scroll');
 	}
 	let fitIframe = () => {
-		
 			inp.val(
 				encodeURIComponent(
 					JSON.stringify({
@@ -146,8 +145,8 @@
 			};
 		},
 		wrp = $('#lumise-product-page'),
-		inp = window.parent.jQuery(window.parent.window['variable-lumise-<?php echo $_GET['variation_id']; ?>']),
-		btn = window.parent.jQuery('#lumise-config-<?php echo $_GET['variation_id']; ?>');
+		inp = window.parent.jQuery(window.parent.window['variable-lumise-<?php echo esc_js(absint($_GET['variation_id'])); ?>']),
+		btn = window.parent.jQuery('#lumise-config-<?php echo  esc_js(absint($_GET['variation_id'])); ?>');
 		
 	$(document).on('click', (e) => {
 		
@@ -160,7 +159,7 @@
 					return window.frameElement.parentNode.removeChild(window.frameElement);
 				break;
 				case 'remove' : 
-					if (confirm('<?php echo $lumise->lang('Are you sure that you want to delete this config?'); ?>')) {
+					if (confirm('<?php echo esc_js($lumise->lang('Are you sure that you want to delete this config?')); ?>')) {
 						inp.val('').change();
 						btn.parent().attr('data-empty', 'true').removeClass('hasFrame');
 						return window.frameElement.parentNode.removeChild(window.frameElement);
@@ -175,11 +174,11 @@
 							})
 						)
 					);
-					alert('<?php echo $lumise->lang('Your design config has been copied!'); ?>');
+					alert('<?php echo esc_js($lumise->lang('Your design config has been copied!')); ?>');
 				break;
 				case 'paste': 
 					if (!localStorage.getItem('LUMISE-VARIATION-COPY'))
-						return alert('<?php echo $lumise->lang('Error, You must copy one config before pasting'); ?>');
+						return alert('<?php echo esc_js($lumise->lang('Error, You must copy one config before pasting')); ?>');
 					
 					inp.val(localStorage.getItem('LUMISE-VARIATION-COPY')).change();
 					window.frameElement.parentNode.removeChild(window.frameElement);
@@ -191,7 +190,7 @@
 				break;
 				case 'apply': 
 					if (confirm('<?php 
-						echo $lumise->lang('Are you sure that you want to apply this config to all other variations?'); 
+						echo esc_js($lumise->lang('Are you sure that you want to apply this config to all other variations?')); 
 					?>')) {
 						
 						let data = encodeURIComponent(

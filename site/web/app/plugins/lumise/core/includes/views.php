@@ -14,59 +14,59 @@ class lumise_views extends lumise_lib {
 	}
 
 	public function nav(){
-		
+
 		$cfg = $this->main->cfg;
 		$logo = $cfg->settings['logo'];
 
 		if (empty($logo))
 			$logo = $cfg->assets_url.'assets/images/logo.v5.png';
-			
+
 		$components = $cfg->settings['components'];
-		
+
 		if (is_string($cfg->settings['components']))
 			$components = explode(',', $cfg->settings['components']);
-		
+
 		$back_link = $this->main->apply_filters('back_link', $cfg->settings['logo_link']);
-			
-		$logo = $this->main->apply_filters('logo-nav', '<a data-view="logo" href="'.$cfg->settings['logo_link'].'"><img src="'.$logo.'" /></a>');
-		
+
+		$logo = $this->main->apply_filters('logo-nav', '<a data-view="logo" href="'.esc_url($cfg->settings['logo_link']).'"><img src="'.$logo.'" /></a>');
+
 		echo $logo;
-	
+
 	?>
 	<!-- Avalable filters: logo-nav -->
 	<ul data-block="left" data-resp="file">
 		<li data-view="sp"></li>
 		<!-- Avalable hook: nav-left-before -->
-		<?php 
+		<?php
 			$this->main->do_action('nav-left-before');
 			ob_start();
 		?>
 		<li data-tool="file" data-view="list">
-			<span><?php echo $this->main->lang('File'); ?></span>
+			<span><?php echo esc_html($this->main->lang('File')); ?></span>
 			<ul data-view="sub" id="lumise-file-nav">
 				<li data-func="import">
-					<span><?php echo $this->main->lang('Import file'); ?></span><small>(Ctrl+O)</small>
+					<span><?php echo esc_html($this->main->lang('Import file')); ?></span><small>(Ctrl+O)</small>
 					<input type="file" id="lumise-import-json" />
 				</li>
 				<li data-func="clear">
-					<span><?php echo $this->main->lang('Clear all'); ?></span><small>(Ctrl+E)</small>
+					<span><?php echo esc_html($this->main->lang('Clear all')); ?></span><small>(Ctrl+E)</small>
 				</li>
 				<li data-view="sp"></li>
 				<li data-func="save" id="handelSavedg">
-					<span><?php echo $this->main->lang('Save to My Designs'); ?></span><small>(Ctrl+S)</small>
+					<span><?php echo esc_html($this->main->lang('Save to My Designs')); ?></span><small>(Ctrl+S)</small>
 				</li>
-				<?php 
-					if ($this->main->connector->is_admin() || 
+				<?php
+					if ($this->main->connector->is_admin() ||
 						$this->main->cfg->settings['user_download'] == '1'
 					) {
 				?>
 					<li data-func="saveas">
-						<span><?php echo $this->main->lang('Save as file'); ?></span><small>(Ctrl+Shift+S)</small>
+						<span><?php echo esc_html($this->main->lang('Save as file')); ?></span><small>(Ctrl+Shift+S)</small>
 					</li>
 				<?php } ?>
 			</ul>
 		</li>
-		<?php 
+		<?php
 			$file_nav = ob_get_contents();
 			ob_end_clean();
 			echo $this->main->apply_filters('file-nav', $file_nav);
@@ -74,71 +74,71 @@ class lumise_views extends lumise_lib {
 		<!-- Avalable filters: file-nav -->
 		<?php ob_start(); ?>
 		<li data-tool="designs" data-callback="designs">
-			<span><?php echo $this->main->lang('Designs'); ?></span>
+			<span><?php echo esc_html($this->main->lang('Designs')); ?></span>
 			<ul data-view="sub">
 				<header>
 					<h3>
-						<?php echo $this->main->lang('My designs'); ?>
+						<?php echo esc_html($this->main->lang('My designs')); ?>
 						<span id="lumise-designs-search">
-							<input type="search" placeholder="<?php echo $this->main->lang('Search designs'); ?>" />
+							<input type="search" placeholder="<?php echo esc_attr($this->main->lang('Search designs')); ?>" />
 						</span>
 					</h3>
-					<i class="lumisex-android-close close" title="<?php echo $this->main->lang('Close'); ?>"></i>
+					<i class="lumisex-android-close close" title="<?php echo esc_attr($this->main->lang('Close')); ?>"></i>
 				</header>
 				<li>
 					<ul id="lumise-designs-category">
 						<li data-active="true">
-							<text><i class="lumisex-ios-arrow-forward"></i> <?php echo $this->main->lang('All Categories'); ?></text>
+							<text><i class="lumisex-ios-arrow-forward"></i> <?php echo esc_html($this->main->lang('All Categories')); ?></text>
 						</li>
 						<li>
 							<text><i class="lumisex-ios-arrow-forward"></i> Category #1</text>
 							<func>
-								<i class="lumisex-edit" title="<?php echo $this->main->lang('Edit Category'); ?>"></i>
-								<i class="lumisex-android-delete" title="<?php echo $this->main->lang('Delete Category'); ?>"></i>
+								<i class="lumisex-edit" title="<?php echo esc_attr($this->main->lang('Edit Category')); ?>"></i>
+								<i class="lumisex-android-delete" title="<?php echo esc_attr($this->main->lang('Delete Category')); ?>"></i>
 							</func>
 						</li>
-						<li data-func="add"><i class="lumisex-android-add"></i> <?php echo $this->main->lang('New Category'); ?></li>
+						<li data-func="add"><i class="lumisex-android-add"></i> <?php echo esc_html($this->main->lang('New Category')); ?></li>
 					</ul>
 					<ul id="lumise-saved-designs"></ul>
 				</li>
 			</ul>
 		</li>
 		<!-- Avalable filters: design-nav -->
-		<?php 
-			
+		<?php
+
 		$design_nav = ob_get_contents();
 		ob_end_clean();
-		
+
 		echo $this->main->apply_filters('design-nav', $design_nav);
-		
+
 		$alwd = '';
-		
+
 		if (
-			!$this->main->connector->is_admin() && 
+			!$this->main->connector->is_admin() &&
 			$this->main->cfg->settings['user_print'] != '1' &&
-			isset($_GET['design_print']) && 
+			isset($_GET['design_print']) &&
 			is_file($this->main->cfg->upload_path.'designs'.DS.$_GET['design_print'].'.lumi')
 		) {
 			$this->main->cfg->settings['user_print'] = '1';
 			$alwd = ' data-alwd="'.urlencode($_GET['design_print']).'"';
 		}
-			
+
 		if (!$this->main->connector->is_admin() && $this->main->cfg->settings['user_print'] != '1' || $this->main->apply_filters('show-print-nav', false))
 			$alwd = ' style="display:none;"';
-		
-		ob_start(); 
-		
-		?><li data-tool="print"<?php echo $alwd; ?>>
-			<span><?php echo $this->main->lang('Print'); ?></span>
+
+		ob_start();
+
+		?><li data-tool="print"<?php echo esc_attr($alwd); ?>>
+			<span><?php echo esc_html($this->main->lang('Print')); ?></span>
 			<ul data-view="sub" id="lumise-print-nav" data-align="center">
 				<header>
 					<h3>
-						<?php echo $this->main->lang('Print design'); ?>
+						<?php echo esc_html($this->main->lang('Print design')); ?>
 					</h3>
-					<i class="lumisex-android-close close" title="<?php echo $this->main->lang('Close'); ?>"></i>
+					<i class="lumisex-android-close close" title="<?php echo esc_attr($this->main->lang('Close')); ?>"></i>
 				</header>
 				<li data-row="format">
-					<label><?php echo $this->main->lang('Select format'); ?>:</label>
+					<label><?php echo esc_html($this->main->lang('Select format')); ?>:</label>
 					<span>
 						<div class="lumise_radios">
 							<div class="lumise-radio">
@@ -152,7 +152,7 @@ class lumise_views extends lumise_lib {
 								<label class="lumise-cart-option-label" for="print-format-svg">
 									SVG <em class="check"></em>
 								</label>
-							</div><!-- 
+							</div><!--
 							<div class="lumise-radio">
 								<input type="radio" data-dp="format" class="doPrint" data-format="pdf" name="print-format" id="print-format-pdf">
 								<label class="lumise-cart-option-label" for="print-format-pdf">
@@ -163,24 +163,24 @@ class lumise_views extends lumise_lib {
 					</span>
 				</li>
 				<li data-row="size">
-					<label><?php echo $this->main->lang('Paper Size'); ?>:</label>
+					<label><?php echo esc_html($this->main->lang('Paper Size')); ?>:</label>
 					<!-- Avalable filters: print-sizes -->
 					<select name="select-size" class="doPrint" data-dp="size">
 						<?php
-							
+
 							$size = '21 x 29.7';
-							
+
 							foreach ($this->main->cfg->size_default as $s => $v) {
 								echo '<option value="'.$v['cm'].'"'.(
 									$size == $v['cm'] || strtolower($v['cm']) == $size ? ' selected' : ''
 									).'>'.$s.'</option>';
 							}
-							
+
 						?>
 					</select>
 				</li>
 				<li data-row="csize">
-					<label><?php echo $this->main->lang('Custom size'); ?>:</label>
+					<label><?php echo esc_html($this->main->lang('Custom size')); ?>:</label>
 					<input type="text" class="doPrint" data-dp="csize" name="size" value="21 x 29.7" />
 				</li>
 				<li data-row="unit">
@@ -192,18 +192,18 @@ class lumise_views extends lumise_lib {
 					<label for="print-unit-px"> Pixel</label>
 				</li>
 				<li data-row="orien">
-					<label><?php echo $this->main->lang('Orientation'); ?>:</label>
+					<label><?php echo esc_html($this->main->lang('Orientation')); ?>:</label>
 					<select name="orientation" class="doPrint" data-dp="orien">
-						<option value="portrait"><?php 
-							echo $this->main->lang('Portrait');
+						<option value="portrait"><?php
+							echo esc_html($this->main->lang('Portrait'));
 						?></option>
-						<option value="landscape"><?php 
-							echo $this->main->lang('Landscape'); 
+						<option value="landscape"><?php
+							echo esc_html($this->main->lang('Landscape'));
 						?></option>
 					</select>
 				</li>
 				<li data-row="base">
-					<label><?php echo $this->main->lang('Include base?'); ?></label>
+					<label><?php echo esc_html($this->main->lang('Include base?')); ?></label>
 					<div class="lumise-switch">
 						<input data-dp="base" id="lumise-print-base" type="checkbox" value="" class="lumise-toggle-button doPrint">
 						<span class="lumise-toggle-label" data-on="YES" data-off="NO"></span>
@@ -211,7 +211,7 @@ class lumise_views extends lumise_lib {
 					</div>
 				</li>
 				<li data-row="overflow">
-					<label><?php echo $this->main->lang('Hide overflow?'); ?></label>
+					<label><?php echo esc_html($this->main->lang('Hide overflow?')); ?></label>
 					<div class="lumise-switch">
 						<input data-dp="overflow" id="lumise-print-overflow" type="checkbox" value="" class="lumise-toggle-button doPrint">
 						<span class="lumise-toggle-label" data-on="YES" data-off="NO"></span>
@@ -219,7 +219,7 @@ class lumise_views extends lumise_lib {
 					</div>
 				</li>
 				<li data-row="cropmarks" style="display: none;">
-					<label><?php echo $this->main->lang('Crop marks & bleed?'); ?></label>
+					<label><?php echo esc_html($this->main->lang('Crop marks & bleed?')); ?></label>
 					<div class="lumise-switch">
 						<input data-dp="cropmarks" id="lumise-print-cropmarks" type="checkbox" value="" class="lumise-toggle-button doPrint">
 						<span class="lumise-toggle-label" data-on="YES" data-off="NO"></span>
@@ -227,7 +227,7 @@ class lumise_views extends lumise_lib {
 					</div>
 				</li>
 				<li data-row="full" style="display: none;">
-					<label><?php echo $this->main->lang('Export all pages?'); ?></label>
+					<label><?php echo esc_html($this->main->lang('Export all pages?')); ?></label>
 					<div class="lumise-switch">
 						<input data-dp="all_pages" id="lumise-print-full" type="checkbox" value="" class="lumise-toggle-button doPrint">
 						<span class="lumise-toggle-label" data-on="YES" data-off="NO"></span>
@@ -236,17 +236,17 @@ class lumise_views extends lumise_lib {
 				</li>
 				<li>
 					<button class="lumise-btn doPrint" data-dp="print" data-func="print">
-						<?php echo $this->main->lang('Print Now'); ?> 
+						<?php echo esc_html($this->main->lang('Print Now')); ?>
 						<i class="lumisex-printer"></i>
 					</button>
 					<button class="lumise-btn gray doPrint" data-dp="download" data-func="download">
-						<?php echo $this->main->lang('Download'); ?> 
+						<?php echo esc_html($this->main->lang('Download')); ?>
 						<i class="lumisex-android-download"></i>
 					</button>
 				</li>
 			</ul>
 		</li>
-		<?php 
+		<?php
 			$print_nav = ob_get_contents();
 			ob_end_clean();
 			echo $this->main->apply_filters('print-nav', $print_nav);
@@ -256,16 +256,16 @@ class lumise_views extends lumise_lib {
 		<?php ob_start(); ?>
 		<li data-tool="share">
 			<span>
-				<?php echo $this->main->lang('Share'); ?>
+				<?php echo esc_html($this->main->lang('Share')); ?>
 			</span>
 			<ul data-view="sub" class="lumise-tabs-nav" data-align="center" id="lumise-shares-wrp" data-nav="link">
 				<header>
 					<h3>
-						<span data-tna="link"><?php echo $this->main->lang('Share Your Design'); ?></span>
+						<span data-tna="link"><?php echo esc_html($this->main->lang('Share Your Design')); ?></span>
 						<span data-tna="history">
 							<a href="#" data-func="nav" data-nav="link">
-								<i class="lumisex-android-arrow-back" data-func="nav" data-nav="link"></i> 
-								<?php echo $this->main->lang('Back to share'); ?>
+								<i class="lumisex-android-arrow-back" data-func="nav" data-nav="link"></i>
+								<?php echo esc_html($this->main->lang('Back to share')); ?>
 							</a>
 						</span>
 					</h3>
@@ -273,29 +273,29 @@ class lumise_views extends lumise_lib {
 				</header>
 				<li data-view="link" data-active="true">
 					<p data-phase="1" class="mb1">
-						<?php echo $this->main->lang('Create the link to share your current design for everyone'); ?>
+						<?php echo esc_html($this->main->lang('Create the link to share your current design for everyone')); ?>
 					</p>
 					<p data-view="link" class="mb1" data-phase="1">
-						<input type="text" placeholder="<?php echo $this->main->lang('Enter the title of design'); ?>" id="lumise-share-link-title" />
+						<input type="text" placeholder="<?php echo esc_attr($this->main->lang('Enter the title of design')); ?>" id="lumise-share-link-title" />
 					</p>
 					<p data-phase="1">
 						<button class="lumise-btn right" data-func="create-link">
-							<?php echo $this->main->lang('Create link'); ?>
+							<?php echo esc_html($this->main->lang('Create link')); ?>
 						</button>
 						<button class="lumise-btn right white mr1"  data-nav="history" data-func="nav">
-							<?php echo $this->main->lang('View history'); ?>
+							<?php echo esc_html($this->main->lang('View history')); ?>
 						</button>
 					</p>
 					<p class="notice success" data-phase="2">
-						<?php echo $this->main->lang('Your link has been created successfully'); ?>
+						<?php echo esc_html($this->main->lang('Your link has been created successfully')); ?>
 					</p>
-					<p data-view="link-share" data-phase="2" data-func="copy" data-msg="<?php 
-						echo $this->main->lang('The link was copied'); 
-					?>" title="<?php 
-						echo $this->main->lang('Click to copy the link'); 
+					<p data-view="link-share" data-phase="2" data-func="copy" data-msg="<?php
+						echo esc_attr($this->main->lang('The link was copied'));
+					?>" title="<?php
+						echo esc_attr($this->main->lang('Click to copy the link'));
 					?>"></p>
 					<p class="mt1 mb1 right" data-phase="2">
-						<b><?php echo $this->main->lang('Share to'); ?>:</b>
+						<b><?php echo esc_html($this->main->lang('Share to')); ?>:</b>
 						<button data-network="facebook">
 							<i class="lumisex-social-facebook"></i> Facebook
 						</button>
@@ -308,15 +308,15 @@ class lumise_views extends lumise_lib {
 					</p>
 					<p class="mt1" data-phase="2">
 						<button class="lumise-btn right gray" data-func="do-again">
-							<?php echo $this->main->lang('Create another'); ?>
+							<?php echo esc_html($this->main->lang('Create another')); ?>
 						</button>
-						<button class="lumise-btn right white mr1"  data-nav="history" data-func="nav"><?php echo $this->main->lang('View history'); ?></button>
+						<button class="lumise-btn right white mr1" data-nav="history" data-func="nav"><?php echo esc_html($this->main->lang('View history')); ?></button>
 					</p>
 				</li>
 				<li data-view="history"></li>
 			</ul>
 		</li>
-		<?php 
+		<?php
 			$share_nav = ob_get_contents();
 			ob_end_clean();
 			echo $this->main->apply_filters('share-nav', $share_nav);
@@ -326,24 +326,24 @@ class lumise_views extends lumise_lib {
 		<?php ob_start(); ?>
 		<li data-tool="help">
 			<span>
-				<?php echo $this->main->lang('Help'); ?>
+				<?php echo esc_html($this->main->lang('Help')); ?>
 			</span>
 			<ul data-view="sub" class="lumise-tabs-nav">
 				<li data-view="header">
-					<h3 data-view="title"><?php echo $this->main->cfg->settings['help_title']; ?></h3>
-					<i class="lumisex-android-close close" title="<?php echo $this->main->lang('Close'); ?>"></i>
+					<h3 data-view="title"><?php echo esc_html($this->main->cfg->settings['help_title']); ?></h3>
+					<i class="lumisex-android-close close" title="<?php echo esc_html($this->main->lang('Close')); ?>"></i>
 					<nav>
 						<?php
 
-							$tabs = @json_decode($this->main->cfg->settings['helps']);
+							$tabs = json_decode($this->main->cfg->settings['helps']);
 
 							$tab_body = '';
 							if ($tabs === null || !is_array($tabs) || count($tabs) === 0) {
 								$tabs = array();
 							}
-							
+
 							$about = new stdClass();
-							$about->title = $this->main->lang('About');
+							$about->title = esc_html($this->main->lang('About'));
 							$about->content = '<span data-sub="about">'.
 												stripslashes($this->main->cfg->settings['about']).
 												'<p data-view="powered" class="md">'.
@@ -356,11 +356,11 @@ class lumise_views extends lumise_lib {
 													'version '.LUMISE.
 												'</p>'.
 											  '</span>';
-							
+
 							array_push($tabs, $about);
-							
+
 							$tab_index = 1;
-											
+
 							foreach ($tabs as $tab) {
 
 								if (
@@ -368,10 +368,10 @@ class lumise_views extends lumise_lib {
 									isset($tab->content) &&
 									!empty($tab->content)
 								) {
-									
+
 									if (empty($tab->title))
 										$tab->title = 'Untitled';
-										
+
 									echo '<span'.(empty($tab_body) ? ' data-active="true"' : '' ).
 										 ' data-nav="tab-'.$tab_index.'" data-func="nav">'.
 										 $this->main->lang($tab->title).'</span>';
@@ -386,10 +386,10 @@ class lumise_views extends lumise_lib {
 						?>
 					</nav>
 				</li>
-				<?php echo $tab_body; ?>
+				<?php echo wp_kses_post($tab_body); ?>
 			</ul>
 		</li>
-		<?php 
+		<?php
 			$help_nav = ob_get_contents();
 			ob_end_clean();
 			echo $this->main->apply_filters('help-nav', $help_nav);
@@ -401,7 +401,7 @@ class lumise_views extends lumise_lib {
 		if (in_array('back', $components)){
 			?>
 		<li class="back_mobile">
-			<a href="<?php echo $back_link;?>">Shop</a>
+			<a href="<?php echo esc_url($back_link);?>">Shop</a>
 		</li>
 		<?php } ?>
 		<li data-view="sp"></li>
@@ -411,24 +411,24 @@ class lumise_views extends lumise_lib {
 </g><g xmlns="http://www.w3.org/2000/svg" style="display:none;transform:scale(.85) translateY(3px);" id="__x"><path xmlns="http://www.w3.org/2000/svg" d="M505.943,6.058c-8.077-8.077-21.172-8.077-29.249,0L6.058,476.693c-8.077,8.077-8.077,21.172,0,29.249    C10.096,509.982,15.39,512,20.683,512c5.293,0,10.586-2.019,14.625-6.059L505.943,35.306    C514.019,27.23,514.019,14.135,505.943,6.058z"/><path d="M505.942,476.694L35.306,6.059c-8.076-8.077-21.172-8.077-29.248,0c-8.077,8.076-8.077,21.171,0,29.248l470.636,470.636    c4.038,4.039,9.332,6.058,14.625,6.058c5.293,0,10.587-2.019,14.624-6.057C514.018,497.866,514.018,484.771,505.942,476.694z"/></g></svg>
 	<ul data-block="left" data-resp="undo-redo">
 		<?php if($this->main->apply_filters('allow_undo', true)) {?>
-		<li id="lumise-design-undo" title="Ctrl+Z" class="disabled"><?php echo $this->main->lang('Undo'); ?></li>		
+		<li id="lumise-design-undo" title="Ctrl+Z" class="disabled"><?php echo esc_html($this->main->lang('Undo')); ?></li>
 		<?php }?>
 		<?php if($this->main->apply_filters('allow_redo', true)) {?>
-		<li id="lumise-design-redo" title="Ctrl+Shift+Z" class="disabled"><?php echo $this->main->lang('Redo'); ?></li>
+		<li id="lumise-design-redo" title="Ctrl+Shift+Z" class="disabled"><?php echo esc_html($this->main->lang('Redo')); ?></li>
 		<?php }?>
 	</ul>
 	<ul data-block="right">
 		<!-- To add your code here, use the hook $lumise->add_action('before_language', function(){}) -->
 		<!-- Avalable hook: before_language -->
 		<?php
-		
+
 		$this->main->do_action('before_language');
-		
+
 		$active_lang = $this->main->cfg->active_language_frontend;
-		
+
 		$get_langs = $this->main->get_langs();
-		
-		/* Start language component */	
+
+		/* Start language component */
 		if (count($get_langs) > 0 && $this->main->cfg->settings['allow_select_lang'] == '1') {
 
 			$langs = $this->main->langs();
@@ -441,12 +441,12 @@ class lumise_views extends lumise_lib {
 		<?php ob_start(); ?>
 		<li data-tool="languages" data-view="list">
 			<span>
-				<img src="<?php echo $this->main->cfg->assets_url; ?>assets/flags/<?php echo $active_lang; ?>.png" height="20" />
-				<!--text><?php echo $this->main->lang('Languages'); ?></text-->
+				<img src="<?php echo esc_url($this->main->cfg->assets_url); ?>assets/flags/<?php echo esc_attr($active_lang); ?>.png" height="20" />
+				<!--text><?php echo esc_html($this->main->lang('Languages')); ?></text-->
 			</span>
 			<ul id="lumise-languages" data-view="sub" data-align="right">
 				<header>
-					<h3><?php echo $this->main->lang('Languages'); ?></h3>
+					<h3><?php echo esc_html($this->main->lang('Languages')); ?></h3>
 				</header>
 				<?php foreach ($get_langs as $code) { ?>
 					<?php if (
@@ -457,9 +457,9 @@ class lumise_views extends lumise_lib {
 							) ||
 							$code == 'en'
 						) { ?>
-					<li data-id="<?php echo $code; ?>">
-						<span><img src="<?php echo $this->main->cfg->assets_url; ?>assets/flags/<?php echo $code; ?>.png" height="20" />
-						<?php echo $langs[$code]; ?></span>
+					<li data-id="<?php echo esc_attr($code); ?>">
+						<span><img src="<?php echo esc_url($this->main->cfg->assets_url); ?>assets/flags/<?php echo esc_attr($code); ?>.png" height="20" />
+						<?php echo esc_html($langs[$code]); ?></span>
 						<?php if ($code == $active_lang) {
 							echo '<i class="lumisex-android-done"></i>';
 						}?>
@@ -468,30 +468,30 @@ class lumise_views extends lumise_lib {
 				<?php } ?>
 			</ul>
 		</li>
-		<?php 
+		<?php
 			$lang_nav = ob_get_contents();
 			ob_end_clean();
-			
+
 			echo $this->main->apply_filters('lang-nav', $lang_nav);
-			
+
 		?>
 		<!-- Avalable filters: lang-nav -->
 		<!-- Avalable hook: after_language -->
-		
-		<?php 
-			
+
+		<?php
+
 			$this->main->do_action('after_language');
-			
+
 			if (in_array('shop', $components))
 				echo '<li data-view="sp"></li>';
-		
-		} 
+
+		}
 		/* End language component */
 		$this->main->do_action('before_cart');
-		/* Start shop component */	
-		
+		/* Start shop component */
+
 		if (in_array('shop', $components)) {
-		
+
 		?>
 		<!-- Avalable hook: before_cart -->
 		<?php ob_start(); ?>
@@ -499,64 +499,64 @@ class lumise_views extends lumise_lib {
 			<span class="lumise-price lumise-product-price">0.0</span>
 		</li>
 		<li data-tool="cart" id="lumise-cart-options">
-			<button id="lumise-addToCart" title="<?php echo $this->main->lang('My cart'); ?>">
-				<img src="<?php echo $this->main->cfg->assets_url; ?>assets/images/cart.svg" with="25" alt="" />
+			<button id="lumise-addToCart" title="<?php echo esc_html($this->main->lang('My cart')); ?>">
+				<img src="<?php echo esc_url(LW()->plugin_url() . '/assets/images/cart.svg'); ?>" with="25" alt="" />
 			</button>
 			<div data-view="sub" data-align="right" id="lumise-cart-items">
 				<header>
-					<h3><?php echo $this->main->lang('My Cart'); ?></h3>
+					<h3><?php echo esc_html($this->main->lang('My Cart')); ?></h3>
 					<i class="lumisex-android-close close" title="close"></i>
 				</header>
 				<ul data-view="items"></ul>
 				<footer>
 					<a href="#details" data-func="details" data-view="cart-details">
-						<?php echo $this->main->lang('Cart details'); ?> <i class="lumisex-android-open"></i>
+						<?php echo esc_html($this->main->lang('Cart details')); ?> <i class="lumisex-android-open"></i>
 					</a>
 					<a href="#checkout" data-func="checkout" class="lumise-btn-primary">
-						<?php echo $this->main->lang('Checkout'); ?>
+						<?php echo esc_html($this->main->lang('Checkout')); ?>
 						<i class="lumisex-android-arrow-forward"></i>
 					</a>
 				</footer>
 			</div>
 		</li>
-		<?php 
+		<?php
 			$cart_nav = ob_get_contents();
 			ob_end_clean();
 			echo $this->main->apply_filters('cart-nav', $cart_nav);
 		?>
 		<!-- Avalable filters: cart-nav -->
 		<?php ob_start(); ?>
-		
+
 		<?php
-			
+
 			$components = $cfg->settings['components'];
-			
+
 			if (is_string($cfg->settings['components']))
 				$components = explode(',', $cfg->settings['components']);
-			
+
 			$components = $this->main->apply_filters('nav-component', $components);
-				
+
 			if (in_array('product', $components)) {
 		?>
 		<li id="lumise-proceed">
-			<button id="lumise-cart-action" class="lumise-btn-primary" data-add="<?php echo $this->main->lang('Add to cart'); ?>" data-update="<?php echo $this->main->lang('Update cart'); ?>" data-action="update-cart">
-				<span><?php echo $this->main->lang('Add to cart'); ?></span> 
+			<button id="lumise-cart-action" class="lumise-btn-primary" data-add="<?php echo esc_html($this->main->lang('Add to cart')); ?>" data-update="<?php echo esc_html($this->main->lang('Update cart')); ?>" data-action="update-cart">
+				<span><?php echo esc_html($this->main->lang('Add to cart')); ?></span>
 				<i class="lumisex-android-arrow-forward"></i>
 			</button>
 		</li>
-		<?php		
+		<?php
 			} else {
 		?>
 		<li data-tool="proceed" data-callback="proceed" id="lumise-proceed">
 			<span>
 				<button id="lumise-continue-btn">
-					<?php echo $this->main->lang('Proceed'); ?> 
+					<?php echo esc_html($this->main->lang('Proceed')); ?>
 					<i class="lumisex-android-arrow-forward"></i>
 				</button>
 			</span>
 			<div data-view="sub" data-align="right" id="lumise-product-attributes">
 				<header>
-					<h3><?php echo $this->main->lang('Proceed to the next step'); ?></h3>
+					<h3><?php echo esc_html($this->main->lang('Proceed to the next step')); ?></h3>
 					<i class="lumisex-android-close close" title="close"></i>
 				</header>
 				<div id="lumise-cart-wrp" data-view="attributes" class="smooth">
@@ -567,19 +567,19 @@ class lumise_views extends lumise_lib {
 				</div>
 				<footer>
 					<strong class="lumise-product-price-wrp">
-						<?php echo $this->main->lang('Total:'); ?> <span class="lumise-product-price"></span>
+						<?php echo esc_html($this->main->lang('Total:')); ?> <span class="lumise-product-price"></span>
 					</strong>
-					<button id="lumise-cart-action" class="lumise-btn-primary" data-add="<?php echo $this->main->lang('Add to cart'); ?>" data-update="<?php echo $this->main->lang('Update cart'); ?>" data-action="update-cart">
-						<?php echo $this->main->lang('Add to cart'); ?> 
-						<img src="<?php echo $this->main->cfg->assets_url; ?>assets/images/cart.svg" />
+					<button id="lumise-cart-action" class="lumise-btn-primary" data-add="<?php echo esc_html($this->main->lang('Add to cart')); ?>" data-update="<?php echo esc_html($this->main->lang('Update cart')); ?>" data-action="update-cart">
+						<?php echo esc_html($this->main->lang('Add to cart')); ?>
+						<img src="<?php echo esc_url(LW()->plugin_url() . '/assets/images/cart.svg'); ?>" />
 					</button>
 				</footer>
 			</div>
 		</li>
-		<?php 
-		
+		<?php
+
 		}
-			
+
 			$proceed_nav = ob_get_contents();
 			ob_end_clean();
 			echo $this->main->apply_filters('proceed-nav', $proceed_nav);
@@ -589,14 +589,14 @@ class lumise_views extends lumise_lib {
 		if (in_array('back', $components)) {
 		?>
 		<li id="back-btn">
-			<a href="<?php echo $back_link; ?>" class="back_shop"><?php echo $this->main->lang('Back To Shop'); ?></a>
+			<a href="<?php echo esc_url($back_link); ?>" class="back_shop"><?php echo esc_html($this->main->lang('Back To Shop')); ?></a>
 		</li>
 		<?php } ?>
 		<!-- Avalable hook: after_cart -->
-	<?php 
-		
-		} 
-		/* End shop component */ 
+	<?php
+
+		}
+		/* End shop component */
 		$this->main->do_action('after_cart');
 	?>
 	</ul>
@@ -611,42 +611,42 @@ class lumise_views extends lumise_lib {
 	<ul class="lumise-top-nav left" data-mode="default">
 		<li id="lumise-general-status">
 			<span>
-				<text><i class="lumisex-android-alert"></i> <?php echo $this->main->lang('Start designing by adding objects from the left side'); ?></text>
+				<text><i class="lumisex-android-alert"></i> <?php echo esc_html($this->main->lang('Start designing by adding objects from the left side')); ?></text>
 			</span>
 		</li>
 	</ul>
 
 	<ul class="lumise-top-nav left" data-mode="group" data-grouped="false">
 		<!-- Avalable hook: before-tool-group -->
-		<?php echo $this->main->do_action('before-tool-group'); ?>
+		<?php $this->main->do_action('before-tool-group'); ?>
 		<li data-tool="ungroup" data-callback="group">
 			<span data-view="noicon">
-				<i class="lumisex-android-done-all"></i> 
-				<?php echo $this->main->lang('All selected objects are grouped'); ?> | 
-				<a href="#ungroup"><?php echo $this->main->lang('Ungroup?'); ?></a>
+				<i class="lumisex-android-done-all"></i>
+				<?php echo esc_html($this->main->lang('All selected objects are grouped')); ?> |
+				<a href="#ungroup"><?php echo esc_html($this->main->lang('Ungroup?')); ?></a>
 			</span>
 		</li>
 		<li data-tool="group" data-callback="group">
-			<span data-tip="true" data-view="noicon"> 
-				<i class="lumisex-link"></i> 
-				<?php echo $this->main->lang('Group objects'); ?>
-				<span><?php echo $this->main->lang('Group the position of selected objects'); ?></span>
+			<span data-tip="true" data-view="noicon">
+				<i class="lumisex-link"></i>
+				<?php echo esc_html($this->main->lang('Group objects')); ?>
+				<span><?php echo esc_html($this->main->lang('Group the position of selected objects')); ?></span>
 			</span>
 		</li>
 		<!-- Avalable hook: after-tool-group -->
-		<?php echo $this->main->do_action('after-tool-group'); ?>
+		<?php $this->main->do_action('after-tool-group'); ?>
 	</ul>
-	
+
 	<ul class="lumise-top-nav left" data-mode="svg">
 		<!-- Avalable hook: before-tool-svg -->
-		<?php echo $this->main->do_action('before-tool-svg'); ?>
+		<?php $this->main->do_action('before-tool-svg'); ?>
 
 		<?php if($this->main->apply_filters('fill', true)): ?>
 		<li data-tool="svg" id="lumise-svg-colors" data-callback="svg" data-editor="false">
 			<ul data-pos="left" data-view="sub">
 				<li data-view="title">
 					<h3>
-						<span><?php echo $this->main->lang('Fill options'); ?></span>
+						<span><?php echo esc_html($this->main->lang('Fill options')); ?></span>
 						<i class="lumisex-android-close close" title="close"></i>
 					</h3>
 					<p class="flex<?php echo ($this->main->cfg->settings['enable_colors'] == '0' && !isset($_POST['printing'])) ? ' hidden' : ''; ?>">
@@ -654,7 +654,7 @@ class lumise_views extends lumise_lib {
 						<?php if ($this->main->cfg->settings['enable_colors'] != '0' || isset($_POST['printing'])) { ?>
 						<span class="lumise-save-color" data-tip="true" data-target="svg-fill">
 							<i class="lumisex-android-add"></i>
-							<span><?php echo $this->main->lang('Save this color'); ?></span>
+							<span><?php echo esc_html($this->main->lang('Save this color')); ?></span>
 						</span>
 						<?php } ?>
 					</p>
@@ -663,28 +663,28 @@ class lumise_views extends lumise_lib {
 			</ul>
 		</li>
 		<?php endif; ?>
-		
+
 		<!-- Avalable hook: after-tool-svg -->
-		<?php echo $this->main->do_action('after-tool-svg'); ?>
+		<?php $this->main->do_action('after-tool-svg'); ?>
 	</ul>
 
 	<ul class="lumise-top-nav right" data-mode="default">
 		<!-- Avalable hook: before-tool-default -->
 		<?php $this->main->do_action('before-tool-default'); ?>
-		<?php if ($this->main->cfg->settings['dis_qrcode'] != '1' || $this->main->apply_filters('disable-qrcode', false)) { ?>
+		<?php if ($this->main->cfg->settings['dis_qrcode'] != '1' || false !== $this->main->apply_filters('disable-qrcode', false)) { ?>
 		<li data-tool="callback" data-callback="qrcode">
 			<span data-tip="true">
 				<i class="lumisex-qrcode-1"></i>
-				<span><?php echo $this->main->lang('Create QRCode'); ?></span>
+				<span><?php echo esc_html($this->main->lang('Create QRCode')); ?></span>
 			</span>
 		</li>
 		<?php } ?>
 		<?php ob_start(); ?>
 		<li data-tool="options">
-			<span data-view="noicon"><?php echo $this->main->lang('Options'); ?></span>
+			<span data-view="noicon"><?php echo esc_html($this->main->lang('Options')); ?></span>
 			<ul data-pos="right" data-view="sub">
 				<li>
-					<label><?php echo $this->main->lang('Auto snap mode'); ?></label>
+					<label><?php echo esc_html($this->main->lang('Auto snap mode')); ?></label>
 					<span class="lumise-switch">
 						<input id="lumise-auto-alignment" data-name="AUTO-ALIGNMENT" type="checkbox" value="" class="lumise-toggle-button"<?php if ($this->main->cfg->settings['auto_snap'] == '1')echo ' checked';?>>
 						<span class="lumise-toggle-label" data-on="ON" data-off="OFF"></span>
@@ -692,12 +692,12 @@ class lumise_views extends lumise_lib {
 					</span>
 					<tip>
 						<i></i>
-						<text><?php echo $this->main->lang('Automatically align the position of <br>the active object with other objects'); ?> </text>
+						<text><?php echo esc_html($this->main->lang('Automatically align the position of <br>the active object with other objects')); ?> </text>
 					</tip>
 				</li>
 				<li>
 					<label>
-						<?php echo $this->main->lang('Template append'); ?> 
+						<?php echo esc_html($this->main->lang('Template append')); ?>
 					</label>
 					<span class="lumise-switch">
 						<input id="lumise-template-append" data-name="TEMPLATE-APPEND" type="checkbox" value="" class="lumise-toggle-button"<?php if ($this->main->cfg->settings['template_append'] == '1')echo ' checked';?>>
@@ -706,12 +706,12 @@ class lumise_views extends lumise_lib {
 					</span>
 					<tip>
 						<i></i>
-						<text><?php echo $this->main->lang('ON: Keep all current objects and append the template into<br> OFF: Clear all objects before installing the template'); ?> </text>
+						<text><?php echo esc_html($this->main->lang('ON: Keep all current objects and append the template into<br> OFF: Clear all objects before installing the template')); ?> </text>
 					</tip>
 				</li>
 				<li>
 					<label>
-						<?php echo $this->main->lang('Replace image'); ?> 
+						<?php echo esc_html($this->main->lang('Replace image')); ?>
 					</label>
 					<span class="lumise-switch">
 						<input id="lumise-replace-image" data-name="REPLACE-IMAGE" type="checkbox" value="" class="lumise-toggle-button"<?php if ($this->main->cfg->settings['replace_image'] == '1')echo ' checked';?>>
@@ -720,14 +720,14 @@ class lumise_views extends lumise_lib {
 					</span>
 					<tip>
 						<i></i>
-						<text><?php echo $this->main->lang('Replace the selected image object instead of creating a new one'); ?> </text>
+						<text><?php echo esc_html($this->main->lang('Replace the selected image object instead of creating a new one')); ?> </text>
 					</tip>
 				</li>
 				<!-- Avalable hook: editor-options -->
 				<?php $this->main->do_action('editor-options'); ?>
 			</ul>
 		</li>
-		<?php 
+		<?php
 			$options_nav = ob_get_contents();
 			ob_end_clean();
 			echo $this->main->apply_filters('options-nav', $options_nav);
@@ -736,7 +736,7 @@ class lumise_views extends lumise_lib {
 		<!-- Avalable hook: after-tool-default -->
 		<?php $this->main->do_action('after-tool-default'); ?>
 	</ul>
-	
+
 	<ul class="lumise-top-nav left" data-mode="image">
 		<!-- Avalable hook: before-tool-image -->
 		<?php $this->main->do_action('before-tool-image'); ?>
@@ -744,7 +744,7 @@ class lumise_views extends lumise_lib {
 		<li data-tool="callback" data-callback="replace">
 			<span data-tip="true">
 				<i class="lumisex-android-upload"></i>
-				<span><?php echo $this->main->lang('Replace image'); ?></span>
+				<span><?php echo esc_html($this->main->lang('Replace image')); ?></span>
 			</span>
 		</li>
 		<?php endif; ?>
@@ -752,7 +752,7 @@ class lumise_views extends lumise_lib {
 		<li data-tool="callback" data-callback="crop">
 			<span data-tip="true">
 				<i class="lumisex-crop"></i>
-				<span><?php echo $this->main->lang('Crop'); ?></span>
+				<span><?php echo esc_html($this->main->lang('Crop')); ?></span>
 			</span>
 		</li>
 		<?php endif; ?>
@@ -760,12 +760,12 @@ class lumise_views extends lumise_lib {
 		<li data-tool="masks" data-callback="select_mask">
 			<span data-tip="true">
 				<i class="lumisex-android-star-outline"></i>
-				<span><?php echo $this->main->lang('Mask'); ?></span>
+				<span><?php echo esc_html($this->main->lang('Mask')); ?></span>
 			</span>
 			<ul data-view="sub" data-pos="center">
 				<li data-view="title">
 					<h3>
-						<span><?php echo $this->main->lang('Select mask layer'); ?></span>
+						<span><?php echo esc_html($this->main->lang('Select mask layer')); ?></span>
 						<i class="lumisex-android-close close" title="close"></i>
 					</h3>
 				</li>
@@ -777,18 +777,18 @@ class lumise_views extends lumise_lib {
 		<li data-tool="filter">
 			<span data-tip="true">
 				<i class="lumisex-erlenmeyer-flask-bubbles"></i>
-				<span><?php echo $this->main->lang('Remove background'); ?></span>
+				<span><?php echo esc_html($this->main->lang('Remove background')); ?></span>
 			</span>
 			<ul data-view="sub">
 				<li data-view="title">
 					<h3>
-						<span><?php echo $this->main->lang('Remove background'); ?></span>
+						<span><?php echo esc_html($this->main->lang('Remove background')); ?></span>
 						<i class="lumisex-android-close close" title="close"></i>
 					</h3>
 				</li>
 				<li>
 					<h3 class="nob">
-						<span><?php echo $this->main->lang('Deep'); ?>: </span>
+						<span><?php echo esc_html($this->main->lang('Deep')); ?>: </span>
 						<inp data-range="helper" data-value="0">
 							<input class="nol" type="range" id="lumise-image-fx-deep" data-value="0" min="0" max="200" value="0" data-image-fx="deep" data-view="lumise" />
 						</inp>
@@ -796,10 +796,10 @@ class lumise_views extends lumise_lib {
 				</li>
 				<li>
 					<h3 class="nob">
-						<span><?php echo $this->main->lang('Mode'); ?>: </span>
+						<span><?php echo esc_html($this->main->lang('Mode')); ?>: </span>
 						<select id="lumise-image-fx-mode" data-fx="mode">
-							<option value="light"><?php echo $this->main->lang('Light Background'); ?></option>
-							<option value="dark"><?php echo $this->main->lang('Dark Background'); ?></option>
+							<option value="light"><?php echo esc_html($this->main->lang('Light Background')); ?></option>
+							<option value="dark"><?php echo esc_html($this->main->lang('Dark Background')); ?></option>
 						</select>
 					</h3>
 				</li>
@@ -810,12 +810,12 @@ class lumise_views extends lumise_lib {
 		<li data-tool="advanced">
 			<span data-tip="true">
 				<i class="lumisex-wand"></i>
-				<span><?php echo $this->main->lang('Filters'); ?></span>
+				<span><?php echo esc_html($this->main->lang('Filters')); ?></span>
 			</span>
 			<ul data-view="sub">
 				<li data-view="title">
 					<h3>
-						<span><?php echo $this->main->lang('Filters'); ?></span>
+						<span><?php echo esc_html($this->main->lang('Filters')); ?></span>
 						<i class="lumisex-android-close close" title="close"></i>
 					</h3>
 				</li>
@@ -826,7 +826,7 @@ class lumise_views extends lumise_lib {
 				</li>
 				<li>
 					<h3 class="nob">
-						<span><?php echo $this->main->lang('Brightness'); ?>: </span>
+						<span><?php echo esc_html($this->main->lang('Brightness')); ?>: </span>
 						<inp data-range="helper" data-value="0">
 							<input type="range" id="lumise-image-fx-brightness" class="nol" data-value="0" min="-50" max="50" value="0" data-image-fx="brightness" data-view="lumise" data-range="0" data-between="true" />
 						</inp>
@@ -834,7 +834,7 @@ class lumise_views extends lumise_lib {
 				</li>
 				<li>
 					<h3 class="nob">
-						<span><?php echo $this->main->lang('Saturation'); ?>: </span>
+						<span><?php echo esc_html($this->main->lang('Saturation')); ?>: </span>
 						<inp data-range="helper" data-value="100">
 							<input type="range" id="lumise-image-fx-saturation" class="nol" data-value="100" min="0" max="100" value="100" data-image-fx="saturation" data-view="lumise" />
 						</inp>
@@ -842,7 +842,7 @@ class lumise_views extends lumise_lib {
 				</li>
 				<li>
 					<h3 class="nob">
-						<span><?php echo $this->main->lang('Contrast'); ?>: </span>
+						<span><?php echo esc_html($this->main->lang('Contrast')); ?>: </span>
 						<inp data-range="helper" data-value="0">
 							<input type="range" id="lumise-image-fx-contrast" class="nol" data-value="0" min="-50" max="50" value="0" data-image-fx="contrast" data-view="lumise" data-range="0" data-between="true" />
 						</inp>
@@ -851,7 +851,7 @@ class lumise_views extends lumise_lib {
 			</ul>
 		</li>
 		<li data-tool="callback" data-callback="imageFXReset">
-			<span data-view="noicon"><?php echo $this->main->lang('Clear Filters'); ?></span>
+			<span data-view="noicon"><?php echo esc_html($this->main->lang('Clear Filters')); ?></span>
 		</li>
 		<?php endif; ?>
 		<!-- Avalable hook: after-tool-image -->
@@ -863,25 +863,25 @@ class lumise_views extends lumise_lib {
 		<?php $this->main->do_action('before-tool-drawing'); ?>
 		<li>
 			<button id="lumise-discard-drawing" class="red mr1">
-				<i class="lumisex-android-close"></i> <?php echo $this->main->lang('Discard drawing (ESC)'); ?>
+				<i class="lumisex-android-close"></i> <?php echo esc_html($this->main->lang('Discard drawing (ESC)')); ?>
 			</button>
-			<?php echo $this->main->lang('Click then drag the mouse to start drawing.'); ?>
+			<?php echo esc_html($this->main->lang('Click then drag the mouse to start drawing.')); ?>
 			<b>Ctrl+Z</b> = undo, <b>Ctrl+Shift+Z</b> = redo
 		</li>
 	</ul>
 
 	<ul class="lumise-top-nav left" data-mode="standard">
 		<!-- Avalable hook: before-tool-standard-left -->
-		<?php echo $this->main->do_action('before-tool-standard-left'); ?>
+		<?php $this->main->do_action('before-tool-standard-left'); ?>
 		<li data-tool="qrcode-text">
 			<span data-tip="true">
 				<i class="lumisex-qrcode-1"></i>
-				<span><?php echo $this->main->lang('QRCode text'); ?></span>
-				<input type="text" onclick="this.focus()" class="nol lumise-edit-text" id="lumise-qrcode-text" placeholder="<?php echo $this->main->lang('Enter your text'); ?>" />
+				<span><?php echo esc_html($this->main->lang('QRCode text')); ?></span>
+				<input type="text" onclick="this.focus()" class="nol lumise-edit-text" id="lumise-qrcode-text" placeholder="<?php echo esc_attr($this->main->lang('Enter your text')); ?>" />
 			</span>
 		</li>
 		<!-- Avalable hook: after-tool-standard-left -->
-		<?php echo $this->main->do_action('after-tool-standard-left'); ?>
+		<?php $this->main->do_action('after-tool-standard-left'); ?>
 	</ul>
 
 	<ul class="lumise-top-nav right" data-mode="standard">
@@ -891,12 +891,12 @@ class lumise_views extends lumise_lib {
 		<li data-tool="fill">
 			<span data-tip="true">
 				<i class="lumisex-paintbucket"></i>
-				<span><?php echo $this->main->lang('Fill options'); ?></span>
+				<span><?php echo esc_html($this->main->lang('Fill options')); ?></span>
 			</span>
 			<ul data-pos="center" data-view="sub" id="fill-ops-sub">
 				<li data-view="title">
 					<h3>
-						<span><?php echo $this->main->lang('Fill options'); ?></span>
+						<span><?php echo esc_html($this->main->lang('Fill options')); ?></span>
 						<i class="lumisex-android-close close" title="close"></i>
 					</h3>
 					<p class="flex<?php echo ($this->main->cfg->settings['enable_colors'] == '0' && !isset($_POST['printing'])) ? ' hidden' : ''; ?>">
@@ -904,7 +904,7 @@ class lumise_views extends lumise_lib {
 						<?php if ($this->main->cfg->settings['enable_colors'] != '0' || isset($_POST['printing'])) { ?>
 						<span class="lumise-save-color" data-tip="true" data-target="fill">
 							<i class="lumisex-android-add"></i>
-							<span><?php echo $this->main->lang('Save this color'); ?></span>
+							<span><?php echo esc_html($this->main->lang('Save this color')); ?></span>
 						</span>
 						<?php } ?>
 					</p>
@@ -912,7 +912,7 @@ class lumise_views extends lumise_lib {
 				</li>
 				<li data-view="transparent">
 					<h3 class="nob">
-						<span><?php echo $this->main->lang('Transparent'); ?>: </span>
+						<span><?php echo esc_html($this->main->lang('Transparent')); ?>: </span>
 						<inp data-range="helper" data-value="100%">
 							<input type="range" class="nol" id="lumise-transparent" data-value="100%" min="0" max="100" value="100" data-unit="%" data-ratio="0.01" data-action="opacity" />
 						</inp>
@@ -920,7 +920,7 @@ class lumise_views extends lumise_lib {
 				</li>
 				<li data-view="stroke">
 					<h3 class="nob">
-						<span><?php echo $this->main->lang('Stroke width'); ?>: </span>
+						<span><?php echo esc_html($this->main->lang('Stroke width')); ?>: </span>
 						<inp data-range="helper" data-value="0">
 							<input type="range" class="nol" id="lumise-stroke-width" data-action="strokeWidth" data-unit="px" data-value="0" min="0" max="100" value="0" />
 						</inp>
@@ -928,8 +928,8 @@ class lumise_views extends lumise_lib {
 				</li>
 				<li data-view="stroke">
 					<h3 class="nob">
-						<span><?php echo $this->main->lang('Stroke color'); ?>: </span>
-						<input type="search" class="color<?php echo ($this->main->cfg->settings['enable_colors'] == '0' && !isset($_POST['printing'])) ? ' hidden' : ''; ?>" placeholder="<?php echo $this->main->lang('Select a color'); ?>"  data-pos="#fill-ops-sub" id="lumise-stroke" />
+						<span><?php echo esc_html($this->main->lang('Stroke color')); ?>: </span>
+						<input type="search" class="color<?php echo ($this->main->cfg->settings['enable_colors'] == '0' && !isset($_POST['printing'])) ? ' hidden' : ''; ?>" placeholder="<?php echo esc_html($this->main->lang('Select a color')); ?>"  data-pos="#fill-ops-sub" id="lumise-stroke" />
 					</h3>
 					<?php if ($this->main->cfg->settings['enable_colors'] == '0' || isset($_POST['printing']) ) {
 						$colors = explode(':', $this->main->cfg->settings['colors']);
@@ -952,24 +952,24 @@ class lumise_views extends lumise_lib {
 		<li data-tool="un-group" data-callback="ungroup">
 			<span data-tip="true">
 				<i class="lumisex-link"></i>
-				<span><?php echo $this->main->lang('Ungroup position'); ?></span>
+				<span><?php echo esc_html($this->main->lang('Ungroup position')); ?></span>
 			</span>
 		</li>
 		<?php if($this->main->apply_filters('layers', true)): ?>
 		<li data-tool="arrange">
 			<span data-tip="true">
 				<i class="lumisex-send-to-back"></i>
-				<span><?php echo $this->main->lang('Arrange layers'); ?></span>
+				<span><?php echo esc_html($this->main->lang('Arrange layers')); ?></span>
 			</span>
 			<ul data-pos="center" data-view="sub">
 				<li class="flex">
 					<button data-arrange="back">
 						<i class="lumisex-android-remove"></i>
-						<?php echo $this->main->lang('Back'); ?>
+						<?php echo esc_html($this->main->lang('Back')); ?>
 					</button>
 					<button data-arrange="forward" class="last">
 						<i class="lumisex-android-add"></i>
-						<?php echo $this->main->lang('Forward'); ?>
+						<?php echo esc_html($this->main->lang('Forward')); ?>
 					</button>
 				</li>
 			</ul>
@@ -979,16 +979,16 @@ class lumise_views extends lumise_lib {
 		<li data-tool="position">
 			<span data-tip="true">
 				<i class="lumisex-android-apps"></i>
-				<span><?php echo $this->main->lang('Position'); ?></span>
+				<span><?php echo esc_html($this->main->lang('Position')); ?></span>
 			</span>
 			<ul data-pos="right" data-view="sub" id="lumise-position-wrp">
 				<li data-view="title">
 					<h3>
-						<?php echo $this->main->lang('Object position'); ?>
+						<?php echo esc_html($this->main->lang('Object position')); ?>
 						<i class="lumisex-android-close close" title="close"></i>
 					</h3>
 					<p class="lock-postion">
-						<?php echo $this->main->lang('Lock object position'); ?>: 
+						<?php echo esc_html($this->main->lang('Lock object position')); ?>:
 						<span class="lumise-switch" style="float: none;">
 							<input id="lumise-lock-position" type="checkbox" value="" class="lumise-toggle-button">
 							<span class="lumise-toggle-label" data-on="YES" data-off="NO"></span>
@@ -999,58 +999,58 @@ class lumise_views extends lumise_lib {
 
 				<li data-position="cv" data-tip="true">
 					<p><i class="lumisex-move-vertical"></i></p>
-					<span><?php echo $this->main->lang('Center vertical'); ?></span>
+					<span><?php echo esc_html($this->main->lang('Center vertical')); ?></span>
 				</li>
 
 				<li data-position="tl" data-tip="true">
 					<p><i class="lumisex-android-arrow-up _45deg"></i></p>
-					<span><?php echo $this->main->lang('Top left'); ?></span>
+					<span><?php echo esc_html($this->main->lang('Top left')); ?></span>
 				</li>
 				<li data-position="tc" data-tip="true">
 					<p><i class="lumisex-android-arrow-up"></i></p>
-					<span><?php echo $this->main->lang('Top center'); ?></span>
+					<span><?php echo esc_html($this->main->lang('Top center')); ?></span>
 				</li>
 				<li data-position="tr" data-tip="true" class="mirX">
 					<p><i class="lumisex-android-arrow-forward _135deg"></i></p>
-					<span><?php echo $this->main->lang('Top right'); ?></span>
+					<span><?php echo esc_html($this->main->lang('Top right')); ?></span>
 				</li>
 
 
 				<li data-position="ch" data-tip="true" class="rota">
 					<p><i class="lumisex-move-horizontal"></i></p>
-					<span><?php echo $this->main->lang('Center Horizontal'); ?></span>
+					<span><?php echo esc_html($this->main->lang('Center Horizontal')); ?></span>
 				</li>
 
 				<li data-position="ml" data-tip="true">
 					<p><i class="lumisex-android-arrow-back"></i></p>
-					<span><?php echo $this->main->lang('Middle left'); ?></span>
+					<span><?php echo esc_html($this->main->lang('Middle left')); ?></span>
 				</li>
 				<li data-position="mc" data-tip="true">
 					<p><i class="lumisex-android-radio-button-off"></i></p>
-					<span><?php echo $this->main->lang('Middle center'); ?></span>
+					<span><?php echo esc_html($this->main->lang('Middle center')); ?></span>
 				</li>
 				<li data-position="mr" data-tip="true">
 					<p><i class="lumisex-android-arrow-forward"></i></p>
-					<span><?php echo $this->main->lang('Middle right'); ?></span>
+					<span><?php echo esc_html($this->main->lang('Middle right')); ?></span>
 				</li>
 
 				<li data-position="" data-tip="true">
 					<i class="lumise-icon-info"></i>
 					<span>
-						<?php echo $this->main->lang('Press &leftarrow; &uparrow; &rightarrow; &downarrow; to move 1 px, <br>Hit simultaneously SHIFT key to move 10px'); ?>
+						<?php echo esc_html($this->main->lang('Press &leftarrow; &uparrow; &rightarrow; &downarrow; to move 1 px, <br>Hit simultaneously SHIFT key to move 10px')); ?>
 					</span>
 				</li>
 				<li data-position="bl" data-tip="true" class="mirX">
 					<p><i class="lumisex-android-arrow-down _45deg"></i></p>
-					<span><?php echo $this->main->lang('Bottom left'); ?></span>
+					<span><?php echo esc_html($this->main->lang('Bottom left')); ?></span>
 				</li>
 				<li data-position="bc" data-tip="true">
 					<p><i class="lumisex-android-arrow-down"></i></p>
-					<span><?php echo $this->main->lang('Bottom center'); ?></span>
+					<span><?php echo esc_html($this->main->lang('Bottom center')); ?></span>
 				</li>
 				<li data-position="br" data-tip="true">
 					<p><i class="lumisex-android-arrow-down _45deg"></i></p>
-					<span><?php echo $this->main->lang('Bottom right'); ?></span>
+					<span><?php echo esc_html($this->main->lang('Bottom right')); ?></span>
 				</li>
 			</ul>
 		</li>
@@ -1059,12 +1059,12 @@ class lumise_views extends lumise_lib {
 		<li data-tool="transform">
 			<span data-tip="true">
 				<i class="lumisex-android-options"></i>
-				<span><?php echo $this->main->lang('Transforms'); ?></span>
+				<span><?php echo esc_html($this->main->lang('Transforms')); ?></span>
 			</span>
 			<ul data-pos="right" data-view="sub">
 				<li>
 					<h3 class="nob">
-						<span><?php echo $this->main->lang('Rotate'); ?>: </span>
+						<span><?php echo esc_html($this->main->lang('Rotate')); ?>: </span>
 						<inp data-range="helper" data-value="0º">
 							<input type="range" id="lumise-rotate" data-value="0º" min="0" max="360" value="0" data-unit="º" data-range="0, 45, 90, 135, 180, 225, 270, 315" data-action="angle" />
 						</inp>
@@ -1072,7 +1072,7 @@ class lumise_views extends lumise_lib {
 				</li>
 				<li>
 					<h3 class="nob">
-						<span><?php echo $this->main->lang('Skew X'); ?>: </span>
+						<span><?php echo esc_html($this->main->lang('Skew X')); ?>: </span>
 						<inp data-range="helper" data-value="0">
 							<input class="nol" type="range" id="lumise-skew-x" data-value="0" min="-30" max="30" value="0" data-unit="" data-action="skewX" data-range="0" data-between="true" />
 						</inp>
@@ -1080,21 +1080,21 @@ class lumise_views extends lumise_lib {
 				</li>
 				<li>
 					<h3 class="nob">
-						<span><?php echo $this->main->lang('Skew Y'); ?>: </span>
+						<span><?php echo esc_html($this->main->lang('Skew Y')); ?>: </span>
 						<inp data-range="helper" data-value="0">
 							<input class="nol" type="range" id="lumise-skew-y" data-value="0" min="-30" max="30" value="0" data-unit="" data-action="skewY" data-range="0" data-between="true" />
 						</inp>
 					</h3>
 				</li>
 				<li class="center">
-					<?php echo $this->main->lang('Flip X'); ?>:
+					<?php echo esc_html($this->main->lang('Flip X')); ?>:
 					<div class="lumise-switch mr2">
 						<input id="lumise-flip-x" type="checkbox" value="" class="lumise-toggle-button">
 						<span class="lumise-toggle-label" data-on="ON" data-off="OFF"></span>
 						<span class="lumise-toggle-handle"></span>
 					</div>
 
-					<?php echo $this->main->lang('Flip Y'); ?>:
+					<?php echo esc_html($this->main->lang('Flip Y')); ?>:
 					<div class="lumise-switch">
 						<input id="lumise-flip-y" type="checkbox" value="" class="lumise-toggle-button">
 						<span class="lumise-toggle-label" data-on="ON" data-off="OFF"></span>
@@ -1102,11 +1102,11 @@ class lumise_views extends lumise_lib {
 					</div>
 					<p class="blockinl">
 						<i class="lumisex-android-bulb"></i>
-						<?php echo $this->main->lang('Free transform by press SHIFT+&#10529;'); ?>
+						<?php echo esc_html($this->main->lang('Free transform by press SHIFT+&#10529;')); ?>
 						<br>
 						<button id="lumise-reset-transform">
 							<i class="lumisex-arrows-ccw"></i>
-							<?php echo $this->main->lang('Reset all transforms'); ?>
+							<?php echo esc_html($this->main->lang('Reset all transforms')); ?>
 						</button>
 					</p>
 				</li>
@@ -1114,26 +1114,26 @@ class lumise_views extends lumise_lib {
 		</li>
 		<?php endif;?>
 		<!-- Avalable hook: after-tool-standard-right -->
-		<?php echo $this->main->do_action('after-tool-standard-right'); ?>
+		<?php $this->main->do_action('after-tool-standard-right'); ?>
 	</ul>
 
 	<ul class="lumise-top-nav left" data-mode="text" id="lumise-text-tools">
 		<!-- Avalable hook: before-tool-text -->
-		<?php echo $this->main->do_action('before-tool-text'); ?>
+		<?php $this->main->do_action('before-tool-text'); ?>
 		<li data-tool="font">
 			<span data-tip="true">
 				<button class="dropdown">
 					<font style="font-family:Arial">Arial</font>
 				</button>
-				<span><?php echo $this->main->lang('Font family'); ?></span>
+				<span><?php echo esc_html($this->main->lang('Font family')); ?></span>
 			</span>
 			<ul data-pos="center" data-func="fonts" data-view="sub">
 				<li class="scroll smooth" id="lumise-fonts"></li>
 				<?php if ($this->main->connector->is_admin() || $this->main->cfg->settings['user_font'] !== '0') { ?>
 				<li class="bttm">
 					<button class="lumise-more-fonts">
-						<i class="lumisex-android-open"></i> 
-						<?php echo $this->main->lang('Get more fonts'); ?>
+						<i class="lumisex-android-open"></i>
+						<?php echo esc_html($this->main->lang('Get more fonts')); ?>
 					</button>
 				</li>
 				<?php } ?>
@@ -1142,12 +1142,12 @@ class lumise_views extends lumise_lib {
 		<li data-tool="spacing">
 			<span data-tip="true">
 				<i class="lumisex-text f16"></i>
-				<span><?php echo $this->main->lang('Edit text'); ?></span>
+				<span><?php echo esc_html($this->main->lang('Edit text')); ?></span>
 			</span>
 			<ul data-pos="right" data-view="sub">
 				<li data-view="title">
 					<h3>
-						<?php echo $this->main->lang('Edit text'); ?>
+						<?php echo esc_html($this->main->lang('Edit text')); ?>
 						<i class="lumisex-android-close close" title="Close"></i>
 					</h3>
 				</li>
@@ -1159,7 +1159,7 @@ class lumise_views extends lumise_lib {
 				<?php if($this->main->apply_filters('font-size', true)): ?>
 				<li>
 					<h3 class="nob">
-						<span><?php echo $this->main->lang('Font size'); ?>: </span>
+						<span><?php echo esc_html($this->main->lang('Font size')); ?>: </span>
 						<inp data-range="helper" data-value="16">
 							<input type="range" class="nol" id="lumise-font-size" data-action="fontSize" data-unit="px" data-value="16" min="6" max="144" value="16" />
 						</inp>
@@ -1169,7 +1169,7 @@ class lumise_views extends lumise_lib {
 				<?php if($this->main->apply_filters('letter-spacing', true)): ?>
 				<li>
 					<h3 class="nob">
-						<span class="min100"><?php echo $this->main->lang('Letter spacing'); ?> </span>
+						<span class="min100"><?php echo esc_html($this->main->lang('Letter spacing')); ?> </span>
 						<inp data-range="helper" data-value="100%">
 							<input type="range" class="nol" id="lumise-letter-spacing" data-value="100%" min="0" max="1000" value="100" data-unit="" data-action="charSpacing" />
 						</inp>
@@ -1179,39 +1179,39 @@ class lumise_views extends lumise_lib {
 				<?php if($this->main->apply_filters('line-height', true)): ?>
 				<li>
 					<h3 class="nob">
-						<span class="min100"><?php echo $this->main->lang('Line height'); ?> </span>
+						<span class="min100"><?php echo esc_html($this->main->lang('Line height')); ?> </span>
 						<inp data-range="helper" data-value="10">
 							<input type="range" class="nol" id="lumise-line-height" data-value="10" min="1" max="50" value="10"  data-action="lineHeight" data-unit="px" data-ratio="0.1" />
 						</inp>
 					</h3>
 				</li>
 				<?php endif; ?>
-				<li><button data-func="update-text-fx"><?php echo $this->main->lang('UPDATE TEXT'); ?></button></li>
+				<li><button data-func="update-text-fx"><?php echo esc_html($this->main->lang('UPDATE TEXT')); ?></button></li>
 			</ul>
 		</li>
 		<?php if($this->main->apply_filters('text-effect', true)): ?>
 		<li data-tool="text-effect">
 			<span data-tip="true">
 				<i class="lumisex-vector"></i>
-				<span><?php echo $this->main->lang('Text Effects'); ?></span>
+				<span><?php echo esc_html($this->main->lang('Text Effects')); ?></span>
 			</span>
 			<ul data-pos="right" data-view="sub">
 				<li data-view="title">
 					<h3>
-						<?php echo $this->main->lang('Text effects'); ?>
+						<?php echo esc_html($this->main->lang('Text effects')); ?>
 						<i class="lumisex-android-close close" title="Close"></i>
 					</h3>
 				</li>
 				<li id="lumise-text-effect">
 					<h3 class="nob mb1">
-						<textarea type="text" class="nol ml0 lumise-edit-text" placeholder="<?php echo $this->main->lang('Enter your text'); ?>"></textarea>
-						<button data-func="update-text-fx"><?php echo $this->main->lang('UPDATE TEXT'); ?></button>
+						<textarea type="text" class="nol ml0 lumise-edit-text" placeholder="<?php echo esc_html($this->main->lang('Enter your text')); ?>"></textarea>
+						<button data-func="update-text-fx"><?php echo esc_html($this->main->lang('UPDATE TEXT')); ?></button>
 					</h3>
 					<span data-sef="images">
-						<img data-effect="normal" src="<?php echo $this->main->cfg->assets_url; ?>assets/images/text-effect-normal.png" height="80" data-selected="true" />
-						<img data-effect="curved" src="<?php echo $this->main->cfg->assets_url; ?>assets/images/text-effect-curved.png" height="80" />
-						<img data-effect="bridge" src="<?php echo $this->main->cfg->assets_url; ?>assets/images/text-effect-bridge.png" height="80" />
-						<img data-effect="oblique" src="<?php echo $this->main->cfg->assets_url; ?>assets/images/text-effect-oblique.png" height="80" />
+						<img data-effect="normal" src="<?php echo esc_url(LW()->plugin_url() . '/assets/images/text-effect-normal.png'); ?>" height="80" data-selected="true" />
+						<img data-effect="curved" src="<?php echo esc_url(LW()->plugin_url() . '/assets/images/text-effect-curved.png'); ?>" height="80" />
+						<img data-effect="bridge" src="<?php echo esc_url(LW()->plugin_url() . '/assets/images/text-effect-bridge.png'); ?>" height="80" />
+						<img data-effect="oblique" src="<?php echo esc_url(LW()->plugin_url() . '/assets/images/text-effect-oblique.png'); ?>" height="80" />
 					</span>
 					<div class="lumise-switch" style="display: none;">
 						<input id="lumise-curved" type="checkbox" value="" class="lumise-toggle-button">
@@ -1221,7 +1221,7 @@ class lumise_views extends lumise_lib {
 				</li>
 				<li data-func="curved">
 					<h3 class="nob">
-						<span><?php echo $this->main->lang('Radius'); ?> </span>
+						<span><?php echo esc_html($this->main->lang('Radius')); ?> </span>
 						<inp data-range="helper" data-value="80">
 							<input type="range" class="nol" id="lumise-curved-radius" data-action="radius" data-value="80" min="-300" max="300" value="80" />
 						</inp>
@@ -1229,7 +1229,7 @@ class lumise_views extends lumise_lib {
 				</li>
 				<li data-func="curved">
 					<h3 class="nob">
-						<span><?php echo $this->main->lang('Spacing'); ?> </span>
+						<span><?php echo esc_html($this->main->lang('Spacing')); ?> </span>
 						<inp data-range="helper" data-value="0">
 							<input type="range" class="nol" id="lumise-curved-spacing" data-action="spacing" data-value="0" min="0" max="100" value="0" />
 						</inp>
@@ -1237,7 +1237,7 @@ class lumise_views extends lumise_lib {
 				</li>
 				<li data-func="text-fx">
 					<h3 class="nob">
-						<span><?php echo $this->main->lang('Curve'); ?> </span>
+						<span><?php echo esc_html($this->main->lang('Curve')); ?> </span>
 						<inp data-range="helper" data-value="0">
 							<input type="range" class="nol" id="lumise-text-fx-curve" data-callback="textFX" data-fx="curve" data-value="0" min="-100" max="100" data-ratio="0.1" value="0" />
 						</inp>
@@ -1245,7 +1245,7 @@ class lumise_views extends lumise_lib {
 				</li>
 				<li data-func="text-fx">
 					<h3 class="nob">
-						<span><?php echo $this->main->lang('Height'); ?> </span>
+						<span><?php echo esc_html($this->main->lang('Height')); ?> </span>
 						<inp data-range="helper" data-value="100">
 							<input type="range" class="nol" id="lumise-text-fx-bottom" data-callback="textFX" data-fx="bottom" data-value="100" min="1" max="150" data-ratio="0.1" value="100" />
 						</inp>
@@ -1253,7 +1253,7 @@ class lumise_views extends lumise_lib {
 				</li>
 				<li data-func="text-fx">
 					<h3 class="nob">
-						<span><?php echo $this->main->lang('Offset'); ?> </span>
+						<span><?php echo esc_html($this->main->lang('Offset')); ?> </span>
 						<inp data-range="helper" data-value="50">
 							<input type="range" class="nol" id="lumise-text-fx-offsety" data-callback="textFX" data-fx="offsetY" data-value="50" min="1" max="100" data-ratio="0.01" value="50" />
 						</inp>
@@ -1261,7 +1261,7 @@ class lumise_views extends lumise_lib {
 				</li>
 				<li data-func="text-fx">
 					<h3 class="nob">
-						<span><?php echo $this->main->lang('Trident'); ?> </span>
+						<span><?php echo esc_html($this->main->lang('Trident')); ?> </span>
 						<div class="lumise-switch">
 							<input id="lumise-text-fx-trident" data-fx="trident" type="checkbox" value="" class="lumise-toggle-button">
 							<span class="lumise-toggle-label" data-on="ON" data-off="OFF"></span>
@@ -1277,14 +1277,14 @@ class lumise_views extends lumise_lib {
 		<li data-tool="text-align">
 			<span data-tip="true">
 				<i class="lumisex-align-center" id="lumise-text-align"></i>
-				<span><?php echo $this->main->lang('Text align'); ?></span>
+				<span><?php echo esc_html($this->main->lang('Text align')); ?></span>
 			</span>
 			<ul data-pos="center" data-view="sub">
 				<li>
-					<i class="lumisex-align-left text-format" data-align="left" title="<?php echo $this->main->lang('Text align left'); ?>"></i>
-					<i class="lumisex-align-center text-format" data-align="center" title="<?php echo $this->main->lang('Text align center'); ?>"></i>
-					<i class="lumisex-align-right text-format" data-align="right" title="<?php echo $this->main->lang('Text align right'); ?>"></i>
-					<i class="lumisex-align-justify text-format" data-align="justify" title="<?php echo $this->main->lang('Text align justify'); ?>"></i>
+					<i class="lumisex-align-left text-format" data-align="left" title="<?php echo esc_html($this->main->lang('Text align left')); ?>"></i>
+					<i class="lumisex-align-center text-format" data-align="center" title="<?php echo esc_html($this->main->lang('Text align center')); ?>"></i>
+					<i class="lumisex-align-right text-format" data-align="right" title="<?php echo esc_html($this->main->lang('Text align right')); ?>"></i>
+					<i class="lumisex-align-justify text-format" data-align="justify" title="<?php echo esc_html($this->main->lang('Text align justify')); ?>"></i>
 				</li>
 			</ul>
 		</li>
@@ -1292,31 +1292,31 @@ class lumise_views extends lumise_lib {
 		<li class="text-format" data-format="upper">
 			<span data-tip="true">
 				<i class="lumisex-letter"></i>
-				<span><?php echo $this->main->lang('Uppercase / Lowercase'); ?></span>
+				<span><?php echo esc_html($this->main->lang('Uppercase / Lowercase')); ?></span>
 			</span>
 		</li>
 		<?php if($this->main->apply_filters('font-style', true)): ?>
 		<li class="text-format" data-format="bold">
 			<span data-tip="true">
 				<i class="lumisex-bold"></i>
-				<span><?php echo $this->main->lang('Font weight bold'); ?></span>
+				<span><?php echo esc_html($this->main->lang('Font weight bold')); ?></span>
 			</span>
 		</li>
 		<li class="text-format" data-format="italic">
 			<span data-tip="true">
 				<i class="lumisex-italic"></i>
-				<span><?php echo $this->main->lang('Text style italic'); ?></span>
+				<span><?php echo esc_html($this->main->lang('Text style italic')); ?></span>
 			</span>
 		</li>
 		<li class="text-format" data-format="underline">
 			<span data-tip="true">
 				<i class="lumisex-underline"></i>
-				<span><?php echo $this->main->lang('Text underline'); ?></span>
+				<span><?php echo esc_html($this->main->lang('Text underline')); ?></span>
 			</span>
 		</li>
 		<?php endif; ?>
 		<!-- Avalable hook: after-tool-text -->
-		<?php echo $this->main->do_action('after-tool-text'); ?>
+		<?php $this->main->do_action('after-tool-text'); ?>
 	</ul>
 
 	<?php
@@ -1325,14 +1325,14 @@ class lumise_views extends lumise_lib {
 
 
 	public function left() {
-		
+
 		$comps = $this->main->cfg->settings['components'];
-		
+
 		if (is_string($this->main->cfg->settings['components']))
 			$comps = explode(',', $this->main->cfg->settings['components']);
-		
+
 		$comps = $this->main->apply_filters('nav-component', $comps);
-		
+
 		$menus = $this->main->cfg->editor_menus;
 	?>
 	<div id="lumise-left">
@@ -1340,85 +1340,85 @@ class lumise_views extends lumise_lib {
 			<ul class="lumise-left-nav">
 				<li data-tab="design">
 					<i class="lumisex-android-color-palette"></i>
-					<?php echo $this->main->lang('Design'); ?>
+					<?php echo esc_html($this->main->lang('Design')); ?>
 				</li>
-				<?php 
-					
+				<?php
+
 					for ($i = 0; $i < count($comps); $i++) {
-						
+
 						if (isset($menus[$comps[$i]])) {
-							
+
 							$attrs = array('data-tab="'.$comps[$i].'"');
-							
+
 							if (isset($menus[$comps[$i]]['load']) && !empty($menus[$comps[$i]]['load']))
 								array_push($attrs, 'data-load="'.$menus[$comps[$i]]['load'].'"');
-							
+
 							if (isset($menus[$comps[$i]]['callback']) && !empty($menus[$comps[$i]]['callback']))
 								array_push($attrs, 'data-callback="'.$menus[$comps[$i]]['callback'].'"');
-								
+
 							echo '<li '.implode(' ', $attrs).'>';
-							
+
 							if (
-								isset($menus[$comps[$i]]['icon']) && 
+								isset($menus[$comps[$i]]['icon']) &&
 								!empty($menus[$comps[$i]]['icon'])
 							) echo '<i class="'.$menus[$comps[$i]]['icon'].'"></i>';
-							
+
 							echo (isset($menus[$comps[$i]]['label']) ? $menus[$comps[$i]]['label'] : '');
-							
+
 							echo '</li>';
-							
+
 						}
-						
+
 					}
-				
+
 				?>
-				
+
 				<?php if ($this->main->cfg->settings['report_bugs'] != 0) { ?>
-				<li data-tab="bug" title="<?php echo $this->main->lang('Report bugs'); ?>">
+				<li data-tab="bug" title="<?php echo esc_html($this->main->lang('Report bugs')); ?>">
 					<i class="lumisex-bug"></i>
 				</li>
 				<?php } ?>
 			</ul>
 			<i class="lumisex-android-close active" id="lumise-side-close"></i>
 		</div>
-		
-		<?php 
-			
+
+		<?php
+
 			$first = true;
-					
+
 			for ($i = 0; $i < count($comps); $i++) {
-				
+
 				if (isset($menus[$comps[$i]])) {
-					
+
 					$claz = 'lumise-tab-body-wrp';
-						
+
 					if (isset($menus[$comps[$i]]['class']) && !empty($menus[$comps[$i]]['class']))
 						$claz .= ' '.$menus[$comps[$i]]['class'];
-						
+
 					echo '<div id="lumise-'.$comps[$i].'" class="'.$claz.'">';
 					if (isset($menus[$comps[$i]]['content']) && !empty($menus[$comps[$i]]['content']))
 						echo $menus[$comps[$i]]['content'];
 					echo '</div>';
-					
+
 				}
-				
+
 			}
-		
+
 		?>
-		
+
 		<?php if ($this->main->cfg->settings['report_bugs'] != 0) { ?>
 		<div id="lumise-bug" class="lumise-tab-body-wrp lumise-left-form">
 			<bug>
-				<h3><?php echo $this->main->lang('Bug Reporting'); ?></h3>
-				<p><?php echo $this->main->lang('Please let us know if you find any bugs on this design tool or just your opinion to improve the tool.'); ?></p>
-				<textarea placeholder="<?php echo $this->main->lang('Bug description (min 30 - max 1500 characters)'); ?>" maxlength="1500" data-id="report-content"></textarea>
+				<h3><?php echo esc_html($this->main->lang('Bug Reporting')); ?></h3>
+				<p><?php echo esc_html($this->main->lang('Please let us know if you find any bugs on this design tool or just your opinion to improve the tool.')); ?></p>
+				<textarea placeholder="<?php echo esc_html($this->main->lang('Bug description (min 30 - max 1500 characters)')); ?>" maxlength="1500" data-id="report-content"></textarea>
 				<button class="lumise-btn submit">
-					<?php echo $this->main->lang('Send now'); ?> <i class="lumisex-android-send"></i>
+					<?php echo esc_html($this->main->lang('Send now')); ?> <i class="lumisex-android-send"></i>
 				</button>
 				<p data-view="tips">
-					<?php echo $this->main->lang('Tips: If you want to send content with screenshots or videos, you can upload them to'); ?> 
-					<a href="https://imgur.com" target=_blank>imgur.com</a> 
-					<?php echo $this->main->lang('or any drive services and put links here.'); ?>
+					<?php echo esc_html($this->main->lang('Tips: If you want to send content with screenshots or videos, you can upload them to')); ?>
+					<a href="https://imgur.com" target=_blank>imgur.com</a>
+					<?php echo esc_html($this->main->lang('or any drive services and put links here.')); ?>
 				</p>
 				<center><i class="lumisex-bug"></i></center>
 			</bug>
@@ -1438,7 +1438,7 @@ class lumise_views extends lumise_lib {
         ?>
         <div class="lumise-prints lumise-cart-field">
             <div class="lumise-add-cart-heading">
-                <?php echo $this->main->lang('Print Technologies'); ?>
+                <?php echo esc_html($this->main->lang('Print Technologies')); ?>
             </div>
 			<div class="lumise_radios lumise_form_content">
 	            <?php
@@ -1457,13 +1457,13 @@ class lumise_views extends lumise_lib {
 
 	                ?>
 	            <div class="lumise-radio">
-	                <input type="radio" name="printing" value="<?php echo $print['id'];?>" id="lumise-print-<?php echo $print['id'];?>"/>
-	                <label for="lumise-print-<?php echo $print['id'];?>">
-	                <?php echo $print['title'];?>
+	                <input type="radio" name="printing" value="<?php echo esc_attr($print['id']);?>" id="lumise-print-<?php echo esc_attr($print['id']);?>"/>
+	                <label for="lumise-print-<?php echo esc_attr($print['id']);?>">
+	                <?php echo esc_html($print['title']);?>
 	                <div class="check"></div>
 	                </label>
 	                <em class="lumise-printing-desc">
-	                    <?php echo $print['description'];?>
+	                    <?php echo esc_html($print['description']);?>
 	                </em>
 	            </div>
 
@@ -1473,7 +1473,7 @@ class lumise_views extends lumise_lib {
 
 	            }
 	            else {
-					echo $this->main->lang('This product do not have printing options.');
+					echo esc_html($this->main->lang('This product do not have printing options.'));
 	            }
 	            ?>
 			</div>
@@ -1487,20 +1487,20 @@ class lumise_views extends lumise_lib {
 		global $lumise, $lumise_router, $lumise_helper;
 
 		echo '<div class="lumise_header">';
-		
+
 		if (!isset($args['pages']))
 			$args['pages'] = $args['page'].'s';
-			
+
 		if (!empty($_GET['id'])) {
-			echo '<h2><a href="'.$lumise->cfg->admin_url.'lumise-page='.$args['pages'].(isset($args['type']) ? '&type='.$args['type'] : '').'">'.$args['pages'].'</a> <i class="fa fa-angle-right"></i> '.$args['edit'].'</h2>'.
-					'<a href="'.$lumise->cfg->admin_url.'lumise-page='.$args['page'].(isset($args['type']) ? '&type='.$args['type'] : '').(isset($_GET['callback']) ? '&callback=edit-cms-product' : '').'" class="add-new lumise-button"><i class="fa fa-plus"></i> '.
+			echo '<h2><a href="'.esc_url($lumise->cfg->admin_url).'lumise-page='.$args['pages'].(isset($args['type']) ? '&type='.$args['type'] : '').'">'.$args['pages'].'</a> <i class="fa fa-angle-right"></i> '.$args['edit'].'</h2>'.
+					'<a href="'.esc_url($lumise->cfg->admin_url).'lumise-page='.$args['page'].(isset($args['type']) ? '&type='.$args['type'] : '').(isset($_GET['callback']) ? '&callback=edit-cms-product' : '').'" class="add-new lumise-button"><i class="fa fa-plus"></i> '.
 					$args['add'].
 					'</a>';
 		} else {
-			echo '<h2><a href="'.$lumise->cfg->admin_url.'lumise-page='.$args['pages'].(isset($args['type']) ? '&type='.$args['type'] : '').'">'.$args['pages'].'</a> <i class="fa fa-angle-right"></i> '.$args['add'].'</h2>';
+			echo '<h2><a href="'.esc_url($lumise->cfg->admin_url).'lumise-page='.$args['pages'].(isset($args['type']) ? '&type='.$args['type'] : '').'">'.$args['pages'].'</a> <i class="fa fa-angle-right"></i> '.$args['add'].'</h2>';
 		}
 
-		echo $lumise_helper->breadcrumb(isset($_GET['lumise-page']) ? $_GET['lumise-page'] : '');
+		echo wp_kses_post($lumise_helper->breadcrumb(isset($_GET['lumise-page']) ? sanitize_text_field( wp_unslash( $_GET['lumise-page'] ) ) : ''));
 
 		echo '</div>';
 
@@ -1511,35 +1511,35 @@ class lumise_views extends lumise_lib {
 	public function header_message(){
 
 		$lumise_msg = $this->main->connector->get_session('lumise_msg');
-		
+
 		if (isset($lumise_msg['status']) && $lumise_msg['status'] == 'error' && is_array($lumise_msg['errors'])) { ?>
 
 			<div class="lumise_message err">
 
-				<?php 
-					
+				<?php
+
 					foreach ($lumise_msg['errors'] as $val) {
 						if (!empty($val)) {
 							echo '<em class="lumise_err"><i class="fa fa-times"></i>  ' . $val . '</em>';
 						}
 					}
-					
+
 					$lumise_msg = array('status' => '');
 					$this->main->connector->set_session('lumise_msg', $lumise_msg);
-					
+
 				?>
 
 			</div>
 
 		<?php }
-		
+
 		if (isset($lumise_msg['status']) && $lumise_msg['status'] == 'warn' && is_array($lumise_msg['errors'])) {
 			?>
 			<div class="lumise_message warn">
 
 				<?php
-				echo '<em class="lumise_msg">'.(isset($lumise_msg['msg'])? $lumise_msg['msg'] : $this->main->lang('Your data has been successfully saved')).'</em>';
-				
+				echo '<em class="lumise_msg">'.(isset($lumise_msg['msg'])? $lumise_msg['msg'] : esc_html($this->main->lang('Your data has been successfully saved'))).'</em>';
+
 				if( isset($lumise_msg['errors']) ) {
 					foreach ($lumise_msg['errors'] as $val) {
 						echo '<em class="lumise_err"><i class="fa fa-times"></i>  ' . $val . '</em>';
@@ -1558,7 +1558,7 @@ class lumise_views extends lumise_lib {
 		?>
 			<div class="lumise_message">
 				<?php
-					echo '<em class="lumise_suc"><i class="fa fa-check"></i> '.(isset($lumise_msg['msg'])? $lumise_msg['msg'] : $this->main->lang('Your data has been successfully saved')).'</em>';
+					echo '<em class="lumise_suc"><i class="fa fa-check"></i> '.(isset($lumise_msg['msg'])? $lumise_msg['msg'] : esc_html($this->main->lang('Your data has been successfully saved'))).'</em>';
 					$lumise_msg = array('status' => '');
 					$this->main->connector->set_session('lumise_msg', $lumise_msg);
 				?>
@@ -1569,14 +1569,14 @@ class lumise_views extends lumise_lib {
 	}
 
     public function tabs_render($args, $tabs_id = '') {
-	    
+
 		global $lumise;
-	    
+
 	    if (isset($args['tabs'])) {
 
-		    echo '<div class="lumise_tabs_wrapper lumise_form_settings" data-id="'.$tabs_id.'">';
+		    echo '<div class="lumise_tabs_wrapper lumise_form_settings" data-id="'.esc_attr($tabs_id).'">';
 		    echo '<ul class="lumise_tab_nav">';
-		    
+
 		    foreach (array_keys($args['tabs']) as $label) {
 				$str_att = explode(':', $label);
 				$label = (count($str_att) > 1)? $str_att[1]: $label;
@@ -1589,7 +1589,7 @@ class lumise_views extends lumise_lib {
 
 		    foreach ($args['tabs'] as $label => $fields) {
 				$str_att = explode(':', $label);
-				$label = (count($str_att) > 1)? $str_att[1]: $label;				
+				$label = (count($str_att) > 1)? $str_att[1]: $label;
 			    echo '<div class="lumise_tab_content" id="lumise-tab-'.((count($str_att) > 1)? $str_att[0]: $this->slugify($label)).'">';
 
 			    $this->fields_render($fields);
@@ -1602,9 +1602,12 @@ class lumise_views extends lumise_lib {
 	    }else $this->fields_render($args);
 
 	    if (isset($_GET['id'])) {
-	    	echo '<input name="id" value="'.$_GET['id'].'" type="hidden" />';
+	    	echo '<input name="id" value="'.absint($_GET['id']).'" type="hidden" />';
 	    }
-		echo '<input type="hidden" name="' . $lumise->cfg->security_name . '" value="'.$lumise->cfg->security_code.'">';
+		//echo '<input type="hidden" name="' . esc_attr($lumise->cfg->security_name) . '" value="'.esc_attr($lumise->cfg->security_code).'">';
+
+		wp_nonce_field( 'lumise_save_data', 'lumise_data_nonce' );
+
 	    echo '<input name="save_data" value="true" type="hidden" />';
 
     }
@@ -1620,60 +1623,60 @@ class lumise_views extends lumise_lib {
     }
 
     public function field_render ($args = array()) {
-	    
+
 	    global $lumise;
-	    
+
 	   if ($args['type'] !== 'tabs' && isset($args['value']) && is_string($args['value']))
 	    	$args['value'] = htmlentities(stripslashes($args['value']));
-	   
+
 	   if (isset($args['type_input']) && $args['type_input'] == 'hidden') {
 			if (method_exists($this, 'field_'.$args['type']))
 				$this->{'field_'.$args['type']}($args);
 		} else {
-			
+
 			if (isset($args['label']) && !empty($args['label'])) { ?>
-				<div class="lumise_form_group lumise_field_<?php echo $args['type']; ?>">
+				<div class="lumise_form_group lumise_field_<?php echo esc_attr($args['type']); ?>">
 					<span><?php
 						echo (isset($args['label']) ? $args['label']: '');
 						echo (isset($args['required']) && $args['required'] === true ? '<em class="required">*</em>' : '');
 					?></span>
 					<div class="lumise_form_content">
 						<?php
-	
+
 							$this->field_render_content($args);
-	
+
 							if (isset($args['desc']) && !empty($args['desc']))
 								echo '<em class="notice">'.$args['desc'].'</em>';
 						?>
 					</div>
 				</div>
 			<?php
-			}else{ 
-			
+			}else{
+
 				$this->field_render_content($args);
-				
+
 			}
 		} ?>
 	<?php
     }
 
 	public function field_render_content ($args) {
-		
+
 		global $lumise;
-		
+
 		$lumise->do_action('before_field', $args);
-		
+
 		if (method_exists($this, 'field_'.$args['type'])) {
 			ob_start();
 			$this->{'field_'.$args['type']}($args);
 			$content = ob_get_contents();
 			ob_end_clean();
 		} else $content = 'Field not exist: '.$args['type'];
-		
+
 		echo $lumise->apply_filters('render_field_'.$args['type'], $content, $args);
-		
+
 		$lumise->do_action('after_field', $args);
-		
+
 	}
 
     public function field_input ($args) {
@@ -1686,7 +1689,7 @@ class lumise_views extends lumise_lib {
 				case 'int':
 					$value = intval($value);
 					break;
-				
+
 				case 'float':
 					$value = floatval($value);
 					break;
@@ -1707,35 +1710,35 @@ class lumise_views extends lumise_lib {
 			?> />
 	<?php
     }
-    
+
     public function field_trace ($args) {
-		
+
 		if (is_callable($args['content']))
 			call_user_func($args['content'], $args);
 		else if(is_string($args['content']))
 			echo $args['content'];
-		
+
     }
-    
+
     public function field_admin_login ($args) {
 	?>
 		<div class="lumise_form_group lumise_field_input">
-			<span><?php echo $this->main->lang('Admin email'); ?></span>
+			<span><?php echo esc_html($this->main->lang('Admin email')); ?></span>
 			<div class="lumise_form_content">
-				<input type="text" name="admin_email" value="<?php echo $this->main->cfg->settings['admin_email']; ?>">
-				<em class="notice"><?php echo $this->main->lang('Admin email to login and receive important emails'); ?></em>
+				<input type="text" name="admin_email" value="<?php echo esc_attr($this->main->cfg->settings['admin_email']); ?>">
+				<em class="notice"><?php echo esc_html($this->main->lang('Admin email to login and receive important emails')); ?></em>
 			</div>
 		</div>
 		<div class="lumise_form_group lumise_field_input">
-			<span><?php echo $this->main->lang('Admin password'); ?></span>
+			<span><?php echo esc_html($this->main->lang('Admin password')); ?></span>
 			<div class="lumise_form_content">
-				<input type="password" placeholder="<?php echo $this->main->lang('Enter new password'); ?>" name="admin_password" value="" autocomplete="new-password"/>
+				<input type="password" placeholder="<?php echo esc_html($this->main->lang('Enter new password')); ?>" name="admin_password" value="" autocomplete="new-password"/>
 			</div>
 		</div>
 		<div class="lumise_form_group lumise_field_input">
 			<span> &nbsp; </span>
 			<div class="lumise_form_content">
-				<input type="password" placeholder="<?php echo $this->main->lang('Re-Enter new password'); ?>" name="re_admin_password" value="" autocomplete="new-password"/>
+				<input type="password" placeholder="<?php echo esc_html($this->main->lang('Re-Enter new password')); ?>" name="re_admin_password" value="" autocomplete="new-password"/>
 			</div>
 		</div>
 	<?php
@@ -1754,10 +1757,10 @@ class lumise_views extends lumise_lib {
     public function field_toggle ($args) {
 	?>
 		<div class="lumise-toggle">
-			<input type="checkbox" name="<?php echo $args['name']; ?>" <?php
+			<input type="checkbox" name="<?php echo esc_attr($args['name']); ?>" <?php
 				if (
-					$args['value'] === 1 || 
-					$args['value'] == '1' || 
+					$args['value'] === 1 ||
+					$args['value'] == '1' ||
 					(
 						!isset($args['value']) || (isset($args['value']) && !is_numeric($args['value'])) && isset($args['default']) && $args['default'] == 'yes')
 					)
@@ -1779,7 +1782,7 @@ class lumise_views extends lumise_lib {
 
    	?>
     	<select name="parent">
-			<option value="0"><?php echo $this->main->lang('None'); ?></option>
+			<option value="0"><?php echo esc_html($this->main->lang('None')); ?></option>
 			<?php
 
 				if ($args['id']) {
@@ -1825,10 +1828,10 @@ class lumise_views extends lumise_lib {
 		$cates = $lumise_admin->get_categories($args['cate_type'], isset($args['parent']) ? $args['parent'] : null);
 
 		if (count($cates) > 0) {
-			
+
 			if (!isset($args['id']))
 				$args['id'] = 0;
-				
+
 			$dt = $lumise_admin->get_category_item($args['id'], $args['cate_type']);
 			$dt_id = isset($args['value']) && is_array($args['value']) ? $args['value'] : array();
 
@@ -1849,36 +1852,36 @@ class lumise_views extends lumise_lib {
 					}
 				}
 			?>
-				<li style="padding-left: <?php echo $pd; ?>">
-					<div class="lumise_checkbox sty2 <?php echo $checked; ?>">
+				<li style="padding-left: <?php echo esc_attr($pd); ?>">
+					<div class="lumise_checkbox sty2 <?php echo esc_attr($checked); ?>">
 							<input type="checkbox" name="<?php
 								echo isset($args['name']) ? $args['name'].'[]' : '';
 							?>" class="action_check" value="<?php
-								echo $value['id'];
+								echo esc_attr($value['id']);
 							?>" class="action" id="lumise-cate-<?php
-								echo $value['id'];
+								echo esc_attr($value['id']);
 							?>" <?php
-								echo $checked;
+								echo esc_attr($checked);
 							?> />
-							<label for="lumise-cate-<?php echo $value['id']; ?>">
-								<?php echo $value['name']; ?>
+							<label for="lumise-cate-<?php echo absint($value['id']); ?>">
+								<?php echo esc_html($value['name']); ?>
 								<em class="check"></em>
 							</label>
 					</div>
 				</li>
 			<?php } ?>
 			</ul>
-			<input type="checkbox" name="<?php echo $args['name']; ?>[]" checked="true" style="display:none;" value="" />
+			<input type="checkbox" name="<?php echo esc_attr($args['name']); ?>[]" checked="true" style="display:none;" value="" />
 			<?php if (!isset($args['create_new']) || $args['create_new'] !== false) { ?>
-			<a href="<?php echo $lumise->cfg->admin_url; ?>lumise-page=category&type=<?php echo $args['cate_type']; ?>" target=_blank class="lumise_add_cate">
-				<?php echo $this->main->lang('Add Category'); ?>
+			<a href="<?php echo esc_url($lumise->cfg->admin_url); ?>lumise-page=category&type=<?php echo esc_attr($args['cate_type']); ?>" target=_blank class="lumise_add_cate">
+				<?php echo esc_html($this->main->lang('Add Category')); ?>
 			</a>
 			<?php } ?>
 		<?php } else  { ?>
-			<p class="no-data"><?php echo $this->main->lang('No categories have been created yet'); ?>. </p>
+			<p class="no-data"><?php echo esc_html($this->main->lang('No categories have been created yet')); ?>. </p>
 			<?php if (!isset($args['create_new']) || $args['create_new'] !== false) { ?>
-			<a href="<?php echo $lumise->cfg->admin_url; ?>lumise-page=category&type=<?php echo $args['cate_type']; ?>" target=_blank  class="add-new">
-				<?php echo $this->main->lang('Create new category'); ?>
+			<a href="<?php echo esc_url($lumise->cfg->admin_url); ?>lumise-page=category&type=<?php echo esc_attr($args['cate_type']); ?>" target=_blank  class="add-new">
+				<?php echo esc_html($this->main->lang('Create new category')); ?>
 			</a>
 			<?php } ?>
 		<?php }
@@ -1902,8 +1905,8 @@ class lumise_views extends lumise_lib {
 					}
 
 				}
-               
-               
+
+
 			?>
 			<input id="tags" type="text" name="<?php
 				echo isset($args['name']) ? $args['name'] : '';
@@ -1947,14 +1950,12 @@ class lumise_views extends lumise_lib {
 		    foreach ($args['options'] as $option => $value) {
 			?>
 			<div class="radio">
-				<input type="radio" name="<?php
-					echo isset($args['name']) ? $args['name'] : ''
-				?>" id="lumise-radios-<?php echo (isset($args['name']) ? $args['name'] : '').'-'.$option; ?>" <?php
+				<input type="radio" name="<?php echo esc_attr(isset($args['name']) ? $args['name'] : '')?>" id="lumise-radios-<?php echo (isset($args['name']) ? $args['name'] : '').'-'.$option; ?>" <?php
 					if ((empty($args['value']) && isset($args['default']) && $args['default'] == $option) || (isset($args['value']) && $args['value'] == $option))
 						echo 'checked="true"';
-				?> value="<?php echo $option; ?>">
-				<label for="lumise-radios-<?php echo (isset($args['name']) ? $args['name'] : '').'-'.$option; ?>">
-					<?php echo $value; ?> <em class="check"></em>
+				?> value="<?php echo esc_attr($option); ?>">
+				<label for="lumise-radios-<?php echo esc_attr(isset($args['name']) ? $args['name'] : '').'-'.$option; ?>">
+					<?php echo esc_html($value); ?> <em class="check"></em>
 				</label>
 			</div>
 			<?php
@@ -1970,7 +1971,7 @@ class lumise_views extends lumise_lib {
 	    		$args['value'] = explode(',', $args['value']);
 		}else
 			$args['value'] = ( !empty($args['default']) && is_string($args['default']) ) ? explode(',', $args['default']) : array();
-		
+
 	    if (isset($args['options'])) {
 		    echo '<div class="lumise_checkboxes">';
 		    $options = array_replace(array_flip($args['value']), $args['options']);
@@ -1980,16 +1981,16 @@ class lumise_views extends lumise_lib {
 				<div class="lumise_checkbox sty2 ">
 					<input type="checkbox" name="<?php
 						echo isset($args['name']) ? $args['name'].'[]' : ''
-					?>" class="action_check" value="<?php echo $option; ?>" <?php
+					?>" class="action_check" value="<?php echo esc_attr($option); ?>" <?php
 						if (in_array($option, $args['value']) || (!isset($args['value']) && $args['default'] == $option))
 							echo 'checked="true"';
-					?> id="lumise-checkboxes-<?php echo $option; ?>" />
-						<label for="lumise-checkboxes-<?php echo $option; ?>">
-							<?php echo $value; ?> <em class="check"></em>
+					?> id="lumise-checkboxes-<?php echo esc_attr($option); ?>" />
+						<label for="lumise-checkboxes-<?php echo esc_attr($option); ?>">
+							<?php echo $args['name'] == 'activate_langs' ? wp_kses_post($value) : esc_html($value); ?> <em class="check"></em>
 						</label>
 				</div>
 			<?php }} ?>
-				<input type="checkbox" name="<?php echo $args['name']; ?>[]" checked="true" style="display:none;" value="" />
+				<input type="checkbox" name="<?php echo esc_attr($args['name']); ?>[]" checked="true" style="display:none;" value="" />
 			</div>
 		<?php }else echo 'missing options';
     }
@@ -2005,11 +2006,11 @@ class lumise_views extends lumise_lib {
 		if (isset($args['options'])) {
 			$id = uniqid();
 		?>
-		<input name="<?php echo $args['name']; ?>" class="multiselect_field_<?php echo $id; ?>" value="<?php echo implode(',', $value); ?>">	
+		<input name="<?php echo esc_attr($args['name']); ?>" class="multiselect_field_<?php echo esc_js($id); ?>" value="<?php echo implode(',', $value); ?>">
 		<script type="text/javascript">
-			$(document).ready(function () {
-				var sampleOptions = <?php echo json_encode($args['options']); ?>;
-				$(".multiselect_field_<?php echo $id; ?>").tagit({
+			jQuery( function ( $ ) {
+				var sampleOptions = <?php echo wp_json_encode($args['options']); ?>;
+				$(".multiselect_field_<?php echo esc_js($id); ?>").tagit({
 					availableTags: sampleOptions,
 					removeConfirmation : true,
 					autocomplete: {delay: 0, minLength: 2},
@@ -2019,26 +2020,19 @@ class lumise_views extends lumise_lib {
 						}
 					}
 				});
-				// var ac = $(".multiselect_field_<?php echo $id; ?>").data('uiTagit').tagInput.data('uiAutocomplete');
-				// ac._renderItem = function (ul, item) {
-				// 	console.log(item);
-				// }
 			});
 		</script>
 		<?php }else echo 'missing options';
 	}
-	
+
 	public function field_filters($args = array()) {
-		// echo "<pre>";
-		// print_r($args);	
-		// echo "</pre>";
 	    if (isset($args['value'])) {
 	    	if (is_string($args['value']))
 	    		$args['value'] = explode(',', $args['value']);
 		}else
 			$args['value'] = !empty($args['default']) ? (is_string($args['default']) ? explode(',', $args['default']) : $args['default']) : array();
 
-		
+
 	    if (isset($args['options'])) {
 		    echo '<div class="lumise_filters">';
 		    $options = array_replace(array_flip($args['value']), $args['options']);
@@ -2048,18 +2042,18 @@ class lumise_views extends lumise_lib {
 				<div class="lumise_checkbox sty2 ">
 					<input type="checkbox" name="<?php
 						echo isset($args['name']) ? $args['name'].'[]' : ''
-					?>" class="action_check" value="<?php echo $option; ?>" <?php
+					?>" class="action_check" value="<?php echo esc_attr($option); ?>" <?php
 						if (in_array($option, $args['value']) || (!isset($args['value']) && $args['default'] == $option))
 							echo 'checked="true"';
-					?> id="lumise-filters-<?php echo $option; ?>" />
-						<label for="lumise-filters-<?php echo $option; ?>">
-							<?php echo $value; ?> <em class="check"></em>
+					?> id="lumise-filters-<?php echo esc_attr($option); ?>" />
+						<label for="lumise-filters-<?php echo esc_attr($option); ?>">
+							<?php echo esc_html($value); ?> <em class="check"></em>
 						</label>
 				</div>
 			<?php }} ?>
-				<!-- <input type="checkbox" name="<?php echo $args['name']; ?>[]" checked="true" style="display:none;" value="" /> -->
+				<!-- <input type="checkbox" name="<?php echo esc_attr($args['name']); ?>[]" checked="true" style="display:none;" value="" /> -->
 			</div>
-			<!-- <a href="#" class="check_all"><?php echo $this->main->lang('Checked all'); ?></a> -->
+			<!-- <a href="#" class="check_all"><?php echo esc_html($this->main->lang('Checked all')); ?></a> -->
 		<?php }else echo 'missing options';
     }
 
@@ -2074,15 +2068,15 @@ class lumise_views extends lumise_lib {
     }
 
     public function field_printing($args = array()) {
-		
+
 		$prints = $this->main->views->get_prints();
-		
+
 		$inp_val = json_decode(rawurldecode($args['value']), true);
-		
+
 		if (count($prints) > 0) {
-			
-			echo '<div class="lumise_checkboxes">';	
-			
+
+			echo '<div class="lumise_checkboxes">';
+
 			if (isset($inp_val) && !empty($inp_val) && $inp_val !== null) {
 				$keys = array_flip(array_keys($inp_val));
 				for ($i = count($prints)-1; $i >= 0; $i--) {
@@ -2094,24 +2088,24 @@ class lumise_views extends lumise_lib {
 			foreach ($prints as $print) {
 				$calc = $this->main->lib->dejson($print['calculate']);
 		?>
-			<div class="lumise_checkbox sty2 ui-sortable-handle" data-type="<?php echo $calc->type; ?>">
-				<input type="checkbox" name="helper-<?php 
-					echo $args['name']; 
-				?>[]" class="action_check" value="<?php echo $print['id']; ?>" <?php
+			<div class="lumise_checkbox sty2 ui-sortable-handle" data-type="<?php echo esc_attr($calc->type); ?>">
+				<input type="checkbox" name="helper-<?php
+					echo esc_attr($args['name']);
+				?>[]" class="action_check" value="<?php echo esc_attr($print['id']); ?>" <?php
 					echo (
 						is_array($inp_val) && (
-							isset($inp_val[$print['id']]) || 
+							isset($inp_val[$print['id']]) ||
 							isset($inp_val['_'.$print['id']]))
 						) ? ' checked' : '';
-				?> id="lumise-checkboxes-<?php echo $args['name'] . '-'. $print['id']; ?>">
-				<label for="lumise-checkboxes-<?php echo $args['name'] . '-'. $print['id']; ?>">
-					<?php echo $print['title']; ?> <em class="check"></em>
+				?> id="lumise-checkboxes-<?php echo esc_attr($args['name']) . '-'. $print['id']; ?>">
+				<label for="lumise-checkboxes-<?php echo esc_attr($args['name']) . '-'. $print['id']; ?>">
+					<?php echo esc_html($print['title']); ?> <em class="check"></em>
 				</label>
 				<?php
 					/* if (is_object($calc) && isset($calc->type) && $calc->type == 'size') {
-					
+
 						$first_obj = array_values((Array)$calc->values);
-						
+
 						if (count($first_obj) > 0) {
 							echo '<div class="lumise_radios field_children display_inline" data-parent="'.$print['id'].'">';
 							$sizes = (Array)$first_obj[0];
@@ -2120,7 +2114,7 @@ class lumise_views extends lumise_lib {
 							foreach ($sizes as $key => $val) {
 								echo '<div class="radio">
 										<input type="radio"'.(
-												is_array($inp_val) && 
+												is_array($inp_val) &&
 												((
 													isset($inp_val[$print['id']]) &&
 													$inp_val[$print['id']] == $key
@@ -2130,11 +2124,11 @@ class lumise_views extends lumise_lib {
 													$inp_val['_'.$print['id']] == $key
 												)
 												) ? ' checked' : ''
-											).' 
-											name="print-sizes-'.$args['name'].'-'.$print['id'].'" 
-											id="print-size-'.$print['id'].'-'.$args['name'].'-'.$key.'" 
+											).'
+											name="print-sizes-'.$args['name'].'-'.$print['id'].'"
+											id="print-size-'.$print['id'].'-'.$args['name'].'-'.$key.'"
 											value="'.$key.'"
-										 /> 
+										 />
 										<label for="print-size-'.$print['id'].'-'.$args['name'].'-'.$key.'">'.
 										strtoupper(urldecode($key)).'
 										<em class="check"></em></label>
@@ -2147,15 +2141,15 @@ class lumise_views extends lumise_lib {
 			</div>
 			<?php
 			}
-			
+
 			echo '</div>';
-			
+
 		} else {
 			echo '<p>'.
-				$this->main->lang('You have not created any prints type yet').
+				esc_html($this->main->lang('You have not created any prints type yet')).
 			'</p><input type="hidden" name="'.$args['name'].'[]" />';
 		}
-		
+
 		echo '<input type="hidden" class="field-value" name="'.$args['name'].'" value="'.$args['value'].'" />';
 
     }
@@ -2177,10 +2171,10 @@ class lumise_views extends lumise_lib {
 			$colors = explode(',', isset($colors[1]) ? $colors[1] : '');
 
 			foreach ($colors as $color) {
-				
+
 				$color = explode('@', $color);
 				$label = isset($color[1]) ? $color[1] : $color[0];
-				
+
 				echo '<li data-label="'.(!empty($label) ? $label : $color[0]).'" data-color="'.strtolower($color[0]).
 					'" title="'.(!empty($label) ? str_replace('"', '', urldecode($label)) : strtolower($color[0])).
 					'" '.($color[0] == $value ? 'class="choosed"' : '').
@@ -2194,10 +2188,10 @@ class lumise_views extends lumise_lib {
 			echo isset($args['name']) ? $args['name'] : '';
 		?>" />
 		<button data-func="create-color">
-			<?php echo $this->main->lang('Add new color'); ?>
+			<?php echo esc_html($this->main->lang('Add new color')); ?>
 		</button>
 		<button data-btn data-func="clear-color">
-			<?php echo $this->main->lang('Clear all'); ?>
+			<?php echo esc_html($this->main->lang('Clear all')); ?>
 		</button>
 	</div>
 	<?php
@@ -2206,42 +2200,42 @@ class lumise_views extends lumise_lib {
 	public function field_upload($attr = array()){
 
 		if (isset($attr['file']) && $attr['file'] == 'font') {
-			
+
 		?>
-			<h1 id="lumise-<?php echo $attr['name']; ?>-preview" contenteditable="true" style="display: none;"></h1>
+			<h1 id="lumise-<?php echo esc_attr($attr['name']); ?>-preview" contenteditable="true" style="display: none;"></h1>
 			<div class="img-preview">
 				<?php if (!empty($attr['value'])) { ?>
-					<input type="hidden" name="old-<?php echo $attr['name']; ?>" value="<?php echo $attr['value'] ?>">
+					<input type="hidden" name="old-<?php echo esc_attr($attr['name']); ?>" value="<?php echo esc_attr($attr['value']); ?>">
 				<?php } ?>
-				<input type="file" id="lumise-<?php echo $attr['name']; ?>-file-upload" accept=".<?php echo $attr['file_type']; ?>" data-file-select="font" data-file-preview="#lumise-<?php echo $attr['name']; ?>-preview" data-file-input="#lumise-<?php echo $attr['name']; ?>-input" />
+				<input type="file" id="lumise-<?php echo esc_attr($attr['name']); ?>-file-upload" accept=".<?php echo esc_attr($attr['file_type']); ?>" data-file-select="font" data-file-preview="#lumise-<?php echo esc_attr($attr['name']); ?>-preview" data-file-input="#lumise-<?php echo esc_attr($attr['name']); ?>-input" />
 
 				<input type="hidden" name="<?php
-					echo $attr['name'];
+					echo esc_attr($attr['name']);
 				?>" id="lumise-<?php
-					echo $attr['name'];
+					echo esc_attr($attr['name']);
 				?>-input" value="<?php
 					echo !empty($attr['value']) ? $attr['value'] : '';
-				?>" class="lumise-upload-helper-inp" data-file="<?php echo $attr['file']; ?>" />
+				?>" class="lumise-upload-helper-inp" data-file="<?php echo esc_attr($attr['file']); ?>" />
 
-				<label for="lumise-<?php echo $attr['name']; ?>-file-upload">
-					<i class="fa fa-cloud-upload"></i> <?php echo $this->main->lang('Choose file'); ?> 
-					(*.<?php echo $attr['file_type']; ?>)
+				<label for="lumise-<?php echo esc_attr($attr['name']); ?>-file-upload">
+					<i class="fa fa-cloud-upload"></i> <?php echo esc_html($this->main->lang('Choose file')); ?>
+					(*.<?php echo esc_html($attr['file_type']); ?>)
 				</label>
 				<button data-btn="true" data-file-delete="true"  data-file-preview="#lumise-<?php
-					echo $attr['name'];
+					echo esc_attr($attr['name']);
 				?>-preview" data-file-input="#lumise-<?php
-					echo $attr['name'];
+					echo esc_attr($attr['name']);
 				?>-input" data-file-thumbn="#lumise-<?php
-					echo $attr['name'];
+					echo esc_attr($attr['name']);
 				?>-thumbn">
-					<i class="fa fa-trash"></i> <?php echo $this->main->lang('Remove file'); ?>
+					<i class="fa fa-trash"></i> <?php echo esc_html($this->main->lang('Remove file')); ?>
 				</button>
-			
+
 			</div>
 			<script type="text/javascript">
 
 				<?php if (!empty($attr['value']) && !empty($attr['name'])) {
-					echo 'jQuery(document).ready(function() {lumise_font_preview("'.$attr['name'].'", "url('.(!empty($attr['value']) ? $this->main->cfg->upload_url.str_replace(TS, '/', $attr['value']) : '').')", "#lumise-'.$attr['name'].'-preview", "'.$attr['file_type'].'");})';
+					echo 'jQuery(document).ready(function() {lumise_font_preview("'.esc_js($attr['name']).'", "url('.esc_js(!empty($attr['value']) ? $this->main->cfg->upload_url.str_replace(TS, '/', $attr['value']) : '').')", "#lumise-'.esc_js($attr['name']).'-preview", "'.esc_js($attr['file_type']).'");})';
 				} ?>
 
 			</script>
@@ -2251,51 +2245,51 @@ class lumise_views extends lumise_lib {
 
 		}
 		?>
-		
-		
+
+
 		<?php
 			if (isset($attr['file']) && $attr['file'] == 'design') {
 		?>
 			<div class="img-preview">
 				<?php if (!empty($attr['value'])) { ?>
 					<img src="<?php
-					echo isset($attr['thumbn_value']) ? $attr['thumbn_value'] : $this->main->cfg->upload_url.'/'.$attr['value'];
-				?>" class="img-upload" id="lumise-<?php echo $attr['name']; ?>-preview" style="max-width:350px" />
-					<input type="hidden" id="lumise-<?php echo $attr['name']; ?>-input-old" name="old-<?php echo $attr['name']; ?>" value="<?php echo $attr['value'] ?>">
+					echo esc_attr( isset($attr['thumbn_value']) ? $attr['thumbn_value'] : $this->main->cfg->upload_url.'/'.$attr['value']);
+				?>" class="img-upload" id="lumise-<?php echo esc_attr($attr['name']); ?>-preview" style="max-width:350px" />
+					<input type="hidden" id="lumise-<?php echo esc_attr($attr['name']); ?>-input-old" name="old-<?php echo esc_attr($attr['name']); ?>" value="<?php echo esc_attr($attr['value']) ?>">
 				<?php }else{ ?>
-					<img src="<?php echo $this->main->cfg->assets_url; ?>admin/assets/images/img-none.png" class="img-upload" id="lumise-<?php echo $attr['name']; ?>-preview" style="max-width:350px" />
+					<img src="<?php echo esc_url(LW()->plugin_url() . '/assets/images/img-none.png'); ?>" class="img-upload" id="lumise-<?php echo esc_attr($attr['name']); ?>-preview" style="max-width:350px" />
 				<?php } ?>
-				<input type="file" id="lumise-<?php echo $attr['name']; ?>-file-upload" accept=".json,.lumi,.png,.jpg" data-file-select="design" data-file-preview="#lumise-<?php echo $attr['name']; ?>-preview" data-file-input="#lumise-<?php echo $attr['name']; ?>-input" />
+				<input type="file" id="lumise-<?php echo esc_attr($attr['name']); ?>-file-upload" accept=".json,.lumi,.png,.jpg" data-file-select="design" data-file-preview="#lumise-<?php echo esc_attr($attr['name']); ?>-preview" data-file-input="#lumise-<?php echo esc_attr($attr['name']); ?>-input" />
 
 				<input type="hidden" class="lumise-upload-helper-inp" accept=".json,.lumi" name="<?php
-					echo $attr['name'];
+					echo esc_attr($attr['name']);
 				?>" id="lumise-<?php
-					echo $attr['name'];
+					echo esc_attr($attr['name']);
 				?>-input" data-file-preview="#lumise-<?php
-					echo $attr['name'];
+					echo esc_attr($attr['name']);
 				?>-preview" value="<?php
 					echo !empty($attr['value']) ? $attr['value'] : '';
-				?>" data-path="<?php echo !empty($attr['path']) ? $attr['path'] : ''; ?>" data-file="<?php echo $attr['file']; ?>" />
-				
+				?>" data-path="<?php echo !empty($attr['path']) ? $attr['path'] : ''; ?>" data-file="<?php echo esc_attr($attr['file']); ?>" />
+
 				<?php if (isset($attr['thumbn']) && isset($attr['thumbn_value'])) { ?>
 
-					<input type="hidden" name="old-<?php echo $attr['thumbn']; ?>" value="<?php
-						echo isset($attr['thumbn_value']) ? $attr['thumbn_value'] : '';
+					<input type="hidden" name="old-<?php echo esc_attr($attr['thumbn']); ?>" value="<?php
+						echo esc_attr( isset($attr['thumbn_value']) ? $attr['thumbn_value'] : '' );
 					?>" />
-	
+
 				<?php } ?>
-			
-				<label for="lumise-<?php echo $attr['name']; ?>-file-upload">
-					<i class="fa fa-cloud-upload"></i> <?php echo $this->main->lang('Choose a file'); ?>
+
+				<label for="lumise-<?php echo esc_attr($attr['name']); ?>-file-upload">
+					<i class="fa fa-cloud-upload"></i> <?php echo esc_html($this->main->lang('Choose a file')); ?>
 				</label>
 				<button data-btn="true" data-file-delete="true"  data-file-preview="#lumise-<?php
-					echo $attr['name'];
+					echo esc_attr($attr['name']);
 				?>-preview" data-file-input="#lumise-<?php
-					echo $attr['name'];
+					echo esc_attr($attr['name']);
 				?>-input" data-file-thumbn="#lumise-<?php
-					echo $attr['name'];
+					echo esc_attr($attr['name']);
 				?>-thumbn">
-					<i class="fa fa-trash"></i> <?php echo $this->main->lang('Remove file'); ?>
+					<i class="fa fa-trash"></i> <?php echo esc_html($this->main->lang('Remove file')); ?>
 				</button>
 			</div>
 		<?php
@@ -2310,33 +2304,33 @@ class lumise_views extends lumise_lib {
 
 				<img src="<?php
 					echo isset($attr['thumbn_value']) ?
-						$attr['thumbn_value'] : 
+						$attr['thumbn_value'] :
 						(
-							(strpos($attr['value'], '://') === false) ? 
-							$this->main->cfg->upload_url.$attr['value'] : 
+							(strpos($attr['value'], '://') === false) ?
+							$this->main->cfg->upload_url.$attr['value'] :
 							$attr['value']
 						);
-					
-				?>" class="img-upload" id="lumise-<?php echo $attr['name']; ?>-preview" />
+
+				?>" class="img-upload" id="lumise-<?php echo esc_attr($attr['name']); ?>-preview" />
 
 				<input type="hidden" id="lumise-<?php
-				echo $attr['name'];
-			?>-input-old" name="old-<?php echo $attr['name']; ?>" value="<?php
+				echo esc_attr($attr['name']);
+			?>-input-old" name="old-<?php echo esc_attr($attr['name']); ?>" value="<?php
 					echo !empty($attr['value']) ? $attr['value'] : '';
 				?>" />
 
 			<?php } else { ?>
-				<img src="<?php echo $this->main->cfg->assets_url; ?>admin/assets/images/img-none.png" class="img-upload" id="lumise-<?php echo $attr['name']; ?>-preview">
+				<img src="<?php echo esc_url(LW()->plugin_url() . '/assets/images/img-none.png'); ?>" class="img-upload" id="lumise-<?php echo esc_attr($attr['name']); ?>-preview">
 			<?php } ?>
 
 			<input type="file" accept="<?php
 				echo isset($attr['accept']) ? $attr['accept'] : 'image/png,image/gif,image/jpeg,image/svg+xml';
 			?>" class="lumise-file-upload" id="<?php
-				echo $attr['name'];
+				echo esc_attr($attr['name']);
 			?>_file_upload" data-file-select="true" data-file-preview="#lumise-<?php
-				echo $attr['name'];
+				echo esc_attr($attr['name']);
 			?>-preview" data-file-input="#lumise-<?php
-				echo $attr['name'];
+				echo esc_attr($attr['name']);
 			?>-input" <?php
 				if (!isset($attr['thumbn_width']) && !isset($attr['thumbn_height']))
 					echo 'data-file-thumbn-width="320"';
@@ -2348,9 +2342,9 @@ class lumise_views extends lumise_lib {
 
 
 			<input type="hidden" name="<?php
-				echo $attr['name'];
+				echo esc_attr($attr['name']);
 			?>" id="lumise-<?php
-				echo $attr['name'];
+				echo esc_attr($attr['name']);
 			?>-input" value="<?php
 				echo !empty($attr['value']) ? $attr['value'] : '';
 
@@ -2358,46 +2352,46 @@ class lumise_views extends lumise_lib {
 
 			<?php if (isset($attr['thumbn']) && isset($attr['thumbn_value'])) { ?>
 
-				<input type="hidden" name="old-<?php echo $attr['thumbn']; ?>" value="<?php
+				<input type="hidden" name="old-<?php echo esc_attr($attr['thumbn']); ?>" value="<?php
 					echo isset($attr['thumbn_value']) ? $attr['thumbn_value'] : '';
 				?>" />
 
 			<?php } ?>
 
-			<label for="<?php echo $attr['name']; ?>_file_upload">
-				<?php echo isset($attr['button_text']) ? $attr['button_text'] : $this->main->lang('Choose a file'); ?>
+			<label for="<?php echo esc_attr($attr['name']); ?>_file_upload">
+				<?php echo isset($attr['button_text']) ? $attr['button_text'] : esc_html($this->main->lang('Choose a file')); ?>
 			</label>
-			
+
 			<button data-btn="true" data-file-delete="true"  data-file-preview="#lumise-<?php
-				echo $attr['name'];
+				echo esc_attr($attr['name']);
 			?>-preview" data-file-input="#lumise-<?php
-				echo $attr['name'];
+				echo esc_attr($attr['name']);
 			?>-input" data-file-thumbn="#lumise-<?php
-				echo $attr['name'];
+				echo esc_attr($attr['name']);
 			?>-thumbn">
-				<?php echo $this->main->lang('Remove file'); ?>
+				<?php echo esc_html($this->main->lang('Remove file')); ?>
 			</button>
 		</div>
 
 	<?php
 	}
-	
+
 	public function field_stages($args) {
-		
+
 		global $lumise;
-		
+
 		$data = $this->dejson($args['value']);
-		
+
 		if (isset($data->stages))
 			$stages = $data->stages;
 		else $stages = $this->dejson($args['value']);
-		
+
 		unset($stages->{'colors'});
-		
+
 	?>
 	<div class="lumise_form_group nomargin">
-		<h3><?php echo $lumise->lang('Configure designs'); ?></h3>
-		<p><?php echo $lumise->lang('Upload your product images, configure stages, edit zones. You can create new stage, change stage\'s name and arrange stages.'); ?></p>
+		<h3><?php echo esc_html($lumise->lang('Configure designs')); ?></h3>
+		<p><?php echo esc_html($lumise->lang('Upload your product images, configure stages, edit zones. You can create new stage, change stage\'s name and arrange stages.')); ?></p>
 		<div class="lumise_tabs_wrapper lumise-stages-wrp" id="lumise-stages-wrp" data-id="stages">
 			<div class="lumise_tab_nav_wrap">
 				<i data-move="left" class="fa fa-chevron-left"></i>
@@ -2408,13 +2402,13 @@ class lumise_views extends lumise_lib {
 							$id = $lumise->generate_id();
 							$stages = array();
 							$stages[$id] = json_decode('{"edit_zone":{"height":270,"width":170,"left":-1,"top":12.5,"radius":"5"},"url":"products\/basic_tshirt_front.png","source":"raws","overlay":true,"product_width":400,"product_height":475,"template":{},"label":"Start stage"}');
-						}		
+						}
 						foreach ($stages as $key => $stage) {
-							
+
 							$label = isset($stage->label) ? rawurldecode($stage->label) : 'Untitled';
 						?>
 						<li>
-							<a href="#lumise-stage-<?php echo $key; ?>" data-label="<?php echo rawurlencode($label); ?>">
+							<a href="#lumise-stage-<?php echo esc_attr($key); ?>" data-label="<?php echo rawurlencode($label); ?>">
 								<?php
 									if (isset($stage->thumbnail) && !empty($stage->thumbnail)) {
 										echo '<span>';
@@ -2423,7 +2417,7 @@ class lumise_views extends lumise_lib {
 										echo '</span>';
 									}
 								?>
-								<!--i class="fa fa-image" data-edit="thumbnail" title="<?php echo $lumise->lang('Upload thumbnail'); ?>"></i-->
+								<!--i class="fa fa-image" data-edit="thumbnail" title="<?php echo esc_attr($lumise->lang('Upload thumbnail')); ?>"></i-->
 								<text><?php echo str_replace(array('<', '>'), array('&lt;', '&gt;'), $label); ?></text>
 								<svg data-func="remove" height="16px" width="16px" viewBox="-75 -75 370 370">
 									<path data-func="remove"  d="M131.804,106.491l75.936-75.936c6.99-6.99,6.99-18.323,0-25.312   c-6.99-6.99-18.322-6.99-25.312,0l-75.937,75.937L30.554,5.242c-6.99-6.99-18.322-6.99-25.312,0c-6.989,6.99-6.989,18.323,0,25.312   l75.937,75.936L5.242,182.427c-6.989,6.99-6.989,18.323,0,25.312c6.99,6.99,18.322,6.99,25.312,0l75.937-75.937l75.937,75.937   c6.989,6.99,18.322,6.99,25.312,0c6.99-6.99,6.99-18.322,0-25.312L131.804,106.491z"></path>
@@ -2432,7 +2426,7 @@ class lumise_views extends lumise_lib {
 						</li>
 						<?php } ?>
 						<li data-add="tab">
-							<a href="#add-stage" title="<?php echo $lumise->lang('Add new stage'); ?>">
+							<a href="#add-stage" title="<?php echo esc_attr($lumise->lang('Add new stage')); ?>">
 								<i data-func="add-stage" class="fa fa-plus"></i>
 							</a>
 						</li>
@@ -2442,15 +2436,15 @@ class lumise_views extends lumise_lib {
 			</div>
 			<div class="lumise_tabs">
 			<?php
-				
+
 				$source = '';
 				$overlay = '';
 				$i = 0;
-				
+
 				foreach ($stages as $stage => $sdata) {
-	
+
 					if ($stage != 'colors') {
-	
+
 						if (isset($sdata->url)) {
 							$url = $sdata->url;
 							$source = $sdata->source;
@@ -2458,11 +2452,11 @@ class lumise_views extends lumise_lib {
 							$url = 'products/basic_tshirt_front.png';
 							$source = 'raws';
 						}else $url = '';
-						
+
 						$overlay = isset($sdata->overlay) ? $sdata->overlay : true;
-						
+
 						if (isset($sdata->edit_zone) && isset($sdata->url)) {
-							$limit = ' style="height: '.$sdata->edit_zone->height.'px;';
+							$limit = 'height: '.$sdata->edit_zone->height.'px;';
 							$limit .= 'width: '.$sdata->edit_zone->width.'px;';
 							$limit .= 'left: '.($sdata->edit_zone->left+($sdata->product_width/2)-($sdata->edit_zone->width/2)).'px;';
 							$limit .= 'top: '.($sdata->edit_zone->top+($sdata->product_height/2)-($sdata->edit_zone->height/2)).'px;';
@@ -2471,32 +2465,32 @@ class lumise_views extends lumise_lib {
 							}
 							if (isset($sdata->edit_zone->radius) && !empty($sdata->edit_zone->radius))
 								$limit .= 'border-radius: '.$sdata->edit_zone->radius.'%;';
-							$limit .= '"';
+							//$limit .= '"';
 						}else $limit = '';
-						
+
 						if (isset($sdata->template) && isset($sdata->template->id)) {
-							
+
 							$design = $lumise->lib->get_template($sdata->template->id);
 							if (
 								$this->main->connector->platform == 'php' &&
 								(!is_array($design) || !isset($design['id']))
 							)
 								$design = null;
-								
+
 						}else $design = null;
-					
+
 				?>
 					<div class="lumise_tab_content<?php
 						if ($i++ === 0)echo " active";
-					?>" id="lumise-stage-<?php echo $stage; ?>" data-stage="<?php echo $stage; ?>">
+					?>" id="lumise-stage-<?php echo esc_attr($stage); ?>" data-stage="<?php echo esc_attr($stage); ?>">
 						<div class="lumise-stage-settings lumise-product-design<?php
-							echo (!empty($url) ? ' stage-enabled' : ' stage-disabled'); ?>" id="lumise-product-design-<?php echo $stage; ?>">
+							echo esc_attr(!empty($url) ? ' stage-enabled' : ' stage-disabled'); ?>" id="lumise-product-design-<?php echo esc_attr($stage); ?>">
 							<?php
 								$is_mask = 'false';
 								if ($overlay == '1')
 									$is_mask = 'true';
 							?>
-							<div class="lumise-stage-body" data-is-mask="<?php echo $is_mask; ?>">
+							<div class="lumise-stage-body" data-is-mask="<?php echo esc_attr($is_mask); ?>">
 								<div class="lumise_form_content" style="<?php if(isset($sdata->hide_mark_layer) && $sdata->hide_mark_layer == true){ echo 'display:none;'; } ?>">
 									<div class="lumise-toggle">
 										<input type="checkbox" name="is_mask" <?php
@@ -2506,19 +2500,19 @@ class lumise_views extends lumise_lib {
 										<span class="lumise-toggle-handle"></span>
 									</div>
 									<label data-view="mask-true">
-										<?php echo $this->main->lang('Use as a mask layer'); ?>.
+										<?php echo esc_html($this->main->lang('Use as a mask layer')); ?>.
 										<a href="https://docs.lumise.com/product-mask-image/" target=_blank class="tip">
-											<?php echo $this->main->lang('What is this'); ?> 
+											<?php echo esc_html($this->main->lang('What is this')); ?>
 											<i class="fa fa-question-circle"></i>
 											<span>
-												<?php echo $this->main->lang('Display the product image as a mask layer to be able to change the color, Click for more detail.'); ?>
+												<?php echo esc_html($this->main->lang('Display the product image as a mask layer to be able to change the color, Click for more detail.')); ?>
 											</span>
 										</a>
 									</label>
 								</div>
 								<?php if (isset($_GET['action']) && $_GET['action'] == 'product_variation') { ?>
 								<div class="lumise_form_content fill-base-color">
-									<input type="text" value="<?php echo (isset($sdata->color) && $sdata->color !== '' ? $sdata->color : ''); ?>" placeholder="Fill color for product image" /> 
+									<input type="text" value="<?php echo (isset($sdata->color) && $sdata->color !== '' ? $sdata->color : ''); ?>" placeholder="Fill color for product image" />
 									<input type="color" value="<?php echo (isset($sdata->color) && $sdata->color !== '' ? $sdata->color : ''); ?>" />
 								</div>
 								<?php } ?>
@@ -2530,25 +2524,25 @@ class lumise_views extends lumise_lib {
 										echo ' style="background:'.$sdata->color.';"';
 									}
 								?>>
-									<img src="<?php 
+									<img src="<?php
 										if (!empty($url)) {
 											echo (
-												$source == 'raws' ? 
-												$this->main->cfg->assets_url.'raws/' : 
+												$source == 'raws' ?
+												$this->main->cfg->assets_url.'assets/raws/' :
 												$this->main->cfg->upload_url
 											).$url;
 										}
-									?>" data-url="<?php echo $url; ?>" data-source="<?php echo $source; ?>" class="lumise-stage-image" data-svg="<?php echo (strpos($url, '.svg') !== false); ?>" />
-									<div class="lumise-stage-editzone"<?php echo $limit; ?>>
+									?>" data-url="<?php echo esc_attr($url); ?>" data-source="<?php echo esc_attr($source); ?>" class="lumise-stage-image" data-svg="<?php echo (strpos($url, '.svg') !== false); ?>" />
+									<div class="lumise-stage-editzone" style="<?php echo esc_attr($limit); ?>">
 										<?php if ($this->main->connector->platform == 'php') { ?>
 											<div class="editzone-funcs">
-												<button data-func="select-design" data-label="<?php echo $this->main->lang('Select Design Template'); ?>">
+												<button data-func="select-design" data-label="<?php echo esc_html($this->main->lang('Select Design Template')); ?>">
 													<i class="fa fa-plus"></i>
 												</button>
-												<button data-func="clear-design" <?php if (!isset($design) || $design === null)echo 'style="display:none;"'; ?> data-label="<?php echo $this->main->lang('Clear Design Template'); ?>">
+												<button data-func="clear-design" <?php if (!isset($design) || $design === null)echo 'style="display:none;"'; ?> data-label="<?php echo esc_html($this->main->lang('Clear Design Template')); ?>">
 													<i class="fa fa-eraser"></i>
 												</button>
-												<button data-func="move" data-label="<?php echo $this->main->lang('Drag to move the edit zone'); ?>">
+												<button data-func="move" data-label="<?php echo esc_html($this->main->lang('Drag to move the edit zone')); ?>">
 													<i class="fa fa-arrows"></i>
 												</button>
 											</div>
@@ -2556,38 +2550,38 @@ class lumise_views extends lumise_lib {
 											} else {
 												echo '<div class="editzone-gui">';
 												echo '<strong>';
-												echo '<svg width="100%" height="100%" padding="10px" viewBox="0 -120 1000 300" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><text font-size="120" fill="black" x="80">'.$this->main->lang('Drag to move').'</text><text font-size="80" fill="#555" y="120" x="30%">'.$this->main->lang('Design area').'</text></svg>';
+												echo '<svg width="100%" height="100%" padding="10px" viewBox="0 -120 1000 300" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><text font-size="120" fill="black" x="80">'.esc_html($this->main->lang('Drag to move')).'</text><text font-size="80" fill="#555" y="120" x="30%">'.esc_html($this->main->lang('Design area')).'</text></svg>';
 												echo '</strong>';
 												echo '</div>';
 											}
-											
+
 										?>
-										<i class="fa fa-expand" data-func="resize" title="<?php 
-											echo $this->main->lang('Resize the edit zone'); 
+										<i class="fa fa-expand" data-func="resize" title="<?php
+											echo esc_html($this->main->lang('Resize the edit zone'));
 										?>"></i>
 										<?php
-											
+
 											if ($this->main->connector->platform == 'php') {
 												if (isset($design) && $design !== null) {
 													echo '<div class="design-template-inner" '.(
-														(isset($sdata->edit_zone->radius) && !empty($sdata->edit_zone->radius)) ? 
-														'style="border-radius: '.$sdata->edit_zone->radius.'px"' : 
-														'' 
+														(isset($sdata->edit_zone->radius) && !empty($sdata->edit_zone->radius)) ?
+														'style="border-radius: '.$sdata->edit_zone->radius.'px"' :
+														''
 													).' data-id="'.$design['id'].'">';
 													echo '<img style="'.$sdata->template->css.'" src="'.$design['screenshot'].'">';
 													echo '</div>';
 												}else{
 													echo '<button data-func="select-design" class="design-template-btn">';
 													echo '<i class="fa fa-paint-brush"></i> ';
-													echo $this->main->lang('Design Template');
+													echo esc_html($this->main->lang('Design Template'));
 													echo '</button>';
 												}
 											}
-											
+
 										?>
-										
+
 									</div>
-									
+
 									<div class="editzone-ranges" style="<?php if(isset($sdata->hide_size) && $sdata->hide_size == true){ echo 'display:none;'; } ?>">
 										<?php
 											$pos = array(
@@ -2600,118 +2594,114 @@ class lumise_views extends lumise_lib {
 												),
 												"product_width" => $sdata->product_width,
 												"product_height" => $sdata->product_height
-											);	
+											);
 										?>
-										<input type="hidden" name="pos" value="<?php echo htmlentities(json_encode($pos)); ?>" />
+										<input type="hidden" name="pos" value="<?php echo htmlentities(wp_json_encode($pos)); ?>" />
 										<?php if ($this->main->connector->platform == 'php') { ?>
 										<div class="edr-row design-scale"<?php if(!isset($design) || $design === null)echo ' style="display: none;"';?>>
-											<label><?php echo $this->main->lang('Design scale'); ?>:</label>
+											<label><?php echo esc_html($this->main->lang('Design scale')); ?>:</label>
 											<input type="range" min="10" max="200" value="<?php
 												if (isset($sdata->template) && isset($sdata->template->scale))
-													echo $sdata->template->scale; 
+													echo esc_attr($sdata->template->scale);
 											?>" />
 										</div>
 										<?php } ?>
 										<div class="edr-row editzone-radius">
-											<label><?php echo $this->main->lang('Editzone radius'); ?>:</label>
-											<input type="range" min="0" max="100" value="<?php
-												if (isset($sdata->edit_zone->radius) && !empty($sdata->edit_zone->radius))
-													echo $sdata->edit_zone->radius;
-												else echo 0; 
-											?>" />
+											<label><?php echo esc_html($this->main->lang('Editzone radius')); ?>:</label>
+											<input type="range" min="0" max="100" value="<?php echo esc_attr(isset($sdata->edit_zone->radius) && !empty($sdata->edit_zone->radius) ? $sdata->edit_zone->radius : 0); ?>" />
 										</div>
 										<div class="edr-row" data-row="sizes">
-											<label><?php echo $this->main->lang('Size for printing'); ?>:</label>
+											<label><?php echo esc_html($this->main->lang('Size for printing')); ?>:</label>
 											<select data-name="sizes">
-												<option value=""> === <?php echo $this->main->lang('Select Size'); ?> === </option>
-												<option<?php 
-													if (isset($sdata->size) && is_object($sdata->size)) 
-														echo ' selected'; 
-												?> value="custom"><?php echo $this->main->lang('Custom'); ?></option>
+												<option value=""> === <?php echo esc_html($this->main->lang('Select Size')); ?> === </option>
+												<option<?php
+													if (isset($sdata->size) && is_object($sdata->size))
+														echo ' selected';
+												?> value="custom"><?php echo esc_html($this->main->lang('Custom')); ?></option>
 											<?php
 												foreach ($this->main->cfg->size_default as $s => $v) {
 													echo '<option value="'.$v['cm'].'"'.(
 														isset($sdata->size) && $sdata->size == $v['cm'] ? ' selected' : ''
 														).'>'.$s.'</option>';
-												}		
+												}
 											?></select>
 											<a href="#tip" class="tip">
 												<i class="fa fa-question-circle"></i>
-												<span><?php echo $this->main->lang('Select the size of design area for printing, or you can customize it by your size'); ?></span>
+												<span><?php echo esc_html($this->main->lang('Select the size of design area for printing, or you can customize it by your size')); ?></span>
 											</a>
 										</div>
 										<div class="edr-row" <?php
 											if (!isset($sdata->size) || !is_object($sdata->size))
-												echo 'style="display:none"';	
+												echo 'style="display:none"';
 										?> data-row="values">
-											<label><?php echo $this->main->lang('Size values'); ?>:</label>
+											<label><?php echo esc_html($this->main->lang('Size values')); ?>:</label>
 											<span>
-												<input value="<?php 
-												echo isset($sdata->size) && isset($sdata->size->width) ? $sdata->size->width : ''; 
+												<input value="<?php
+												echo isset($sdata->size) && isset($sdata->size->width) ? $sdata->size->width : '';
 												?>" type="text" data-name="width" placeholder="Width" />
 												<span class="constrain-aspect-ratio<?php
 													if (!isset($sdata->size->contrain) || $sdata->size->contrain === true)
 														echo ' active';
-												?>" title="<?php echo $this->main->lang('Constrain aspect ratio'); ?>">
+												?>" title="<?php echo esc_html($this->main->lang('Constrain aspect ratio')); ?>">
 													<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="30px" height="30px" viewBox="0 0 950 950" xml:space="preserve"><path d="M226.1,702.799H414.2c11.5,0,20.899-9.299,20.899-20.898V564.4H331.3V597.1H226.1c-66.5,0-120.3-53.9-120.3-120.301v-3.5    c0-66.5,53.9-120.3,120.3-120.3h105.2v32.7h103.8V268c0-11.5-9.3-20.9-20.899-20.9H226.1c-60.4,0-117.2,23.5-159.9,66.2    C23.5,356,0,412.799,0,473.2v3.5C0,537.1,23.5,593.9,66.2,636.6C108.9,679.299,165.7,702.799,226.1,702.799z"></path><path d="M723.899,247.2H531.8c-11.5,0-20.9,9.3-20.9,20.9v117.6H618.7V353h105.199c66.5,0,120.301,53.9,120.301,120.3v3.5    c0,66.5-53.9,120.301-120.301,120.301H618.7V564.4H510.899V682c0,11.5,9.301,20.9,20.9,20.9h192.1c60.4,0,117.2-23.5,159.9-66.201    c42.7-42.699,66.2-99.5,66.2-159.9v-3.5c0-60.399-23.5-117.2-66.2-159.9S784.3,247.2,723.899,247.2z"></path><path d="M331.3,425H300c-27.6,0-50,22.4-50,50c0,27.6,22.4,50,50,50h31.3h103.8H511h107.8h31.3c27.601,0,50-22.4,50-50    c0-27.6-22.399-50-50-50h-31.3h-107.9H435H331.3z"></path></svg>
 												</span>
-												<input value="<?php 
-												echo isset($sdata->size) && isset($sdata->size->height) ? $sdata->size->height : ''; 
+												<input value="<?php
+												echo isset($sdata->size) && isset($sdata->size->height) ? $sdata->size->height : '';
 												?>" type="text" data-name="height" placeholder="Height" />
 											</span>
 											<a href="#tip" class="tip">
 												<i class="fa fa-question-circle"></i>
-												<span><?php echo $this->main->lang('The real size width x height, which will be used for export & printing'); ?></span>
+												<span><?php echo esc_html($this->main->lang('The real size width x height, which will be used for export & printing')); ?></span>
 											</a>
 										</div>
 										<div class="edr-row" <?php
 											if (!isset($sdata->size) || !is_object($sdata->size))
-												echo 'style="display:none"';	
+												echo 'style="display:none"';
 										?> data-row="unit">
-											<label><?php echo $this->main->lang('Size unit'); ?>:</label>
+											<label><?php echo esc_html($this->main->lang('Size unit')); ?>:</label>
 											<select data-name="unit">
 												<option <?php
 													if (
-														isset($sdata->size) && 
-														isset($sdata->size->unit) && 
+														isset($sdata->size) &&
+														isset($sdata->size->unit) &&
 														$sdata->size->unit == 'cm'
 													) echo 'selected';
 												?> value="cm">Centimeters</option>
 												<option <?php
 													if (
-														isset($sdata->size) && 
-														isset($sdata->size->unit) && 
+														isset($sdata->size) &&
+														isset($sdata->size->unit) &&
 														$sdata->size->unit == 'inch'
 													) echo 'selected';
 												?> value="inch">Inch</option>
 												<option <?php
 													if (
-														isset($sdata->size) && 
-														isset($sdata->size->unit) && 
+														isset($sdata->size) &&
+														isset($sdata->size->unit) &&
 														$sdata->size->unit == 'px'
 													) echo 'selected';
 												?> value="px">Pixel</option>
 											</select>
 										</div>
 										<div class="edr-row" style="display:none;">
-											<label><?php echo $this->main->lang('Print orientation'); ?>:</label>
+											<label><?php echo esc_html($this->main->lang('Print orientation')); ?>:</label>
 											<select data-name="orientation">
 												<option <?php
 													if (
-														isset($sdata->orientation) && 
+														isset($sdata->orientation) &&
 														$sdata->orientation == 'portrait'
 													) echo 'selected';
 												?> value="portrait">Portrait</option>
 												<option <?php
 													if (
-														isset($sdata->orientation) && 
+														isset($sdata->orientation) &&
 														$sdata->orientation == 'landscape'
 													) echo 'selected';
 												?> value="landscape">Landscape</option>
 											</select>
 										</div>
 										<div class="edr-row" data-row="include-base">
-											<label><?php echo $this->main->lang('Export include base'); ?>:</label>
+											<label><?php echo esc_html($this->main->lang('Export include base')); ?>:</label>
 											<div class="lumise-toggle">
 												<input type="checkbox" <?php
 													echo (isset($sdata->include_base) && $sdata->include_base == 'yes' ? 'checked' : '');
@@ -2721,11 +2711,11 @@ class lumise_views extends lumise_lib {
 											</div>
 											<a href="#tip" class="tip">
 												<i class="fa fa-question-circle"></i>
-												<span><?php echo $this->main->lang('Export for printing include product base image.'); ?></span>
+												<span><?php echo esc_html($this->main->lang('Export for printing include product base image.')); ?></span>
 											</a>
 										</div>
 										<div class="edr-row" data-row="crop-marks">
-											<label><?php echo $this->main->lang('Crop marks & bleed'); ?>:</label>
+											<label><?php echo esc_html($this->main->lang('Crop marks & bleed')); ?>:</label>
 											<div class="lumise-toggle">
 												<input type="checkbox" <?php
 													echo (isset($sdata->crop_marks_bleed) && $sdata->crop_marks_bleed == 'yes' ? 'checked' : '');
@@ -2735,47 +2725,47 @@ class lumise_views extends lumise_lib {
 											</div>
 											<a href="#tip" class="tip">
 												<i class="fa fa-question-circle"></i>
-												<span><?php echo $this->main->lang('Show the guide line for crop marks and bleed in Lumise editor.'); ?></span>
+												<span><?php echo esc_html($this->main->lang('Show the guide line for crop marks and bleed in Lumise editor.')); ?></span>
 											</a>
 										</div>
 										<!--div class="edr-row" data-row="bleed-range"<?php
 											if (!isset($sdata->crop_marks_bleed) || $sdata->crop_marks_bleed != 'yes') {
-												echo ' style="display:none;"'; 
+												echo ' style="display:none;"';
 											}
 											?>>
-											<label><?php echo $this->main->lang('Bleed range'); ?>:</label>
-											<input style="width: 150px" data-name="bleed_range" type="text" placeholder="<?php echo $this->main->lang('Typically it is 2mm'); ?>" value="<?php
+											<label><?php echo esc_html($this->main->lang('Bleed range')); ?>:</label>
+											<input style="width: 150px" data-name="bleed_range" type="text" placeholder="<?php echo esc_html($this->main->lang('Typically it is 2mm')); ?>" value="<?php
 												echo (isset($sdata->bleed_range) ? $sdata->bleed_range : '');
 												?>" data-unit="mm" />
 												<a href="#tip" class="tip">
 													<i class="fa fa-question-circle"></i>
-													<span><?php echo $this->main->lang('The bleeed range in milimet, typically it is 2mm'); ?></span>
+													<span><?php echo esc_html($this->main->lang('The bleeed range in milimet, typically it is 2mm')); ?></span>
 												</a>
 										</div-->
 									</div>
-										
+
 								</div>
-								<div class="lumise-stage-btn" style="<?php if(isset($sdata->hide_size) && $sdata->hide_size == true){ echo 'display:none;'; } ?>"> 
+								<div class="lumise-stage-btn" style="<?php if(isset($sdata->hide_size) && $sdata->hide_size == true){ echo 'display:none;'; } ?>">
 									<button type="button" class="lumise-button lumise-button-large" data-func="select">
 										<i class="fa fa-th"></i>
-										<?php echo $this->main->lang('Select product image'); ?>
+										<?php echo esc_html($this->main->lang('Select product image')); ?>
 									</button>
 									<?php if ($this->main->connector->platform == 'php') { ?>
 									<button type="button" class="lumise-button lumise-button-large" data-func="download">
 										<i class="fa fa-download"></i>
-										<?php echo $this->main->lang('Download mockup'); ?>
+										<?php echo esc_html($this->main->lang('Download mockup')); ?>
 									</button>
 									<?php } ?>
 									<button type="button" class="lumise-button lumise-button-large" data-func="reset">
 										<i class="fa fa-refresh"></i>
-										<?php echo $this->main->lang('Reset all'); ?>
+										<?php echo esc_html($this->main->lang('Reset all')); ?>
 									</button>
 								</div>
 							</div>
 						</div>
 					</div>
-				<?php 
-					} 
+				<?php
+					}
 				}
 				?>
 			</div>
@@ -2787,50 +2777,50 @@ class lumise_views extends lumise_lib {
 			<div class="lumise-popup-content">
 				<header>
 					<h3>
-						<span><?php echo $this->main->lang('Select image for product base'); ?></span>
+						<span><?php echo esc_html($this->main->lang('Select image for product base')); ?></span>
 						<button class="lumise-btn" data-act="samples">
-							<i class="fa fa-th"></i> 
-							<?php echo $this->main->lang('Lumise samples'); ?>
+							<i class="fa fa-th"></i>
+							<?php echo esc_html($this->main->lang('Lumise samples')); ?>
 						</button>
 						<button class="lumise-btn hidden" data-act="uploaded">
-							<i class="fa fa-arrow-left"></i> 
-							<?php echo $this->main->lang('My Uploaded'); ?>
+							<i class="fa fa-arrow-left"></i>
+							<?php echo esc_html($this->main->lang('My Uploaded')); ?>
 						</button>
 						<?php
 							if (!$lumise->caps('lumise_can_upload')) {
 						?>
 						<button class="lumise-btn-primary" style="background-color: #bfbfbf !important;cursor: no-drop;" data-act="upload">
-							<i class="fa fa-cloud-upload"></i> 
-							<?php echo $this->main->lang('Upload new image'); ?>
+							<i class="fa fa-cloud-upload"></i>
+							<?php echo esc_html($this->main->lang('Upload new image')); ?>
 						</button>
-						<small style="color:red"><?php echo $this->main->lang('Sorry, You are not allowed to upload files. Please ask the administrator for permission'); ?></small>
+						<small style="color:red"><?php echo esc_html($this->main->lang('Sorry, You are not allowed to upload files. Please ask the administrator for permission')); ?></small>
 						<?php } else { ?>
 						<button class="lumise-btn-primary" data-act="upload">
-							<i class="fa fa-cloud-upload"></i> 
-							<?php echo $this->main->lang('Upload new image'); ?>
+							<i class="fa fa-cloud-upload"></i>
+							<?php echo esc_html($this->main->lang('Upload new image')); ?>
 						</button>
-						<a class="lumise-btn" href="https://shop.lumise.com/?utm_source=backendsp&utm_medium=click&utm_campaign=traffic" target="_blank"><?php echo $this->main->lang('See more product pictures'); ?></a>
-						<small><?php echo $this->main->lang('Accept file type: .jpg, .png, .svg (1KB -> 5MB)'); ?></small>
+						<a class="lumise-btn" href="https://shop.lumise.com/?utm_source=backendsp&utm_medium=click&utm_campaign=traffic" target="_blank"><?php echo esc_html($this->main->lang('See more product pictures')); ?></a>
+						<small><?php echo esc_html($this->main->lang('Accept file type: .jpg, .png, .svg (1KB -> 5MB)')); ?></small>
 						<input type="file" class="hidden" id="lumise-product-upload-input" />
 						<?php } ?>
 					</h3>
 					<span class="close-pop"><svg enable-background="new 0 0 32 32" height="32px" id="close" version="1.1" viewBox="0 0 32 32" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M17.459,16.014l8.239-8.194c0.395-0.391,0.395-1.024,0-1.414c-0.394-0.391-1.034-0.391-1.428,0  l-8.232,8.187L7.73,6.284c-0.394-0.395-1.034-0.395-1.428,0c-0.394,0.396-0.394,1.037,0,1.432l8.302,8.303l-8.332,8.286  c-0.394,0.391-0.394,1.024,0,1.414c0.394,0.391,1.034,0.391,1.428,0l8.325-8.279l8.275,8.276c0.394,0.395,1.034,0.395,1.428,0  c0.394-0.396,0.394-1.037,0-1.432L17.459,16.014z" fill="#121313" id="Close"></path></svg></span>
 				</header>
 				<div id="lumise-base-images">
-					<p class="lumise-notice"><?php 
-						echo $this->main->lang('Notice: If you want the upload product image have the ability to change color on the editor.'); 
+					<p class="lumise-notice"><?php
+						echo esc_html($this->main->lang('Notice: If you want the upload product image have the ability to change color on the editor.'));
 						echo ' <a href="https://docs.lumise.com/product-mask-image/" target="_blank">';
-						echo $this->main->lang('Read more Mask Image');
+						echo esc_html($this->main->lang('Read more Mask Image'));
 						echo ' <i class="fa fa-arrow-circle-o-right"></i>';
 						echo '</a>';
 					?></p>
 					<ul class="lumise-stagle-list-base" id="lumise-uploaded-bases">
-						<li data-act="load-more" data-start="0"><?php echo $this->main->lang('Load more'); ?></li>
+						<li data-act="load-more" data-start="0"><?php echo esc_html($this->main->lang('Load more')); ?></li>
 					</ul>
 					<ul class="lumise-stagle-list-base hidden" id="lumise-sample-bases">
 						<?php
 							foreach($this->main->cfg->base_default as $item) {
-								echo '<li><img data-act="base" data-src="products/'.$item.'" data-source="raws" src="'.$this->main->cfg->assets_url.'raws/products/'.$item.'" />';
+								echo '<li><img data-act="base" data-src="products/'.$item.'" data-source="raws" src="'.$this->main->cfg->assets_url.'assets/raws/products/'.$item.'" />';
 								echo '<span>'.str_replace(array('_', '.png'), array(' ', ''), $item).'</span>';
 								echo '</li>';
 							}
@@ -2844,30 +2834,30 @@ class lumise_views extends lumise_lib {
 					</div>
 					<div data-view="success" class="hidden">
 						<img src="" />
-						<h5><?php echo $this->main->lang('Upload completed!'); ?></h5>
+						<h5><?php echo esc_html($this->main->lang('Upload completed!')); ?></h5>
 						<span>
 							<button class="lumise-button" data-act="use">
-								<i class="fa fa-check" data-act="use"></i> 
-								<?php echo $this->main->lang('Use this image'); ?>			
+								<i class="fa fa-check" data-act="use"></i>
+								<?php echo esc_html($this->main->lang('Use this image')); ?>
 							</button>
 							<button class="lumise-button lumise-button-primary" data-act="upload">
-								<i class="fa fa-cloud-upload" data-act="upload"></i> 
-								<?php echo $this->main->lang('Upload another'); ?>			
+								<i class="fa fa-cloud-upload" data-act="upload"></i>
+								<?php echo esc_html($this->main->lang('Upload another')); ?>
 							</button>
 						</span>
 						<svg data-act="dismiss" height="24px" width="24px" version="1.1" viewBox="0 0 32 32"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M17.459,16.014l8.239-8.194c0.395-0.391,0.395-1.024,0-1.414c-0.394-0.391-1.034-0.391-1.428,0  l-8.232,8.187L7.73,6.284c-0.394-0.395-1.034-0.395-1.428,0c-0.394,0.396-0.394,1.037,0,1.432l8.302,8.303l-8.332,8.286  c-0.394,0.391-0.394,1.024,0,1.414c0.394,0.391,1.034,0.391,1.428,0l8.325-8.279l8.275,8.276c0.394,0.395,1.034,0.395,1.428,0  c0.394-0.396,0.394-1.037,0-1.432L17.459,16.014z" data-act="dismiss"></path></svg>
 					</div>
 					<div data-view="fail" class="hidden">
 						<svg  height="60px" width="60px" version="1.1" viewBox="0 0 32 32"  xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M17.459,16.014l8.239-8.194c0.395-0.391,0.395-1.024,0-1.414c-0.394-0.391-1.034-0.391-1.428,0  l-8.232,8.187L7.73,6.284c-0.394-0.395-1.034-0.395-1.428,0c-0.394,0.396-0.394,1.037,0,1.432l8.302,8.303l-8.332,8.286  c-0.394,0.391-0.394,1.024,0,1.414c0.394,0.391,1.034,0.391,1.428,0l8.325-8.279l8.275,8.276c0.394,0.395,1.034,0.395,1.428,0  c0.394-0.396,0.394-1.037,0-1.432L17.459,16.014z" fill="red"></path></svg>
-						<h5><?php echo $this->main->lang('Upload fail!'); ?></h5>
+						<h5><?php echo esc_html($this->main->lang('Upload fail!')); ?></h5>
 						<span>
 							<button class="lumise-button" data-act="dismiss">
-								<i class="fa fa-times" data-act="dismiss"></i> 
-								<?php echo $this->main->lang('Dismiss'); ?>			
+								<i class="fa fa-times" data-act="dismiss"></i>
+								<?php echo esc_html($this->main->lang('Dismiss')); ?>
 							</button>
 							<button class="lumise-button lumise-button-primary" data-act="upload">
-								<i class="fa fa-cloud-upload" data-act="upload"></i> 
-								<?php echo $this->main->lang('Try again'); ?>			
+								<i class="fa fa-cloud-upload" data-act="upload"></i>
+								<?php echo esc_html($this->main->lang('Try again')); ?>
 							</button>
 						</span>
 					</div>
@@ -2877,26 +2867,26 @@ class lumise_views extends lumise_lib {
 		<input type="file" id="lumise-stages-upload-helper" style="display: none;" />
 	</div>
 	<script type="text/javascript">
-		
-		var lumise_upload_url = '<?php echo $this->main->cfg->upload_url; ?>',
-			lumise_assets_url = '<?php echo $this->main->cfg->assets_url; ?>';
-				
+
+		var lumise_upload_url = '<?php echo esc_js($this->main->cfg->upload_url); ?>',
+			lumise_assets_url = '<?php echo esc_js($this->main->cfg->assets_url); ?>';
+
 		document.lumiseconfig = {
 			main: 'product',
-			ce: '<?php echo $this->main->lang('The color has exist, please select another'); ?>',
-			hs: '<?php echo $this->main->lang('No stages configured, please select image with Edit Area for a minimum of one stage in tab Product Design'); ?>',
-			sm: '<?php echo $this->main->lang('The size of image is too small (50KB - 10000KB)'); ?>',
-			lg: '<?php echo $this->main->lang('The size of image is too large (50KB - 10000KB)'); ?>',
-			tp: '<?php echo $this->main->lang('Only accept image type *.jpg, *.png or *.svg'); ?>',
-			ru: '<?php echo $this->main->lang('Your upload is '); ?>',
-			bases: <?php echo json_encode($this->main->cfg->base_default); ?>,
-			max_stages: <?php echo $this->main->cfg->max_stages; ?>,
-			noc : '<?php echo $this->main->lang('Error, you can not create multiple attributes of this type'); ?>'
+			ce: '<?php echo esc_js($this->main->lang('The color has exist, please select another')); ?>',
+			hs: '<?php echo esc_js($this->main->lang('No stages configured, please select image with Edit Area for a minimum of one stage in tab Product Design')); ?>',
+			sm: '<?php echo esc_js($this->main->lang('The size of image is too small (50KB - 10000KB)')); ?>',
+			lg: '<?php echo esc_js($this->main->lang('The size of image is too large (50KB - 10000KB)')); ?>',
+			tp: '<?php echo esc_js($this->main->lang('Only accept image type *.jpg, *.png or *.svg')); ?>',
+			ru: '<?php echo esc_js($this->main->lang('Your upload is ')); ?>',
+			bases: <?php echo wp_json_encode($this->main->cfg->base_default); ?>,
+			max_stages: <?php echo esc_js($this->main->cfg->max_stages); ?>,
+			noc : '<?php echo esc_js($this->main->lang('Error, you can not create multiple attributes of this type')); ?>'
 		};
 	</script>
 	<?php
 	}
-	
+
 	public function field_variations($args) {
 	?>
 		<div id="lumise-variations">
@@ -2907,18 +2897,18 @@ class lumise_views extends lumise_lib {
 				</div>
 				<div class="lumise-att-layout-create">
 					<button class="lumise-button" style="display: none;" data-act="add_variation">
-						<i class="fa fa-plus" data-act="add_variation"></i> 
-						<?php echo $this->main->lang('Add new variation'); ?>
+						<i class="fa fa-plus" data-act="add_variation"></i>
+						<?php echo esc_html($this->main->lang('Add new variation')); ?>
 					</button>
 					<button class="lumise-button" style="display: none;" data-act="bulk_edit_variation">
-						<i class="fa fa-pencil" data-act="bulk_edit_variation"></i> 
-						<?php echo $this->main->lang('Bulk edit variations'); ?>
+						<i class="fa fa-pencil" data-act="bulk_edit_variation"></i>
+						<?php echo esc_html($this->main->lang('Bulk edit variations')); ?>
 					</button>
-					<a href="#close" style="display: none;" data-act="close"><?php echo $this->main->lang('Close'); ?></a>
+					<a href="#close" style="display: none;" data-act="close"><?php echo esc_html($this->main->lang('Close')); ?></a>
 					<a data-act="sp" style="display: none;">/</a>
-					<a href="#expand" style="display: none;" data-act="expand"><?php echo $this->main->lang('Expand'); ?></a>
+					<a href="#expand" style="display: none;" data-act="expand"><?php echo esc_html($this->main->lang('Expand')); ?></a>
 					<p data-view="notice">
-						<?php echo $this->main->lang('Before you can add a variation you need to add some variation attributes on the Attributes tab.'); ?> <a href="https://docs.lumise.com/backend-management/product-base/variables/?utm_source=clients&amp;utm_medium=links&amp;utm_campaign=client-site&amp;utm_term=attributes&amp;utm_content=<?php echo $this->main->connector->platform; ?>" target="_blank"><?php echo $this->main->lang('Learn more'); ?> &rarr;</a>
+						<?php echo esc_html($this->main->lang('Before you can add a variation you need to add some variation attributes on the Attributes tab.')); ?> <a href="https://docs.lumise.com/backend-management/product-base/variables/?utm_source=clients&amp;utm_medium=links&amp;utm_campaign=client-site&amp;utm_term=attributes&amp;utm_content=<?php echo esc_attr($this->main->connector->platform); ?>" target="_blank"><?php echo esc_html($this->main->lang('Learn more')); ?> &rarr;</a>
 					</p>
 				</div>
 				<div id="lumise-field-variations-items" class="lumise-field-layout-items"></div>
@@ -2942,23 +2932,23 @@ class lumise_views extends lumise_lib {
 						</div>
 						<div class="att-layout-body">
 							<div class="att-layout-body-field third-left">
-								<label><?php echo $this->main->lang('Regular price'); ?></label>
+								<label><?php echo esc_html($this->main->lang('Regular price')); ?></label>
 								<input type="text" data-name="price" placeholder="Variation price (required)" />
 							</div>
 							<div class="att-layout-body-field third-midle">
-								<label><?php echo $this->main->lang('Min Quantity'); ?></label>
+								<label><?php echo esc_html($this->main->lang('Min Quantity')); ?></label>
 								<input data-name="min-qty" type="text" />
 							</div>
 							<div class="att-layout-body-field third-right">
-								<label><?php echo $this->main->lang('Max Quantity'); ?></label>
+								<label><?php echo esc_html($this->main->lang('Max Quantity')); ?></label>
 								<input data-name="max-qty" type="text" />
 							</div>
 							<div class="att-layout-body-field full">
-								<label><?php echo $this->main->lang('Description'); ?></label>
+								<label><?php echo esc_html($this->main->lang('Description')); ?></label>
 								<textarea data-name="description"></textarea>
 							</div>
 							<div class="att-layout-body-field full pdtop">
-								<label><?php echo $this->main->lang('Configure printing techniques'); ?>:</label>
+								<label><?php echo esc_html($this->main->lang('Configure printing techniques')); ?>:</label>
 								<div class="lumise-toggle">
 									<input type="checkbox" data-name="cfgprinting" data-cfgprinting="true" value="1">
 									<span class="lumise-toggle-label" data-on="Yes" data-off="No"></span>
@@ -2966,12 +2956,12 @@ class lumise_views extends lumise_lib {
 								</div>
 								<span class="tip">
 									<i class="fa fa-question-circle"></i>
-									<span><?php echo $this->main->lang('You can configure the printing to change the pricing for this variable'); ?></span>
+									<span><?php echo esc_html($this->main->lang('You can configure the printing to change the pricing for this variable')); ?></span>
 								</span>
 								<div class="att-layout-cfgprinting" style="display: none;"></div>
 							</div>
 							<div class="att-layout-body-field full pdtop">
-								<label><?php echo $this->main->lang('Custom designs configuration'); ?>:</label>
+								<label><?php echo esc_html($this->main->lang('Custom designs configuration')); ?>:</label>
 								<div class="lumise-toggle">
 									<input type="checkbox" data-name="cfgstages" data-cfgstages="true" value="1">
 									<span class="lumise-toggle-label" data-on="Yes" data-off="No"></span>
@@ -2979,7 +2969,7 @@ class lumise_views extends lumise_lib {
 								</div>
 								<span class="tip">
 									<i class="fa fa-question-circle"></i>
-									<span><?php echo $this->main->lang('You can configure product images, edit zones and stages for this variable'); ?></span>
+									<span><?php echo esc_html($this->main->lang('You can configure product images, edit zones and stages for this variable')); ?></span>
 								</span>
 								<div class="att-layout-cfgstages" style="display: none;"></div>
 							</div>
@@ -2993,7 +2983,7 @@ class lumise_views extends lumise_lib {
 		?></textarea>
 	<?php
 	}
-	
+
 	public function field_shape($args) {
 	?><div id="lumise_shape_preview"></div><br />
 		<textarea name="<?php echo isset($args['name']) ? $args['name'] : ''; ?>" id="lumise_shape_content"><?php echo !empty($args['value']) ? $args['value'] : '&lt;svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0,0,100,100"&gt;&lt;polygon points="50 0, 0 100, 100 100"&gt;&lt;/polygon&gt;&lt;/svg&gt;' ?></textarea>
@@ -3010,9 +3000,9 @@ class lumise_views extends lumise_lib {
 	}
 
 	public function field_print($args) {
-		
+
 		global $lumise;
-		
+
 		$printing_types = $args['prints_type'];
 		$prices = isset($args['value'])? $this->dejson($args['value']) : json_decode('{"type":"multi", "multi" : "true"}');
 		// echo "<pre>";
@@ -3023,7 +3013,7 @@ class lumise_views extends lumise_lib {
 		if (isset($printing_types[$print_type]) && isset($prices->values)) {
         	$printing_types[$print_type]['values'] = $prices->values;
         }
-		
+
 		?>
 		<div data-view="multi">
 			<div class="lumise-toggle">
@@ -3031,31 +3021,31 @@ class lumise_views extends lumise_lib {
 				<span class="lumise-toggle-label" data-on="Yes" data-off="No"></span>
 				<span class="lumise-toggle-handle"></span>
 			</div>
-			<em class="notice"><?php echo $this->main->lang('Allow setup price for each stage?'); ?></em>
+			<em class="notice"><?php echo esc_html($this->main->lang('Allow setup price for each stage?')); ?></em>
 		</div>
 		<?php foreach ($printing_types as $type => $calcs) { ?>
 		<div class="lumise_radios">
 			<div class="radio">
-				<input type="radio" data-func="type" name="lumise-printing-<?php echo $args['name']; ?>" id="lumise-radio-<?php echo $type; ?>" value="<?php echo $type; ?>" <?php if($type == $print_type) echo 'checked'; ?>>
-				<label for="lumise-radio-<?php echo $type; ?>">
-					<?php echo $calcs['label']; ?>
+				<input type="radio" data-func="type" name="lumise-printing-<?php echo esc_attr($args['name']); ?>" id="lumise-radio-<?php echo esc_attr($type); ?>" value="<?php echo esc_attr($type); ?>" <?php if($type == $print_type) echo 'checked'; ?>>
+				<label for="lumise-radio-<?php echo esc_attr($type); ?>">
+					<?php echo esc_html($calcs['label']); ?>
 					<div class="check"></div>
 				</label>
 				<em class="notice">
-					<?php echo $calcs['desc']; ?>
+					<?php echo esc_html($calcs['desc']); ?>
 				</em>
 			</div>
-            <div class="lumise_radio_content" data-type="<?php echo $type; ?>"></div>
+            <div class="lumise_radio_content" data-type="<?php echo esc_attr($type); ?>"></div>
 		</div>
 		<?php } ?>
-		<input type="hidden" name="<?php echo $args['name']; ?>" data-func="data-saved" value="<?php echo isset($args['value']) ? $args['value'] : ''; ?>" />
+		<input type="hidden" name="<?php echo esc_attr($args['name']); ?>" data-func="data-saved" value="<?php echo isset($args['value']) ? $args['value'] : ''; ?>" />
 		<p data-view="multi"></p>
-		<?php echo $this->main->lang('If you need to understand more about the printing cost calculator'); ?>. <a href="https://docs.lumise.com/printing-cost-calculator/?utm_source=clients&utm_medium=links&utm_campaign=client-site&utm_term=attributes&utm_content=<?php echo $this->main->connector->platform; ?>" target=_blank><?php echo $this->main->lang('Click for more details'); ?></a>
+		<?php echo esc_html($this->main->lang('If you need to understand more about the printing cost calculator')); ?>. <a href="https://docs.lumise.com/printing-cost-calculator/?utm_source=clients&utm_medium=links&utm_campaign=client-site&utm_term=attributes&utm_content=<?php echo esc_attr($this->main->connector->platform); ?>" target=_blank><?php echo esc_html($this->main->lang('Click for more details')); ?></a>
 		<script>
 			document.lumiseconfig = {
 				main: 'printing',
 				ops: {
-					data: <?php echo json_encode( (object) $printing_types ); ?>,
+					data: <?php echo wp_json_encode( (object) $printing_types ); ?>,
 			   		multi: <?php echo (isset($printing_types['multi_sides']) && $printing_types['multi_sides'] == 1)? 'true' : 'false'; ?>,
 			   		show_detail: '<?php echo isset($prices->show_detail) ? $prices->show_detail : ''; ?>',
 					white_base: '<?php echo isset($prices->white_base) ? $prices->white_base : 1; ?>',
@@ -3063,11 +3053,11 @@ class lumise_views extends lumise_lib {
 					cfgpricing: '<?php echo isset($prices->cfgpricing) ? $prices->cfgpricing : ''; ?>',
 			   		current_type: '<?php echo ($type ? $type : 'multi'); ?>',
 			   		langs: {
-			    		aqr: '<?php echo $this->main->lang('Add Quantity Range'); ?>',
-			    		qr: '<?php echo $this->main->lang('Quantity Range'); ?>',
-			    		nd: '<?php echo $this->main->lang('You can not remove all items, must have at least one option for printing method.'); ?>'
+			    		aqr: '<?php echo esc_js($this->main->lang('Add Quantity Range')); ?>',
+			    		qr: '<?php echo esc_js($this->main->lang('Quantity Range')); ?>',
+			    		nd: '<?php echo esc_js($this->main->lang('You can not remove all items, must have at least one option for printing method.')); ?>'
 					},
-					max_stages: <?php echo $this->main->cfg->max_stages; ?>
+					max_stages: <?php echo esc_js($this->main->cfg->max_stages); ?>
 				}
 			}
 		</script>
@@ -3079,12 +3069,12 @@ class lumise_views extends lumise_lib {
 			echo 'Missing option tabs';
 			return;
 		}
-		
+
 		if(is_array($args['value']) && !count($args['value']))
 			$args['value'] = $args['default'];
-			
+
 		if (is_string($args['value']))
-			$value = @json_decode($args['value']);
+			$value = json_decode($args['value']);
 		else $value = $args['value'];
 
 		if ($value === null)
@@ -3097,13 +3087,13 @@ class lumise_views extends lumise_lib {
 				array(
 					'type' => 'input',
 					'name' => $args['name'].'['.$i.'][title]',
-					'label' => $this->main->lang('Title'),
+					'label' => esc_html($this->main->lang('Title')),
 					'value' => isset($value[$i]) ? $value[$i]->title : ''
 				),
 				array(
 					'type' => 'text',
 					'name' => $args['name'].'['.$i.'][content]',
-					'label' => $this->main->lang('Content'),
+					'label' => esc_html($this->main->lang('Content')),
 					'value' => isset($value[$i]) ? stripslashes($value[$i]->content) : ''
 				),
 			);
@@ -3116,21 +3106,21 @@ class lumise_views extends lumise_lib {
 	}
 	public function field_groups($args) {
 		global $lumise;
-	
+
 	    $value = isset($args['value'])? $this->dejson($args['value']) : json_decode('{}');
 
 	    if (isset($args['fields']) && is_array($args['fields'])) {
 			$fields = $args['fields'];
 			foreach($fields as $key => $field){
 				$fields[$key]['name'] = $args['name']."[{$field['name']}]";
-				
+
 				if(isset($value->{$field['name']}))
 					$fields[$key]['value'] = $value->{$field['name']};
 			}
 			$this->fields_render($fields);
 		}
 		?>
-		<!-- <input type="hidden" name="<?php echo $args['name']; ?>" data-func="data-saved" value="<?php echo isset($args['value']) ? $args['value'] : ''; ?>" /> -->
+		<!-- <input type="hidden" name="<?php echo esc_attr($args['name']); ?>" data-func="data-saved" value="<?php echo isset($args['value']) ? $args['value'] : ''; ?>" /> -->
 		<?php
 	}
 	public function field_resource($args) {
@@ -3142,7 +3132,7 @@ class lumise_views extends lumise_lib {
 		}
 		if(is_array($args['value']) && !count($args['value']))
 			$args['value'] = $args['default'];
-			
+
 		if (is_string($args['value']))
 			$values = $this->main->lib->dejson($args['value']);
 		else $values = $args['value'];
@@ -3166,14 +3156,14 @@ class lumise_views extends lumise_lib {
 				// }
 				if (isset($tab['fields']) && is_array($tab['fields'])) {
 					$fields = $tab['fields'];
-					
+
 					foreach($fields as $k => $field){
 						$fields[$k]['name'] = $args['name']."[$key][{$field['name']}]";
-						
+
 						if(isset($values->$key->{$field['name']}))
 							$fields[$k]['value'] = $values->$key->{$field['name']};
 					}
-					
+
 					$this->fields_render($fields);
 				}
 			    echo '</div>';
@@ -3188,35 +3178,35 @@ class lumise_views extends lumise_lib {
 			array(
 				'type' => 'toggle',
 				'name' => 'movable',
-				'label' => $this->main->lang('Movable'),
+				'label' => esc_html($this->main->lang('Movable')),
 				'default' => 'yes',
 				'value' => null
 			),
 			array(
 				'type' => 'toggle',
 				'name' => 'scalable',
-				'label' => $this->main->lang('Scalable'),
+				'label' => esc_html($this->main->lang('Scalable')),
 				'default' => 'yes',
 				'value' => null
 			),
 			array(
 				'type' => 'toggle',
 				'name' => 'removable',
-				'label' => $this->main->lang('Removable'),
+				'label' => esc_html($this->main->lang('Removable')),
 				'default' => 'yes',
 				'value' => null
 			),
 			array(
 				'type' => 'toggle',
 				'name' => 'rotatable',
-				'label' => $this->main->lang('Rotatable'),
+				'label' => esc_html($this->main->lang('Rotatable')),
 				'default' => 'yes',
 				'value' => null
 			),
 			array(
 				'type' => 'toggle',
 				'name' => 'double',
-				'label' => $this->main->lang('Double'),
+				'label' => esc_html($this->main->lang('Double')),
 				'default' => 'yes',
 				'value' => null
 			),
@@ -3225,7 +3215,7 @@ class lumise_views extends lumise_lib {
 			array_unshift($fabric,array(
 				'type' => 'toggle',
 				'name' => 'editable',
-				'label' => $this->main->lang('Editable'),
+				'label' => esc_html($this->main->lang('Editable')),
 				'default' => 'yes',
 				'value' => null
 			));
@@ -3234,61 +3224,61 @@ class lumise_views extends lumise_lib {
 				array(
 					'type' => 'input',
 					'name' => 'min_font_size',
-					'label' => $this->main->lang('Min font size'),
+					'label' => esc_html($this->main->lang('Min font size')),
 					'default' => 6,
 				),
 				array(
 					'type' => 'input',
 					'name' => 'max_font_size',
-					'label' => $this->main->lang('Max font size'),
+					'label' => esc_html($this->main->lang('Max font size')),
 					'default' => 144,
 				),
 				array(
 					'type' => 'input',
 					'name' => 'min_text_line',
-					'label' => $this->main->lang('Min text line'),
+					'label' => esc_html($this->main->lang('Min text line')),
 					//'default' => 1,
 				),
 				array(
 					'type' => 'input',
 					'name' => 'max_text_line',
-					'label' => $this->main->lang('Max text line'),
+					'label' => esc_html($this->main->lang('Max text line')),
 					//'default' => 3,
 				),
 				array(
 					'type' => 'input',
 					'name' => 'min_text_letter',
-					'label' => $this->main->lang('Min text letter'),
+					'label' => esc_html($this->main->lang('Min text letter')),
 					//'default' => 1,
 				),
 				array(
 					'type' => 'input',
 					'name' => 'max_text_letter',
-					'label' => $this->main->lang('Max text letter'),
+					'label' => esc_html($this->main->lang('Max text letter')),
 					//'default' => 5,
 				),
 				array(
 					'type' => 'input',
 					'name' => 'min_line_height',
-					'label' => $this->main->lang('Min line height'),
+					'label' => esc_html($this->main->lang('Min line height')),
 					'default' => 0,
 				),
 				array(
 					'type' => 'input',
 					'name' => 'max_line_height',
-					'label' => $this->main->lang('Max line height'),
+					'label' => esc_html($this->main->lang('Max line height')),
 					'default' => 50,
 				),
 				array(
 					'type' => 'input',
 					'name' => 'min_letter_spacing',
-					'label' => $this->main->lang('Min letter spacing'),
+					'label' => esc_html($this->main->lang('Min letter spacing')),
 					'default' => 0,
 				),
 				array(
 					'type' => 'input',
 					'name' => 'max_letter_spacing',
-					'label' => $this->main->lang('Max letter spacing'),
+					'label' => esc_html($this->main->lang('Max letter spacing')),
 					'default' => 1000,
 				),
 			),
@@ -3296,54 +3286,54 @@ class lumise_views extends lumise_lib {
 				array(
 					'type' => 'input',
 					'name' => 'min_width',
-					'label' => $this->main->lang('Min width(px)'),
+					'label' => esc_html($this->main->lang('Min width(px)')),
 				),
 				array(
 					'type' => 'input',
 					'name' => 'max_width',
-					'label' => $this->main->lang('Max width(px)'),
+					'label' => esc_html($this->main->lang('Max width(px)')),
 				),
 				array(
 					'type' => 'input',
 					'name' => 'min_scale',
-					'label' => $this->main->lang('Min scale'),
-					'desc' => $this->main->lang('Minimum allowed scale value of an object'),
+					'label' => esc_html($this->main->lang('Min scale')),
+					'desc' => esc_html($this->main->lang('Minimum allowed scale value of an object')),
 				),
 				array(
 					'type' => 'input',
 					'name' => 'max_scale',
-					'label' => $this->main->lang('Max scale'),
-					'desc' => $this->main->lang('Maximum allowed scale value of an object'),
+					'label' => esc_html($this->main->lang('Max scale')),
+					'desc' => esc_html($this->main->lang('Maximum allowed scale value of an object')),
 				),
 			),
 			'templates' => array(
 				array(
 					'type' => 'input',
 					'name' => 'min_width',
-					'label' => $this->main->lang('Min width(px)'),
+					'label' => esc_html($this->main->lang('Min width(px)')),
 				),
 				array(
 					'type' => 'input',
 					'name' => 'max_width',
-					'label' => $this->main->lang('Max width(px)'),
+					'label' => esc_html($this->main->lang('Max width(px)')),
 				),
 				array(
 					'type' => 'input',
 					'name' => 'min_scale',
-					'label' => $this->main->lang('Min scale'),
-					'desc' => $this->main->lang('Minimum allowed scale value of an object'),
+					'label' => esc_html($this->main->lang('Min scale')),
+					'desc' => esc_html($this->main->lang('Minimum allowed scale value of an object')),
 				),
 				/* array(
 					'type' => 'input',
 					'name' => 'max_scale',
-					'label' => $this->main->lang('Max scale'),
+					'label' => esc_html($this->main->lang('Max scale')),
 				), */
 			),
 			'image' => array(
 				array(
 					'type' => 'filters',
 					'name' => 'filter',
-					'label' => $this->main->lang('Filter'),
+					'label' => esc_html($this->main->lang('Filter')),
 					'options' => array(
 						'bnw' => 'Black and White',
 						'satya' => 'Satya',
@@ -3383,48 +3373,48 @@ class lumise_views extends lumise_lib {
 				array(
 					'type' => 'input',
 					'name' => 'min_dimensions',
-					'label' => $this->main->lang('Min dimensions'),
-					'desc' => $this->main->lang('The min width x height in pixel of images can be added'),
+					'label' => esc_html($this->main->lang('Min dimensions')),
+					'desc' => esc_html($this->main->lang('The min width x height in pixel of images can be added')),
 					'default' => '',
-					'placeholder' => $this->main->lang('Enter dimensions width x height (eg: 100x100)'),
+					'placeholder' => esc_html($this->main->lang('Enter dimensions width x height (eg: 100x100)')),
 				),
 				array(
 					'type' => 'input',
 					'name' => 'max_dimensions',
-					'label' => $this->main->lang('Max dimensions'),
-					'desc' => $this->main->lang('The max width x height in pixel of images can be added'),
+					'label' => esc_html($this->main->lang('Max dimensions')),
+					'desc' => esc_html($this->main->lang('The max width x height in pixel of images can be added')),
 					'default' => '',
-					'placeholder' => $this->main->lang('Enter dimensions width x height (eg: 500x500)'),
+					'placeholder' => esc_html($this->main->lang('Enter dimensions width x height (eg: 500x500)')),
 				),
 				array(
 					'type' => 'input',
 					'name' => 'min_dpi',
-					'label' => $this->main->lang('Min DPI'),
+					'label' => esc_html($this->main->lang('Min DPI')),
 					//'default' => 72,
 				),
 				array(
 					'type' => 'input',
 					'name' => 'max_dpi',
-					'label' => $this->main->lang('Max DPI'),
+					'label' => esc_html($this->main->lang('Max DPI')),
 					//'default' => 300,
 				),
 				array(
 					'type' => 'input',
 					'name' => 'min_scale',
-					'label' => $this->main->lang('Min scale'),
+					'label' => esc_html($this->main->lang('Min scale')),
 					//'default' => 0.01,
 				),
 				array(
 					'type' => 'input',
 					'name' => 'max_scale',
-					'label' => $this->main->lang('Max scale'),
+					'label' => esc_html($this->main->lang('Max scale')),
 					//'default' => 5,
 				),
 			),
 			'shapes' => array(),
 			'background' => array(),
 		);
-		
+
 		return $fieldset ? array_merge($fields[ $fieldset ], $fabric) : $fields;
 	}
 
@@ -3437,9 +3427,9 @@ class lumise_views extends lumise_lib {
 			$values = $advance->values;
 			switch ( $type ) {
 				//case 'toggle':
-					//$option_fields[$key]['value'] = isset($values->{$field['name']}) ? $values->{$field['name']} : ''; 
+					//$option_fields[$key]['value'] = isset($values->{$field['name']}) ? $values->{$field['name']} : '';
 				default:
-					$option_fields[$key]['value'] = isset($values->{$field['name']}) ? $values->{$field['name']} : null; 
+					$option_fields[$key]['value'] = isset($values->{$field['name']}) ? $values->{$field['name']} : null;
 					break;
 			}
 		}
@@ -3451,11 +3441,11 @@ class lumise_views extends lumise_lib {
 				<span class="lumise-toggle-handle"></span>
 			</div>
 		</div>
-		<?php 
+		<?php
 			if(isset($option_fields) && is_array($option_fields))
 				$this->fields_render($option_fields);
 		?>
-		<input type="hidden" name="<?php echo $args['name']; ?>" data-func="data-saved" value="<?php echo isset($args['value']) ? $args['value'] : ''; ?>" />
+		<input type="hidden" name="<?php echo esc_attr($args['name']); ?>" data-func="data-saved" value="<?php echo isset($args['value']) ? $args['value'] : ''; ?>" />
 		<?php
 	}
 
@@ -3465,57 +3455,57 @@ class lumise_views extends lumise_lib {
 		<ul>
 			<?php
 				$fonts = json_decode(htmlspecialchars_decode(trim($args['value'])), true);
-				
+
 				if (is_array($fonts) && count($fonts) > 0) {
 					foreach ($fonts as $name => $font) {
-						
+
 						$txt = str_replace(' ', '+', urldecode($name)).':'.$font[1];
 						echo '<li data-n='.$name.' data-f="'.$font[0].'" data-s="'.$font[1].'">';
 						echo '<link rel="stylesheet" href="//fonts.googleapis.com/css?family='.$txt.'" />';
 						echo '<font style="font-family: '.urldecode($name).';">'.urldecode($name).'</font>';
-						echo '<delete data-act="delete">'.$this->main->lang('Delete').'</delete>';
+						echo '<delete data-act="delete">'.esc_html($this->main->lang('Delete')).'</delete>';
 						echo '</li>';
-					} 
+					}
 				} else {
-					echo '<p class="lumise-notice">'.$this->main->lang('No items found').'</p>';
+					echo '<p class="lumise-notice">'.esc_html($this->main->lang('No items found')).'</p>';
 				}
 			?>
 		</ul>
 		<p>
 			<button data-btn="primary" data-act="add">
-				<i class="fa fa-plus"></i> <?php echo $this->main->lang('Add new google font'); ?>
+				<i class="fa fa-plus"></i> <?php echo esc_html($this->main->lang('Add new google font')); ?>
 			</button>
 		</p>
-		<textarea data-func="value" style="display: none;" name="<?php echo isset($args['name']) ? $args['name'] : ''; ?>"><?php 
-			echo isset($args['value']) ? $args['value'] : ''; 
+		<textarea data-func="value" style="display: none;" name="<?php echo isset($args['name']) ? $args['name'] : ''; ?>"><?php
+			echo isset($args['value']) ? $args['value'] : '';
 		?></textarea>
 	</div>
 	<?php
 	}
-	
+
 	public function field_attributes($args) {
 	?>
 	<div class="lumise_form_content">
 		<div class="lumise-att-layout">
 			<div class="lumise-att-layout-create">
 				<button class="lumise-button" data-act="add_attribute">
-					<i class="fa fa-plus" data-act="add_attribute"></i> 
-					<?php echo $this->main->lang('Add new attribute'); ?>
+					<i class="fa fa-plus" data-act="add_attribute"></i>
+					<?php echo esc_html($this->main->lang('Add new attribute')); ?>
 				</button>
-				<a href="#close" data-act="close"><?php echo $this->main->lang('Close'); ?></a>
+				<a href="#close" data-act="close"><?php echo esc_html($this->main->lang('Close')); ?></a>
 				<a>/</a>
-				<a href="#expand" data-act="expand"><?php echo $this->main->lang('Expand'); ?></a>
+				<a href="#expand" data-act="expand"><?php echo esc_html($this->main->lang('Expand')); ?></a>
 			</div>
 			<div id="lumise-field-attributes-items" class="lumise-field-layout-items"><?php
 
 				$attrs = $this->dejson($args['value']);
 
-				
+
 			?></div>
 			<div class="lumise-att-layout-tmpl hidden">
 				<div class="lumise-att-layout-item">
 					<div class="att-layout-headitem" data-act="toggle">
-						<strong data-name="Untitled">Untitled</strong> 
+						<strong data-name="Untitled">Untitled</strong>
 						<em data-view="attr-type">text</em>
 						<div class="att-layout-funcs">
 							<a title="Arrange variables" href="#arrange" data-act="arrange">
@@ -3531,12 +3521,12 @@ class lumise_views extends lumise_lib {
 					</div>
 					<div class="att-layout-body">
 						<div class="att-layout-body-field one-third">
-							<label><?php echo $this->main->lang('Name'); ?></label>
+							<label><?php echo esc_html($this->main->lang('Name')); ?></label>
 							<input type="text" data-name="name" value="Untitled" />
-							<label><?php echo $this->main->lang('Attribute type'); ?></label>
+							<label><?php echo esc_html($this->main->lang('Attribute type')); ?></label>
 							<p data-field="type">
 								<select data-name="type">
-									<option value=""> === <?php echo $this->main->lang('Select attribute type'); ?> === </option>
+									<option value=""> === <?php echo esc_html($this->main->lang('Select attribute type')); ?> === </option>
 									<?php
 										$values_render = array();
 										foreach ($this->main->cfg->product_attributes as $name => $data) {
@@ -3548,22 +3538,22 @@ class lumise_views extends lumise_lib {
 											}
 										}
 									?>
-								</select> 
-								&nbsp; 
+								</select>
+								&nbsp;
 								<span class="tip">
 									<i class="fa fa-question-circle"></i>
 									<span>
-										<?php echo $this->main->lang('Select the attribute type to display this attribute on the editor. You can be personalized it by built the addon'); ?>
+										<?php echo esc_html($this->main->lang('Select the attribute type to display this attribute on the editor. You can be personalized it by built the addon')); ?>
 									</span>
 								</span>
 							</p>
 							<p data-field="required">
 								<input id="" data-name="required" type="checkbox" />
-								<label for=""><?php echo $this->main->lang('Field required'); ?></label>
+								<label for=""><?php echo esc_html($this->main->lang('Field required')); ?></label>
 							</p>
 							<p data-field="use_variation">
 								<input id="" data-name="use_variation" type="checkbox" />
-								<label for=""><?php echo $this->main->lang('Used for variations'); ?></label>
+								<label for=""><?php echo esc_html($this->main->lang('Used for variations')); ?></label>
 							</p>
 						</div>
 						<div class="att-layout-body-field two-third" data-field="values"></div>
@@ -3571,34 +3561,34 @@ class lumise_views extends lumise_lib {
 				</div>
 			</div>
 			<textarea data-func="value" id="lumise-field-attributes-inp"  style="display: none;" name="<?php echo isset($args['name']) ? $args['name'] : ''; ?>"><?php echo isset($args['value']) ? $args['value'] : ''; ?></textarea>
-			<script type="text/javascript">window.lumise_attribute_values_render = <?php 
-				
+			<script type="text/javascript">window.lumise_attribute_values_render = <?php
+
 				$values_render['_values'] = <<<EOF
-		
+
 					var el = $('<label>{$this->main->lang('Default value')}</label>'+
 					'<textarea data-name="values">'+(values !== undefined ? values : '')+'</textarea>');
 					wrp.html('').append(el);
-			
+
 EOF;
 				$values_render['_values'] = trim($values_render['_values']);
-				echo json_encode($values_render); 
-				
+				echo wp_json_encode($values_render);
+
 			?></script>
 		</div>
 	</div>
 	<?php
 	}
-		
+
 	public function field_template($args) {
-		
+
 		if (isset($args['value']) && !empty($args['value'])) {
-			
+
 			$db = $this->main->get_db();
 			$db->where ('id', $args['value']);
 			$template = $db->getOne ('templates');
-			
+
 		}
-		
+
 	?><div id="lumise_template"><?php
 		if (isset($template['screenshot'])) {
 			echo '<img src="'.$template['screenshot'].'" style="max-width: 250px;" /><br><a class="button" href="#delete"><i class="fa fa-times"></i></a>';
@@ -3606,54 +3596,54 @@ EOF;
 	?></div>
 		<button data-btn="" id="lumise_template_btn" style="margin-left: 0px;">
 			<i class="fa fa-th"></i>
-			<?php echo $this->main->lang('Select template'); ?>
+			<?php echo esc_html($this->main->lang('Select template')); ?>
 		</button>
 		<br />
-		<input type="hidden" name="<?php echo isset($args['name']) ? $args['name'] : ''; ?>" id="lumise_template_inp" value="<?php 
+		<input type="hidden" name="<?php echo isset($args['name']) ? $args['name'] : ''; ?>" id="lumise_template_inp" value="<?php
 			echo !empty($args['value']) ? $args['value'] : '';
 		?>" />
 		<?php if (!empty($args['value'])) { ?>
-			<input type="hidden" name="old-<?php echo $args['name']; ?>" value="<?php echo $args['value'] ?>">
-			<input type="hidden" name="old-<?php echo $attr['thumbn']; ?>" value="<?php
+			<input type="hidden" name="old-<?php echo esc_attr($args['name']); ?>" value="<?php echo esc_attr($args['value']) ?>">
+			<input type="hidden" name="old-<?php echo esc_attr($attr['thumbn']); ?>" value="<?php
 				echo isset($attr['thumbn_value']) ? $attr['thumbn_value'] : '';
 			?>" />
 		<?php } ?>
 	<?php
 	}
-	
+
 	public function order_statuses($current = '', $submit = false){
-		
+
 		global $lumise;
-		
+
 		$statuses = $lumise->connector->statuses();
-		
+
 		$current
 		?>
 		<select id="lumise_order_statuses" class="lumise_order_statuses" name="order_status">
 	        <?php
 	            foreach ($statuses as $key => $value) {
 	            ?>
-	            <option value="<?php echo $key;?>"<?php echo ($current == $key)? ' selected="selected"' : '';?>><?php echo $value;?></option>
+	            <option value="<?php echo esc_attr($key); ?>"<?php echo ($current == $key)? ' selected="selected"' : '';?>><?php echo esc_html($value);?></option>
 	            <?php
 	            }
 	        ?>
 	    </select>
 		<?php
 		if ($submit) {
-			?> <input class="lumise_submit" type="submit" name="submit" value="<?php echo $this->main->lang('Change'); ?>"><?php
+			?> <input class="lumise_submit" type="submit" name="submit" value="<?php echo esc_attr($this->main->lang('Change')); ?>"><?php
 		}
 	}
-	
+
 	public function order_designs($data, $attr = true) {
-		
+
 		global $lumise_printings, $lumise;
-		
+
 		$scrs = array();
-		
+
 		$data['design'] = '';
-		
+
 		$prtable = false;
-		
+
 		$pdfid = '';
 		/*
 		*	Customized designs
@@ -3669,13 +3659,13 @@ EOF;
 						$data['product_cms'],
 						$data['product_base']
 					)
-	
+
 			);
 
 			if(count($itemCheckAgain) > 0){
 				// create new temp
-				if( 
-					!isset($_SESSION[$session_name]) 
+				if(
+					!isset($_SESSION[$session_name])
 					|| ( isset($_SESSION[$session_name]) && $_SESSION[$session_name]['order_id'] != $data['order_id'] )
 				){
 					$_SESSION[$session_name] = array(
@@ -3696,249 +3686,249 @@ EOF;
 						$data['product_cms'],
 						$data['product_base']
 					)
-	
+
 				);
-	
+
 				if (count($item) > 0) {
-	
+
 					$_SESSION[$session_name]['index'] = intval($_SESSION[$session_name]['index'])+1;
-	
-					$sc = @json_decode($item[0]['screenshots']);
-	
-					$prt = @json_decode($item[0]['print_files'], true);
-	
-					$prtable = true; 
+
+					$sc = json_decode($item[0]['screenshots']);
+
+					$prt = json_decode($item[0]['print_files'], true);
+
+					$prtable = true;
 					$pdfid = $item['cart_id'];
-	
+
 					$data['design'] = $item[0]['design'];
-	
-					
-	
+
+
+
 					foreach ($sc as $i => $s) {
-	
+
 						array_push($scrs, array(
-	
+
 							"url" => is_array($prt) && isset($prt[$i]) ? $this->main->cfg->upload_url.'orders/'.$prt[$i] : '#',
-	
+
 							"screenshot" => $this->main->cfg->upload_url.'orders/'.$s,
-	
+
 							"download" => true
-	
+
 						));
-	
+
 					}
-	
-					
-	
-					$prtable = true; 
+
+
+
+					$prtable = true;
 					$pdfid = $item[0]['cart_id'];
 
 					if(!empty($data['template'])){
 						$data['template'] = '';
 					}
-	
-					
-	
+
+
+
 					$data_obj = $this->main->lib->dejson($item[0]['data']);
-	
-							
-	
+
+
+
 					if ($attr === true && isset($data_obj->attributes)) {
-	
-						
-	
+
+
+
 						echo '<br>';
-	
-						
-	
+
+
+
 						$attrs = (array) $data_obj->attributes;
-	
-						
-	
+
+
+
 						foreach ($attrs as $name => $options) {
-	
-							
-	
+
+
+
 							if (is_object($options) && isset($options->name)) {
-	
-								
-	
+
+
+
 								if (isset($options->value)) {
-	
+
 									echo '<div><strong>'.$options->name.':</strong> ';
-	
+
 									if (
-	
-										$options->type == 'color' || 
-	
+
+										$options->type == 'color' ||
+
 										$options->type == 'product_color'
-	
+
 									) {
-	
+
 										$val = trim($options->value);
-	
+
 										$lab = $options->value;
-	
+
 										if (
-	
-											isset($options->values) && 
-	
-											is_object($options->values) && 
-	
-											is_array($options->values->options)
-	
-										) {
-	
-											foreach ($options->values->options as $op) {
-	
-												if ($op->value == $val)
-	
-													$lab = $op->title;
-	
-											}
-	
-										}
-	
-										echo '<span title="'.htmlentities($options->value).'" style="background:'.$options->value.';padding: 3px 8px;border-radius: 12px;">'.htmlentities($lab).'</span>';
-	
-									
-	
-									} else if($options->type == 'quantity') {
-	
-										
-	
-										$val = @json_decode($options->value);
-	
-										
-	
-										if (
-	
+
 											isset($options->values) &&
-	
+
 											is_object($options->values) &&
-	
-											isset($options->values->type) &&
-	
-											$options->values->type == 'multiple'
-	
+
+											is_array($options->values->options)
+
 										) {
-	
-											foreach ($options->values->multiple_options as $op) {
-	
-												if (
-	
-													is_object($val) &&
-	
-													isset($val->{$op->value})
-	
-												) 
-	
-													echo '<span>'.$op->title.': '.$val->{$op->value}.'</span> ';
-	
+
+											foreach ($options->values->options as $op) {
+
+												if ($op->value == $val)
+
+													$lab = $op->title;
+
 											}
-	
-										} else echo '<span>'.$options->value.'</span>';
-	
-										
-	
-									} else if (
-	
-										isset($options->values) && 
-	
-										is_object($options->values) && 
-	
-										isset($options->values->options) &&
-	
-										is_array($options->values->options)
-	
-									) {
-	
-										
-	
-										$val = explode("\n", $options->value);
-	
-										
-	
-										foreach ($options->values->options as $op) {
-	
-											if (in_array($op->value, $val))
-	
-												echo '<span>'.$op->title.'</span> ';
-	
+
 										}
-	
-										
-	
+
+										echo '<span title="'.htmlentities($options->value).'" style="background:'.$options->value.';padding: 3px 8px;border-radius: 12px;">'.htmlentities($lab).'</span>';
+
+
+
+									} else if($options->type == 'quantity') {
+
+
+
+										$val = json_decode($options->value);
+
+
+
+										if (
+
+											isset($options->values) &&
+
+											is_object($options->values) &&
+
+											isset($options->values->type) &&
+
+											$options->values->type == 'multiple'
+
+										) {
+
+											foreach ($options->values->multiple_options as $op) {
+
+												if (
+
+													is_object($val) &&
+
+													isset($val->{$op->value})
+
+												)
+
+													echo '<span>'.$op->title.': '.$val->{$op->value}.'</span> ';
+
+											}
+
+										} else echo '<span>'.$options->value.'</span>';
+
+
+
+									} else if (
+
+										isset($options->values) &&
+
+										is_object($options->values) &&
+
+										isset($options->values->options) &&
+
+										is_array($options->values->options)
+
+									) {
+
+
+
+										$val = explode("\n", $options->value);
+
+
+
+										foreach ($options->values->options as $op) {
+
+											if (in_array($op->value, $val))
+
+												echo '<span>'.$op->title.'</span> ';
+
+										}
+
+
+
 									} else echo '<span>'.$options->value.'</span>';
-	
-									
-	
+
+
+
 									echo '</div>';
-	
+
 								}
-	
-								
-	
+
+
+
 							} else {
-	
+
 								echo '<dt class="lumise-variation">'.$name.':</dt>';
-	
+
 								foreach ($options as $option) {
-	
+
 									echo '<dd class="lumise-variation">'.$option.'</dd>';
-	
+
 								}
-	
+
 							}
-	
+
 						}
-	
-						
-	
+
+
+
 					}
-	
-					
-	
+
+
+
 					if ($attr === true && isset($data_obj->variation) && !empty($data_obj->variation)) {
-	
-						
-	
+
+
+
 						echo "<div>";
-	
-						echo "<strong>".$this->main->lang('Variation').":</strong> ";
-	
+
+						echo "<strong>".esc_html($this->main->lang('Variation')).":</strong> ";
+
 						echo "<span>#".$data_obj->variation."</span>";
-	
+
 						echo "</div>";
-	
-						
-	
+
+
+
 					}
-	
-					
-	
+
+
+
 					if ($attr === true && isset($data_obj->printing) && is_array($lumise_printings)) {
-	
-						
-	
+
+
+
 						foreach ($lumise_printings as $pmethod) {
-	
+
 							if ($pmethod['id'] == $data_obj->printing) {
-	
+
 								echo "<div>";
-	
-								echo "<strong>".$this->main->lang('Printing').":</strong> ";
-	
-								echo "<span>".$pmethod['title']."</span>";
-	
+
+								echo "<strong>".esc_html($this->main->lang('Printing')).":</strong> ";
+
+								echo "<span>".esc_html($pmethod['title'])."</span>";
+
 								echo "</div>";
-	
+
 							}
-	
+
 						}
-	
-						
-	
+
+
+
 					}
 				}
 
@@ -3950,7 +3940,7 @@ EOF;
 		}
 
 		if (!empty($data['cart_id'])) {
-			
+
 			$item = $this->main->db->rawQuery(
 				sprintf(
 					"SELECT * FROM `%s` WHERE `cart_id`='%s'",
@@ -3958,14 +3948,14 @@ EOF;
 					$data['cart_id']
 				)
 			);
-			
+
 			if (count($item) > 0) {
-				
-				$sc = @json_decode($item[0]['screenshots']);
-				$prt = @json_decode($item[0]['print_files'], true);
-				
+
+				$sc = json_decode($item[0]['screenshots']);
+				$prt = json_decode($item[0]['print_files'], true);
+
 				$data['design'] = $item[0]['design'];
-				
+
 				foreach ($sc as $i => $s) {
 					array_push($scrs, array(
 						"url" => is_array($prt) && isset($prt[$i]) ? $this->main->cfg->upload_url.'orders/'.$prt[$i] : '#',
@@ -3973,33 +3963,33 @@ EOF;
 						"download" => true
 					));
 				}
-				
-				$prtable = true; 
+
+				$prtable = true;
 				$pdfid = $data['cart_id'];
-				
+
 				$data_obj = $this->main->lib->dejson($item[0]['data']);
-						
+
 				if ($attr === true && isset($data_obj->attributes)) {
-					
+
 					echo '<br>';
-					
+
 					$attrs = (array) $data_obj->attributes;
-					
+
 					foreach ($attrs as $name => $options) {
-						
+
 						if (is_object($options) && isset($options->name)) {
-							
+
 							if (isset($options->value)) {
 								echo '<div><strong>'.$options->name.':</strong> ';
 								if (
-									$options->type == 'color' || 
+									$options->type == 'color' ||
 									$options->type == 'product_color'
 								) {
 									$val = trim($options->value);
 									$lab = $options->value;
 									if (
-										isset($options->values) && 
-										is_object($options->values) && 
+										isset($options->values) &&
+										is_object($options->values) &&
 										is_array($options->values->options)
 									) {
 										foreach ($options->values->options as $op) {
@@ -4008,11 +3998,11 @@ EOF;
 										}
 									}
 									echo '<span title="'.htmlentities($options->value).'" style="background:'.$options->value.';padding: 3px 8px;border-radius: 12px;">'.htmlentities($lab).'</span>';
-								
+
 								} else if($options->type == 'quantity') {
-									
-									$val = @json_decode($options->value);
-									
+
+									$val = json_decode($options->value);
+
 									if (
 										isset($options->values) &&
 										is_object($options->values) &&
@@ -4023,30 +4013,30 @@ EOF;
 											if (
 												is_object($val) &&
 												isset($val->{$op->value})
-											) 
+											)
 												echo '<span>'.$op->title.': '.$val->{$op->value}.'</span> ';
 										}
 									} else echo '<span>'.$options->value.'</span>';
-									
+
 								} else if (
-									isset($options->values) && 
-									is_object($options->values) && 
+									isset($options->values) &&
+									is_object($options->values) &&
 									isset($options->values->options) &&
 									is_array($options->values->options)
 								) {
-									
+
 									$val = explode("\n", $options->value);
-									
+
 									foreach ($options->values->options as $op) {
 										if (in_array($op->value, $val))
 											echo '<span>'.$op->title.'</span> ';
 									}
-									
+
 								} else echo '<span>'.$options->value.'</span>';
-								
+
 								echo '</div>';
 							}
-							
+
 						} else {
 							echo '<dt class="lumise-variation">'.$name.':</dt>';
 							foreach ($options as $option) {
@@ -4054,39 +4044,39 @@ EOF;
 							}
 						}
 					}
-					
+
 				}
-				
+
 				if ($attr === true && isset($data_obj->variation) && !empty($data_obj->variation)) {
-					
+
 					echo "<div>";
-					echo "<strong>".$this->main->lang('Variation').":</strong> ";
+					echo "<strong>".esc_html($this->main->lang('Variation')).":</strong> ";
 					echo "<span>#".$data_obj->variation."</span>";
 					echo "</div>";
-					
+
 				}
-				
+
 				if ($attr === true && isset($data_obj->printing) && is_array($lumise_printings)) {
-					
+
 					foreach ($lumise_printings as $pmethod) {
 						if ($pmethod['id'] == $data_obj->printing) {
 							echo "<div>";
-							echo "<strong>".$this->main->lang('Printing').":</strong> ";
+							echo "<strong>".esc_html($this->main->lang('Printing')).":</strong> ";
 							echo "<span>".$pmethod['title']."</span>";
 							echo "</div>";
 						}
 					}
-					
+
 				}
-				
+
 			}
-			
-		} else 
+
+		} else
 		/*
 		*	Order directly without customization
 		*/
 		if (!empty($data['template'])) {
-			
+
 			$temps = json_decode(urldecode($data['template']));
 			if(isset($temps->stages)){
 				$tempsData = json_decode(urldecode(base64_decode($temps->stages)));
@@ -4102,9 +4092,9 @@ EOF;
 					}
 				}
 			}
-			
+
 			foreach ($temps as $n => $d) {
-				
+
 				$dsg = $this->main->db->rawQuery(
 					sprintf(
 						"SELECT * FROM `%s` WHERE `id`=%d",
@@ -4112,7 +4102,7 @@ EOF;
 						$d->id
 					)
 				);
-				
+
 				if (count($dsg) > 0 && strpos($dsg[0]['upload'], '.lumi') === false) {
 					$pdfid .= $d->id.',';
 					array_push($scrs, array(
@@ -4126,31 +4116,31 @@ EOF;
 						"screenshot" => $d->screenshot
 					));
 				}
-				
+
 			}
-			
+
 			if (!empty($pdfid)) {
 				$pdfid = base64_encode($pdfid);
 			}
-			
+
 		}
-		
+
 		if (count($scrs) > 0) {
 
 			global $lumise;
 
 			$key = $lumise->get_option('purchase_key');
 			$key_valid = ($key === null || empty($key) || strlen($key) != 36 || count(explode('-', $key)) != 5) ? false : true;
-			
+
 			$is_query = explode('?', $this->main->cfg->tool_url);
 			$product = wc_get_product($data['product_cms']);
-          
+
 			if ($product && $product->get_type() == 'variation') {
 				$data['product_base'] = 'variable:'.$data['product_cms'];
 				$data['product_cms'] = $product->get_parent_id();
 			}
-			
-						
+
+
 			$url = $this->main->cfg->url.(isset($is_query[1])? '&':'?');
 			$url .= 'product_base='.$data['product_base'];
 			if (!empty($data['design'])) {
@@ -4159,14 +4149,14 @@ EOF;
 			}
 			$url .= ($this->main->connector->platform != 'php' ? '&product_cms='.$data['product_cms'] : '');
 			$url = str_replace('?&', '?', $url);
-						
+
 			$html = '<p>';
 
 			if($key_valid){
 				foreach ($scrs as $i => $scr) {
-					
+
 					$html .= '<a ';
-					
+
 					if (isset($scr['download']) && $scr['download'] === true) {
 						$html .= 'href="'.$scr['url'].'" download="order_id#'.$data['order_id'].' order_item_id#'.$data['item_id'].' product_base_id#'.$data['product_base'].' (stage '.($i+1).').png"';
 						$prtable = true;
@@ -4176,14 +4166,14 @@ EOF;
 					$html .= '><img width="120" src="'.$scr['screenshot'].'" /></a>';
 				}
 			}
-			
+
 			$html .= '</p>';
-			
+
 			if ($prtable === true && $key_valid) {
 				$html .= '<p><font color="#E91E63">(*) ';
-				$html .= $this->main->lang('Click on each image above to download the printable file <b>(.PNG)</b>').'</font></p>';
+				$html .= esc_html($this->main->lang('Click on each image above to download the printable file <b>(.PNG)</b>')).'</font></p>';
 			}
-			
+
 			$html .= '<p>';
 
 			if(!$key_valid){
@@ -4192,13 +4182,13 @@ EOF;
 <b><a target="_blank" href="'.$this->main->cfg->admin_url.'lumise-page=license"style="font-weight: 700; text-decoration: underline; font-style: italic;">Enter purchase code now</a></b></br>
 <span>Notice: Each License can only be used for one domain.</br><a href="https://codecanyon.net/licenses/standard" target="blank" style="font-weight: 700; text-decoration: underline; font-style: italic;">Click to learn more about license term in Envato.</a></span>').'</font></p>';
 			}
-	
+
 			if (!empty($pdfid)) {
 
 				$link = $this->main->cfg->url;
 				if(strpos($link, '?') !== false && substr($link, -1) != '?'){
 					$link .= '&pdf_download='.$pdfid;
-				} 
+				}
 				if(strpos($link, '?') !== false && substr($link, -1) == '?') {
 					$link .= 'pdf_download='.$pdfid;
 				}
@@ -4207,18 +4197,18 @@ EOF;
 				}
 
 				if($key_valid) {
-					// $html .= '<a href="'.$link.'" target=_blank class="button button-primary">'.$this->main->lang('Download designs as PDF').'</a>  &nbsp; <a href="#" data-href="'.$link.'" target=_blank class="button button-primary" onclick="let r = prompt(\'Enter bleed range in mimilet (Typically it is 2mm)\', \'2\');if (r){this.href = this.dataset.href+\'&bleed=\'+r;return true;}else return false;">'.$this->main->lang('PDF cropmarks & bleed').'</a> &nbsp; ';
-					$html .= '<a href="'.$link.'" target=_blank class="button button-primary">'.$this->main->lang('Download designs as PDF').'</a>  &nbsp; <a href="'.$link.'&bleed=-1" data-href="'.$link.'&bleed=-1" target=_blank class="button button-primary">'.$this->main->lang('PDF cropmarks & bleed').'</a> &nbsp; ';
+					// $html .= '<a href="'.$link.'" target=_blank class="button button-primary">'.esc_html($this->main->lang('Download designs as PDF')).'</a>  &nbsp; <a href="#" data-href="'.$link.'" target=_blank class="button button-primary" onclick="let r = prompt(\'Enter bleed range in mimilet (Typically it is 2mm)\', \'2\');if (r){this.href = this.dataset.href+\'&bleed=\'+r;return true;}else return false;">'.esc_html($this->main->lang('PDF cropmarks & bleed')).'</a> &nbsp; ';
+					$html .= '<a href="'.$link.'" target=_blank class="button button-primary">'.esc_html($this->main->lang('Download designs as PDF')).'</a>  &nbsp; <a href="'.$link.'&bleed=-1" data-href="'.$link.'&bleed=-1" target=_blank class="button button-primary">'.esc_html($this->main->lang('PDF cropmarks & bleed')).'</a> &nbsp; ';
 				}
-			}	
-			if($key_valid) {
-				$html .= '<a href="'.$url.'" target=_blank class="button">'.$this->main->lang('View in Lumise editor').'</a>';
 			}
-			
+			if($key_valid) {
+				$html .= '<a href="'.$url.'" target=_blank class="button">'.esc_html($this->main->lang('View in Lumise editor')).'</a>';
+			}
+
 			$html .= '</p>';
-			
-			echo $html;
-			
+
+			echo wp_kses_post($html);
+
 		}
 
 	}

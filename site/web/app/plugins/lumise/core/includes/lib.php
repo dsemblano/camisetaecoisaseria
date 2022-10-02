@@ -7,7 +7,7 @@
 *
 */
 
-ini_set('display_errors', 1);
+//ini_set('display_errors', 1);
 	
 class lumise_lib{
 
@@ -22,7 +22,7 @@ class lumise_lib{
 	public function slugify($text) {
 
 		$text = preg_replace('~[^\pL\d]+~u', '-', $text);
-		if(function_exists('iconv')) $text = (@iconv('utf-8', 'us-ascii//TRANSLIT', $text)) ? : $text;
+		if(function_exists('iconv')) $text = (iconv('utf-8', 'us-ascii//TRANSLIT', $text)) ? : $text;
 		$text = preg_replace('~[^-\w]+~', '', $text);
 		$text = trim($text, '-');
 		$text = preg_replace('~-+~', '-', $text);
@@ -35,23 +35,14 @@ class lumise_lib{
 		return $text;
 
 	}
-
 	public function sql_esc($str) {
-		
-		global $lumise;
-		
-		if (function_exists('mysqli_real_escape_string'))
-			return mysqli_real_escape_string($lumise->db->mysqli(), $str);
-		else if (function_exists('mysql_real_escape_string'))
-			return mysql_real_escape_string($str);
-		else return $str;
-		
+		return esc_sql($str);
 	}
 
 	public function dejson($text = '', $force_array = false) {
 
 		if (!empty($text))
-			$data = @json_decode(rawurldecode(base64_decode($text)), $force_array);
+			$data = json_decode(rawurldecode(base64_decode($text)), $force_array);
 
 		return isset($data) ? $data : array();
 
@@ -60,7 +51,7 @@ class lumise_lib{
 	public function enjson($text = '') {
 
 		if (!empty($text))
-			$data = base64_encode(rawurlencode(@json_encode($text)));
+			$data = base64_encode(rawurlencode(wp_json_encode($text)));
 
 		return isset($data) ? $data : '';
 
@@ -141,7 +132,7 @@ class lumise_lib{
 
 				}
 
-				$data->stages->{$s}->data = json_encode($obj);
+				$data->stages->{$s}->data = wp_json_encode($obj);
 
 			}
 
@@ -164,7 +155,7 @@ class lumise_lib{
 
 		if ($path === -1)
 			return -1;
-		else if (!file_put_contents($path, base64_decode($data[1])))
+		else if (!lw_file_put_contents($path, base64_decode($data[1])))
 			return $this->main->lang('Could not write data on the upload folder, please report to the administrator');
 		else return 1;
 
@@ -238,7 +229,7 @@ class lumise_lib{
 
 			$check = $db->getOne ('designs');
 
-			$date = @date ("Y-m-d H:i:s"/*, strtotime($date_old)*/);
+			$date = date ("Y-m-d H:i:s"/*, strtotime($date_old)*/);
 
 			if ($check && ($check['aid'] == $aid || $check['share_permission'] == 2)) {
 
@@ -273,7 +264,7 @@ class lumise_lib{
 			$data = $this->process_upload($data, $id);
 
 			$db->where ('id', $id)->update ('designs', array(
-				'data' => json_encode($data)
+				'data' => wp_json_encode($data)
 			));
 
 			$result = array(
@@ -332,7 +323,7 @@ class lumise_lib{
 		
 		$query = sprintf(
 			"SELECT `id` FROM `%s` WHERE `author`='{$this->main->vendor_id}' AND `parent` = '%d'",
-            $this->sql_esc($this->main->db->prefix."categories"),
+            esc_sql($this->main->db->prefix."categories"),
             $id
         );
         
@@ -373,7 +364,7 @@ class lumise_lib{
 
 		$query = sprintf(
 			"SELECT `parent`, `name` FROM `%s` WHERE `author`='{$this->main->vendor_id}' AND `id`='%d'",
-            $this->sql_esc($lumise->db->prefix."categories"),
+            esc_sql($lumise->db->prefix."categories"),
            $category
         );
 		
@@ -455,7 +446,7 @@ class lumise_lib{
 		$items = $xitems[0];
 		$total = $xitems[1];
 		
-		echo json_encode(array(
+		echo wp_json_encode(array(
 			"category" => $category,
 			"category_name" => $lumise->lang($cate_name),
 			"category_parents" => array_reverse($parents),
@@ -482,13 +473,13 @@ class lumise_lib{
 			array_push($extra, "(item.name LIKE '%$q%' OR item.tags LIKE '%$q%')");
 		}
 		
-		$q = $this->sql_esc($q);
-		$type = $this->sql_esc($type);
+		$q = esc_sql($q);
+		$type = esc_sql($type);
 		
 		//get all categories deactived
 		$query = sprintf(
 			"SELECT `id` FROM `%s` WHERE `author`='{$this->main->vendor_id}' AND `type`='%s' AND `active`= 0",
-			$this->sql_esc($this->main->db->prefix."categories"),
+			esc_sql($this->main->db->prefix."categories"),
 			$type
 		);
 		
@@ -657,7 +648,7 @@ class lumise_lib{
 			"WHERE  `{$this->main->db->prefix}shapes`.`author`='{$this->main->vendor_id}' AND `{$this->main->db->prefix}shapes`.`active` = 1",
 			"ORDER BY `{$this->main->db->prefix}shapes`.`order` ASC"
 		);
-		if (isset($index) && $index != 'total')
+		if (isset($index) && $index !== 'total')
 			array_push($query, "LIMIT $index, 50");
 		else return count($this->main->db->rawQuery(implode(" ", $query)));
 
@@ -737,7 +728,7 @@ class lumise_lib{
 					$result = array_merge($result, $this->scan_languages($path.DS.$file));
 				} else if (strpos($file, '.php') == strlen($file)-4) {
 
-					$content = file_get_contents($path.DS.$file);
+					$content = lw_file_get_contents($path.DS.$file);
 					preg_match_all('/->lang\(\'+(.*?)\'\)/i', $content, $matches);
 
 					if (isset($matches[1]) && count($matches[1]) > 0) {
@@ -777,7 +768,7 @@ class lumise_lib{
 		
 		$query = sprintf(
 			"SELECT `id`, `name`, `parent` FROM `%s` WHERE `author`='{$this->main->vendor_id}' AND `id`='%d' ORDER BY `name`",
-            $this->sql_esc($lumise->db->prefix."categories"),
+            esc_sql($lumise->db->prefix."categories"),
             $id
         );
 		$cate = $lumise->db->rawQueryOne($query);
@@ -800,12 +791,12 @@ class lumise_lib{
 		
 		$query = sprintf(
 			"SELECT `id`, `name`, `parent`, `thumbnail_url` as `thumbnail` FROM `%s` WHERE `%s`.`author`='%s' AND `type`='%s' %s {$search_where} ORDER BY {$orderby}",
-            $this->sql_esc($lumise->db->prefix."categories"),
-            $this->sql_esc($lumise->db->prefix."categories"),
+            esc_sql($lumise->db->prefix."categories"),
+            esc_sql($lumise->db->prefix."categories"),
             $this->main->vendor_id,
-            $this->sql_esc($type),
+            esc_sql($type),
 			($active? " AND `active` = 1 ": '') . 
-            ($parent !== null ? " AND `parent`='".$this->sql_esc($parent)."'" : '')
+            ($parent !== null ? " AND `parent`='".esc_sql($parent)."'" : '')
         );
         
 		$cates = $lumise->db->rawQuery($query);
@@ -821,8 +812,8 @@ class lumise_lib{
 		global $lumise;
 		$query = sprintf(
 			"SELECT * FROM `%s` WHERE `author`='{$this->main->vendor_id}' AND `type`='%s' ORDER BY `name`",
-            $this->sql_esc($lumise->db->prefix."tags"),
-            $this->sql_esc($type)
+            esc_sql($lumise->db->prefix."tags"),
+            esc_sql($type)
         );
 		$tags = $lumise->db->rawQuery($query);
 		return $tags;
@@ -843,11 +834,11 @@ class lumise_lib{
 			$tmpl = $this->main->cfg->upload_path.'user_data'.DS.$data;
 			
 			if (is_file($tmpl)){
-				$data = @file_get_contents($tmpl);
-				@unlink($tmpl);
+				$data = lw_file_get_contents($tmpl);
+				wp_delete_file($tmpl);
 			}
 			
-			$data = @json_decode(urldecode(base64_decode($data)));
+			$data = json_decode(urldecode(base64_decode($data)));
 
 			if (!is_object($data))
 				return array("error" => $lumise->lang('Could not decode data'));
@@ -909,8 +900,8 @@ class lumise_lib{
 		if (!is_dir($path.$data->name))
 			$lumise->check_upload(time());
 
-		if (!file_put_contents($path.$data->name, $data->data))
-			return array("error" => $lumise->lang('Could not upload file, error on function file_put_contents when trying to push '.$path.$data->name));
+		if (!lw_file_put_contents($path.$data->name, $data->data))
+			return array("error" => $lumise->lang('Could not upload file, error on function lw_file_put_contents when trying to push '.$path.$data->name));
 
 		$thumn_name = '';
 
@@ -926,7 +917,7 @@ class lumise_lib{
 			$data->thumbn = explode('base64,', $data->thumbn);
 			$data->thumbn = base64_decode($data->thumbn[1]);
 
-			if (!@file_put_contents($path.$thumn_name, $data->thumbn))
+			if (!lw_file_put_contents($path.$thumn_name, $data->thumbn))
 				return array("error" => $lumise->lang('Could not upload thumbn file'));
 
 		}
@@ -1061,7 +1052,7 @@ class lumise_lib{
 			if (isset($attr->values) && !empty($attr->values)) {
 				
 				if (is_string($attr->values)) {
-					$values = @json_decode($attr->values, true);
+					$values = json_decode($attr->values, true);
 					if ($values !== null)
 						$attr->values = $values;
 					else $attr->values = array("default" => $attr->values);
@@ -1126,8 +1117,6 @@ class lumise_lib{
 		$product['attributes'] = $this->enjson($product['attributes']);
 		
 	    $return_product = $lumise->apply_filters('product', $product);
-		//var_dump($lumise->filters);die();
-	    //$return_product = $product;
 
 	    if(isset($product['description']) && isset($product['active_description']) && $product['active_description'] == 1 && $return_product !== null ){
 	    	$return_product['description'] = $product['description'];
@@ -1182,7 +1171,8 @@ class lumise_lib{
 					$prints[$i] = preg_replace("/[^0-9.]/", "", $k); 
 				}
 				$prints = implode(',', $prints);
-				$query = "SELECT * FROM `{$lumise->db->prefix}printings` WHERE `author`='{$this->main->vendor_id}' AND `id` IN ($prints) ORDER BY field(id, $prints)";
+
+				$query = "SELECT * FROM `{$lumise->db->prefix}printings` WHERE `active`=1 AND `author`='{$this->main->vendor_id}' AND `id` IN ($prints) ORDER BY field(id, $prints)";
 				
 				return $lumise->db->rawQuery($query);
 				
@@ -1401,7 +1391,7 @@ class lumise_lib{
 				'uploads' => isset($data['uploads'])? $data['uploads'] : array(),
 				'design' => isset($data['design'])? $data['design'] : array(),
 				'template' => isset($data['template'])? $data['template'] : '',
-				'screenshots' => !empty($template)? array('front' => 'data:image/png;base64,'. base64_encode(file_get_contents($template))) : array()
+				'screenshots' => !empty($template)? array('front' => 'data:image/png;base64,'. base64_encode(lw_file_get_contents($template))) : array()
 			);
 			return $item;
 		}
@@ -1435,7 +1425,7 @@ class lumise_lib{
 			$path = $lumise->cfg->upload_path . 'user_data'. DS . $cart_data[ 'items' ][ $cart_id ]['file'] . '.tmp';
 		}
 		
-		@unlink( $path );
+		wp_delete_file($path);
 		
 		if( !isset($lumise_cart_adding) ) {
 			
@@ -1454,7 +1444,7 @@ class lumise_lib{
 		$insert_fail = 0;
 		
 		$time = time();
-		$date = @date ("Y-m-d H:i:s");
+		$date = date("Y-m-d H:i:s");
 		$design_path = $lumise->cfg->upload_path.'designs';
 		$order_path = $lumise->cfg->upload_path.'orders';
 		
@@ -1522,7 +1512,7 @@ class lumise_lib{
 					};
 					
 					if(
-						!@file_put_contents(
+						!lw_file_put_contents(
 							$scr_name,
 							base64_decode(
 								preg_replace('#^data:image/\w+;base64,#i', '', $screenshot)
@@ -1573,7 +1563,7 @@ class lumise_lib{
 							if (strpos($sdata['print_file'], 'data:image') === false)
 								continue;
 							
-							if (@file_put_contents(
+							if (lw_file_put_contents(
 									$scr_name,
 									base64_decode(
 										preg_replace('#^data:image/\w+;base64,#i', '', $sdata['print_file'])
@@ -1591,14 +1581,14 @@ class lumise_lib{
 						}
 					}
 
-					$lumise->do_action('store-cart-stage', $order_id, array('stagesArr' => $stagesArr, 'qty' => $item['qty']) );
+					$lumise->do_action('store-cart-stage', $order_id, array('stagesArr' => $stagesArr, 'qty' => $item['qty'], 'product_cms' => $item['product_cms']));
 				}
 				
-				$design_raw = json_encode($extra_data['design']);
+				$design_raw = wp_json_encode($extra_data['design']);
 				
 				$design_file = date('Y', $time).DS.date('m', $time).DS.$lumise->generate_id().'.lumi';
 				
-				if (!file_put_contents($design_path.DS.$design_file, $design_raw)){
+				if (!lw_file_put_contents($design_path.DS.$design_file, $design_raw)){
 					return array(
 						'error' => 1,
 						'msg' => $this->main->lang('Could not save design file')
@@ -1623,8 +1613,8 @@ class lumise_lib{
 					'printing'		=> $item['printing'],
 					'variation'		=> $item['variation']
 				)),
-				'screenshots' => json_encode($screenshots),
-				'print_files' => json_encode($print_files),
+				'screenshots' => wp_json_encode($screenshots),
+				'print_files' => wp_json_encode($print_files),
 				'created' => $date,
 				'updated' => $date,
 				'product_price' => floatval($item['price']['total']),
@@ -1645,7 +1635,7 @@ class lumise_lib{
 			
 			if( isset($item[ 'file' ]) ){
 				$path = $this->main->cfg->upload_path . 'user_data'. DS . $item[ 'file' ];
-				@unlink( $path );
+				wp_delete_file( $path );
 			}
 			
 			if (!$id)
@@ -1835,7 +1825,7 @@ class lumise_lib{
 		$db = $lumise->get_db();
 		$db->where('author', $this->main->vendor_id);
 		$db->orderBy($orderby, $order);
-		$slug = $db->get ($tb_name, null, $arr);
+		$slug = $db->get($tb_name, null, $arr);
 
 		return $slug;
 
@@ -1988,7 +1978,7 @@ class lumise_lib{
 		$db->where("tf.item_id", $item_id);
 		$db->where("tf.type", $type);
 		$db->where('t.author', $this->main->vendor_id);
-		$result = $db->get ("tags t", null, "t.id, t.name");
+		$result = $db->get("tags t", null, "t.id, t.name");
 
 		return $result;
 
@@ -2035,9 +2025,8 @@ class lumise_lib{
 	public function stats(){
 		
 		global $lumise;
-		
+		global $wpdb;
 		$db = $lumise->get_db();
-		
 		
 		$data = array();
 		
@@ -2216,7 +2205,7 @@ class lumise_lib{
 			
 			$share_id = $_POST['share'];
 			$share = $lumise->lib->get_share($_POST['share']);
-			$pdbase = (isset($_POST['product_base']) ? $_POST['product_base'] : '');
+			$pdbase = (isset($_POST['product_base']) ? sanitize_text_field( wp_unslash($_POST['product_base'])) : '');
 			if (
 				$share === null || $share['product'] != $pdbase
 			) {
@@ -2274,19 +2263,19 @@ class lumise_lib{
 		    return false;
 	    }
 	    
-	    $dir = @opendir($from);
+	    $dir = opendir($from);
 	    
-	    while (false !== ($file = @readdir($dir))) {
+	    while (false !== ($file = readdir($dir))) {
 	        if ($file != '.' && $file != '..') {
 		        if (is_dir($from.DS.$file))
 		            $this->delete_dir($from.DS.$file);
 		        else if (is_file($from.DS.$file))
-		        	@unlink($from.DS.$file);
+					wp_delete_file($from.DS.$file);
 	        }
 	    }
 	    
-	    @rmdir($from);
-	    @closedir($dir);
+	    rmdir($from);
+	    closedir($dir);
 	    
 	    return true;
 	    
@@ -2303,10 +2292,10 @@ class lumise_lib{
 	            $this->delete_files( $file );  
 	        }
 	      
-	        @rmdir( $target );
+	        rmdir( $target );
 	        
 	    } elseif(is_file($target)) {
-	        @unlink( $target );  
+	        wp_delete_file( $target );  
 	    }
 	}
 	
@@ -2389,7 +2378,7 @@ class lumise_lib{
 		
 		global $lumise;
 		
-		@ini_set('memory_limit','5000M');
+		ini_set('memory_limit','5000M');
 		
 		$check = $lumise->check_upload(time());
 		
@@ -2408,14 +2397,14 @@ class lumise_lib{
 			$scr = explode(',', $scr);
 			if(count($scr) < 2) continue;
 			$scr = base64_decode($scr[1]);
-			file_put_contents( $lumise->cfg->upload_path . 'user_data'. DS.$datepath.$fnam, $scr );
+			lw_file_put_contents( $lumise->cfg->upload_path . 'user_data'. DS.$datepath.$fnam, $scr );
 			array_push($screenshots, 'user_data/'.str_Replace(DS, '/', $datepath).$fnam);
 		}
 		
-		$data[ 'screenshots' ] = base64_encode( json_encode( $screenshots ) );
+		$data[ 'screenshots' ] = base64_encode( wp_json_encode( $screenshots ) );
 		
-		$content = json_encode( $data );
-		$res = file_put_contents( $path, $content );
+		$content = wp_json_encode( $data );
+		$res = lw_file_put_contents( $path, $content );
 		
 		if ( $res === FALSE )
 			return false;
@@ -2425,13 +2414,13 @@ class lumise_lib{
 	
 	public function get_cart_item_file( $filename ) {
 		
-		@ini_set('memory_limit','5000M');
+		ini_set('memory_limit','5000M');
 		
 		$path = $this->main->cfg->upload_path . 'user_data'. DS . $filename . '.tmp';
 		
-		if (@file_exists($path)) {
+		if (file_exists($path)) {
 			
-			$data = json_decode(file_get_contents($path), 1);
+			$data = json_decode(lw_file_get_contents($path), 1);
 			$data['screenshots'] = json_decode(base64_decode($data['screenshots']), 1);
 			
 			return $data;
@@ -2479,8 +2468,8 @@ class lumise_lib{
 						}
 					} else if ($attr['type'] == 'quantity') {
 						
-						if ( is_array(@json_decode($val, true)) ) {
-							$val = @json_decode($val, true);
+						if ( is_array(json_decode($val, true)) ) {
+							$val = json_decode($val, true);
 							foreach ($val as $k => $v) {
 								$val[$k] = '<p><strong>'.$k.':</strong>'.$v.'</p>';
 							}
@@ -2538,10 +2527,10 @@ class lumise_lib{
 	        }
 	
 	        foreach ( $all_headers as $field => $regex ) {
-	                if ( preg_match( '/^[ \t\/*#@]*' . preg_quote( $regex, '/' ) . ':(.*)$/mi', $file_data, $match ) && $match[1] )
-	                        $all_headers[ $field ] = $this->_cleanup_header_comment( $match[1] );
-	                else
-	                        $all_headers[ $field ] = '';
+				if ( preg_match( '/^[ \t\/*#@]*' . preg_quote( $regex, '/' ) . ':(.*)$/mi', $file_data, $match ) && $match[1] )
+					$all_headers[ $field ] = $this->_cleanup_header_comment( $match[1] );
+				else
+					$all_headers[ $field ] = '';
 	        }
 	
 	        return $all_headers;
@@ -2581,13 +2570,13 @@ class lumise_lib{
 		        if (is_dir($dirPath.$file)) {
 		        	$this->remove_dir($dirPath.$file);
 		        } else {
-		            unlink($dirPath.$file);
+		            wp_delete_file($dirPath.$file);
 		        }
 	        }
 	    }
 	
 	    if (is_file($dirPath.'.DS_Store'))
-	    	unlink($dirPath.'.DS_Store');
+			wp_delete_file($dirPath.'.DS_Store');
 	
 	    return rmdir($dirPath);
 	
@@ -2652,10 +2641,10 @@ class lumise_lib{
 	?>
 		<div class="lumise-col lumise-col-12">
 			<div class="lumise-update-notice top">
-				<?php echo $this->main->lang('We found'); ?> <?php echo $amount; ?> <?php echo $this->main->lang('misconfiguration(s) on your server that may cause the system to operate incorrectly'); ?>. 
+				<?php echo esc_html($this->main->lang('We found')); ?> <?php echo esc_html($amount); ?> <?php echo esc_html($this->main->lang('misconfiguration(s) on your server that may cause the system to operate incorrectly')); ?>. 
 				&nbsp; 
-				<a href="<?php echo $this->main->cfg->admin_url; ?>lumise-page=system">
-					<?php echo $this->main->lang('System status'); ?> &#10230;
+				<a href="<?php echo esc_url($this->main->cfg->admin_url); ?>lumise-page=system">
+					<?php echo esc_html($this->main->lang('System status')); ?> &#10230;
 				</a>
 			</div>
 		</div>
@@ -2700,13 +2689,13 @@ class lumise_lib{
 		$path .= $type;
 
 		$data = explode(';base64,', $data);
-		$data = @base64_decode($data[1]);
+		$data = base64_decode($data[1]);
 		
 		$resp = array('success' => 0, 'msg' => '', 'type' => $type);
 		
 		if (empty($data)) {
 			$resp['msg'] = $this->main->lang('Could not decode image data');
-		} else if (!file_put_contents($path, $data)) {
+		} else if (!lw_file_put_contents($path, $data)) {
 			$resp['msg'] = $this->main->lang('Could not write data on the upload folder, please report to the administrator');
 		} else {
 			$resp['success'] = 1;
@@ -2731,7 +2720,7 @@ class lumise_lib{
 			    foreach ($attrs as $id => $attr) {
 				    
 				    if (isset($attr['values']) && is_string($attr['values'])) {
-						$attr['values'] = @json_decode($attr['values'], true);
+						$attr['values'] = json_decode($attr['values'], true);
 					}
 					
 				    if (
@@ -2774,12 +2763,12 @@ class lumise_lib{
 			);
 		}
 		
-		$primary = $lumise->cfg->root_path.'assets'.DS.'css'.DS.'primary_color.css';
+		$primary = LUMISE_ABSPATH.'assets'.DS.'css'.DS.'primary_color.css';
 		$path = $lumise->cfg->upload_path.'user_data'.DS.'custom.css';
 		
 		if (is_file($primary)){
 			
-			$content = file_get_contents($primary);
+			$content = lw_file_get_contents($primary);
 			if (!empty($content)) {
 				$_color = explode(':', $color);
 				$content = str_replace(
@@ -2795,7 +2784,7 @@ class lumise_lib{
 		$content .= stripslashes($custom_css);
 		
 		if ($lumise->check_upload(time()))
-			return @file_put_contents($path, $content);
+			return lw_file_put_contents($path, $content);
 		else return 0;
 		
 	}
@@ -2824,7 +2813,7 @@ class lumise_lib{
 		
 		if (count($cart_item) > 0) {
 			
-			$prt = @json_decode($cart_item[0]['print_files'], true);
+			$prt = json_decode($cart_item[0]['print_files'], true);
 			
 			foreach ($prt as $i => $s) {
 				if (!empty($s) && is_file($this->main->cfg->upload_path.'orders/'.$s)) {
@@ -2835,7 +2824,7 @@ class lumise_lib{
 		} else 
 		{
 			
-			$tmps = @base64_decode($id);
+			$tmps = base64_decode($id);
 			
 			if ($tmps && !empty($tmps)) {
 				$tmps = explode(',', $tmps);
@@ -2863,8 +2852,7 @@ class lumise_lib{
 		// make tmp folder for tcpdf, make sure not blank pdf
 		if (!is_dir('TCPDF'.DS.'tmp')) {
 			$tcpdf_folder = dirname(__FILE__).DS.'TCPDF'.DS.'tmp';
-			@mkdir($tcpdf_folder, 0777, true);
-			chmod($tcpdf_folder, 0777);
+			wp_mkdir_p($tcpdf_folder);
 			define ('K_PATH_CACHE', $tcpdf_folder.DS);
 		}
 		
@@ -2881,7 +2869,7 @@ class lumise_lib{
 		if (count($files) > 0) {
 			
 			if (!is_dir($this->main->cfg->upload_path. 'user_data'.DS.'pdf')) {
-				@mkdir($this->main->cfg->upload_path. 'user_data'.DS.'pdf', 0755);	
+				wp_mkdir_p($this->main->cfg->upload_path. 'user_data'.DS.'pdf');	
 			}
 			
 			foreach ($files as $file) {
@@ -2955,9 +2943,9 @@ class lumise_lib{
 		    return $res;
 		    
 	    } else if (ini_get('allow_url_fopen')) {
-		    return file_get_contents($url);
+		    return lw_file_get_contents($url);
 	    } else {
-			return 'Error: Your server does not allow outbound connections (curl, fopen & file_get_contents)';   
+			return 'Error: Your server does not allow outbound connections (curl, fopen & lw_file_get_contents)';   
 		}
     }
 	
@@ -3096,6 +3084,6 @@ class lumise_logger{
 	public function log( $data ) {
 		$pre_data = '-------------------' . "\n";
 		$pre_data .= 'Date: '. date("F j, Y, g:i a") . "\n";
-		file_put_contents( $this->file_path, $pre_data . $data, FILE_APPEND);
+		lw_file_put_contents( $this->file_path, $pre_data . $data, FILE_APPEND);
 	}
 }

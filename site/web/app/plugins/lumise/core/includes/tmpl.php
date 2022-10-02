@@ -106,34 +106,34 @@ class lumise_tmpl_register {
 				"content" =>
 					'<p class="gray">'.$lumise->lang('Click or drag to add text').'</p>
 					<span draggable="true" data-act="add" data-ops=\'[{"fontFamily":"Anton","text": "CurvedText", "fontSize": 30, "font":["","regular"],"bridge":{"bottom":2,"curve":-4.5,"oblique":false,"offsetY":0.5,"trident":false},"type":"curvedText"}]\'>
-						<img height="70" src="'.$lumise->cfg->assets_url.'assets/images/text-sample-curved.png" />
+						<img height="70" src="'.LW()->plugin_url().'/assets/images/text-sample-curved.png" />
 					</span>
 					<span draggable="true" data-act="add" data-ops=\'[{"fontFamily":"Anton","text": "10", "fontSize": 100, "font":["","regular"],"type":"i-text", "charSpacing": 40, "top": -50},{"fontFamily":"Poppins","text": "Messi", "fontSize": 30, "font":["","regular"],"type":"i-text", "charSpacing": 40, "top": 10}]\' style="text-align: center;">
-						<img height="70" src="'.$lumise->cfg->assets_url.'assets/images/text-number.png" />
+						<img height="70" src="'.LW()->plugin_url().'/assets/images/text-number.png" />
 					</span>
 					<span draggable="true" data-act="add" data-ops=\'[{"fontFamily":"Anton","text": "Oblique","fontSize":60,"font":["","regular"],"bridge":{"bottom":4.5,"curve":10,"oblique":true,"offsetY":0.5,"trident":false},"type":"text-fx"}]\'>
-						<img height="70" src="'.$lumise->cfg->assets_url.'assets/images/text-sample-oblique.png" />
+						<img height="70" src="'.LW()->plugin_url().'/assets/images/text-sample-oblique.png" />
 					</span>
 					<span draggable="true" data-act="add" data-ops=\'[{"fontFamily":"Anton","text": "Bridge","fontSize":70,"font":["","regular"],"bridge":{"bottom":2,"curve":-4.5,"oblique":false,"offsetY":0.5,"trident":false},"type":"text-fx"}]\'>
-						<img height="70" src="'.$lumise->cfg->assets_url.'assets/images/text-sample-bridge-1.png" />
+						<img height="70" src="'.LW()->plugin_url().'/assets/images/text-sample-bridge-1.png" />
 					</span>
 					<span draggable="true" data-act="add" data-ops=\'[{"fontFamily":"Anton","text": "Bridge","fontSize":70,"font":["","regular"],"bridge":{"bottom":2,"curve":-2.5,"oblique":false,"offsetY":0.1,"trident":false},"type":"text-fx"}]\'>
-						<img height="70" src="'.$lumise->cfg->assets_url.'assets/images/text-sample-bridge-2.png" />
+						<img height="70" src="'.LW()->plugin_url().'/assets/images/text-sample-bridge-2.png" />
 					</span>
 					<span draggable="true" data-act="add" data-ops=\'[{"fontFamily":"Anton","text": "Bridge","fontSize":70,"font":["","regular"],"bridge":{"bottom":2,"curve":-3,"oblique":false,"offsetY":0.5,"trident":true},"type":"text-fx"}]\'>
-						<img height="70" src="'.$lumise->cfg->assets_url.'assets/images/text-sample-bridge-3.png" />
+						<img height="70" src="'.LW()->plugin_url().'/assets/images/text-sample-bridge-3.png" />
 					</span>
 					<span draggable="true" data-act="add" data-ops=\'[{"fontFamily":"Anton","text": "Bridge","fontSize":70,"font":["","regular"],"bridge":{"bottom":5,"curve":5,"oblique":false,"offsetY":0.5,"trident":false},"type":"text-fx"}]\'>
-						<img height="70" src="'.$lumise->cfg->assets_url.'assets/images/text-sample-bridge-4.png" />
+						<img height="70" src="'.LW()->plugin_url().'/assets/images/text-sample-bridge-4.png" />
 					</span>
 					<span draggable="true" data-act="add" data-ops=\'[{"fontFamily":"Anton","text": "Bridge","fontSize":70,"font":["","regular"],"bridge":{"bottom":2.5,"curve":2.5,"oblique":false,"offsetY":0.05,"trident":false},"type":"text-fx"}]\'>
-						<img height="70" src="'.$lumise->cfg->assets_url.'assets/images/text-sample-bridge-5.png" />
+						<img height="70" src="'.LW()->plugin_url().'/assets/images/text-sample-bridge-5.png" />
 					</span>
 					<span draggable="true" data-act="add" data-ops=\'[{"fontFamily":"Anton","text": "Bridge","fontSize":70,"font":["","regular"],"bridge":{"bottom":3,"curve":2.5,"oblique":false,"offsetY":0.5,"trident":true},"type":"text-fx"}]\'>
-						<img height="70" src="'.$lumise->cfg->assets_url.'assets/images/text-sample-bridge-6.png" />
+						<img height="70" src="'.LW()->plugin_url().'/assets/images/text-sample-bridge-6.png" />
 					</span>
 					<span id="lumise-text-mask-guide">
-						<img height="70" src="'.$lumise->cfg->assets_url.'assets/images/text-sample-mask.png" />
+						<img height="70" src="'.LW()->plugin_url().'/assets/images/text-sample-mask.png" />
 					</span>
 					<div id="lumise-text-ext"></div>'.
 					($lumise->connector->is_admin() || $lumise->cfg->settings['user_font'] !== '0' ? '<button class="lumise-btn mb2 lumise-more-fonts">'.$lumise->lang('Load more 878+ fonts').'</button>' : '')

@@ -45,22 +45,22 @@ class lumise_cfg extends lumise_tmpl_register{
 	public $lang_storage_frontend = array();
 	public $lang_storage_backend = array();
     public $settings = array(
-	
+
 		'admin_email' => '',
-		
+
 		'title' => 'Lumise Design',
 		'logo' => '',
 		'favicon' => '',
 		'logo_link' => 'https://lumise.com',
 		'primary_color' => '',
 		'conditions' => '',
-		
+
 		'enable_colors' => '1',
 		'colors' => '#3fc7ba:#546e7a,#757575,#6d4c41,#f4511e,#ffb300,#fdd835,#c0cA33,#a0ce4e,#7cb342,#43a047,#00acc1,#3fc7ba,#039be5,#3949ab,#5e35b1,#d81b60,#eeeeee,#3a3a3a',
 		'rtl' => '',
 		'user_print' => '',
 		'user_download' => '1',
-		
+
 		'currency' => '$',
 		'currency_code' => 'USD',
 		'thousand_separator' => ',',
@@ -70,9 +70,9 @@ class lumise_cfg extends lumise_tmpl_register{
 		'show_only_design' => 0,
 		'merchant_id' => '',
 		'sanbox_mode' => 0,
-		
+
 		'google_fonts' => '{"Roboto":["greek%2Clatin%2Ccyrillic-ext%2Ccyrillic%2Cvietnamese%2Cgreek-ext%2Clatin-ext","100%2C100italic%2C300%2C300italic%2Cregular%2Citalic%2C500%2C500italic%2C700%2C700italic%2C900%2C900italic"],"Poppins":["devanagari%2Clatin%2Clatin-ext","300%2Cregular%2C500%2C600%2C700"],"Oxygen":["latin%2Clatin-ext","300%2Cregular%2C700"],"Anton":["latin%2Clatin-ext%2Cvietnamese","regular"],"Lobster":["latin%2Clatin-ext%2Ccyrillic%2Cvietnamese","regular"],"Abril%20Fatface":["latin%2Clatin-ext","regular"],"Pacifico":["latin%2Clatin-ext%2Cvietnamese","regular"],"Quicksand":["latin%2Clatin-ext%2Cvietnamese","300%2Cregular%2C500%2C700"],"Patua%20One":["latin","regular"],"Great%20Vibes":["latin%2Clatin-ext","regular"],"Monoton":["latin","regular"],"Berkshire%20Swash":["latin%2Clatin-ext","regular"]}',
-		
+
 	    'admin_lang' => 'en',
 		'editor_lang' => 'en',
 		'allow_select_lang' => 1,
@@ -116,7 +116,7 @@ class lumise_cfg extends lumise_tmpl_register{
 		'toolbars' => array ('replace-image','crop','mask','remove-bg','filter','fill','layer','position','transform','advance-SVG','select-font','text-effect','font-size','line-height','letter-spacing','text-align','font-style'),
 		'last_update' => '',
 	);
-	
+
 	protected $allows = array(
 		'editor_url',
 		'checkout_url',
@@ -147,7 +147,7 @@ class lumise_cfg extends lumise_tmpl_register{
 		'tool_url',
 		'langs'
 	);
-	
+
 	protected $langs = array(
 		"af" => "Afrikaans",
 		"sq" => "Albanian",
@@ -254,24 +254,16 @@ class lumise_cfg extends lumise_tmpl_register{
 		"yo" => "Yoruba",
 		"zu" => "Zulu"
 	);
-	
+
 	protected $editor_menus = array();
 	protected $product_attributes = array();
-	
+
 	protected $access_core = array();
 
 	private $max_stages = 4;
-	
+
 	public function __construct($conn) {
-		
 		global $lumise;
-		
-		if (
-			(function_exists('session_status') && session_status() == PHP_SESSION_NONE) ||
-			(function_exists('session_id') && session_id() == '')
-		) {
-			@session_start();
-		}
 
 		if(!defined('DS'))
 			define('DS', DIRECTORY_SEPARATOR );
@@ -280,32 +272,31 @@ class lumise_cfg extends lumise_tmpl_register{
 		if(!defined('LUMISE_PATH'))
 			define('LUMISE_PATH', str_replace(DS.'includes','',dirname(__FILE__)));
 		define('LUMISE_SLUG', basename(dirname(__FILE__)));
-		
-		
+
 		$this->set($conn->config);
 		$this->settings['logo'] = $this->assets_url.'assets/images/logo.png';
-		
-		require_once(LUMISE_PATH.DS.'includes'.DS.'secure.php');
-		require_once(LUMISE_PATH.DS.'includes'.DS.'database.php');
 
+		//require_once(LUMISE_PATH.DS.'includes'.DS.'secure.php');
+		//require_once(LUMISE_PATH.DS.'includes'.DS.'database_old.php');
+		//require_once(LUMISE_PATH.DS.'includes'.DS.'database.php');
 	}
-	
+
 	public function set_stages($num = 4) {
-		
+
 		global $lumise;
-		
+
 		$actives = $lumise->get_option( 'active_addons');
-		
+
 		if ($actives !== null && !empty($actives))
-			$actives = (Array)@json_decode($actives);
-		
+			$actives = (Array)json_decode($actives);
+
 		if (!is_array($actives) || !isset($actives['stages']) || $actives['stages'] !== 1)
 			return;
-		
+
 		$this->max_stages = $num;
-		
+
 	}
-	
+
 	public function set($args) {
 
 		if (is_array($args)) {
@@ -350,7 +341,7 @@ class lumise_cfg extends lumise_tmpl_register{
 
     	if($lumise->connector->platform == 'php'){
     		if (
-				defined('LUMISE_ADMIN') && 
+				defined('LUMISE_ADMIN') &&
 				LUMISE_ADMIN === true
 			) {
 
@@ -366,10 +357,10 @@ class lumise_cfg extends lumise_tmpl_register{
 				$this->active_language = $lumise->connector->get_session('lumise-active-lang');
 
 				$this->active_language_frontend = $lumise->connector->get_session('lumise-active-lang');
-				
+
 				if (
 					!isset($this->active_language) ||
-					empty($this->active_language) || 
+					empty($this->active_language) ||
 					!$this->settings['allow_select_lang']
 				) {
 
@@ -380,15 +371,15 @@ class lumise_cfg extends lumise_tmpl_register{
 						$this->active_language = $this->settings['editor_lang'];
 					else
 						$this->active_language = 'en';
-						
+
 						$lumise->connector->set_session('lumise-active-lang', $this->active_language);
 
 				}
-			} 
-			
+			}
+
 			if (
 				isset($this->active_language) &&
-				!empty($this->active_language) 
+				!empty($this->active_language)
 				// && $this->active_language != 'en'
 			) {
 
@@ -400,9 +391,9 @@ class lumise_cfg extends lumise_tmpl_register{
 						$this->lang_storage[strtolower($lang['original_text'])] = $lang['text'];
 					}
 				}
-				
+
 				$this->lang_storage = $lumise->apply_filters('language', $this->lang_storage);
-				
+
 			}
     	}
 
@@ -433,7 +424,7 @@ class lumise_cfg extends lumise_tmpl_register{
 							$this->lang_storage = $this->lang_storage_backend[strtolower($lang['original_text'])] = $lang['text'];
 						}
 					}
-					
+
 					$this->lang_storage_backend = $lumise->apply_filters('language', $this->lang_storage_backend);
 				}
 
@@ -448,7 +439,7 @@ class lumise_cfg extends lumise_tmpl_register{
 							$this->lang_storage_frontend[strtolower($lang['original_text'])] = $lang['text'];
 						}
 					}
-					
+
 					$this->lang_storage_frontend = $lumise->apply_filters('language', $this->lang_storage_frontend);
 				}
 	    	}
@@ -458,12 +449,12 @@ class lumise_cfg extends lumise_tmpl_register{
 
 	    		// get frontend language session
 	    		$this->active_language_frontend = $lumise->connector->get_session('lumise-active-lang-frontend');
-				
+
 				// if frontend language session not set or not allow user change, get from setting
 				if ( !isset($this->active_language_frontend) || empty($this->active_language_frontend) || !$this->settings['allow_select_lang']) {
 					if (!isset($this->settings['editor_lang']) || empty($this->settings['editor_lang'])){
 						$this->active_language_frontend = 'en';
-						
+
 					}
 					if(isset($this->settings['editor_lang']) || !empty($this->settings['editor_lang'])){
 						$this->active_language_frontend = $this->settings['editor_lang'];
@@ -479,7 +470,7 @@ class lumise_cfg extends lumise_tmpl_register{
 						$this->lang_storage_frontend[strtolower($lang['original_text'])] = $lang['text'];
 					}
 				}
-				
+
 				$this->lang_storage_frontend = $lumise->apply_filters('language', $this->lang_storage_frontend);
 	    	}
     	}
@@ -487,9 +478,9 @@ class lumise_cfg extends lumise_tmpl_register{
     }
 
     public function set_settings($lumise) {
-	    
+
 	    global $lumise;
-	    
+
 	    $this->settings = $lumise->apply_filters('init_settings', $this->settings);
 
 	    foreach ($this->settings as $key => $val) {
@@ -498,16 +489,16 @@ class lumise_cfg extends lumise_tmpl_register{
     }
 
 	public function ex_settings($set = array()) {
-		
+
 		global $lumise;
-		
+
 		foreach ($set as $key => $val) {
 			$this->settings[$key] = $lumise->get_option($key, $val);
-		}	
+		}
 	}
 
 	public function editor_menus($args) {
-		
+
 		if (is_array($args)) {
 			foreach ($args as $id => $arg) {
 				if (!isset($this->editor_menus[$id])) {
@@ -515,81 +506,81 @@ class lumise_cfg extends lumise_tmpl_register{
 				}
 			}
 		}
-		
+
 	}
-	
+
 	public function access_core($name) {
 		if (isset($name) && !empty($name) && !in_array($name, $this->access_core))
 			array_push($this->access_core, $name);
 	}
-	
+
 	public function apply_filters($lumise) {
-		
+
 		$this->settings = $lumise->apply_filters('settings', $this->settings);
 		$this->editor_menus = $lumise->apply_filters('editor_menus', $this->editor_menus);
 		$this->product_attributes = $lumise->apply_filters('product_attributes', $this->product_attributes);
 		$this->size_default = $lumise->apply_filters('size_default', $this->size_default);
 		$this->langs = $lumise->apply_filters('langs_name', $this->langs);
-		
+
 	}
-	
+
     public function init() {
 
 	    global $lumise;
 
 		$this->set_settings($lumise);
 		$this->set_lang($lumise);
-		
+
 		$this->editor_menus = $this->reg_editor_menus();
-		
+
 		$this->product_attributes = $this->reg_product_attributes();
-		
+
 		$color = explode(':', isset($this->settings['primary_color']) ? $this->settings['primary_color'] : '#4db6ac');
 		$this->color = str_replace('#', '', $color[0]);
-		
+
 	    if (is_string($lumise->cfg->settings['activate_langs'])) {
 		    $lumise->cfg->settings['activate_langs'] = explode(',', $lumise->cfg->settings['activate_langs']);
 	    }
-		
+
 		if (!empty($lumise->cfg->settings['logo']) && strpos($lumise->cfg->settings['logo'], 'http') === false)
 			$lumise->cfg->settings['logo'] = $lumise->cfg->upload_url.$lumise->cfg->settings['logo'];
-		
+
 		$lumise->cfg->scheme = ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') || $_SERVER['SERVER_PORT'] == 443) ? 'https' : 'http';
 		$lumise->cfg->api_url = 'https://services.lumise.com/';
-		
+
 		$this->base_default = array(
-			"bag_back.png", 
-			"bag_front.png", 
-			"basic_tshirt_back.png", 
-			"basic_tshirt_front.png", 
-			"basic_women_tshirt_back.png", 
-			"basic_women_tshirt_front.png", 
-			"cup_back.png", 
-			"cup_front.png", 
-			"shoe.png", 
+			"bag_back.png",
+			"bag_front.png",
+			"basic_tshirt_back.png",
+			"basic_tshirt_front.png",
+			"basic_women_tshirt_back.png",
+			"basic_women_tshirt_front.png",
+			"cup_back.png",
+			"cup_front.png",
+			"shoe.png",
 			"hat.png",
-			"hoodie_back.png", 
-			"hoodie_front.png", 
-			"hoodies_sweatshirt_back.png", 
-			"hoodies_sweatshirt_front.png", 
-			"kids_babies_back.png", 
-			"kids_babies_front.png", 
+			"hoodie_back.png",
+			"hoodie_front.png",
+			"hoodies_sweatshirt_back.png",
+			"hoodies_sweatshirt_front.png",
+			"kids_babies_back.png",
+			"kids_babies_front.png",
 			"long_sleeve_back.png",
-			"long_sleeve_front.png", 
-			"phone_case.png", 
-			"premium_back.png", 
-			"premium_front.png", 
-			"stickers.png", 
-			"tank_tops_back.png", 
-			"tank_tops_front.png", 
-			"v_neck_tshirt_back.png", 
-			"v_neck_tshirt_front.png", 
+			"long_sleeve_front.png",
+			"phone_case.png",
+			"premium_back.png",
+			"premium_front.png",
+			"stickers.png",
+			"tank_tops_back.png",
+			"tank_tops_front.png",
+			"v_neck_tshirt_back.png",
+			"v_neck_tshirt_front.png",
 			"women_tank_tops_back.png",
-			"women_tank_tops_front.png", 
-			"women_tshirt_back.png", 
+			"women_tank_tops_front.png",
+			"women_tshirt_back.png",
 			"women_tshirt_front.png"
 		);
-		
+
 		$this->size_default = array(
 			'A0' => array(
 				'cm' => '84.1 x 118.9',
@@ -647,7 +638,7 @@ class lumise_cfg extends lumise_tmpl_register{
 				'px' => '307 x 437'
 			)
 		);
-		
+
 	    $this->js_lang = array(
 		    'sure'=> $lumise->lang('Are you sure?'),
 			'save'=> $lumise->lang('Save'),
@@ -888,17 +879,19 @@ class lumise_cfg extends lumise_tmpl_register{
 			'216'=> $lumise->lang('Failure to add: The maximum dimensions requirement'),
 			'217'=> $lumise->lang('Failure to add: The minimum width requirement'),
 			'218'=> $lumise->lang('Failure to add: The maximum width requirement'),
+			'219'=> $lumise->lang('Error! Your Order Design is not allowed to add objects'),
+			'220'=> $lumise->lang('Enter number of character'),
+			'221'=> $lumise->lang('Enter number of line'),
 	    );
 
 	    $this->default_fonts = $lumise->cfg->settings['google_fonts'];
-		
+
 		if ($lumise->cfg->settings['components'] === null) {
 			$lumise->cfg->settings['components'] = array('product', 'templates', 'cliparts', 'text', 'uploads', 'layers');
 			$lumise->set_option('components', $lumise->cfg->settings['components']);
 		}
-		
-		$lumise->do_action('config_init');
-		
-    }
 
+		$lumise->do_action('config_init');
+
+    }
 }

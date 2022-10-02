@@ -59,34 +59,32 @@ class lumise_ajax extends lumise_lib {
 	protected $aid;
 
 	public function __construct() {
-		
 		global $lumise;
-		
-		$this->action = isset($_POST['action']) ? htmlspecialchars($_POST['action']) : '';
-		$this->nonce = isset($_POST['nonce']) ? explode(":", htmlspecialchars($_POST['nonce'])) : array('', '');
-		
+
+		$this->action = isset($_POST['action']) ? sanitize_text_field(wp_unslash($_POST['action'])) : '';
+		$this->nonce = isset($_POST['nonce']) ? explode(":", wp_unslash($_POST['nonce'])) : array('', '');
 		if (isset($_GET['action']) && $_GET['action'] == 'check-update') {
 			header('HTTP/1.0 200');
 			print_r($lumise->update->check());
 			exit;
 		}
-		
+
 		if (
-			isset($_FILES['file']) || 
+			isset($_FILES['file']) ||
 			(
-				isset($_REQUEST['action']) && 
+				isset($_REQUEST['action']) &&
 				in_array($_REQUEST['action'], $this->actions_get)
 			)
 		) {
-			$this->action = isset($_REQUEST['action']) ? htmlspecialchars($_REQUEST['action']) : '';
-			$this->nonce = isset($_REQUEST['nonce']) ? explode(":", htmlspecialchars($_REQUEST['nonce'])) : array('', '');
+			$this->action = isset($_REQUEST['action']) ? wp_unslash($_REQUEST['action']) : '';
+			$this->nonce = isset($_REQUEST['nonce']) ? explode(":", wp_unslash($_REQUEST['nonce'])) : array('', '');
 		}
-		
+
 		if ($lumise->cfg->settings['report_bugs'] == 1 || $lumise->cfg->settings['report_bugs'] == 2)
 			$this->actions['send_bug'] = true;
-			
+
 		// Call to actions
-		
+
 		if (
 			empty($this->action) ||
 			empty($this->nonce) ||
@@ -99,28 +97,34 @@ class lumise_ajax extends lumise_lib {
 		) {
 			return header('HTTP/1.0 403 Forbidden');
 		}
-		
+
 		$this->main = $lumise;
 
 		if ($this->action == 'extend')
 			return $this->extend();
-			
+
 		$this->aid = str_replace("'", "", $lumise->connector->cookie('lumise-AID'));
-		
-		if (true || lumise_secure::check_nonce($this->nonce[0], $this->nonce[1])) {
-			header('HTTP/1.0 200');
-			$lumise->do_action('ajax');
-			call_user_func_array(array(&$this, $this->action), array());
-		} else {
+
+		if( isset( lumise_secure::$legacy_nonce[$this->nonce[0]] ) ){
+			$result = wp_verify_nonce( $this->nonce[1], lumise_secure::$legacy_nonce[$this->nonce[0]] );
+			if (false === $result ) {
+				wp_die( -1, 403 );
+			}else{
+				header('HTTP/1.0 200');
+				ini_set( 'display_errors', 0 );
+				$GLOBALS['wpdb']->hide_errors();
+				$lumise->do_action('ajax');
+				call_user_func_array(array($this, $this->action), array());
+			}
+		}else{
 			return header('HTTP/1.0 403 Forbidden');
 		}
-		
 	}
 
 	public function extend() {
 
-		$name = isset($_POST['name']) ? htmlspecialchars($_POST['name']) : '';
-		$nonce = isset($_POST['nonce']) ? htmlspecialchars($_POST['nonce']) : '';
+		$name = isset($_POST['name']) ? wp_unslash($_POST['name']) : '';
+		$nonce = isset($_POST['nonce']) ? wp_unslash($_POST['nonce']) : '';
 
 		if (empty($name) || empty($nonce) || !lumise_secure::nonce_exist($name, $nonce)) {
 			echo '-1';
@@ -133,26 +137,26 @@ class lumise_ajax extends lumise_lib {
 	}
 
 	public function templates() {
-		
+
 		$this->x_items('templates');
 
 	}
-	
+
 	public function cliparts() {
-		
+
 		$this->x_items('cliparts');
-		
+
 	}
 
 	public function shapes() {
 
-		$index = htmlspecialchars(isset($_POST['index']) ? $_POST['index'] : 0);
+		$index = wp_unslash(isset($_POST['index']) ? $_POST['index'] : 0);
 		header('Content-Type: application/json');
 		$items = $this->get_shapes($index);
 		foreach($items as $ind => $item){
 			$items[$ind]['content'] = $this->stripallslashes($item['content']);
 		}
-		echo json_encode(array(
+		echo wp_json_encode(array(
 			"items" => $items,
 			"total" => $this->get_shapes('total'),
 			"index" => $index,
@@ -174,13 +178,13 @@ class lumise_ajax extends lumise_lib {
 		$scan = $this->scan_languages(LUMISE_CORE_PATH);
 		// Scan addons
 		$addon_scan = $this->scan_languages($this->main->cfg->upload_path.'addons');
-		
+
 		$scan = array_merge($scan, $addon_scan);
-		
+
 		foreach ($scan as $key => $val) {
 
-			$exist = $this->main->db->rawQueryOne("SELECT `id` as `text` FROM `{$this->main->db->prefix}languages` WHERE `author`='{$this->main->vendor_id}' AND `lang`= ? && `original_text`= ? ", array($code, $val));
- 
+			$exist = $this->main->db->rawQueryOne("SELECT `id` as `text` FROM `{$this->main->db->prefix}languages` WHERE `author`='{$this->main->vendor_id}' AND `lang`= %s && `original_text`= %s ", array($code, $val));
+
             if (is_null($exist)) {
 				$this->main->db->insert("languages", array(
 					"text" => $val,
@@ -192,7 +196,7 @@ class lumise_ajax extends lumise_lib {
 				));
 			}
 		}
-		
+
 		$this->main->connector->set_session('language_lang', $code);
 
 		echo '1';
@@ -203,7 +207,7 @@ class lumise_ajax extends lumise_lib {
 	public function edit_language_text() {
 
 		$text = $_POST['text'];
-		
+
 		if (is_array($text)) {
 			foreach ($text as $id => $txt) {
 				$this->main->db->where ("id='$id'")->where("author='{$this->main->vendor_id}'")->update('languages', array(
@@ -213,7 +217,7 @@ class lumise_ajax extends lumise_lib {
 			}
 
 			header('Content-Type: application/json');
-			echo json_encode($text);
+			echo wp_json_encode($text);
 			exit;
 		} else if (isset($_POST['id']) && !empty($_POST['text'])) {
 			$this->main->db->where ("id='{$_POST['id']}'")->where("author='{$this->main->vendor_id}'")->update('languages', array(
@@ -221,10 +225,10 @@ class lumise_ajax extends lumise_lib {
 				'updated' => date("Y-m-d").' '.date("H:i:s")
 			));
 			header('Content-Type: application/json');
-			echo json_encode(array("id" => $_POST['id'], "text" => $text));
+			echo wp_json_encode(array("id" => $_POST['id'], "text" => $text));
 			exit;
 		}
-		
+
 		echo 0;
 		exit;
 
@@ -237,33 +241,32 @@ class lumise_ajax extends lumise_lib {
 		$this->main->do_action('change_language', $code);
 
 		die('1');
-
 	}
 
 	public function list_products() {
-		
+
 		$task = isset($_POST['task']) ? $_POST['task'] : '';
 		$s = isset($_POST['s']) ? $_POST['s'] : '';
 		$category = isset($_POST['category']) ? $_POST['category'] : '';
 		$index = isset($_POST['index']) ? $_POST['index'] : 0;
-		
+
 		$query = array(
 			"s" => $s,
 			"category" => $category,
 			"index" => $index,
 			"no_cms_filter" => ($task == 'cms_product')
 		);
-		
+
 		$data = $this->main->apply_filters('list_products', null, $query);
-		
+
 		if ($data === null)
 			$data = $this->get_products($query);
 
 		header('Content-Type: application/json');
-		echo json_encode($data);
+		echo wp_json_encode($data);
 
 	}
-	
+
 	public function load_product() {
 
 		if (!isset($_POST['id'])) {
@@ -273,7 +276,7 @@ class lumise_ajax extends lumise_lib {
 		$data = $this->get_product((Int)$_POST['id']);
 
 		header('Content-Type: application/json');
-		echo json_encode($data);
+		echo wp_json_encode($data);
 
 	}
 
@@ -293,7 +296,7 @@ class lumise_ajax extends lumise_lib {
 			);
 
 			if (!empty($post['upload'])) {
-				
+
 				$path = 'thumbnails'.DS;
 				$check = $this->main->check_upload();
 
@@ -302,29 +305,29 @@ class lumise_ajax extends lumise_lib {
 				if (!isset($process['error']) && isset($process['thumbn']))
 					$data['thumbnail'] = $process['thumbn'];
 
-				@unlink($this->main->cfg->upload_path.$path.$process['name']);
+				wp_delete_file($this->main->cfg->upload_path.$path.$process['name']);
 
 			}
 
 			$this->main->db->insert ('categories', $data);
 
 		}
-		
+
 		$type = $this->esc('type');
 		$cates = $this->get_categories($type);
 		header('Content-Type: application/json');
 
-		echo json_encode($this->get_categories());
+		echo wp_json_encode($this->get_categories());
 
 	}
 
 	public function add_clipart() {
-		$post = @json_decode(stripslashes($_POST['data']));
+		$post = json_decode(stripslashes($_POST['data']));
 
 		if ($post == null) {
 
 			header('Content-Type: application/json');
-			echo json_encode(array(
+			echo wp_json_encode(array(
 				"error" => 'Data struction',
 				"name" => $data['name']
 			));
@@ -354,7 +357,7 @@ class lumise_ajax extends lumise_lib {
 		if ($check !== 1) {
 
 			header('Content-Type: application/json');
-			echo json_encode(array(
+			echo wp_json_encode(array(
 				"error" => $this->main->lang('The system does not have permission to write files in the upload folder: ').$lumise->upload_path,
 				"name" => $data['name']
 			));
@@ -368,7 +371,7 @@ class lumise_ajax extends lumise_lib {
 			if (isset($process['error'])) {
 
 				header('Content-Type: application/json');
-				echo json_encode(array(
+				echo wp_json_encode(array(
 					"error" => $process['error'],
 					"name" => $data['name']
 				));
@@ -437,7 +440,7 @@ class lumise_ajax extends lumise_lib {
 		}
 
 		header('Content-Type: application/json');
-		echo json_encode(array("success" => $clipart_id));
+		echo wp_json_encode(array("success" => $clipart_id));
 		exit;
 
 	}
@@ -448,18 +451,18 @@ class lumise_ajax extends lumise_lib {
 		$data = array();
 
 		if(isset($post['data']['verify']) && $post['data']['verify'] != 1){
-			echo json_encode(array(
+			echo wp_json_encode(array(
 				"verify" => 0,
 				"id" => $post['data']['id']
 			));
-			exit; 
+			exit;
 		}
-		
+
 		$cap = 'lumise_edit_'.$post['data']['type'].'-s';
 		$cap = str_replace(array('s-s', '-s'), array('s', 's'), $cap);
-		
+
 		if (!$this->main->caps($cap)) {
-			echo json_encode(array(
+			echo wp_json_encode(array(
 				"status" => 'error',
 				"action" => $post['data']['action'],
 				"value" => $this->main->lang('Sorry, you are not allowed to do this action'),
@@ -467,7 +470,7 @@ class lumise_ajax extends lumise_lib {
 			));
 			exit;
 		}
-		
+
 		if ($post['data']['status'] == 0)
 			$post['data']['status'] = 1;
 		else
@@ -477,15 +480,15 @@ class lumise_ajax extends lumise_lib {
 			$data['featured'] = $post['data']['status'];
 		else
 			$data['active'] = $post['data']['status'];
-		
+
 		if ($post['data']['type'] == 'addons') {
-			
+
 			if ($post['data']['status'] == 1)
 				$ps = $this->main->addons->active_addon($post['data']['id']);
 			else $ps = $this->main->addons->deactive_addon($post['data']['id']);
-			
+
 			if (empty($ps['error'])) {
-				echo json_encode(array(
+				echo wp_json_encode(array(
 					"status" => 'success',
 					"action" => $post['data']['action'],
 					"value" => $ps['status'],
@@ -493,7 +496,7 @@ class lumise_ajax extends lumise_lib {
 					"verify" => $post['data']['verify']
 				));
 			} else {
-				echo json_encode(array(
+				echo wp_json_encode(array(
 					"status" => 'error',
 					"action" => $post['data']['action'],
 					"value" => strip_tags($ps['error']),
@@ -503,7 +506,7 @@ class lumise_ajax extends lumise_lib {
 			}
 			exit;
 		}
-		
+
 		$id = $this->edit_row( $post['data']['id'], $data, $post['data']['type'] );
 
 		if (isset($id) && $id == true )
@@ -511,7 +514,7 @@ class lumise_ajax extends lumise_lib {
 		else
 			$val['status'] = 'error';
 
-		echo json_encode(array(
+		echo wp_json_encode(array(
 			"status" => $val['status'],
 			"action" => $post['data']['action'],
 			"value" => $post['data']['status'],
@@ -524,24 +527,24 @@ class lumise_ajax extends lumise_lib {
 		global $lumise;
 		$post = $_POST;
 		$data = array();
-		
+
 		$cap = 'lumise_edit_'.$post['data']['table'].'-s';
 		$cap = str_replace(array('s-s', '-s'), array('s', 's'), $cap);
-		
+
 		if (!$this->main->caps($cap)) {
-			echo json_encode(array(
+			echo wp_json_encode(array(
 				"status" => 'error',
 				"action" => $post['data']['duplicate'],
 				"value" => $this->main->lang('Sorry, you are not allowed to do this action')
 			));
 			exit;
 		}
-		
+
 		$data = $this->get_row_id($post['data']['id'], $post['data']['table']);
-		
+
 		if (isset($data['name']))
 			$data['name'] = $data['name'].'(Copy)';
-		
+
 		if (isset($data['title']))
 			$data['title'] = $data['title'].'(Copy)';
 
@@ -571,12 +574,12 @@ class lumise_ajax extends lumise_lib {
 		if (count($data) > 0) {
 			$val['status'] = 'success';
  			$this->main->do_action('duplicate-success',$data);
-		
+
 		} else {
 			$val['status'] = 'error';
 		}
-		
-		echo json_encode(array(
+
+		echo wp_json_encode(array(
 			"status" => $val['status'],
 			"data" => $data
 		));
@@ -584,27 +587,27 @@ class lumise_ajax extends lumise_lib {
 	}
 
 	public function add_tags() {
-   
+
 		$post = $_POST;
 
 		$cap = 'lumise_edit_'.$post['data']['type'].'-s';
 		$cap = str_replace(array('s-s', '-s'), array('s', 's'), $cap);
-		
+
 		if (!$this->main->caps($cap)) {
-			echo json_encode(array(
+			echo wp_json_encode(array(
 				"status" => 'error',
 				"action" => $post['data']['action'],
 				"value" => $this->main->lang('Sorry, you are not allowed to do this action')
 			));
 			exit;
 		}
-		
+
 		$arr = array('id', 'name', 'type');
 		$tags = $this->get_rows_custom($arr, 'tags', $orderby = 'name', $order='asc');
 		$flag = false;
 
 		foreach ($tags as $key => $value) {
-			
+
 			if ($value['name'] == $post['data']['value'] && $value['type'] == $post['data']['type']){
 				$id = $value['id'];
 				$flag = true;
@@ -613,7 +616,7 @@ class lumise_ajax extends lumise_lib {
 		}
 
 		if (!$flag) {
-			
+
 			$data = array();
 			$data['name'] = $post['data']['value'];
 			$data['type'] = $post['data']['type'];
@@ -640,7 +643,7 @@ class lumise_ajax extends lumise_lib {
 			$val['status'] = 'success';
 			$tags = $this->get_tag_item($post['data']['id'], $post['data']['type']);
 			$flag = false;
-			
+
 			foreach ($tags as $key => $value) {
 				if ($value['id'] == $id){
 					$flag = true;
@@ -653,7 +656,7 @@ class lumise_ajax extends lumise_lib {
 				$data['tag_id'] = $id;
 				$data['item_id'] = $post['data']['id'];
 				$data['type'] = $post['data']['type'];
-               
+
 				$id = $this->add_row( $data, 'tags_reference' );
 
 				$data_type = $this->get_row_id($post['data']['id'],$post['data']['type']);
@@ -671,13 +674,13 @@ class lumise_ajax extends lumise_lib {
 			if (isset($id) && $id == true)
 				$val['status'] = 'success';
 			else
-				$val['status'] = 'error';	
+				$val['status'] = 'error';
 
 		} else {
 			$val['status'] = 'error';
 		}
 
-		echo json_encode(array(
+		echo wp_json_encode(array(
 			"status" => $val['status'],
 			"value" => $post['data']['value']
 		));
@@ -688,7 +691,7 @@ class lumise_ajax extends lumise_lib {
 
 		$post = $_POST;
 		$tags = $this->get_tag_item($post['data']['id'], $post['data']['type']);
-		
+
 		foreach ($tags as $key => $value) {
 			if ($value['name'] == $post['data']['value']) {
 				$id = $value['id'];
@@ -719,7 +722,7 @@ class lumise_ajax extends lumise_lib {
 			$val['status'] = 'error';
 		}
 
-		echo json_encode(array(
+		echo wp_json_encode(array(
 			"status" => $val['status'],
 			"value" => $post['data']['value']
 		));
@@ -727,15 +730,15 @@ class lumise_ajax extends lumise_lib {
 	}
 
 	public function lumise_set_price() {
-		
+
 		$post = $_POST;
 		$data = array();
-		
+
 		$cap = 'lumise_edit_'.$post['data']['type'].'-s';
 		$cap = str_replace(array('s-s', '-s'), array('s', 's'), $cap);
-		
+
 		if (!$this->main->caps($cap)) {
-			echo json_encode(array(
+			echo wp_json_encode(array(
 				"status" => 'error',
 				"action" => $post['data']['action'],
 				"value" => $this->main->lang('Sorry, you are not allowed to do this action')
@@ -747,7 +750,7 @@ class lumise_ajax extends lumise_lib {
 			$post['data']['value'] = 0;
 
 		$data['price'] = isset($post['data']['value']) && !empty($post['data']['value']) ? $post['data']['value'] : 0;
-		
+
 		$data['updated'] = date("Y-m-d").' '.date("H:i:s");
 		$id = $this->edit_row( $post['data']['id'], $data, $post['data']['type'] );
 
@@ -756,65 +759,65 @@ class lumise_ajax extends lumise_lib {
 	    else
 			$val['status'] = 'error';
 
-		echo json_encode(array( 
+		echo wp_json_encode(array(
 			"status" => $val['status'],
 			"value" => $post['data']['value']
 		));
 
 	}
-	
+
 	public function upload_share_design() {
-		
-		@ini_set('memory_limit','5000M');
-		
+
+		ini_set('memory_limit','5000M');
+
 		$hist = $this->main->connector->get_session('share-design');
-		
+
 		if ($hist === null)
 			$hist = 0;
-		
+
 		$check_share  =  $this->main->apply_filters('verify-share',$hist);
 		if ((!isset($_POST['aid']) || $_POST['aid'] != $this->main->connector->cookie('lumise-AID')) && $check_share !== true) {
-			echo json_encode(array( 
+			echo wp_json_encode(array(
 				"success" => 0,
 				"message" => $this->main->lang('Error, user is not authenticated')
 			));
 			exit;
 		}
-		
+
 		if ($hist >= 50) {
-			echo json_encode(array( 
+			echo wp_json_encode(array(
 				"success" => 0,
 				"message" => $this->main->lang('Error, has exceeded the allowable limit')
 			));
 			exit;
 		}
-		
+
 		if ($this->main->connector->is_admin() || $this->main->cfg->settings['share'] == '1') {
-			
+
 			$this->main->connector->set_session('share-design', $hist+1);
-			
+
 			$id = $this->main->generate_id();
-			
+
 			$check = $this->main->check_upload(time());
-			
+
 			if ($check !== 1) {
-				echo json_encode(array( 
+				echo wp_json_encode(array(
 					"success" => 0,
 					"message" => $this->main->lang('Error, could not write files on the server')
 				));
 				exit;
 			}
-			
+
 			$path = $this->main->cfg->upload_path.'shares'.DS.date('Y').DS.date('m').DS;
-			
-			$screenshot = @file_get_contents($_FILES['screenshot']['tmp_name']);
+
+			$screenshot = lw_file_get_contents($_FILES['screenshot']['tmp_name']);
 			$screenshot = explode(',', $screenshot);
-			
-			$data = @file_get_contents($_FILES['data']['tmp_name']);
-			
+
+			$data = lw_file_get_contents($_FILES['data']['tmp_name']);
+
 			if (
-				file_put_contents($path.$id.'.jpg', base64_decode($screenshot[1])) &&
-				file_put_contents($path.$id.'.lumi', $data)
+				lw_file_put_contents($path.$id.'.jpg', base64_decode($screenshot[1])) &&
+				lw_file_put_contents($path.$id.'.lumi', $data)
 			) {
 				$data = array(
 					'name' => $this->main->lib->esc('label'),
@@ -828,10 +831,12 @@ class lumise_ajax extends lumise_lib {
 					'created' => date("Y-m-d").' '.date("H:i:s")
 				);
 				$data = $this->main->apply_filters('new-section',$data, 'shares');
+
+
 				$insert = $this->main->db->insert('shares', $data);
-				
+
 				if ($insert) {
-					$result = json_encode(array(
+					$result = wp_json_encode(array(
 						"success" => 1,
 						"id" => $id,
 						"product" => $this->main->lib->esc('product'),
@@ -842,48 +847,48 @@ class lumise_ajax extends lumise_lib {
 						"created" => time()
 					));
 				}else{
-					$result = json_encode(array(
+					$result = wp_json_encode(array(
 						"success" => 0,
 						"message" => $this->main->lang('Error, could not create the link share')
 					));
 				}
-			
+
 			} else {
-				$result = json_encode(array(
+				$result = wp_json_encode(array(
 					"success" => 0,
 					"message" => $this->main->lang('Error, could not upload design to create link')
 				));
 			}
-			
+
 		}else{
-			$result = json_encode(array( 
+			$result = wp_json_encode(array(
 				"success" => 0,
 				"message" => $this->main->lang('Error, this feature has been disabled by admin')
 			));
 		}
-		
+
 		echo $result; exit;
-		
+
 	}
-	
+
 	public function get_shares() {
-		
+
 		$aid = $this->main->connector->cookie('lumise-AID');
 		$index = $this->main->lib->esc('index');
-		
+
 		if (empty($index))
 			$index = 0;
-		
+
 		if (empty($aid) || $aid == '*') {
-			$result = json_encode(array( 
+			$result = wp_json_encode(array(
 				"success" => 0,
 				"result" => array()
 			));
 		}else{
-			
+
 			$data = $this->getShares($index);
-			
-			$result = json_encode(array( 
+
+			$result = wp_json_encode(array(
 				"success" => 1,
 				"result" => $data[0],
 				"total" => $data[1],
@@ -891,19 +896,19 @@ class lumise_ajax extends lumise_lib {
 				"index" => $index+count($data[0])
 			));
 		}
-		
-		echo $result; 
+
+		echo $result;
 		exit;
-		
+
 	}
-	
+
 	public function get_rss() {
-		
+
 		$curDate = date_default_timezone_get();
 		date_default_timezone_set("Asia/Bangkok");
 		$rss = $this->main->lib->remote_connect($this->main->cfg->api_url.'news/php.rss.xml?nonce='.rand(10000, 30000));
 		date_default_timezone_set($curDate);
-		$rss = @simplexml_load_string($rss);
+		$rss = simplexml_load_string($rss);
 
 		if ($rss !== null && is_object($rss)) {
 			$html = '<div class="lumise_container">';
@@ -964,107 +969,107 @@ class lumise_ajax extends lumise_lib {
 			}
 
 			echo $html;
-			
+
 		} else {
 			echo '<p>'.$this->main->lang('Could not load RSS feed').'</p>';
 		}
-			
+
 		exit;
-		
+
 	}
-		
+
 	public function list_colors() {
-		
+
 		if (isset($_POST['save_action'])) {
-			echo $this->main->set_option('colors_manage', $_POST['save_action']);
+			echo esc_html($this->main->set_option('colors_manage', $_POST['save_action']));
 			exit;
 		}
-		
+
 		$colors = $this->main->get_option('colors_manage');
-		
+
 		echo $colors;
 		exit;
-		
+
 	}
-		
+
 	public function delete_link_share() {
-		
+
 		$aid = $this->main->connector->cookie('lumise-AID');
 		$id = $this->main->lib->esc('id');
 		$post_aid = $this->main->lib->esc('aid');
-		
+
 		if ($aid != $post_aid) {
-			$result = array( 
+			$result = array(
 				"success" => 0,
 				"message" => $this->main->lang('Error Unauthorized 1: Could not delete the link')
 			);
 		}else{
-			
+
 			$data = $this->get_share($id);
-			
+
 			if ($data == null || $data['aid'] != $aid) {
-				$result = array( 
+				$result = array(
 					"success" => 0,
 					"message" => $this->main->lang('Error Unauthorized 2: Could not delete the link')
 				);
 			}else{
-				
+
 				$path = $this->main->cfg->upload_path;
 				$path .= 'shares'.DS.date('Y', strtotime($data['created'])).DS.date('m', strtotime($data['created'])).DS;
-				
-				@unlink($path.$data['share_id'].'.jpg');
-				@unlink($path.$data['share_id'].'.lumi');
-				
+
+				wp_delete_file($path.$data['share_id'].'.jpg');
+				wp_delete_file($path.$data['share_id'].'.lumi');
+
 				$this->main->db->where('share_id', $id);
 				$this->main->db->where('author', $this->main->vendor_id);
 				$this->main->db->delete('shares');
-				
-				$result = array( 
+
+				$result = array(
 					"success" => 1
 				);
 			}
 		}
-		
-		echo json_encode($result); 
+
+		echo wp_json_encode($result);
 		exit;
-		
+
 	}
-	
+
 	public function upload_product_images() {
 		global $lumise;
 
 		if (!$this->main->caps('lumise_can_upload')) {
-			echo $this->main->lang('Sorry, You do not have permission to upload');
+			echo esc_html($this->main->lang('Sorry, You do not have permission to upload'));
 			exit;
 		}
-		
+
 		$time = time();
 		$check = $this->main->check_upload($time);
-		
+
 		$vendor = isset($_POST['vendor']) ? $_POST['vendor'] : 'false';
 		if($lumise->connector->platform == 'woocommerce'){
 			$uid = get_current_user_id();
 		} else {
 			$uid = '1';
 		}
-		
+
 		if ($check !== 1) {
 			echo 'Error: '.$check;
 			exit;
 		}
-		
+
 		if ($vendor == 'true' && !is_dir($this->main->cfg->upload_path.'products'.DS.$uid))
-			mkdir($this->main->cfg->upload_path.'products'.DS.$ui, 0755);
-		
+			wp_mkdir_p($this->main->cfg->upload_path.'products'.DS.$ui);
+
 		$path = $this->main->cfg->upload_path.'products'.DS;
 		$res = array();
-		
+
 		if ($vendor == 'true')
 			$path .= $uid.DS;
-			
+
 		foreach ($_FILES as $name => $file) {
-			
-			$image = @file_get_contents($file["tmp_name"]);
+
+			$image = lw_file_get_contents($file["tmp_name"]);
 			$type = '.jpg';
 			if(strpos($image, 'data:image/png') !== false){
 				$type = '.png';
@@ -1075,167 +1080,165 @@ class lumise_ajax extends lumise_lib {
 			// $type = strpos($image, 'data:image/png') !== false ? '.png' : '.jpg';
 			$image = explode(',', $image);
 			$image = base64_decode($image[1]);
-			
-			if (@file_put_contents($path.$name.$type, $image)) {
+
+			if (lw_file_put_contents($path.$name.$type, $image)) {
 				$res[$name] = 'products/'.($vendor == 'true' ? $uid.'/' : '').$name.$type;
 			}
-			
+
 			unset($image);
-			
+
 		}
-		
-		echo json_encode($res);
+
+		echo wp_json_encode($res);
 		exit;
-		
+
 	}
-	
+
 	public function upload() {
-		
+
 		if (!$this->main->caps('lumise_can_upload')) {
-			echo $this->main->lang('Sorry, You do not have permission to upload');
+			echo esc_html($this->main->lang('Sorry, You do not have permission to upload'));
 			exit;
 		}
-		
+
 		$time = time();
 		$check = $this->main->check_upload($time);
-		
+
 		if ($check !== 1) {
 			echo '{"error": "'.$check.'"}';
 			exit;
 		}
-		
+
 		if (isset($_GET['task']) && $_GET['task'] == 'stages') {
-			
-			$content = file_get_contents($_FILES["file"]["tmp_name"]);
-			$content = preg_replace_callback("/(data\:image\/[^\"]+\")/i", array(&$this, 'upload_stages'), $content);
-			
+
+			$content = lw_file_get_contents($_FILES["file"]["tmp_name"]);
+			$content = preg_replace_callback("/(data\:image\/[^\"]+\")/i", array($this, 'upload_stages'), $content);
+
 			$content = explode('-->|<--', $content);
-			
+
 			echo base64_encode(urlencode($content[0]));
-			
+
 			if (isset($content[1]))
 				echo '-->|<--'.base64_encode(urlencode($content[1]));
-			
-			exit; 
-			
+
+			exit;
+
 		}
-				
+
 		if (isset($_GET['task']) && $_GET['task'] == 'files') {
-			
-			$data = @file_get_contents($_FILES["file"]["tmp_name"]);
+
+			$data = lw_file_get_contents($_FILES["file"]["tmp_name"]);
 			$tmpl = time().'.tmpl';
-			
+
 			if ($data && !empty($data) && strlen($data) > 0) {
-				if (@file_put_contents($this->main->cfg->upload_path.'user_data'.DS.$tmpl, $data)) {
+				if (lw_file_put_contents($this->main->cfg->upload_path.'user_data'.DS.$tmpl, $data)) {
 					echo $tmpl;
 				} else echo 'Error: Could not write file';
 			} else echo 'Error: Could not upload file';
-				
+
 			exit;
-			
+
 		}
-		
+
 		$path = $this->main->cfg->upload_path.'user_data'.DS;
 		$file = date('Y', $time).DS.date('m', $time).DS.$this->main->generate_id().'.txt';
-		
+
 		$move_file = move_uploaded_file($_FILES["file"]["tmp_name"], $path.$file);
-		
+
 		if ($move_file)
 			echo '{"success": "'.urlencode($file).'"}';
 		else echo '{"error": "could not upload"}';
-		
+
 		exit;
-		
+
 	}
-	
+
 	public function upload_stages($matches) {
-		
+
 		if (!$this->main->caps('lumise_can_upload')) {
-			echo $this->main->lang('Sorry, You do not have permission to delete');
+			echo esc_html($this->main->lang('Sorry, You do not have permission to delete'));
 			exit;
 		}
-		
+
 		$path = $this->main->cfg->upload_path.'products'.DS;
 		$type = '.jpg';
-		
+
 		$data = str_replace('"', "", $matches[0]);
 		$data = explode(',', $data);
 		$data = base64_decode($data[1]);
-		
+
 		if (strpos($matches[0], 'data:image/png') !== false)
 			$type = '.png';
 		if (strpos($matches[0], 'data:image/svg') !== false)
 			$type = '.svg';
-		
+
 		$file = $this->main->generate_id().$type;
-		
-		if (!@file_put_contents($path.$file, $data)) {
+
+		if (!lw_file_put_contents($path.$file, $data)) {
 			echo 'Error: could not write file on your server';
 			exit;
 		}
 
 		return 'products/'.$file.'"';
-		
+
 	}
-	
+
 	public function upload_fields() {
-		
+
 		if (count(array_keys($_FILES)) > 0) {
-			
+
 			$path = $this->main->cfg->upload_path.'user_data'.DS;
 			$time = time();
 			$result = array();
 			$check = $this->main->check_upload($time);
-		
+
 			if ($check !== 1) {
 				echo '{"error": "'.$check.'"}';
 				exit;
 			}
-			
+
 			foreach ($_FILES as $name => $file) {
 				$file_name = date('Y', $time).DS.date('m', $time).DS.$this->main->generate_id().'.txt';
 				if (move_uploaded_file($file["tmp_name"], $path.$file_name)) {
 					$result[$name] = $file_name;
 				}
 			}
-			
-			if (count(array_keys($result)) === count(array_keys($_FILES)))
-				echo '{"success": "'.urlencode(json_encode($result)).'"}';
-			else echo '{"error": "could not upload"}';
-			
-		} else echo '{"error": "no files upload"}';
-		
-	}
-	
-	public function checkout() {
-		
-		require_once(dirname(__FILE__).DS.'..'.DS.'cart.php');
 
+			if (count(array_keys($result)) === count(array_keys($_FILES)))
+				echo '{"success": "'.urlencode(wp_json_encode($result)).'"}';
+			else echo '{"error": "could not upload"}';
+
+		} else echo '{"error": "no files upload"}';
+
+	}
+
+	public function checkout() {
+		require_once(dirname(__FILE__).DS.'..'.DS.'cart.php');
 		exit;
 	}
-	
+
 	public function pdf() {
-		
+
 		global $lumise;
-		
+
 		$fonts = isset($_GET['fonts']) ? urldecode($_GET['fonts']) : '';
 		$fonts = explode('|', $fonts);
-		
+
 		$nocache = array();
-		
+
 		$fpath = $lumise->cfg->upload_path.'fonts'.DS;
-		
+
 		if (count($fonts) > 0) {
-			
+
 			foreach ($fonts as $f) {
 				if (!is_file($fpath.$f.'.ttf'))
 					array_push($nocache, $f);
 			}
-			
+
 			if (count($nocache) > 0) {
-				
+
 				$query = "SELECT * FROM `{$lumise->db->prefix}fonts` WHERE `author`='{$this->main->vendor_id}' AND `name` IN ('".implode("','", $nocache)."') AND `active`= 1";
-				
+
 				$db_fonts = $lumise->db->rawQuery($query);
 
 				if (count($db_fonts) > 0) {
@@ -1249,34 +1252,34 @@ class lumise_ajax extends lumise_lib {
 					}
 				}
 			}
-			
+
 			if (count($nocache) > 0) {
-				
+
 				$gcfg = $lumise->lib->remote_connect('https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyCrsTDigL61TFHYPHTZduQP1cGi8CLfp90');
-				
+
 				$gcfg = json_decode($gcfg);
-				
+
 				if (is_array($gcfg->items) && count($gcfg->items) > 0) {
 					foreach ($gcfg->items as $item) {
 						if (in_array($item->family, $nocache)) {
 							if (!is_file($fpath.$item->family.'.ttf')) {
 								$fdata = $lumise->lib->remote_connect($item->files->regular);
 								if (!empty($fdata)) {
-									file_put_contents($fpath.$item->family.'.ttf', $fdata);
+									lw_file_put_contents($fpath.$item->family.'.ttf', $fdata);
 								}
 							}
 						}
 					}
 				}
-			
+
 			}
-		
+
 		}
-		
+
 	?><!DOCTYPE html><html><head><title>Lumise</title><script type="text/javascript">var fonts = {<?php
 		foreach ($fonts as $font) {
 			if (is_file($fpath.$font.'.ttf')) {
-				echo '"'.$font.'": "'.base64_encode(file_get_contents($fpath.$font.'.ttf')).'",';
+				echo '"'.$font.'": "'.base64_encode(lw_file_get_contents($fpath.$font.'.ttf')).'",';
 			}
 		}
 	?>};function base64ToArrayBuffer(base64) {
@@ -1290,22 +1293,22 @@ class lumise_ajax extends lumise_lib {
 };
 
 function renderPDF(svgs, url) {
-    
+
     let doc = new PDFDocument({
         compress: false,
         size: [Math.round(svgs[0][1].w), Math.round(svgs[0][1].h)]
     });
-    
+
     Object.keys(fonts).map(function(f) {
         doc.registerFont(f, base64ToArrayBuffer(fonts[f]));
         /*if (f.indexOf(' ') > -1) {
 	        svgs.map(function(s, i) {
 		        var reg = new RegExp('font-family="'+f+'"', 'g');
-		        svgs[i][0] = svgs[i][0].replace(reg, 'font-family="'+f.replace(/\ /g, '').replace(/\'/g, '')+'"'); 
+		        svgs[i][0] = svgs[i][0].replace(reg, 'font-family="'+f.replace(/\ /g, '').replace(/\'/g, '')+'"');
 	        });
         }*/
     });
-    
+
     svgs.map(function(s, i) {
         var w = Math.round(s[1].w),
             h = Math.round(s[1].h);
@@ -1314,7 +1317,7 @@ function renderPDF(svgs, url) {
                 size: [w, h]
             })
         };
-        
+
         SVGtoPDF(doc, s[0], 7, 7, {
             fontCallback: function(f) {
                 try {
@@ -1345,157 +1348,157 @@ function renderPDF(svgs, url) {
         }
     });
     doc.end()
-};</script><script type="text/javascript" src="<?php echo $lumise->cfg->assets_url.'assets/js/pdfkit.js?version='.LUMISE; ?>"></script></head><body></body></html><?php	
+};</script><script type="text/javascript" src="<?php echo esc_url($lumise->cfg->assets_url.'assets/js/pdfkit.js?version='.LUMISE); ?>"></script></head><body></body></html><?php
 		exit;
-		
+
 	}
-	
+
 	public function load_more_bases() {
 
 		global $lumise;
-		
+
 		$start = isset($_POST['start']) ? $_POST['start'] : 0;
 		$limit = isset($_POST['limit']) ? $_POST['limit'] : 30;
 		$vendor = isset($_POST['vendor']) ? $_POST['vendor'] : 'false';
-		
+
 		if($lumise->connector->platform == 'woocommerce'){
 			$uid = get_current_user_id();
 		} else {
 			$uid = '1';
 		}
-		
-		
+
+
 		$items = $this->main->lib->get_uploaded_bases($vendor == 'true' ? $uid : '');
 		$total = count($items);
-		
+
 		$items = array_splice($items, $start, $limit);
-		
+
 		$list = $this->main->get_option('product_image_names'.($vendor == 'true' ? '_'.$uid : ''));
-		
+
 		if ($list === null)
 			$list = array();
 		else $list = json_decode($list, true);
-		
+
 		$names = array();
-		
+
 		for ($i=0; $i<count($items); $i++) {
 			if (isset($list[$items[$i]]))
 				$names[$i] = $list[$items[$i]];
 			else $names[$i] = '';
 		}
-		
-		echo json_encode(array(
+
+		echo wp_json_encode(array(
 			"total" => $total,
 			"items" => $items,
 			"names" => $names,
 			"start" => (float)$start
 		));
-		
+
 		exit;
-		
+
 	}
-	
+
 	public function edit_name_product_image() {
-		
+
 		if (!$this->main->caps('lumise_can_upload')) {
-			echo $this->main->lang('Sorry, You do not have permission to edit name');
+			echo esc_html($this->main->lang('Sorry, You do not have permission to edit name'));
 			exit;
 		}
-		
+
 		$vendor = isset($_POST['vendor']) ? $_POST['vendor'] : 'false';
 		$uid = get_current_user_id();
-		
+
 		$list = $this->main->get_option('product_image_names'.($vendor == 'true' ? '_'.$uid : ''));
-		
+
 		if ($list === null)
 			$list = array();
 		else $list = json_decode($list, true);
-		
+
 		$list[$_POST['file']] = $_POST['name'];
-		
-		$this->main->set_option('product_image_names'.($vendor == 'true' ? '_'.$uid : ''), json_encode($list));
-		
+
+		$this->main->set_option('product_image_names'.($vendor == 'true' ? '_'.$uid : ''), wp_json_encode($list));
+
 		echo 1;
 		exit;
-		
+
 	}
-	
+
 	public function delete_base_image() {
 		global $lumise;
 		if (!$this->main->caps('lumise_can_upload')) {
-			echo $this->main->lang('Sorry, You do not have permission to delete');
+			echo esc_html($this->main->lang('Sorry, You do not have permission to delete'));
 			exit;
 		}
-		
+
 		$file = isset($_POST['file']) ? $_POST['file'] : '';
 		$vendor = isset($_POST['vendor']) ? $_POST['vendor'] : 'false';
-		
+
 		if($lumise->connector->platform == 'woocommerce'){
 			$uid = get_current_user_id();
 		} else {
 			$uid = '1';
 		}
-		
+
 		if ($vendor == 'true') {
 			$file = $uid.DS.$file;
 		}
-		
+
 		if (empty($file) || !is_file($this->main->cfg->upload_path.'products'.DS.$file)) {
-			echo $this->main->lang('Error, the file does not exist');
+			echo esc_html($this->main->lang('Error, the file does not exist'));
 			exit;
 		}
-		
-		$del = unlink($this->main->cfg->upload_path.'products'.DS.$file);
-		
+
+		$del = wp_delete_file($this->main->cfg->upload_path.'products'.DS.$file);
+
 		if ($del) {
-			
+
 			$list = $this->main->get_option('product_image_names'.($vendor == 'true' ? '_'.$uid : ''));
-			
+
 			if ($list === null)
 				$list = array();
 			else $list = json_decode($list, true);
-			
+
 			unset($list[$file]);
-			
-			$this->main->set_option('product_image_names'.($vendor == 'true' ? '_'.$uid : ''), json_encode($list));
-		
+
+			$this->main->set_option('product_image_names'.($vendor == 'true' ? '_'.$uid : ''), wp_json_encode($list));
+
 		}
-		
-		echo $del; 
+
+		echo $del;
 		exit;
-		
+
 	}
-	
+
 	public function setup() {
 		if (method_exists($this->main->connector, 'setup')) {
-			call_user_func_array(array(&$this->main->connector, 'setup'), array());
+			call_user_func_array(array($this->main->connector, 'setup'), array());
 		}
 	}
-	
+
 	public function addon() {
-		
+
 		$this->main->do_action('addon-ajax');
 		exit;
-		
+
 	}
-		
+
 	public function send_bug() {
-		
+
 		$hist = $this->main->connector->get_session('bug-reporting');
-		
+
 		if ($hist === null)
 			$hist = 0;
-		
+
 		if ($hist >= 10) {
-			echo json_encode(array( 
+			echo wp_json_encode(array(
 				"success" => 0,
 				"message" => $this->main->lang('Error, has exceeded the allowable limit')
 			));
 			exit;
 		}
-		
+
 		$this->main->connector->set_session('bug-reporting', $hist+1);
-		
+
 		$id = $this->main->db->insert('bugs', array(
 			'content' => substr(urldecode(base64_decode($_POST['content'])), 0, 1500),
 			'status' => 'new',
@@ -1504,41 +1507,41 @@ function renderPDF(svgs, url) {
 			'created' => date("Y-m-d").' '.date("H:i:s"),
 			'updated' => date("Y-m-d").' '.date("H:i:s")
 		));
-		
+
 		if ($this->main->cfg->settings['report_bugs'] == 2)
 			$this->report_bug_lumise($id);
-		
-		echo json_encode(array(
+
+		echo wp_json_encode(array(
 			"success" => 1
 		));
-		
+
 	}
-	
+
 	public function report_bug() {
 		echo $this->report_bug_lumise($_POST['id']) ? 'Success' : 'Fail';
 	}
-	
+
 	public function product_variation() {
 		include (LUMISE_CORE_PATH.DS.'..'.DS.'admin'.DS.'pages'.DS.'product-variation.php');
 		exit;
 	}
-	
+
 	public function load_layout($echo = true){
 		global $lumise;
 		$layouts = [];
 		$printing_id = isset($_POST['printing']) ? intval($_POST['printing']) : 0;
 		$false = function () {  return false; };
 		$true = function () {  return true; };
-		
+
 		if($printing_id){
 			$printing = $lumise->db->rawQueryOne(
 				"SELECT * FROM `{$lumise->db->prefix}printings` WHERE `author`='{$this->main->vendor_id}' AND `active`='1' AND id=".(Int)$printing_id
 			);
 			$printing = $lumise->apply_filters('printing', $printing, $printing_id);
-			
+
 			if ($printing && isset($printing['layout']) && !empty($printing['layout'])) {
 				$layout = $lumise->lib->dejson($printing['layout']);
-				
+
 				$actions = ['file', 'design', 'print', 'share', 'help', 'undo', 'redo', 'zoom', 'preview'];
 				$toolbars = $lumise->cfg->settings['toolbars'];
 
@@ -1547,10 +1550,9 @@ function renderPDF(svgs, url) {
 					$components = explode(',', $components);
 
 				$action = array_diff($actions, explode(',', $layout->actions));
-				$component = array_diff($components, $layout->components);
+				//$component = array_diff($components, $layout->components);
 				$toolbar = array_diff($toolbars,  explode(',', $layout->toolbars));
-				
-				//var_dump($layout->components);
+
 				foreach($action as $key => $act){
 					switch($act){
 						case 'file':
@@ -1578,10 +1580,10 @@ function renderPDF(svgs, url) {
 							$this->main->add_filter('zoom', $false);
 							break;
 						case 'preview':
-							break;		
+							break;
 					}
 				}
-				
+
 				foreach($toolbar as $tool){
 					switch($tool){
 						case 'replace-image':
@@ -1595,19 +1597,19 @@ function renderPDF(svgs, url) {
 							break;
 						case 'remove-bg':
 							$this->main->add_filter('remove-background', $false);
-							break;	
+							break;
 						case 'filter':
 							$this->main->add_filter('filter', $false);
-							break;	
+							break;
 						case 'fill':
 							$this->main->add_filter('fill', $false);
 							break;
 						case 'layer':
 							$this->main->add_filter('layers', $false);
-							break;	
+							break;
 						case 'position':
 							$this->main->add_filter('position', $false);
-							break;			
+							break;
 						case 'transform':
 							$this->main->add_filter('transform', $false);
 							break;
@@ -1616,7 +1618,7 @@ function renderPDF(svgs, url) {
 							break;
 						case 'text-effect':
 							$this->main->add_filter('text-effect', $false);
-							break;	
+							break;
 						case 'font-size':
 							$this->main->add_filter('font-size', $false);
 							break;
@@ -1636,41 +1638,43 @@ function renderPDF(svgs, url) {
 				}
 
 				// qrcode
-				if($this->main->cfg->settings['dis_qrcode'] == '1' && in_array('qrcode', explode(',', $layout->actions)))
+				if(in_array('qrcode', explode(',', $layout->actions)))
 					$this->main->add_filter('disable-qrcode', $true);
-								
+
 				$this->main->add_filter('nav-component', function() use ($layout){
-					return $layout->components; 
+					return $layout->components;
 				});
 			}
-			
+
 		}
-		
+
 		ob_start();
-			$this->main->display('nav'); 
+			$this->main->display('nav');
 		$layouts['navigations'] = ob_get_clean();
 
 		ob_start();
-			$this->main->display('left'); 
+			$this->main->display('left');
 		$layouts['left'] = ob_get_clean();
 
 		ob_start();
-			$this->main->display('tool'); 
+			$this->main->display('tool');
 		$layouts['top-tools'] = ob_get_clean();
-		
+
 		if($echo){
-			echo json_encode($layouts);
+			echo wp_json_encode($layouts);
 			exit;
 		}else{
 			return $layouts;
 		}
-		
+
 	}
 
 	public function init() {
-		
+
 		$settings = $this->main->cfg->settings;
-		
+
+        do_action( 'lumise_set_design_cookies' , true );
+
 		$cfg = array(
 			"version" => LUMISE,
 			"theme_color" => explode('@', explode(':', $settings['colors'])[0])[0],
@@ -1699,7 +1703,7 @@ function renderPDF(svgs, url) {
 			"ajax" => $this->main->cfg->ajax_url,
 			"assets" => $this->main->cfg->assets_url,
 			"jquery" => $this->main->cfg->load_jquery,
-			"nonce" => lumise_secure::create_nonce('LUMISE-SECURITY'),
+			"nonce" => wp_create_nonce( 'lumise_security' ),
 			"max_upload_size" => (int)ini_get('post_max_size'),
 			"access_core" => is_array($this->main->cfg->access_core) ? implode(',', $this->main->cfg->access_core) : $this->main->cfg->access_core,
 			"design" => $this->main->esc('design_print'),
@@ -1716,8 +1720,9 @@ function renderPDF(svgs, url) {
 			"attributes_cfg" => $this->main->cfg->product_attributes,
 			"layouts" => $this->load_layout(false),
 		);
-		
+
 		$cfg = $this->main->lib->product_cfg($cfg);
+
 		if (!empty($settings['custom_js'])) {
 			$custom_js = str_replace(
 				array('<script', '</script>'),
@@ -1726,13 +1731,10 @@ function renderPDF(svgs, url) {
 			);
 			$cfg['custom_js'] = stripslashes($custom_js);
 		}
-		
+
 		$cfg = $this->main->apply_filters('js_init', $cfg);
 
-		header('Content-Type: application/json');
-		echo json_encode($cfg);
-		exit;
-			
+		wp_send_json($cfg);
 	}
 
 }

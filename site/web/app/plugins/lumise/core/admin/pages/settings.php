@@ -372,7 +372,7 @@
 					'name' => 'activate_langs',
 					'label' => $lumise->lang('Activate languages'),
 					'options' => $active_langs,
-					'desc' => '<a href="'.$lumise->cfg->admin_url.'lumise-page=languages"><i class="fa fa-plus"></i> '.$lumise->lang('Add new language ').'</a>'
+					'desc' => '<a href="'.esc_url($lumise->cfg->admin_url).'lumise-page=languages"><i class="fa fa-plus"></i> '.$lumise->lang('Add new language ').'</a>'
 				),
 			),
 			'help:' . $lumise->lang('Help contents') => array(
@@ -438,13 +438,18 @@
 	
 	$fields = $lumise_admin->process_settings_data($arg);
 
+	$form_action = add_query_arg(
+		array(
+			'lumise-page' => $section,
+			'callback' => isset($_GET['callback']) ? sanitize_text_field(wp_unslash($_GET['callback'])) : null
+		),
+		$lumise->cfg->admin_url
+	);
 ?>
 
-<div class="lumise_wrapper" id="lumise-<?php echo $section; ?>-page">
+<div class="lumise_wrapper" id="lumise-<?php echo esc_attr($section); ?>-page">
 	<div class="lumise_content">
-		<form action="<?php echo $lumise->cfg->admin_url; ?>lumise-page=<?php 
-			echo $section.(isset($_GET['callback']) ? '&callback='.$_GET['callback'] : '');
-		?>" id="lumise-settings-form" method="post" class="lumise_form" enctype="multipart/form-data">
+		<form action="<?php echo esc_url($form_action); ?>" id="lumise-settings-form" method="post" class="lumise_form" enctype="multipart/form-data">
 			
 			<?php 
 				$lumise->views->header_message();
@@ -452,9 +457,9 @@
 			?>
 			
 			<div class="lumise_form_group" style="margin-top: 20px">
-				<input type="submit" class="lumise-button lumise-button-primary" value="<?php echo $lumise->lang('Save Settings'); ?>"/>
+				<input type="submit" class="lumise-button lumise-button-primary" value="<?php echo esc_html($lumise->lang('Save Settings')); ?>"/>
 				<input type="hidden" name="do" value="action" />
-				<input type="hidden" name="lumise-section" value="<?php echo $section; ?>">
+				<input type="hidden" name="lumise-section" value="<?php echo esc_attr($section); ?>">
 			</div>
 		</form>
 	</div>

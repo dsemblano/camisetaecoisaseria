@@ -63,16 +63,16 @@
 			$lumise_msg = array('status' => 'error', 'errors' => $errors);
 			$lumise->connector->set_session('lumise_msg', $lumise_msg);
 			if (!empty($data_id)) {
-				$lumise->redirect($lumise->cfg->admin_url . "lumise-page=design&id=".$data_id);
+				wp_safe_redirect($lumise->cfg->admin_url . "lumise-page=design&id=".$data_id);
 			} else {
-				$lumise->redirect($lumise->cfg->admin_url . "lumise-page=design");
+				wp_safe_redirect($lumise->cfg->admin_url . "lumise-page=design");
 			}
 			exit;
 
 		}
 
 		if (isset($id) && $id == true ) {
-			$lumise->redirect($lumise->cfg->admin_url . "lumise-page=design&id=".$id);
+			wp_safe_redirect($lumise->cfg->admin_url . "lumise-page=design&id=".$id);
 			exit;
 		}
 
@@ -86,12 +86,12 @@
 			<?php
 
 				if (isset($_GET['id'])) {
-					echo '<h2>'.$lumise->lang('Edit Design').'</h2><a href="'.$lumise->cfg->admin_url.'lumise-page=design" class="add-new lumise-button">'.$lumise->lang('Add New Design').'</a>';
+					echo '<h2>'.$lumise->lang('Edit Design').'</h2><a href="'.esc_url($lumise->cfg->admin_url).'lumise-page=design" class="add-new lumise-button">'.$lumise->lang('Add New Design').'</a>';
 				} else {
 					echo '<h2>'.$lumise->lang('Add Design').'</h2>';
 				}
-				$lumise_page = isset($_GET['lumise-page']) ? $_GET['lumise-page'] : '';
-				echo $lumise_helper->breadcrumb($lumise_page); 
+				$lumise_page = isset($_GET['lumise-page']) ? sanitize_text_field( wp_unslash( $_GET['lumise-page'] ) ) : '';
+				echo wp_kses_post($lumise_helper->breadcrumb($lumise_page)); 
 
 			?>
 		</div>
@@ -125,22 +125,22 @@
 			<?php }
 
 		?>
-		<form action="<?php echo $lumise->cfg->admin_url;?>lumise-page=design" method="post" class="lumise_form">
+		<form action="<?php echo esc_url($lumise->cfg->admin_url);?>lumise-page=design" method="post" class="lumise_form">
 			<div class="lumise_form_group">
-				<span><?php echo $lumise->lang('Name'); ?><em class="required">*</em></span>
+				<span><?php echo esc_html($lumise->lang('Name')); ?><em class="required">*</em></span>
 				<div class="lumise_form_content">
 					<input type="text" name="name" value="<?php echo !empty($data['name']) ? $data['name'] : '' ?>">
 					<input type="hidden" name="name_temp" value="<?php echo !empty($data['name']) ? $data['name'] : '' ?>">
 				</div>
 			</div>
 			<div class="lumise_form_group">
-				<span><?php echo $lumise->lang('Screenshot'); ?></span>
+				<span><?php echo esc_html($lumise->lang('Screenshot')); ?></span>
 				<div class="lumise_form_content">
 					<textarea name="screenshot"><?php echo !empty($data['screenshot']) ? $data['screenshot'] : '' ?></textarea>
 				</div>
 			</div>
 			<div class="lumise_form_group">
-				<span><?php echo $lumise->lang('Sharing'); ?></span>
+				<span><?php echo esc_html($lumise->lang('Sharing')); ?></span>
 				<div class="lumise_form_content">
 					<div class="lumise-toggle">
 						<?php 
@@ -149,14 +149,14 @@
 								$check = 'checked';
 							}
 						?>
-						<input type="checkbox" name="sharing" <?php echo $check; ?>>
+						<input type="checkbox" name="sharing" <?php echo esc_attr($check); ?>>
 						<span class="lumise-toggle-label" data-on="Yes" data-off="No"></span>
 						<span class="lumise-toggle-handle"></span>
 					</div>
 				</div>
 			</div>
 			<div class="lumise_form_group">
-				<span><?php echo $lumise->lang('Active'); ?></span>
+				<span><?php echo esc_html($lumise->lang('Active')); ?></span>
 				<div class="lumise_form_content">
 					<div class="lumise-toggle">
 						<?php 
@@ -165,7 +165,7 @@
 								$check = 'checked';
 							}
 						?>
-						<input type="checkbox" name="active" <?php echo $check; ?>>
+						<input type="checkbox" name="active" <?php echo esc_attr($check); ?>>
 						<span class="lumise-toggle-label" data-on="Yes" data-off="No"></span>
 						<span class="lumise-toggle-handle"></span>
 					</div>
@@ -173,10 +173,10 @@
 			</div>
 			<div class="lumise_form_group">
 				<input type="hidden" name="id" value="<?php echo !empty($data['id']) ? $data['id'] : '' ?>"/>
-				<input type="submit" class="lumise-button lumise-button-primary" value="<?php echo $lumise->lang('Save Design'); ?>"/>
+				<input type="submit" class="lumise-button lumise-button-primary" value="<?php echo esc_html($lumise->lang('Save Design')); ?>"/>
 				<input type="hidden" name="save_design" value="true">
 			</div>
-			<?php $lumise->securityFrom();?>
+			<?php wp_nonce_field( 'lumise_security_form', 'lumise_security_form_nonce' );?>
 		</form>
 	</div>
 </div>

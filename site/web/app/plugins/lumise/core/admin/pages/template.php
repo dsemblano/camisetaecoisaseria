@@ -3,7 +3,7 @@
 	global $lumise;
 
 	$section = 'template';
-	$id = isset($_GET['id']) ? $_GET['id'] : 0;
+	$id = isset($_GET['id']) ? absint($_GET['id']) : 0;
 	$fields = $lumise_admin->process_data(array(
 		array(
 			'type' => 'input',
@@ -69,9 +69,16 @@
 		),
 	), 'templates');
 
+	$form_action = add_query_arg(
+		array(
+			'lumise-page' => esc_attr($section),
+			'callback' => isset($_GET['callback']) ? sanitize_text_field(wp_unslash($_GET['callback'])) : null
+		),
+		$lumise->cfg->admin_url
+	);
 ?>
 
-<div class="lumise_wrapper" id="lumise-<?php echo $section; ?>-page">
+<div class="lumise_wrapper" id="lumise-<?php echo esc_attr($section); ?>-page">
 	<div class="lumise_content">
 		<?php
 			$lumise->views->detail_header(array(
@@ -80,27 +87,23 @@
 				'page' => $section
 			));
 		?>
-		<form action="<?php echo $lumise->cfg->admin_url; ?>lumise-page=<?php
-			echo $section.(isset($_GET['callback']) ? '&callback='.$_GET['callback'] : '');
-		?>" id="lumise-<?php echo $section; ?>-form" method="post" class="lumise_form" enctype="multipart/form-data">
+		<form action="<?php echo esc_url($form_action); ?>" id="lumise-<?php echo esc_attr($section); ?>-form" method="post" class="lumise_form" enctype="multipart/form-data">
 
 			<?php $lumise->views->tabs_render($fields); ?>
 
 			<div class="lumise_form_group lumise_form_submit">
-				<input type="submit" class="lumise-button lumise-button-primary" value="<?php echo $lumise->lang('Save Template'); ?>"/>
+				<input type="submit" class="lumise-button lumise-button-primary" value="<?php echo esc_attr($lumise->lang('Save Template')); ?>"/>
 				<input type="hidden" name="do" value="action" />
-				<a class="lumise_cancel" href="<?php echo $lumise->cfg->admin_url;?>lumise-page=templates">
-					<?php echo $lumise->lang('Cancel'); ?>
-				</a>
-				<input type="hidden" name="lumise-section" value="<?php echo $section; ?>">
+				<a class="lumise_cancel" href="<?php echo esc_url($lumise->cfg->admin_url); ?>lumise-page=templates"><?php echo esc_html($lumise->lang('Cancel')); ?></a>
+				<input type="hidden" name="lumise-section" value="<?php echo esc_attr($section); ?>">
 			</div>
 		</form>
 	</div>
 </div>
 <script type="text/javascript">
 	
-	var lumise_upload_url = '<?php echo $lumise->cfg->upload_url; ?>',
-		lumise_assets_url = '<?php echo $lumise->cfg->assets_url; ?>';
+	var lumise_upload_url = '<?php echo esc_js($lumise->cfg->upload_url); ?>',
+		lumise_assets_url = '<?php echo esc_js($lumise->cfg->assets_url); ?>';
 			
 	document.lumiseconfig = {
 		main: 'template'

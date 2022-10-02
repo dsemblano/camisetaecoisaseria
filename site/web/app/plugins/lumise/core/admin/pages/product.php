@@ -63,13 +63,13 @@
 					'cate_type' => 'products',
 					'name' => 'categories',
 					'label' => $lumise->lang('Categories'),
-					'id' => isset($_GET['id'])? $_GET['id'] : 0
+					'id' => isset($_GET['id']) ? absint($_GET['id']) : 0
 				),
 				array(
 					'type' => 'printing',
 					'name' => 'printings',
 					'label' => $lumise->lang('Printing Techniques'),
-					'desc' => $lumise->lang('Select Printing Techniques with price calculations for this product').'<br>'.$lumise->lang('Drag to arrange items, the first one will be set as default').'. <br><a href="'.$lumise->cfg->admin_url.'lumise-page=printings" target=_blank>'.$lumise->lang('You can manage all Printings here').'.</a>'
+					'desc' => $lumise->lang('Select Printing Techniques with price calculations for this product').'<br>'.$lumise->lang('Drag to arrange items, the first one will be set as default').'. <br><a href="'.esc_url($lumise->cfg->admin_url).'lumise-page=printings" target=_blank>'.$lumise->lang('You can manage all Printings here').'.</a>'
 				),
 				array(
 					'type' => 'toggle',
@@ -114,6 +114,13 @@
 	
 	$fields = $lumise_admin->process_data($arg, 'products');
 	
+	$form_action = add_query_arg(
+		array(
+			'lumise-page' => 'product',
+			'callback' => isset($_GET['callback']) ? sanitize_text_field(wp_unslash($_GET['callback'])) : null
+		),
+		$lumise->cfg->admin_url
+	);
 ?>
 
 <div class="lumise_wrapper" id="lumise-product-page">
@@ -127,17 +134,12 @@
 			));
 
 		?>
-		<form action="<?php
-			echo $lumise->cfg->admin_url;
-		?>lumise-page=product<?php
-			if (isset($_GET['callback']))
-				echo '&callback='.$_GET['callback'];
-		?>" id="lumise-product-form" method="POST" class="lumise_form" enctype="multipart/form-data">
+		<form action="<?php echo esc_url($form_action); ?>" id="lumise-product-form" method="POST" class="lumise_form" enctype="multipart/form-data">
 
 			<?php $lumise->views->tabs_render($fields, 'products'); ?>
 
 			<div class="lumise_form_group" style="margin-top: 20px">
-				<input type="submit" class="lumise-button lumise-button-primary" value="<?php echo $lumise->lang('Save Product'); ?>"/>
+				<input type="submit" class="lumise-button lumise-button-primary" value="<?php echo esc_html($lumise->lang('Save Product')); ?>"/>
 				<input type="hidden" name="do" value="action" />
 				<input type="hidden" name="lumise-section" value="product">
 			</div>

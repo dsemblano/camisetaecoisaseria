@@ -26,8 +26,8 @@ class lumise_admin extends lumise_lib{
 		$db->join("categories_reference ca", "cate.id=ca.category_id", "LEFT");
 		$db->where("ca.item_id", $item_id);
 		$db->where("ca.type", $type);
-		$result = $db->get ("categories cate", null, "cate.id, cate.name");
-
+		$result = $db->get("categories cate", null, "cate.id, cate.name");
+		
 		return $result;
 
 	}
@@ -112,7 +112,7 @@ class lumise_admin extends lumise_lib{
 					}
 					$data[$field['name']] = $lumise->lib->enjson($data[$field['name']]);
 				}elseif ($field['type'] == 'tabs')	
-					$data[$field['name']] = json_encode($data[$field['name']]);
+					$data[$field['name']] = wp_json_encode($data[$field['name']]);
 				else if (is_array($data[$field['name']]))
 					$data[$field['name']] = implode(',', array_diff($data[$field['name']], array("")));
 			}
@@ -122,7 +122,7 @@ class lumise_admin extends lumise_lib{
 			if ($_POST[$field['name']] == 'None')
 				$data[$field['name']] = '0';
 			else
-				$data[$field['name']] = $_POST[$field['name']];
+				$data[$field['name']] = sanitize_text_field( wp_unslash ($_POST[$field['name']] ) );
 		}	
 
 		if (isset($field['type']) && $field['type'] == 'upload')
@@ -132,7 +132,7 @@ class lumise_admin extends lumise_lib{
 			$data[$field['name']] = '0';
 
 		if (isset($field['type']) && $field['type'] == 'tags' && isset($_POST[$field['name']])){
-			$data[$field['name']] = $_POST[$field['name']];
+			$data[$field['name']] = sanitize_text_field( wp_unslash ( $_POST[$field['name']] ) );
 		}
 		
 		$data = $lumise->apply_filters('save_fields', $data, $field);
@@ -155,8 +155,8 @@ class lumise_admin extends lumise_lib{
 		}
 		
 		$name = $field['name'];
-		$old_upload = isset($_POST['old-'.$name])? $_POST['old-'.$name] : null;
-		$old_thumbn = (isset($field['thumbn']) && isset($_POST['old-'.$field['thumbn']])) ? $_POST['old-'.$field['thumbn']] : null;
+		$old_upload = isset($_POST['old-'.$name])? sanitize_text_field( wp_unslash($_POST['old-'.$name] ) ) : null;
+		$old_thumbn = (isset($field['thumbn']) && isset($_POST['old-'.$field['thumbn']])) ? sanitize_text_field( wp_unslash($_POST['old-'.$field['thumbn']] ) ) : null;
 
 		if (isset($data[$name]) && $data[$name] == $old_upload)
 			return $data;
@@ -189,7 +189,7 @@ class lumise_admin extends lumise_lib{
 							$_POST['old-'.$name] != $data[$name] &&
 							file_exists($lumise->cfg->upload_path.$_POST['old-'.$name])
 						) {
-							@unlink($lumise->cfg->upload_path.$_POST['old-'.$name]);
+							wp_delete_file($lumise->cfg->upload_path.$_POST['old-'.$name]);
 						}
 
 						if (isset($process['thumbn']) && isset($field['thumbn'])) {
@@ -201,7 +201,7 @@ class lumise_admin extends lumise_lib{
 							$data[$field['thumbn']] != $_POST['old-'.$field['thumbn']]
 						) {
 							$old_thumn = str_replace(array($lumise->cfg->upload_url, '/'), array($lumise->cfg->upload_path, DS), $_POST['old-'.$field['thumbn']]);
-							@unlink($old_thumn);
+							wp_delete_file($old_thumn);
 
 						}
 
@@ -213,11 +213,11 @@ class lumise_admin extends lumise_lib{
 		} else {
 
 			if (file_exists($lumise->cfg->upload_path.$old_upload))
-				@unlink($lumise->cfg->upload_path.$old_upload);
+				wp_delete_file($lumise->cfg->upload_path.$old_upload);
 
 			if (isset($old_thumbn) && $old_thumbn !== null) {
 				$old_thumn = str_replace(array($lumise->cfg->upload_url, '/'), array($lumise->cfg->upload_path, DS), $old_thumbn);
-				@unlink($old_thumn);
+				wp_delete_file($old_thumn);
 				$data[$field['thumbn']] = '';
 			}
 
@@ -337,7 +337,7 @@ class lumise_admin extends lumise_lib{
 		
 		$args = $lumise->apply_filters('process-section-'.$name, $args);
 		
-		$_id = isset($_GET['id'])? $_GET['id'] : 0;
+		$_id = isset($_GET['id']) ? absint($_GET['id']) : 0;
 		$_cb = isset($_GET['callback']) ? $_GET['callback'] : '';
 
 		if (isset($_id)) {
@@ -357,14 +357,30 @@ class lumise_admin extends lumise_lib{
 			}
 		}
 		
+
 		if (isset($_POST['lumise-section'])) {
-			$section = $_POST['lumise-section'];
+			$section = sanitize_text_field( wp_unslash($_POST['lumise-section']) );
 
 			$data = array(
 				'errors' => array()
 			);
 
 			$data_id = $this->esc('id');
+
+			// Check the nonce.
+			if ( empty( $_POST['lumise_data_nonce'] ) || ! wp_verify_nonce( wp_unslash( $_POST['lumise_data_nonce'] ), 'lumise_save_data' ) ) {
+
+				wp_safe_redirect(
+					$lumise->cfg->admin_url . 
+					"lumise-page=$section".
+					(isset($data['type']) ? '&type='.$data['type'] : '').
+					(isset($_GET['callback']) ? '&callback='.$_GET['callback'] : '')
+				);
+				
+				exit;
+
+			}
+
 			/*
 			* Begin checking permision
 			*/
@@ -394,11 +410,11 @@ class lumise_admin extends lumise_lib{
 						$lumise->connector->set_session('lumise_msg', $lumise_msg);
 						
 						if (isset($_POST['redirect'])) {
-							$lumise->redirect(urldecode($_POST['redirect']).(!empty($data_id) ? '?id='.$data_id : ''));
+							wp_safe_redirect(urldecode($_POST['redirect']).(!empty($data_id) ? '?id='.$data_id : ''));
 							exit;
 						}
 						
-						$lumise->redirect(
+						wp_safe_redirect(
 							$lumise->cfg->admin_url . 
 							"lumise-page=$section".
 							(isset($data['type']) ? '&type='.$data['type'] : '').
@@ -438,7 +454,7 @@ class lumise_admin extends lumise_lib{
 				do {
 					$data['name'] = $fn.($fi > 0 ? '-'.$fi : '');
 					$fquery = "SELECT `id` FROM `{$lumise->db->prefix}fonts`";
-					$fquery .= " WHERE `author`='{$lumise->vendor_id}' AND `name` = '".$lumise->lib->sql_esc($data['name'])."'";
+					$fquery .= " WHERE `author`='{$lumise->vendor_id}' AND `name` = '".esc_sql($data['name'])."'";
 					if (!empty($data_id))
 						$fquery .= " AND `id` <> {$data_id}";
 					$check = $lumise->db->rawQuery ($fquery);
@@ -513,14 +529,14 @@ class lumise_admin extends lumise_lib{
 				$lumise->connector->set_session('lumise_msg', $lumise_msg);
 				
 				if (isset($_POST['redirect'])) {
-					$lumise->redirect(urldecode($_POST['redirect']).(!empty($data_id) ? '?id='.$data_id : ''));
+					wp_safe_redirect(urldecode($_POST['redirect']).(!empty($data_id) ? '?id='.$data_id : ''));
 					exit;
 				}
 				
 				if (!empty($data_id)) {
-					$lumise->redirect($lumise->cfg->admin_url . "lumise-page=$section&id=$data_id&".(isset($data['type']) ? '&type='.$data['type'] : '').(isset($_GET['callback']) ? '&callback='.$_GET['callback'] : ''));
+					wp_safe_redirect($lumise->cfg->admin_url . "lumise-page=$section&id=$data_id&".(isset($data['type']) ? '&type='.$data['type'] : '').(isset($_GET['callback']) ? '&callback='.$_GET['callback'] : ''));
 				} else {
-					$lumise->redirect($lumise->cfg->admin_url . "lumise-page=$section".(isset($data['type']) ? '&type='.$data['type'] : '').(isset($_GET['callback']) ? '&callback='.$_GET['callback'] : ''));
+					wp_safe_redirect($lumise->cfg->admin_url . "lumise-page=$section".(isset($data['type']) ? '&type='.$data['type'] : '').(isset($_GET['callback']) ? '&callback='.$_GET['callback'] : ''));
 				}
 				exit;
 
@@ -534,11 +550,11 @@ class lumise_admin extends lumise_lib{
 					exit;
 				
 				if (isset($_POST['redirect'])) {
-					$lumise->redirect(urldecode($_POST['redirect']).'?id='.$id);
+					wp_safe_redirect(urldecode($_POST['redirect']).'?id='.$id);
 					exit;
 				}
 				
-				$lumise->redirect($lumise->cfg->admin_url . "lumise-page=$section&id=$id".(isset($data['type']) ? '&type='.$data['type'] : '').(!empty($_cb) ? '&callback='.$_cb : ''));
+				wp_safe_redirect($lumise->cfg->admin_url . "lumise-page=$section&id=$id".(isset($data['type']) ? '&type='.$data['type'] : '').(!empty($_cb) ? '&callback='.$_cb : ''));
 
 				exit;
 
@@ -669,14 +685,14 @@ class lumise_admin extends lumise_lib{
 				$lumise->connector->set_session('lumise_msg', array('status' => 'success'));
 	
 				if (!isset($_POST['lumise-redirect']))
-					$lumise->redirect($lumise->cfg->admin_url . "lumise-page=settings");
-				else $lumise->redirect($_POST['lumise-redirect']);
+					wp_safe_redirect($lumise->cfg->admin_url . "lumise-page=settings");
+				else wp_safe_redirect($_POST['lumise-redirect']);
 				
 				exit;
 	
 			} else {
 				$lumise->connector->set_session('lumise_msg', array('status' => 'error', 'errors' => $data['errors']));
-				$lumise->redirect($lumise->cfg->admin_url . "lumise-page=settings");
+				wp_safe_redirect($lumise->cfg->admin_url . "lumise-page=settings");
 				exit;
 			}
 			
@@ -697,7 +713,7 @@ class lumise_admin extends lumise_lib{
 				array('>', ';', '}', '{', '', '', '', '', '', '', ''),
 				$css
 			);
-			@file_put_contents($path, stripslashes($content));
+			lw_file_put_contents($path, stripslashes($content));
 		}
 	}
 	
@@ -730,7 +746,7 @@ class lumise_admin extends lumise_lib{
 				        )
 					);
 					
-					$check = @simplexml_load_string($check);
+					$check = simplexml_load_string($check);
 					
 					$resp = (string)$check->response[0];
 					$lumise_msg = $this->main->connector->get_session('lumise_msg');
@@ -778,7 +794,7 @@ class lumise_admin extends lumise_lib{
 				        )
 					);
 					
-					$check = @simplexml_load_string($check);
+					$check = simplexml_load_string($check);
 					
 					$resp = (string)$check->response[0];
 					
@@ -838,7 +854,7 @@ class lumise_admin extends lumise_lib{
 						
 						if (
 							!is_dir($this->main->cfg->upload_path.'tmpl') && 
-							!mkdir($this->main->cfg->upload_path.'tmpl', 0755)
+							!wp_mkdir_p($this->main->cfg->upload_path.'tmpl')
 						) {
 							
 							$lumise_msg['status'] = 'error';
@@ -865,8 +881,8 @@ class lumise_admin extends lumise_lib{
 					        )
 						);
 						
-						$data = file_put_contents($file, $fh);
-						@fclose($fh);
+						$data = lw_file_put_contents($file, $fh);
+						fclose($fh);
 						
 						if ($data === 0) {
 							
@@ -875,15 +891,15 @@ class lumise_admin extends lumise_lib{
 								$this->main->lang('Error: Could not download file, make sure that the fopen() funtion on your server is enabled')
 							);
 							
-							@unlink($file);
+							wp_delete_file($file);
 							
 						} else if ($data < 250) {
 							
 							$lumise_msg['status'] = 'error';
-							$erro = @file_get_contents($file);
+							$erro = lw_file_get_contents($file);
 							$lumise_msg['errors'] = array($this->main->lang('Error: ').$erro);
 							
-							@unlink($file);
+							wp_delete_file($file);
 							
 						} else {
 							
@@ -946,7 +962,7 @@ class lumise_admin extends lumise_lib{
 					);
 					
 					
-					$check = @simplexml_load_string($check);
+					$check = simplexml_load_string($check);
 					
 					$resp = (string)$check->response[0];
 					$lumise_msg = $this->main->connector->get_session('lumise_msg');
@@ -994,7 +1010,7 @@ class lumise_admin extends lumise_lib{
 				        )
 					);
 					
-					$check = @simplexml_load_string($check);
+					$check = simplexml_load_string($check);
 					
 					$resp = (string)$check->response[0];
 					
@@ -1054,7 +1070,7 @@ class lumise_admin extends lumise_lib{
 						
 						if (
 							!is_dir($this->main->cfg->upload_path.'tmpl') && 
-							!mkdir($this->main->cfg->upload_path.'tmpl', 0755)
+							!wp_mkdir_p($this->main->cfg->upload_path.'tmpl')
 						) {
 							
 							$lumise_msg['status'] = 'error';
@@ -1081,8 +1097,8 @@ class lumise_admin extends lumise_lib{
 					        )
 						);
 						
-						$data = file_put_contents($file, $fh);
-						@fclose($fh);
+						$data = lw_file_put_contents($file, $fh);
+						fclose($fh);
 						
 						if ($data === 0) {
 							
@@ -1091,15 +1107,15 @@ class lumise_admin extends lumise_lib{
 								$this->main->lang('Error: Could not download file, make sure that the fopen() funtion on your server is enabled')
 							);
 							
-							@unlink($file);
+							wp_delete_file($file);
 							
 						} else if ($data < 250) {
 							
 							$lumise_msg['status'] = 'error';
-							$erro = @file_get_contents($file);
+							$erro = lw_file_get_contents($file);
 							$lumise_msg['errors'] = array($this->main->lang('Error: ').$erro);
 							
-							@unlink($file);
+							wp_delete_file($file);
 							
 						} else {
 							
@@ -1161,7 +1177,7 @@ class lumise_admin extends lumise_lib{
 					);
 					
 					
-					$check = @simplexml_load_string($check);
+					$check = simplexml_load_string($check);
 					
 					$resp = (string)$check->response[0];
 					$lumise_msg = $this->main->connector->get_session('lumise_msg');
@@ -1209,7 +1225,7 @@ class lumise_admin extends lumise_lib{
 				        )
 					);
 					
-					$check = @simplexml_load_string($check);
+					$check = simplexml_load_string($check);
 					
 					$resp = (string)$check->response[0];
 					
@@ -1269,7 +1285,7 @@ class lumise_admin extends lumise_lib{
 						
 						if (
 							!is_dir($this->main->cfg->upload_path.'tmpl') && 
-							!mkdir($this->main->cfg->upload_path.'tmpl', 0755)
+							!wp_mkdir_p($this->main->cfg->upload_path.'tmpl')
 						) {
 							
 							$lumise_msg['status'] = 'error';
@@ -1296,8 +1312,8 @@ class lumise_admin extends lumise_lib{
 					        )
 						);
 						
-						$data = file_put_contents($file, $fh);
-						@fclose($fh);
+						$data = lw_file_put_contents($file, $fh);
+						fclose($fh);
 						
 						if ($data === 0) {
 							
@@ -1306,15 +1322,15 @@ class lumise_admin extends lumise_lib{
 								$this->main->lang('Error: Could not download file, make sure that the fopen() funtion on your server is enabled')
 							);
 							
-							@unlink($file);
+							wp_delete_file($file);
 							
 						} else if ($data < 250) {
 							
 							$lumise_msg['status'] = 'error';
-							$erro = @file_get_contents($file);
+							$erro = lw_file_get_contents($file);
 							$lumise_msg['errors'] = array($this->main->lang('Error: ').$erro);
 							
-							@unlink($file);
+							wp_delete_file($file);
 							
 						} else {
 							
@@ -1377,7 +1393,7 @@ class lumise_admin extends lumise_lib{
 					);
 					
 					
-					$check = @simplexml_load_string($check);
+					$check = simplexml_load_string($check);
 					
 					$resp = (string)$check->response[0];
 					$lumise_msg = $this->main->connector->get_session('lumise_msg');
@@ -1425,7 +1441,7 @@ class lumise_admin extends lumise_lib{
 				        )
 					);
 					
-					$check = @simplexml_load_string($check);
+					$check = simplexml_load_string($check);
 					
 					$resp = (string)$check->response[0];
 					
@@ -1485,7 +1501,7 @@ class lumise_admin extends lumise_lib{
 						
 						if (
 							!is_dir($this->main->cfg->upload_path.'tmpl') && 
-							!mkdir($this->main->cfg->upload_path.'tmpl', 0755)
+							!wp_mkdir_p($this->main->cfg->upload_path.'tmpl')
 						) {
 							
 							$lumise_msg['status'] = 'error';
@@ -1512,8 +1528,8 @@ class lumise_admin extends lumise_lib{
 					        )
 						);
 						
-						$data = file_put_contents($file, $fh);
-						@fclose($fh);
+						$data = lw_file_put_contents($file, $fh);
+						fclose($fh);
 						
 						if ($data === 0) {
 							
@@ -1522,15 +1538,15 @@ class lumise_admin extends lumise_lib{
 								$this->main->lang('Error: Could not download file, make sure that the fopen() funtion on your server is enabled')
 							);
 							
-							@unlink($file);
+							wp_delete_file($file);
 							
 						} else if ($data < 250) {
 							
 							$lumise_msg['status'] = 'error';
-							$erro = @file_get_contents($file);
+							$erro = lw_file_get_contents($file);
 							$lumise_msg['errors'] = array($this->main->lang('Error: ').$erro);
 							
-							@unlink($file);
+							wp_delete_file($file);
 							
 						} else {
 							
@@ -1574,7 +1590,7 @@ class lumise_admin extends lumise_lib{
 	
 	public function check_caps($cap) {
 		
-		$data_action = isset($_POST['action']) ? $_POST['action'] : '';
+		$data_action = isset($_POST['action']) ? sanitize_text_field( wp_unslash($_POST['action'] ) ) : '';
 		
 		if (
 			in_array($data_action, array('active', 'deactive', 'delete')) &&
@@ -1771,7 +1787,7 @@ class lumise_helper {
 
 			if ($keys == $lumise_page) {
 
-				$html .= '<li><a href="'.$lumise->cfg->admin_url.'lumise-page=dashboard">'.$lumise->lang('Dashboard').'</a></li><li><span>'.$values['title'].'</span></li>';
+				$html .= '<li><a href="'.esc_url($lumise->cfg->admin_url).'lumise-page=dashboard">'.$lumise->lang('Dashboard').'</a></li><li><span>'.$values['title'].'</span></li>';
 
 			}
 
@@ -1779,7 +1795,7 @@ class lumise_helper {
 
 				if (isset($values['child'][$lumise_page]) && $values['child'][$lumise_page]['type'] == $type) {
 
-					$html .= '<li><a href="'.$lumise->cfg->admin_url.'lumise-page=dashboard">'.$lumise->lang('Dashboard').'</a></li><li><a href="'.$values['link'].'">'.$values['title'].'</a></li>';
+					$html .= '<li><a href="'.esc_url($lumise->cfg->admin_url).'lumise-page=dashboard">'.$lumise->lang('Dashboard').'</a></li><li><a href="'.$values['link'].'">'.$values['title'].'</a></li>';
 
 				}
 
@@ -1889,7 +1905,7 @@ class lumise_helper {
 	public function upload_file( $file, $filename, $tar_file, $filetype, $filesize ) {
 		
 		if (!$this->main->caps('lumise_can_upload')) {
-			echo $this->main->lang('Sorry, You do not have permission to upload');
+			echo esc_html($this->main->lang('Sorry, You do not have permission to upload'));
 			exit;
 		}
 		
@@ -1942,9 +1958,10 @@ class lumise_helper {
 
 	public function import_sample_shapes($shapes) {
 
-		global $lumise, $lumise_router;
+		global $lumise, $lumise_router,$wpdb;
 		
 		for ($i = 0; $i < count($shapes); $i++) {
+
 			$lumise->db->insert('shapes', array(
 				"name" => "Shape ".($i+1),
 				"content" => $shapes[$i],
@@ -1953,9 +1970,10 @@ class lumise_helper {
 				"created" => date("Y-m-d").' '.date("h:i:sa"),
 				"updated" => date("Y-m-d").' '.date("h:i:sa"),
 			));
+
 		}
 
-		$lumise->redirect($lumise->cfg->admin_url.'lumise-page=shapes');
+		wp_safe_redirect($lumise->cfg->admin_url.'lumise-page=shapes');
 
 	}
 

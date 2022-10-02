@@ -7,19 +7,17 @@
 	$data_search = '';
 	if (isset($_POST['search_ops']) && !empty($_POST['search_ops'])) {
 		
-		$data_search = isset($_POST['search']) ? trim($_POST['search']) : '';
-
+		$data_search = isset($_POST['search']) ? trim( sanitize_text_field( wp_unslash( $_POST['search'] ) ) ) : null;
+		
 		if (empty($data_search)) {
-			$errors = 'Search Product Name';
-			$_SESSION[$prefix.'data_search'] = '';
-		} else {
-			$_SESSION[$prefix.'data_search'] = 	$data_search;
+			$errors = esc_html__( 'Search Product Name', 'lumise');
 		}
 
+		LW()->session->set($prefix.'data_search', $data_search);
 	}
 
-	if (!empty($_SESSION[$prefix.'data_search'])) {
-		$data_search = '%'.$_SESSION[$prefix.'data_search'].'%';
+	if (!empty(LW()->session->get( $prefix.'data_search', null ))) {
+		$data_search = '%'.LW()->session->get( $prefix.'data_search').'%';
 	}
     
     $search_filter = array(
@@ -32,33 +30,37 @@
     // Sort Form
 	if (!empty($_POST['sort'])) {
 
-		$dt_sort = isset($_POST['sort']) ? $_POST['sort'] : '';
-		$_SESSION[$prefix.'dt_order'] = $dt_sort;
+		$dt_sort = isset($_POST['sort']) ? sanitize_text_field( wp_unslash( $_POST['sort'] ) ) : null;
+		LW()->session->set($prefix.'dt_order', $dt_sort);
+		
+		$orderby = null;
+		$ordering = null;
 		
 		switch ($dt_sort) {
 
 			case 'product_id_asc':
-				$_SESSION[$prefix.'orderby'] = 'product_id';
-				$_SESSION[$prefix.'ordering'] = 'asc';
+				$orderby = 'product_id';
+				$ordering= 'asc';
 				break;
 			case 'product_id_desc':
-				$_SESSION[$prefix.'orderby'] = 'product_id';
-				$_SESSION[$prefix.'ordering'] = 'desc';
+				$orderby = 'product_id';
+				$ordering= 'desc';
 				break;
 			case 'name_asc':
-				$_SESSION[$prefix.'orderby'] = 'product_name';
-				$_SESSION[$prefix.'ordering'] = 'asc';
+				$orderby = 'product_name';
+				$ordering= 'asc';
 				break;
 			case 'name_desc':
-				$_SESSION[$prefix.'orderby'] = 'product_name';
-				$_SESSION[$prefix.'ordering'] = 'desc';
+				$orderby = 'product_name';
+				$ordering= 'desc';
 				break;
             
 			default:
 				break;
 
 		}
-
+		LW()->session->set($prefix.'orderby', $orderby);
+		LW()->session->set($prefix.'ordering', $ordering);
 	}
     
     if(
@@ -68,12 +70,13 @@
             isset($_POST['do'])
         )
     ){
-        $lumise->redirect($lumise->cfg->admin_url.'lumise-page=order&order_id='.$order_id);
+        wp_safe_redirect($lumise->cfg->admin_url.'lumise-page=order&order_id='.$order_id);
     }
 
-	$orderby  = (isset($_SESSION[$prefix.'orderby']) && !empty($_SESSION[$prefix.'orderby'])) ? $_SESSION[$prefix.'orderby'] : 'product_id';
-	$ordering = (isset($_SESSION[$prefix.'ordering']) && !empty($_SESSION[$prefix.'ordering'])) ? $_SESSION[$prefix.'ordering'] : 'asc';
-	$dt_order = isset($_SESSION[$prefix.'dt_order']) ? $_SESSION[$prefix.'dt_order'] : 'product_id_desc';
+	$orderby  = LW()->session->get($prefix.'orderby', 'product_id');
+	$ordering = LW()->session->get($prefix.'ordering', 'asc');
+	$dt_order = LW()->session->get($prefix.'dt_order', 'product_id_desc');
+	
     $items = $lumise->connector->products_order($order_id, $search_filter, $orderby, $ordering);
 
     $lumise_printings = $lumise->lib->get_prints();
@@ -88,39 +91,39 @@
 
 		<div class="lumise_header">
 			<h2>
-				<a href="<?php echo $lumise->cfg->admin_url; ?>lumise-page=orders"><?php echo $lumise->lang('All Orders'); ?></a> 
+				<a href="<?php echo esc_url($lumise->cfg->admin_url); ?>lumise-page=orders"><?php echo esc_html($lumise->lang('All Orders')); ?></a> 
 				<i class="fa fa-angle-right"></i> 
 				<?php printf($lumise->lang('Order %s'), '#'.$_REQUEST['order_id']) ?>
 			</h2>
 			<?php
-				$lumise_page = isset($_GET['lumise-page']) ? $_GET['lumise-page'] : '';
-				echo $lumise_helper->breadcrumb($lumise_page);
+				$lumise_page = isset($_GET['lumise-page']) ? sanitize_text_field( wp_unslash( $_GET['lumise-page'] ) ) : '';
+				echo wp_kses_post($lumise_helper->breadcrumb($lumise_page));
 			?>
             <div class="lumise-order-details lumise_option">
                 <div class="col-3">
-                    <h4><?php echo $lumise->lang('General Details'); ?></h4>
+                    <h4><?php echo esc_html($lumise->lang('General Details')); ?></h4>
                     <p>
-                        <strong><?php echo $lumise->lang('Total Price:'); ?></strong>
-                        <span><?php echo $lumise->lib->price($items['order']['total']);?></span>
+                        <strong><?php echo esc_html($lumise->lang('Total Price:')); ?></strong>
+                        <span><?php echo esc_html($lumise->lib->price($items['order']['total']));?></span>
                     </p>
                     <p>
-                        <strong><?php echo $lumise->lang('Created At:'); ?></strong>
-                        <span><?php echo $items['order']['created'];?></span>
+                        <strong><?php echo esc_html($lumise->lang('Created At:')); ?></strong>
+                        <span><?php echo esc_html($items['order']['created']);?></span>
                     </p>
                     <p>
-                        <strong><?php echo $lumise->lang('Updated At:'); ?></strong>
-                        <span><?php echo $items['order']['updated'];?></span>
+                        <strong><?php echo esc_html($lumise->lang('Updated At:')); ?></strong>
+                        <span><?php echo esc_html($items['order']['updated']);?></span>
                     </p>
                     <?php if(isset($items['order']['payment'])): ?>
                     <p>
-                        <strong><?php echo $lumise->lang('Payment:'); ?></strong>
+                        <strong><?php echo esc_html($lumise->lang('Payment:')); ?></strong>
                         <span class="lumise-payment-method"><?php echo isset($items['order']['payment'])? $items['order']['payment']: '';?></span>
                     </p>
                     <?php endif; ?>
                     <div class="order_status">
-                        <strong><?php echo $lumise->lang('Status:'); ?></strong>
+                        <strong><?php echo esc_html($lumise->lang('Status:')); ?></strong>
                     
-                        <form action="<?php echo $lumise->cfg->admin_url;?>lumise-page=order&order_id=<?php echo $order_id;?>" method="post">
+                        <form action="<?php echo esc_url($lumise->cfg->admin_url);?>lumise-page=order&order_id=<?php echo absint($order_id);?>" method="post">
                             <?php $lumise->views->order_statuses($items['order']['status'], true);?>
                             <input type="hidden" name="do" value="action"/>
                         </form>
@@ -128,21 +131,21 @@
                 </div>
                 <?php if(isset($items['billing']) && count($items['billing'])>0):?>
                 <div class="col-3">
-                	<h4><?php echo $lumise->lang('Billing details'); ?></h4>
+                	<h4><?php echo esc_html($lumise->lang('Billing details')); ?></h4>
                     <p>
-                        <strong><?php echo $lumise->lang('Name:'); ?></strong>
+                        <strong><?php echo esc_html($lumise->lang('Name:')); ?></strong>
                         <span><?php echo isset($items['billing']['name'])? $items['billing']['name'] : '';?></span>
                     </p>
                 	<p>
-                		<strong><?php echo $lumise->lang('Address:'); ?></strong>
+                		<strong><?php echo esc_html($lumise->lang('Address:')); ?></strong>
                 		<span><?php echo isset($items['billing']['address'])? $items['billing']['address'] : '';?></span>
                 	</p>
                 	<p>
-                		<strong><?php echo $lumise->lang('Email address:'); ?></strong>
+                		<strong><?php echo esc_html($lumise->lang('Email address:')); ?></strong>
                 		<span><?php echo isset($items['billing']['email'])? $items['billing']['email'] : '';?></span>
                 	</p>
                 	<p>
-                		<strong><?php echo $lumise->lang('Phone:'); ?></strong>
+                		<strong><?php echo esc_html($lumise->lang('Phone:')); ?></strong>
                 		<span><?php echo isset($items['billing']['phone'])? $items['billing']['phone'] : '';?></span>
                 	</p>
                 	
@@ -154,15 +157,15 @@
 
             <div class="lumise_option">
                 <div class="left">
-                    <form action="<?php echo $lumise->cfg->admin_url;?>lumise-page=order&order_id=<?php echo $order_id;?>" method="post">
-                        <?php $lumise->securityFrom();?>
+                    <form action="<?php echo esc_url($lumise->cfg->admin_url);?>lumise-page=order&order_id=<?php echo absint($order_id); ?>" method="post">
+                        <?php wp_nonce_field( 'lumise_security_form', 'lumise_security_form_nonce' );?>
                     </form>
                 </div>
                 <div class="right">
-                    <form action="<?php echo $lumise->cfg->admin_url;?>lumise-page=order&order_id=<?php echo $order_id;?>" method="post">
-                        <input type="text" name="search" class="search" placeholder="<?php echo $lumise->lang('Search ...'); ?>" value="<?php if(isset($_SESSION[$prefix.'data_search'])) echo $_SESSION[$prefix.'data_search']; ?>">
-                        <input  class="lumise_submit" type="submit" name="search_ops" value="<?php echo $lumise->lang('Search'); ?>">
-                        <?php $lumise->securityFrom();?>
+                    <form action="<?php echo esc_url($lumise->cfg->admin_url);?>lumise-page=order&order_id=<?php echo absint($order_id);?>" method="post">
+                        <input type="text" name="search" class="search" placeholder="<?php echo esc_attr($lumise->lang('Search ...')); ?>" value="<?php echo esc_attr(LW()->session->get($prefix.'data_search')); ?>">
+                        <input  class="lumise_submit" type="submit" name="search_ops" value="<?php echo esc_attr($lumise->lang('Search')); ?>">
+                        <?php wp_nonce_field( 'lumise_security_form', 'lumise_security_form_nonce' );?>
 
                     </form>
                 </div>
@@ -172,13 +175,13 @@
 			<table class="lumise_table lumise_ops lumise_order_details">
 				<thead>
 					<tr>
-						<th width="5%"><?php echo $lumise->lang('ID'); ?></th>
-						<th width="5%"><?php echo $lumise->lang('Product ID'); ?></th>
-						<th><?php echo $lumise->lang('Product Name'); ?></th>
-						<th><?php echo $lumise->lang('Thumbnail'); ?></th>
-						<th><?php echo $lumise->lang('Attributes'); ?></th>
-                        <th width="5%"><?php echo $lumise->lang('Subtotal'); ?></th>
-                        <th width="30%"><?php echo $lumise->lang('Print'); ?></th>
+						<th width="5%"><?php echo esc_html($lumise->lang('ID')); ?></th>
+						<th width="5%"><?php echo esc_html($lumise->lang('Product ID')); ?></th>
+						<th><?php echo esc_html($lumise->lang('Product Name')); ?></th>
+						<th><?php echo esc_html($lumise->lang('Thumbnail')); ?></th>
+						<th><?php echo esc_html($lumise->lang('Attributes')); ?></th>
+                        <th width="5%"><?php echo esc_html($lumise->lang('Subtotal')); ?></th>
+                        <th width="30%"><?php echo esc_html($lumise->lang('Print')); ?></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -189,8 +192,8 @@
 	                    
 	                    $scrs = array();
 	                    $pdfid = '';
-	                    $sc = @json_decode($item['screenshots']);
-						$prt = @json_decode($item['print_files'], true);
+	                    $sc = json_decode($item['screenshots']);
+						$prt = json_decode($item['print_files'], true);
 						
 						$pdfid = $item['cart_id'];
 						
@@ -203,22 +206,22 @@
 						}
 	                ?>
 	                <tr>
-						<td>#<?php echo $item['id'];?></td>
-						<td><?php echo $item['product_id'];?></td>
-						<td><?php echo $item['product_name'] . ' x ' .$item['qty'];?></td>
+						<td>#<?php echo absint($item['id']);?></td>
+						<td><?php echo absint($item['product_id']);?></td>
+						<td><?php echo esc_html($item['product_name']) . ' x ' .esc_attr($item['qty']);?></td>
 						<td>
                             <?php
                             $product = $lumise->lib->get_product($item['product_base']);
                             if(isset($item['screenshots']) && $item['screenshots'] != null){
                                 $screenshots = json_decode($item['screenshots']);
                                 foreach ($screenshots as $screenshot) {
-                					echo '<img src="'.$lumise->cfg->upload_url.'orders/'.$screenshot.'" class="lumise-order-thumbnail" />';
+                					echo '<img src="'.esc_url($lumise->cfg->upload_url).'orders/'.esc_attr($screenshot).'" class="lumise-order-thumbnail" />';
                 				}
                             }
                             if(isset($item['custom']) && !$item['custom']){
                                 
                                 if(isset($product['thumbnail_url']))
-                                    echo '<img src="'.$product['thumbnail_url'].'" class="lumise-order-thumbnail" />';
+                                    echo '<img src="'.esc_url($product['thumbnail_url']).'" class="lumise-order-thumbnail" />';
                             }
                             ?>
                         </td>
@@ -289,7 +292,7 @@
                                 echo "<dt>".(($data_obj->color != $data_obj->color_name)? $data_obj->color . ' - '. $data_obj->color_name : $data_obj->color)."</dt>";
                             }
                         ?></td>
-                        <td><?php echo $lumise->lib->price($item['product_price']);?></td>
+                        <td><?php echo esc_html($lumise->lib->price($item['product_price'])); ?></td>
                         <td>
 	                        <?php
                                
@@ -359,7 +362,7 @@
 									if(!$key_valid){
 										$html .= '<p style="font-size:14px;"><font color="#E91E63">(*) ';
 										$html .= $lumise->lang('<span>Please enter your purchase code to display and download file designs</span></br>
-<b><a target="_blank" href="'.$lumise->cfg->admin_url.'lumise-page=license"style="font-weight: 700; text-decoration: underline; font-style: italic;">Enter purchase code now</a></b></br>
+<b><a target="_blank" href="'.esc_url($lumise->cfg->admin_url).'lumise-page=license"style="font-weight: 700; text-decoration: underline; font-style: italic;">Enter purchase code now</a></b></br>
 <span>Notice: Each License can only be used for one domain.</br><a href="https://codecanyon.net/licenses/standard" target="blank" style="font-weight: 700; text-decoration: underline; font-style: italic;">Click to learn more about license term in Envato.</a></span>').'</font></p>';
 									}
 									
@@ -380,12 +383,12 @@
 									}	
 									
 									if($key_valid) {
-										$html .= '<a href="'.$url.'" target=_blank class="lumise-button">'.$lumise->lang('View in Lumise editor').'</a>';
+										$html .= '<a href="'.esc_url($url).'" target=_blank class="lumise-button">'.$lumise->lang('View in Lumise editor').'</a>';
 									}
 									
 									$html .= '</p>';
 									
-									echo $html;
+									echo wp_kses_post($html);
 									
 								}
 		                        
@@ -399,7 +402,7 @@
 	                ?>
 	                <tr>
 	                    <td colspan="6">
-	                        <p class="no-data"><?php echo $lumise->lang('Apologies, but no results were found'); ?></p>
+	                        <p class="no-data"><?php echo esc_html($lumise->lang('Apologies, but no results were found')); ?></p>
 	                    </td>
 	                </tr>
 	                    
@@ -413,10 +416,10 @@
                         <td colspan="3"></td>
                         <td></td>
                         <td colspan="2">
-                            <strong style="float: right;"><?php echo $lumise->lang('Order Total:'); ?></strong>
+                            <strong style="float: right;"><?php echo esc_html($lumise->lang('Order Total:')); ?></strong>
                         </td>
                         <td>
-                            <?php echo $lumise->lib->price($items['order']['total']); ?>
+                            <?php echo esc_html($lumise->lib->price($items['order']['total'])); ?>
                         </td>
                     </tr>
                 </tfoot>

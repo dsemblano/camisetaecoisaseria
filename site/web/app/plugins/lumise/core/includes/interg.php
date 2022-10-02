@@ -10,11 +10,11 @@ function lumise_cms_product_data_fields($ops, $js_cfg, $id) {
     $addcart = isset($ops['lumise_disable_add_cart']) ? $ops['lumise_disable_add_cart'] : '';
 
     ?>
-	<link rel="stylesheet" href="<?php echo $lumise->cfg->assets_url; ?>admin/assets/css/interg.css?version=<?php echo LUMISE; ?>" type="text/css" media="all" />
+	<link rel="stylesheet" href="<?php echo esc_url(LW()->plugin_url() . '/assets/css/admin/interg.min.css?version=' .LUMISE ); ?>" type="text/css" media="all" />
     <div id="lumise_product_data" class="panel woocommerce_options_panel">
         <p class="form-field lumise_customize_field options_group hidden" id="lumise-enable-customize">
 			<label for="lumise_customize">
-				<strong><?php echo $lumise->lang('Hide cart button'); ?>:</strong>
+				<strong><?php echo esc_html($lumise->lang('Hide cart button')); ?>:</strong>
 			</label>
 			<span class="lumise-toggle">
 				<input type="checkbox" name="lumise_disable_add_cart"  <?php
@@ -24,12 +24,12 @@ function lumise_cms_product_data_fields($ops, $js_cfg, $id) {
 				<span class="lumise-toggle-handle"></span>
 			</span>
 			<span style="float: left;margin-left: 10px;">
-				<?php echo $lumise->lang('Hide the Add To Cart button in product details page'); ?>
+				<?php echo esc_html($lumise->lang('Hide the Add To Cart button in product details page')); ?>
 			</span>
 		</p>
 		<p class="form-field lumise_customize_field options_group hidden" id="lumise-enable-customize">
 			<label for="lumise_customize">
-				<strong><?php echo $lumise->lang('Allow customize'); ?>:</strong>
+				<strong><?php echo esc_html($lumise->lang('Allow customize')); ?>:</strong>
 			</label>
 			<span class="lumise-toggle">
 				<input type="checkbox" name="lumise_customize"  <?php
@@ -39,29 +39,29 @@ function lumise_cms_product_data_fields($ops, $js_cfg, $id) {
 				<span class="lumise-toggle-handle"></span>
 			</span>
 			<span style="float: left;margin-left: 10px;">
-				<?php echo $lumise->lang('Users can change or customize the design before checkout.'); ?>
+				<?php echo esc_html($lumise->lang('Users can change or customize the design before checkout.')); ?>
 			</span>
 		</p>
         <div id="lumise-product-base" class="options_group"></div>
         <p id="lumise-seclect-base">
 	        <a href="#" class="lumise-button lumise-button-primary lumise-button-large" data-func="products">
 		        <i class="fa fa-cubes"></i>
-		        <?php echo $lumise->lang('Select product base'); ?>
+		        <?php echo esc_html($lumise->lang('Select product base')); ?>
 		    </a>
 		    &nbsp;
-		    <a href="#" title="<?php echo $lumise->lang('Remove product base'); ?>" class="lumise-button lumise-button-link-delete lumise-button-large hidden" data-func="remove-base-product">
+		    <a href="#" title="<?php echo esc_attr($lumise->lang('Remove product base')); ?>" class="lumise-button lumise-button-link-delete lumise-button-large hidden" data-func="remove-base-product">
 		        <i class="fa fa-trash"></i>
-		        <?php echo $lumise->lang('Remove product'); ?>
+		        <?php echo esc_html($lumise->lang('Remove product')); ?>
 		    </a>
         </p>
         <?php $lumise->do_action( 'product-lumise-option-tab' ); ?>
-        <input type="hidden" value="<?php echo $product; ?>" name="lumise_product_base" id="lumise_product_base" />
-        <input type="hidden" value="<?php echo $design; ?>" name="lumise_design_template" id="lumise_design_template" />
+        <input type="hidden" value="<?php echo esc_attr($product); ?>" name="lumise_product_base" id="lumise_product_base" />
+        <input type="hidden" value="<?php echo esc_attr($design); ?>" name="lumise_design_template" id="lumise_design_template" />
     </div>
 <?php 
 	
 	$js_cfg = array_merge(array(
-		'nonce_backend' => lumise_secure::create_nonce('LUMISE-SECURITY-BACKEND'),
+		'nonce_backend' => wp_create_nonce( 'lumise_security_backend' ),
 		'ajax_url' => $lumise->cfg->ajax_url,
 		'admin_ajax_url' => $lumise->cfg->admin_ajax_url,
 		'is_admin' => is_admin(),
@@ -97,9 +97,9 @@ function lumise_cms_product_data_fields($ops, $js_cfg, $id) {
 	), $js_cfg);
 	
 	echo '<script type="text/javascript">';
-	echo 'var lumisejs='.json_encode($js_cfg).';';
+	echo 'var lumisejs='.wp_json_encode($js_cfg).';';
 	echo '</script>';
-	echo '<script type="text/javascript" src="'.$lumise->cfg->assets_url.'admin/assets/js/interg.js?version='.LUMISE.'"></script>';
+	echo '<script type="text/javascript" src="'.esc_url(LW()->plugin_url() . '/assets/js/admin/interg.min.js?version=' .LUMISE ).'"></script>';
 
 }
 

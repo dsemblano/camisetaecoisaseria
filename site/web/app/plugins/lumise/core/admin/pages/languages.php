@@ -5,24 +5,19 @@
 
 	$langs = $lumise->get_langs();
 
-	if (!isset($_SESSION[$prefix.'lang']))
-		$_SESSION[$prefix.'lang'] = $lumise->cfg->active_language;
-
-	$data_lang = $_SESSION[$prefix.'lang'];
-
+	$data_lang = LW()->session->get( $prefix.'lang', $lumise->cfg->active_language );
+	
 	if (isset($_POST['change_language'])) {
-		$_SESSION[$prefix.'lang'] = $_POST['change_language'];
-		$data_lang = $_POST['change_language'];
-	} else if (!isset($_SESSION[$prefix.'lang']) && isset($langs[0])) {
-		$_SESSION[$prefix.'lang'] = $langs[0];
+		$data_lang = sanitize_text_field( wp_unslash($_POST['change_language'] ) );
+		LW()->session->set($prefix.'lang', $data_lang);
+	}else if(empty($data_lang) && isset($langs[0])) {
 		$data_lang = $langs[0];
+		LW()->session->set($prefix.'lang', $data_lang);
 	}
-
 	// Action Form
 	if (isset($_POST['action_submit']) && !empty($_POST['action_submit'])) {
-
-		$data_action = isset($_POST['action']) ? $_POST['action'] : '';
-		$val = isset($_POST['id_action']) ? $_POST['id_action'] : '';
+		$data_action = isset($_POST['action']) ? sanitize_text_field( wp_unslash($_POST['action'] ) ) : '';
+		$val = isset($_POST['id_action']) ? sanitize_text_field( wp_unslash($_POST['id_action'] ) ) : '';
 		$val = explode(',', $val);
 
 		$lumise_admin->check_caps('languages');
@@ -47,70 +42,61 @@
 	$data_search = '';
 	if (isset($_POST['search_language']) && !empty($_POST['search_language'])) {
 
-		$data_search = isset($_POST['search']) ? trim($_POST['search']) : '';
-
+		$data_search = isset($_POST['search']) ? trim( sanitize_text_field( wp_unslash( $_POST['search'] ) ) ) : null;
+		
 		if (empty($data_search)) {
-			$errors = 'Please Insert Key Word';
-			$_SESSION[$prefix.'data_search'] = '';
-		} else {
-			$_SESSION[$prefix.'data_search'] = 	$data_search;
+			$errors = esc_html__( 'Please Insert Key Word', 'lumise');
 		}
+
+		LW()->session->set($prefix.'data_search', $data_search);
 
 	}
 
-	if (!empty($_SESSION[$prefix.'data_search'])) {
-		$data_search = '%'.$_SESSION[$prefix.'data_search'].'%';
+	if (!empty(LW()->session->get( $prefix.'data_search', null ))) {
+		$data_search = '%'.LW()->session->get( $prefix.'data_search').'%';
 	}
 
 	// Pagination
-	$per_page = 50;
-	if(isset($_SESSION[$prefix.'per_page']))
-		$per_page = $_SESSION[$prefix.'per_page'];
-
+	$per_page = LW()->session->get($prefix.'per_page', 50);
 	if (isset($_POST['per_page'])) {
+		$per_page = isset($_POST['per_page']) ? absint($_POST['per_page']) : 50;
+		LW()->session->set($prefix.'per_page', $per_page);
 
-		$data = isset($_POST['per_page']) ? $_POST['per_page'] : '';
-
-		if ($data != 'none') {
-			$_SESSION[$prefix.'per_page'] = $data;
-			$per_page = $_SESSION[$prefix.'per_page'];
-		} else {
-			$_SESSION[$prefix.'per_page'] = 20;
-			$per_page = $_SESSION[$prefix.'per_page'];
-		}
-
-		$lumise->redirect($lumise->cfg->admin_url . "lumise-page=languages");
-
+		wp_safe_redirect($lumise->cfg->admin_url . "lumise-page=languages");
 	}
 
     // Sort Form
 	if (!empty($_POST['sort'])) {
 
-		$dt_sort = isset($_POST['sort']) ? $_POST['sort'] : '';
-		$_SESSION[$prefix.'dt_order'] = $dt_sort;
+		$dt_sort = isset($_POST['sort']) ? sanitize_text_field( wp_unslash( $_POST['sort'] ) ) : null;
+		LW()->session->set($prefix.'dt_order', $dt_sort);
+		
+		$orderby = null;
+		$ordering = null;
 
 		switch ($dt_sort) {
 
 			case 'name_asc':
-				$_SESSION[$prefix.'orderby'] = 'original_text';
-				$_SESSION[$prefix.'ordering'] = 'asc';
+				$orderby = 'original_text';
+				$ordering= 'asc';
 				break;
 			case 'name_desc':
-				$_SESSION[$prefix.'orderby'] = 'original_text';
-				$_SESSION[$prefix.'ordering'] = 'desc';
+				$orderby = 'original_text';
+				$ordering= 'desc';
 				break;
 			default:
 				break;
 
 		}
-
-		$lumise->redirect($lumise->cfg->admin_url . "lumise-page=languages");
+		LW()->session->set($prefix.'orderby', $orderby);
+		LW()->session->set($prefix.'ordering', $ordering);
+		wp_safe_redirect($lumise->cfg->admin_url . "lumise-page=languages");
 
 	}
 
-	$orderby  = (isset($_SESSION[$prefix.'orderby']) && !empty($_SESSION[$prefix.'orderby'])) ? $_SESSION[$prefix.'orderby'] : 'original_text';
-	$ordering = (isset($_SESSION[$prefix.'ordering']) && !empty($_SESSION[$prefix.'ordering'])) ? $_SESSION[$prefix.'ordering'] : 'asc';
-	$dt_order = isset($_SESSION[$prefix.'dt_order']) ? $_SESSION[$prefix.'dt_order'] : 'name_asc';
+	$orderby  = LW()->session->get($prefix.'orderby', 'original_text');
+	$ordering = LW()->session->get($prefix.'ordering', 'asc');
+	$dt_order = LW()->session->get($prefix.'dt_order', 'name_asc');
 
 	// Get row pagination
     $current_page = isset($_GET['tpage']) ? $_GET['tpage'] : 1;
@@ -142,9 +128,8 @@
 		$languages['total_page'] == 0 && 
 		empty($data_search)
 	){
-		$_SESSION[$prefix.'lang'] = null;
+		LW()->session->set($prefix.'lang', null);
 	}
-
 ?>
 
 <div class="lumise_wrapper">
@@ -152,28 +137,28 @@
 	<div class="lumise_content">
 
 		<div class="lumise_header">
-			<h2><?php echo $lumise->lang('Languages'); ?></h2>
+			<h2><?php echo esc_html($lumise->lang('Languages')); ?></h2>
 			<a href="#add" id="lumise-add-language" class="add-new lumise-button">
-				<i class="fa fa-plus"></i> <?php echo $lumise->lang('Add New Language'); ?>
+				<i class="fa fa-plus"></i> <?php echo esc_html($lumise->lang('Add New Language')); ?>
 			</a>
-			<a href="#scan" id="lumise-scan-language" class="add_new tip" style="top: 8px;left: 10px;">
-				<i class="fa fa-refresh"></i> <?php echo $lumise->lang('Rescan texts'); ?>
-				<span><?php echo $lumise->lang('Rescan all language texts from Lumise files'); ?></span>
+			<a href="#scan" id="lumise-scan-language" class="add_new tip">
+				<i class="fa fa-refresh"></i> <?php echo esc_html($lumise->lang('Rescan texts')); ?>
+				<span><?php echo esc_html($lumise->lang('Rescan all language texts from Lumise files')); ?></span>
 			</a>
 			<!--button class="lumise_submit" id="lumise-scan-language">
-				<i class="fa fa-refresh"></i> <?php echo $lumise->lang('Rescan all language texts'); ?>
+				<i class="fa fa-refresh"></i> <?php echo esc_html($lumise->lang('Rescan all language texts')); ?>
 			</button-->
 			<?php
-				$lumise_page = isset($_GET['lumise-page']) ? $_GET['lumise-page'] : '';
-				echo $lumise_helper->breadcrumb($lumise_page);
+				$lumise_page = isset($_GET['lumise-page']) ? sanitize_text_field( wp_unslash( $_GET['lumise-page'] ) ) : '';
+				echo wp_kses_post($lumise_helper->breadcrumb($lumise_page));
 			?>
 		</div>
 		<div class="lumise_message noti">
 			<em class="lumise_suc">
 				<i class="fa fa-info-circle"></i>
-				<?php echo $lumise->lang('You can public, unpublic or select a language for backend & frontend in'); ?>
-				<a href="<?php echo $lumise->cfg->admin_url;?>lumise-page=settings">
-					<?php echo $lumise->lang('General Settings'); ?>
+				<?php echo esc_html($lumise->lang('You can public, unpublic or select a language for backend & frontend in')); ?>
+				<a href="<?php echo esc_url($lumise->cfg->admin_url);?>lumise-page=settings">
+					<?php echo esc_html($lumise->lang('General Settings')); ?>
 					<i class="fa fa-cog"></i>
 				</a>
 			</em>
@@ -182,17 +167,17 @@
 		<div class="lumise_option">
 				<div class="left">
 					
-					<form action="<?php echo $lumise->cfg->admin_url;?>lumise-page=languages" method="post">
+					<form action="<?php echo esc_url($lumise->cfg->admin_url);?>lumise-page=languages" method="post">
 						<input type="hidden" name="id_action" class="id_action" />
 						<input type="hidden" name="action" value="delete" />
-						<input  class="lumise_submit" type="submit" name="action_submit" value="<?php echo $lumise->lang('Delete'); ?>">
-						<?php $lumise->securityFrom();?>
+						<input  class="lumise_submit" type="submit" name="action_submit" value="<?php echo esc_html($lumise->lang('Delete')); ?>">
+						<?php wp_nonce_field( 'lumise_security_form', 'lumise_security_form_nonce' );?>
 					</form>
 					
-					<form action="<?php echo $lumise->cfg->admin_url;?>lumise-page=languages" method="post">
+					<form action="<?php echo esc_url($lumise->cfg->admin_url);?>lumise-page=languages" method="post">
 						<input type="hidden" name="do" value="action" />
 						<select name="per_page" class="art_per_page" data-action="submit">
-							<option value="none">-- <?php echo $lumise->lang('Per page'); ?> --</option>
+							<option value="none">-- <?php echo esc_html($lumise->lang('Per page')); ?> --</option>
 							<?php
 								$per_pages = array('10', '15', '20', '50', '100', '200', '300', '400', '500', '1000');
 
@@ -207,33 +192,29 @@
 								}
 							?>
 						</select>
-						<?php $lumise->securityFrom();?>
+						<?php wp_nonce_field( 'lumise_security_form', 'lumise_security_form_nonce' );?>
 					</form>
 					
-					<form action="<?php echo $lumise->cfg->admin_url;?>lumise-page=languages" method="post">
+					<form action="<?php echo esc_url($lumise->cfg->admin_url);?>lumise-page=languages" method="post">
 						<input type="hidden" name="do" value="action" />
 						<select name="sort" class="art_per_page" data-action="submit">
-							<option value="">-- <?php echo $lumise->lang('Sort by'); ?> --</option>
-							<option value="name_asc" <?php if ($dt_order == 'name_asc' ) echo 'selected' ; ?> ><?php echo $lumise->lang('Name'); ?> A-Z</option>
-							<option value="name_desc" <?php if ($dt_order == 'name_desc' ) echo 'selected' ; ?> ><?php echo $lumise->lang('Name'); ?> Z-A</option>
+							<option value="">-- <?php echo esc_html($lumise->lang('Sort by')); ?> --</option>
+							<option value="name_asc" <?php if ($dt_order == 'name_asc' ) echo 'selected' ; ?> ><?php echo esc_html($lumise->lang('Name')); ?> A-Z</option>
+							<option value="name_desc" <?php if ($dt_order == 'name_desc' ) echo 'selected' ; ?> ><?php echo esc_html($lumise->lang('Name')); ?> Z-A</option>
 						</select>
-						<?php $lumise->securityFrom();?>
+						<?php wp_nonce_field( 'lumise_security_form', 'lumise_security_form_nonce' );?>
 					</form>
-					
-					<form action="<?php echo $lumise->cfg->admin_url;?>lumise-page=languages" method="post">
+					<form action="<?php echo esc_url($lumise->cfg->admin_url);?>lumise-page=languages" method="post">
 						<select name="change_language" onchange="this.parentNode.submit();">
-							<option value=""> === <?php echo $lumise->lang('All languages'); ?> === </option>
+							<option value=""> === <?php echo esc_html($lumise->lang('All languages')); ?> === </option>
 							<?php
 
 								$lang_map = $lumise->langs();
-
+								
 								foreach ($langs as $lang) {
 									if (!empty($lang) && isset($lang_map[$lang])) {
 										echo '<option value="'.$lang.'"'.(
-											(
-												isset($_SESSION[$prefix.'lang']) && 
-												$_SESSION[$prefix.'lang'] == $lang
-											) ? ' selected' : ''
+											(LW()->session->get($prefix.'lang', null) == $lang) ? ' selected' : ''
 										).'>'.$lang_map[$lang].'</option>';
 									}
 								}
@@ -244,10 +225,10 @@
 					
 				</div>
 				<div class="right">
-					<form action="<?php echo $lumise->cfg->admin_url;?>lumise-page=languages" method="post">
-						<input type="search" name="search" class="search" placeholder="<?php echo $lumise->lang('Search ...'); ?>" value="<?php if(isset($_SESSION[$prefix.'data_search'])) echo $_SESSION[$prefix.'data_search']; ?>">
-						<input  class="lumise_submit" type="submit" name="search_language" value="<?php echo $lumise->lang('Search'); ?>">
-						<?php $lumise->securityFrom();?>
+					<form action="<?php echo esc_url($lumise->cfg->admin_url);?>lumise-page=languages" method="post">
+						<input type="search" name="search" class="search" placeholder="<?php echo esc_attr($lumise->lang('Search ...')); ?>" value="<?php echo esc_attr(LW()->session->get($prefix.'data_search')); ?>">
+						<input  class="lumise_submit" type="submit" name="search_language" value="<?php echo esc_attr($lumise->lang('Search')); ?>">
+						<?php wp_nonce_field( 'lumise_security_form', 'lumise_security_form_nonce' );?>
 
 					</form>
 				</div>
@@ -265,16 +246,16 @@
 								<label for="check_all"><em class="check"></em></label>
 							</div>
 						</th>
-						<th width="40%"><?php echo $lumise->lang('Original text'); ?></th>
+						<th width="40%"><?php echo esc_html($lumise->lang('Original text')); ?></th>
 						<th width="40%">
-							<?php echo $lumise->lang('Translate Text'); ?>
+							<?php echo esc_html($lumise->lang('Translate Text')); ?>
 							&nbsp;
 							<a href="#auto-translate" id="lumise-auto-translate">
-								<i class="fa fa-magic"></i> <?php echo $lumise->lang('Auto Translate'); ?>
+								<i class="fa fa-magic"></i> <?php echo esc_html($lumise->lang('Auto Translate')); ?>
 							</a>
 						</th>
 						<th width="100" class="center">
-							<?php echo $lumise->lang('Language'); ?>
+							<?php echo esc_html($lumise->lang('Language')); ?>
 						</th>
 					</tr>
 				</thead>
@@ -285,29 +266,29 @@
 
 							foreach ($languages['rows'] as $value) { ?>
 
-								<tr data-id="<?php echo $value['id']; ?>">
+								<tr data-id="<?php echo absint($value['id']); ?>">
 									<td class="lumise_check">
 										<div class="lumise_checkbox">
-											<input type="checkbox" name="checked[]" class="action_check" value="<?php if(isset($value['id'])) echo $value['id']; ?>" class="action" id="<?php if(isset($value['id'])) echo $value['id']; ?>">
-											<label for="<?php if(isset($value['id'])) echo $value['id']; ?>"><em class="check"></em></label>
+											<input type="checkbox" name="checked[]" class="action_check" value="<?php if(isset($value['id'])) echo absint($value['id']); ?>" class="action" id="<?php if(isset($value['id'])) echo absint($value['id']); ?>">
+											<label for="<?php if(isset($value['id'])) echo absint($value['id']); ?>"><em class="check"></em></label>
 										</div>
 									</td>
-									<td id="lumise-lang-original-<?php echo $value['id']; ?>"><?php echo $value['original_text']; ?></td>
+									<td id="lumise-lang-original-<?php echo absint($value['id']); ?>"><?php echo esc_html($value['original_text']); ?></td>
 									<td>
-										<span id="lumise-lang-text-<?php echo $value['id']; ?>"><?php
-											echo $value['text'];
+										<span id="lumise-lang-text-<?php echo absint($value['id']); ?>"><?php
+											echo esc_html($value['text']);
 										?></span>
 										&nbsp;
 										<a href="#edit" title="<?php
-											echo $lumise->lang('Edit this translate text');
-										?>" data-edit-text="<?php echo $value['id']; ?>">
+											echo esc_html($lumise->lang('Edit this translate text'));
+										?>" data-edit-text="<?php echo absint($value['id']); ?>">
 											<i class="fa fa-pencil-square-o"></i>
-											<?php echo $lumise->lang('edit'); ?>
+											<?php echo esc_html($lumise->lang('edit')); ?>
 										</a>
 									</td>
 									<td class="center">
 										<?php if(isset($value['lang'])){
-												echo '<img title="'.$value['lang'].'" height="30" src="'.$lumise->cfg->assets_url.'assets/flags/'.$value['lang'].'.png" />';
+												echo '<img title="'.$value['lang'].'" height="30" src="'.esc_url($lumise->cfg->assets_url).'assets/flags/'.$value['lang'].'.png" />';
 											}
 										?>
 									</td>
@@ -322,16 +303,16 @@
 			</table>
 		</div>
 		
-		<div class="lumise_pagination"><?php echo $lumise_pagination->pagination_html(); ?></div>
+		<div class="lumise_pagination"><?php echo wp_kses_post($lumise_pagination->pagination_html()); ?></div>
 
 		<?php } else {
-					if (isset($total_record) && $total_record > 0) {
-						echo '<p class="no-data">'.$lumise->lang('Apologies, but no results were found.').'</p>';
-						$_SESSION[$prefix.'data_search'] = '';
-						echo '<a href="'.$lumise->cfg->admin_url.'lumise-page=languages" class="btn-back"><i class="fa fa-reply" aria-hidden="true"></i>'.$lumise->lang('Back To Lists').'</a>';
-					}
-					else
-						echo '<p class="no-data">'.$lumise->lang('No data. Please add language.').'</p>';
+				if (isset($total_record) && $total_record > 0) {
+					echo '<p class="no-data">'.esc_html($lumise->lang('Apologies, but no results were found.')).'</p>';
+					LW()->session->set($prefix.'data_search', null);
+					echo '<a href="'.esc_url($lumise->cfg->admin_url).'lumise-page=languages" class="btn-back"><i class="fa fa-reply" aria-hidden="true"></i>'.$lumise->lang('Back To Lists').'</a>';
+				}
+				else
+					echo '<p class="no-data">'.$lumise->lang('No data. Please add language.').'</p>';
 			}?>
 
 	</div>
@@ -339,8 +320,8 @@
 <div id="lumise-popup">
 	<div class="lumise-popup-content">
 		<header>
-			<input type="search" placeholder="<?php echo $lumise->lang('Search countries...'); ?>" />
-			<div id="lumise-language-selected"><?php echo $lumise->lang('Please select a language'); ?></div>
+			<input type="search" placeholder="<?php echo esc_html($lumise->lang('Search countries...')); ?>" />
+			<div id="lumise-language-selected"><?php echo esc_html($lumise->lang('Please select a language')); ?></div>
 			<span class="close-pop" data-close><svg enable-background="new 0 0 32 32" height="32px" id="close" version="1.1" viewBox="0 0 32 32" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M17.459,16.014l8.239-8.194c0.395-0.391,0.395-1.024,0-1.414c-0.394-0.391-1.034-0.391-1.428,0  l-8.232,8.187L7.73,6.284c-0.394-0.395-1.034-0.395-1.428,0c-0.394,0.396-0.394,1.037,0,1.432l8.302,8.303l-8.332,8.286  c-0.394,0.391-0.394,1.024,0,1.414c0.394,0.391,1.034,0.391,1.428,0l8.325-8.279l8.275,8.276c0.394,0.395,1.034,0.395,1.428,0  c0.394-0.396,0.394-1.037,0-1.432L17.459,16.014z" fill="#121313" id="Close"></path><g></g><g></g><g></g><g></g><g></g><g></g></svg></span>
 		</header>
 		<div class="lumise-langs-wrp">
@@ -348,8 +329,8 @@
 				echo '<ul>';
 				foreach($lumise->langs() as $code => $country) {
 					echo '<li data-code="'.$code.'">';
-					echo '<img src="'.$lumise->cfg->assets_url.'assets/flags/'.$code.'.png" height="24" />';
-					echo $country;
+					echo '<img src="'.esc_url(LW()->plugin_url()).'/assets/flags/'.$code.'.png" height="24" />';
+					echo esc_html($country);
 					echo '</li>';
 				}
 				echo '</ul>';
@@ -370,7 +351,7 @@
 			wrp.animate({opacity: 0}, 250, function(){wrp.hide();});
 			wrp.find('.lumise-popup-content').animate({top: '-50px', opacity: 0}, 250);
 		},
-		nonce = "<?php echo lumise_secure::create_nonce('LUMISE_ADMIN_languages') ?>";
+		nonce = "<?php echo esc_js(wp_create_nonce( 'lumise_admin_languages' )) ?>";
 
 	wrp.find('header input[type="search"]').on('input', function(e){
 		var val = this.value.toLowerCase().trim();
@@ -383,7 +364,7 @@
 
 	li.on('click', function(){
 		$('#lumise-language-selected').html(
-			'<button data-code="'+this.getAttribute('data-code')+'"><i class="fa fa-check"></i> <?php echo $lumise->lang('Confirm to create language'); ?> "'+$(this).text()+'"</button>'
+			'<button data-code="'+this.getAttribute('data-code')+'"><i class="fa fa-check"></i> <?php echo esc_js($lumise->lang('Confirm to create language')); ?> "'+$(this).text()+'"</button>'
 		);
 	});
 
@@ -394,11 +375,11 @@
 			$.ajax({
 				url: LumiseDesign.ajax,
 				method: 'POST',
-				data: LumiseDesign.filter_ajax({
+				data: {
 					action: 'new_language',
 					nonce: 'LUMISE_ADMIN:'+LumiseDesign.nonce,
 					code: e.target.getAttribute('data-code'),
-				}),
+				},
 				statusCode: {
 					403: function(){
 						location.reload();
@@ -426,19 +407,19 @@
 		var code = $('select[name="change_language"]').val();
 
 		if (!code || code === '') {
-			return alert('<?php echo $lumise->lang('Please select a specific language before scanning'); ?>');
+			return alert('<?php echo esc_js($lumise->lang('Please select a specific language before scanning')); ?>');
 		}
 
-		$(this).html('<i class="fa fa-spinner fa-spin fa-fw"></i> <?php echo $lumise->lang('Please wait..'); ?>').attr({"disabled": "true"}).off('click');
+		$(this).html('<i class="fa fa-spinner fa-spin fa-fw"></i> <?php echo esc_js($lumise->lang('Please wait..')); ?>').attr({"disabled": "true"}).off('click');
 
 		$.ajax({
 			url: LumiseDesign.ajax,
 			method: 'POST',
-			data: LumiseDesign.filter_ajax({
+			data: {
 				action: 'new_language',
 				nonce: 'LUMISE_ADMIN_languages:'+nonce,
 				code: $('select[name="change_language"]').val()
-			}),
+			},
 			statusCode: {
 				403: function(){
 					location.reload();
@@ -452,17 +433,17 @@
 
 	$('a[data-edit-text]').on('click', function(e){
 		var text = $(this).parent().find('>span').html();
-		var new_text = prompt('<?php echo $lumise->lang('Please enter the translate text'); ?> ('+$('select[name="change_language"] option:selected').html()+')', text);
+		var new_text = prompt('<?php echo esc_js($lumise->lang('Please enter the translate text')); ?> ('+$('select[name="change_language"] option:selected').html()+')', text);
 		if (new_text !== null && new_text != text) {
 			$.ajax({
 				url: LumiseDesign.ajax,
 				method: 'POST',
-				data: LumiseDesign.filter_ajax({
+				data: {
 					action: 'edit_language_text',
 					nonce: 'LUMISE_ADMIN:'+LumiseDesign.nonce,
 					text: new_text,
 					id: this.getAttribute('data-edit-text')
-				}),
+				},
 				statusCode: {
 					403: function(){
 						location.reload();
@@ -484,10 +465,10 @@
 			code = $('select[name="change_language"]').val();
 		
 		if (!code || code === '') {
-			return alert('<?php echo $lumise->lang('Please select a specific language before scanning'); ?>');
+			return alert('<?php echo esc_js($lumise->lang('Please select a specific language before scanning')); ?>');
 		}
 		
-		$(this).after('<span id="lumise-translating-wrp" style="color: #aaa;font-weight:400;font-style: italic"><i class="fa fa-spinner fa-spin fa-fw"></i> <?php echo $lumise->lang('Translating'); ?> <span id="lumise-auto-translating">0</span> of '+list.length+'</span>').remove();
+		$(this).after('<span id="lumise-translating-wrp" style="color: #aaa;font-weight:400;font-style: italic"><i class="fa fa-spinner fa-spin fa-fw"></i> <?php echo esc_js($lumise->lang('Translating')); ?> <span id="lumise-auto-translating">0</span> of '+list.length+'</span>').remove();
 		
 		var text_data = [''],
 			translating = $('#lumise-auto-translating'),
@@ -524,11 +505,11 @@
 								$.ajax({
 									url: LumiseDesign.ajax,
 									method: 'POST',
-									data: LumiseDesign.filter_ajax({
+									data: {
 										action: 'edit_language_text',
 										nonce: 'LUMISE_ADMIN:'+LumiseDesign.nonce,
 										text: data_post
-									}),
+									},
 									statusCode: {
 										403: function(){
 											location.reload();

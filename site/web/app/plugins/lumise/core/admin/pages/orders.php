@@ -10,92 +10,79 @@
 	$data_search = '';
 	if (isset($_POST['search_orders']) && !empty($_POST['search_orders'])) {
 		
-		$data_search = isset($_POST['search']) ? trim($_POST['search']) : '';
-
+		$data_search = isset($_POST['search']) ? trim( sanitize_text_field( wp_unslash( $_POST['search'] ) ) ) : null;
+		
 		if (empty($data_search)) {
-			$errors = 'Search Order Id';
-			$_SESSION[$prefix.'data_search'] = '';
-		} else {
-			$_SESSION[$prefix.'data_search'] = 	$data_search;
+			$errors = esc_html__( 'Search Order Id', 'lumise');
 		}
 
+		LW()->session->set($prefix.'data_search', $data_search);
 	}
 
-	if (!empty($_SESSION[$prefix.'data_search'])) {
-		$data_search = '%'.$_SESSION[$prefix.'data_search'].'%';
+	if (!empty(LW()->session->get( $prefix.'data_search', null ))) {
+		$data_search = '%'.LW()->session->get( $prefix.'data_search').'%';
 	}
-    
 
     // Pagination
-	$per_page = 10;
-	if(isset($_SESSION[$prefix.'per_page']))
-		$per_page = $_SESSION[$prefix.'per_page'];
-
+	$per_page = LW()->session->get($prefix.'per_page', 10);
 	if (isset($_POST['per_page'])) {
-
-		$data = isset($_POST['per_page']) ? $_POST['per_page'] : '';
-
-		if ($data != 'none') {
-			$_SESSION[$prefix.'per_page'] = $data;
-			$per_page = $_SESSION[$prefix.'per_page'];
-		} else {
-			$_SESSION[$prefix.'per_page'] = 20;
-			$per_page = $_SESSION[$prefix.'per_page'];
-		}
-
+		$per_page = isset($_POST['per_page']) ? absint($_POST['per_page']) : 10;
+		LW()->session->set($prefix.'per_page', $per_page);
 	}
     
     // Sort Form
 	if (isset($_REQUEST['sort'])) {
 
-		$dt_sort = isset($_POST['sort']) ? $_POST['sort'] : '';
-		$_SESSION[$prefix.'dt_order'] = $dt_sort;
+		$dt_sort = isset($_POST['sort']) ? sanitize_text_field( wp_unslash( $_POST['sort'] ) ) : null;
+		LW()->session->set($prefix.'dt_order', $dt_sort);
+		
+		$orderby = null;
+		$ordering = null;
 		
 		switch ($dt_sort) {
 
 			case 'order_id_asc':
-				$_SESSION[$prefix.'orderby'] = 'order_id';
-				$_SESSION[$prefix.'ordering'] = 'asc';
+				$orderby = 'order_id';
+				$ordering= 'asc';
 				break;
 			case 'order_id_desc':
-				$_SESSION[$prefix.'orderby'] = 'order_id';
-				$_SESSION[$prefix.'ordering'] = 'desc';
+				$orderby = 'order_id';
+				$ordering= 'desc';
 				break;
 			case 'total_asc':
-				$_SESSION[$prefix.'orderby'] = 'total';
-				$_SESSION[$prefix.'ordering'] = 'asc';
+				$orderby = 'total';
+				$ordering= 'asc';
 				break;
 			case 'total_desc':
-				$_SESSION[$prefix.'orderby'] = 'total';
-				$_SESSION[$prefix.'ordering'] = 'desc';
+				$orderby = 'total';
+				$ordering= 'desc';
 				break;
             case 'created_asc':
-				$_SESSION[$prefix.'orderby'] = 'os.created';
-				$_SESSION[$prefix.'ordering'] = 'asc';
+				$orderby = 'os.created';
+				$ordering= 'asc';
 				break;
 			case 'created_desc':
-				$_SESSION[$prefix.'orderby'] = 'os.created';
-				$_SESSION[$prefix.'ordering'] = 'desc';
+				$orderby = 'os.created';
+				$ordering= 'desc';
 				break;
             case 'updated_asc':
-				$_SESSION[$prefix.'orderby'] = 'os.updated';
-				$_SESSION[$prefix.'ordering'] = 'asc';
+				$orderby = 'os.updated';
+				$ordering= 'asc';
 				break;
 			case 'updated_desc':
-				$_SESSION[$prefix.'orderby'] = 'os.updated';
-				$_SESSION[$prefix.'ordering'] = 'desc';
+				$orderby = 'os.updated';
+				$ordering= 'desc';
 				break;
 			default:
 				break;
 
 		}
-        
+        LW()->session->set($prefix.'orderby', $orderby);
+		LW()->session->set($prefix.'ordering', $ordering);
 	}
-
-
-	$orderby  = (isset($_SESSION[$prefix.'orderby']) && !empty($_SESSION[$prefix.'orderby'])) ? $_SESSION[$prefix.'orderby'] : 'order_id';
-	$ordering = (isset($_SESSION[$prefix.'ordering']) && !empty($_SESSION[$prefix.'ordering'])) ? $_SESSION[$prefix.'ordering'] : 'desc';
-	$dt_order = isset($_SESSION[$prefix.'dt_order']) ? $_SESSION[$prefix.'dt_order'] : 'order_id_desc';
+	$orderby  = LW()->session->get($prefix.'orderby', 'order_id');
+	$ordering = LW()->session->get($prefix.'ordering', 'asc');
+	$dt_order = LW()->session->get($prefix.'dt_order', 'order_id_desc');
 
     $current_page = isset($_GET['tpage']) ? $_GET['tpage'] : 1;
     $search_filter = array(
@@ -122,19 +109,19 @@
 	<div class="lumise_content">
 
 		<div class="lumise_header">
-			<h2><?php echo $lumise->lang('Orders'); ?></h2>
+			<h2><?php echo esc_html($lumise->lang('Orders')); ?></h2>
 			<?php
-				$lumise_page = isset($_GET['lumise-page']) ? $_GET['lumise-page'] : '';
-				echo $lumise_helper->breadcrumb($lumise_page);
+				$lumise_page = isset($_GET['lumise-page']) ? sanitize_text_field( wp_unslash( $_GET['lumise-page'] ) ) : '';
+				echo wp_kses_post($lumise_helper->breadcrumb($lumise_page));
                 
 			?>
 		</div>
         <?php $lumise->views->header_message();?>
         <div class="lumise_option">
             <div class="left">
-                <form action="<?php echo $lumise->cfg->admin_url;?>lumise-page=orders" method="post">
+                <form action="<?php echo esc_url($lumise->cfg->admin_url);?>lumise-page=orders" method="post">
                     <select name="per_page" class="orders_per_page" data-action="submit">
-                    	<option value="none">-- <?php echo $lumise->lang('Per page'); ?> --</option>
+                    	<option value="none">-- <?php echo esc_html($lumise->lang('Per page')); ?> --</option>
                         <?php
                             $per_pages = array('10', '15', '20', '100');
 
@@ -149,29 +136,29 @@
                             }
                         ?>
                     </select>
-                    <?php $lumise->securityFrom();?>
+                    <?php wp_nonce_field( 'lumise_security_form', 'lumise_security_form_nonce' );?>
                 </form>
-                <form action="<?php echo $lumise->cfg->admin_url;?>lumise-page=orders" method="post">
+                <form action="<?php echo esc_url($lumise->cfg->admin_url);?>lumise-page=orders" method="post">
                     <select name="sort" class="orders_per_page" data-action="submit">
-                    	<option value="">-- <?php echo $lumise->lang('Sort by'); ?> --</option>
-                        <option value="order_id_asc" <?php if ($dt_order == 'order_id_asc' ) echo 'selected' ; ?> ><?php echo $lumise->lang('Order Id'); ?> &uarr;</option>
-                        <option value="order_id_desc" <?php if ($dt_order == 'order_id_desc' ) echo 'selected' ; ?> ><?php echo $lumise->lang('Order Id'); ?> &darr;</option>
-                        <option value="total_asc" <?php if ($dt_order == 'total_asc' ) echo 'selected' ; ?> ><?php echo $lumise->lang('Price'); ?> &uarr;</option>
-                        <option value="total_desc" <?php if ($dt_order == 'total_desc' ) echo 'selected' ; ?> ><?php echo $lumise->lang('Price'); ?> &darr;</option>
-                        <option value="created_asc" <?php if ($dt_order == 'created_asc' ) echo 'selected' ; ?> ><?php echo $lumise->lang('Created At'); ?> &uarr;</option>
-                        <option value="created_desc" <?php if ($dt_order == 'created_desc' ) echo 'selected' ; ?> ><?php echo $lumise->lang('Created At'); ?> &darr;</option>
-                        <option value="updated_asc" <?php if ($dt_order == 'updated_asc' ) echo 'selected' ; ?> ><?php echo $lumise->lang('Updated At'); ?> &uarr;</option>
-                        <option value="updated_desc" <?php if ($dt_order == 'updated_desc' ) echo 'selected' ; ?> ><?php echo $lumise->lang('Updated At'); ?> &darr;</option>
+                    	<option value="">-- <?php echo esc_html($lumise->lang('Sort by')); ?> --</option>
+                        <option value="order_id_asc" <?php if ($dt_order == 'order_id_asc' ) echo 'selected' ; ?> ><?php echo esc_html($lumise->lang('Order Id')); ?> &uarr;</option>
+                        <option value="order_id_desc" <?php if ($dt_order == 'order_id_desc' ) echo 'selected' ; ?> ><?php echo esc_html($lumise->lang('Order Id')); ?> &darr;</option>
+                        <option value="total_asc" <?php if ($dt_order == 'total_asc' ) echo 'selected' ; ?> ><?php echo esc_html($lumise->lang('Price')); ?> &uarr;</option>
+                        <option value="total_desc" <?php if ($dt_order == 'total_desc' ) echo 'selected' ; ?> ><?php echo esc_html($lumise->lang('Price')); ?> &darr;</option>
+                        <option value="created_asc" <?php if ($dt_order == 'created_asc' ) echo 'selected' ; ?> ><?php echo esc_html($lumise->lang('Created At')); ?> &uarr;</option>
+                        <option value="created_desc" <?php if ($dt_order == 'created_desc' ) echo 'selected' ; ?> ><?php echo esc_html($lumise->lang('Created At')); ?> &darr;</option>
+                        <option value="updated_asc" <?php if ($dt_order == 'updated_asc' ) echo 'selected' ; ?> ><?php echo esc_html($lumise->lang('Updated At')); ?> &uarr;</option>
+                        <option value="updated_desc" <?php if ($dt_order == 'updated_desc' ) echo 'selected' ; ?> ><?php echo esc_html($lumise->lang('Updated At')); ?> &darr;</option>
                     </select>
-                    <?php $lumise->securityFrom();?>
+                    <?php wp_nonce_field( 'lumise_security_form', 'lumise_security_form_nonce' );?>
                     <input type="hidden" name="do" value="action"/>
                 </form>
             </div>
             <div class="right">
-                <form action="<?php echo $lumise->cfg->admin_url;?>lumise-page=orders" method="post">
-                    <input type="search" name="search" class="search" placeholder="<?php echo $lumise->lang('Search (ID or Status)'); ?>" value="<?php if(isset($_SESSION[$prefix.'data_search'])) echo $_SESSION[$prefix.'data_search']; ?>">
-                    <input  class="lumise_submit" type="submit" name="search_orders" value="<?php echo $lumise->lang('Search'); ?>">
-                    <?php $lumise->securityFrom();?>
+                <form action="<?php echo esc_url($lumise->cfg->admin_url);?>lumise-page=orders" method="post">
+                    <input type="search" name="search" class="search" placeholder="<?php echo esc_attr($lumise->lang('Search (ID or Status)')); ?>" value="<?php echo esc_attr(LW()->session->get($prefix.'data_search')); ?>">
+                    <input  class="lumise_submit" type="submit" name="search_orders" value="<?php echo esc_attr($lumise->lang('Search')); ?>">
+                    <?php wp_nonce_field( 'lumise_security_form', 'lumise_security_form_nonce' );?>
 
                 </form>
             </div>
@@ -181,14 +168,14 @@
 			<table class="lumise_table lumise_orders">
 				<thead>
 					<tr>
-						<th width="20%"><?php echo $lumise->lang('Order Id'); ?></th>
-						<th><?php echo $lumise->lang('Products'); ?></th>
+						<th width="20%"><?php echo esc_html($lumise->lang('Order Id')); ?></th>
+						<th><?php echo esc_html($lumise->lang('Products')); ?></th>
 						
-                        <th width="10%"><?php echo $lumise->lang('Status'); ?></th>
-                        <th width="10%"><?php echo $lumise->lang('Updated'); ?></th>
-                        <th width="10%"><?php echo $lumise->lang('Total Price'); ?></th>
+                        <th width="10%"><?php echo esc_html($lumise->lang('Status')); ?></th>
+                        <th width="10%"><?php echo esc_html($lumise->lang('Updated')); ?></th>
+                        <th width="10%"><?php echo esc_html($lumise->lang('Total Price')); ?></th>
                         <?php if($lumise->connector->platform == 'php'):?>
-						<th width="10%"><?php echo $lumise->lang('Actions'); ?></th>
+						<th width="10%"><?php echo esc_html($lumise->lang('Actions')); ?></th>
                         <?php endif;?>
 					</tr>
 				</thead>
@@ -199,7 +186,7 @@
 	                    foreach($items['rows'] as $order):
 	                ?>
 	                <tr>
-						<td><a href="<?php echo $lumise->cfg->admin_url;?>lumise-page=order&order_id=<?php echo $order['order_id'];?>"><?php printf($lumise->lang('Order #%s'), $order['order_id']);?></a></td>
+						<td><a href="<?php echo esc_url($lumise->cfg->admin_url);?>lumise-page=order&order_id=<?php echo esc_js(absint($order['order_id']));?>"><?php printf($lumise->lang('Order #%s'), $order['order_id']);?></a></td>
 						<td><?php 
                         $products = $lumise->lib->get_order_products($order['order_id']);
                         if(count($products)>0){
@@ -218,14 +205,14 @@
 								if (strtolower($order['status']) == 'cancel')
 									$class = 'un';
 							?>
-							<em class="<?php if(isset($class)) echo $class; ?> pub"><?php echo $lumise->apply_filters('order_status', $order['status']);?></em>
+							<em class="<?php if(isset($class)) echo esc_attr($class); ?> pub"><?php echo esc_html($lumise->apply_filters('order_status', $order['status']));?></em>
 						</td>
                         
 						
 						<td><?php echo date('Y/m/d', strtotime($order['updated']));?></td>
-                        <td><?php echo $lumise->lib->price($order['total']);?></td>
+                        <td><?php echo esc_html($lumise->lib->price($order['total'])) ;?></td>
                         <?php if($lumise->connector->platform == 'php'):?>
-	                    <td><a href="#" class="lumise-item-action" data-item="<?php echo $order['order_id'];?>" data-func="delete"><?php echo $lumise->lang('Delete'); ?></a></td>
+	                    <td><a href="#" class="lumise-item-action" data-item="<?php echo absint($order['order_id']);?>" data-func="delete"><?php echo esc_html($lumise->lang('Delete')); ?></a></td>
                         <?php endif;?>
 					</tr>
 	                    <?php
@@ -235,18 +222,16 @@
 	                ?>
 	                <tr>
 	                    <td colspan="6">
-	                        <p class="no-data"><?php echo $lumise->lang('Apologies, but no results were found'); ?></p>
+	                        <p class="no-data"><?php echo esc_html($lumise->lang('Apologies, but no results were found')); ?></p>
 	                    </td>
 	                </tr>
-	                    
-	                    
 	                <?php
 	                }
 	                ?>
 				</tbody>
 			</table>
         </div>
-		<div class="lumise_pagination"><?php echo $lumise_pagination->pagination_html(); ?></div>
+		<div class="lumise_pagination"><?php echo wp_kses_post($lumise_pagination->pagination_html()); ?></div>
 		
 	</div>
 

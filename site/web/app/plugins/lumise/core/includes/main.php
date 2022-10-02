@@ -6,14 +6,11 @@
 *	(i) website: https://www.lumise.com
 *
 */
-
-if (!defined('DS'))
-	define('DS', DIRECTORY_SEPARATOR);
-
-define('LUMISE', '2.0');
+defined('ABSPATH') || exit;
 
 class lumise {
 
+	protected $db_test;
 	protected $db;
 	protected $views;
 	protected $update;
@@ -42,27 +39,24 @@ class lumise {
 		require_once( LUMISE_CORE_PATH . DS. 'update.php' );
 		
 	}
-
+	
 	public function init(){
 		
 		$this->connector = new lumise_connector();
+		
 		$this->cfg = new lumise_cfg($this->connector);
-
+		
 		if (
 			property_exists($this->cfg, 'database') &&
 			$this->cfg->database !== null &&
 			is_array($this->cfg->database)
 		) {
 			$parse_host = explode(':', $this->cfg->database['host']);
-			$this->db = new MysqliDb (
-				$parse_host[0],
-				$this->cfg->database['user'],
-				$this->cfg->database['pass'],
-				$this->cfg->database['name'],
-				isset($parse_host[1])? $parse_host[1] : '3306'
-			);
 			
-			$this->db->prefix = isset($this->cfg->database['prefix']) ? $this->cfg->database['prefix'] : 'lumise_';
+			$this->db = new lumise_database();
+
+			$this->db->setPrefix (isset($this->cfg->database['prefix']) ? $this->cfg->database['prefix'] : 'lumise_');
+			
 			$this->db->rawQuery("SET SQL_MODE='ALLOW_INVALID_DATES'");
 			
 		}
@@ -83,8 +77,8 @@ class lumise {
 		if(!empty($this->router) && $this->router == 'admin') 
 			define('LUMISE_ADMIN', true);
 		
-		if (is_callable(array(&$this->connector, 'capabilities')))
-			$this->add_filter('capabilities', array(&$this->connector, 'capabilities'));
+		if (is_callable(array($this->connector, 'capabilities')))
+			$this->add_filter('capabilities', array($this->connector, 'capabilities'));
 		
 		$this->update = new lumise_update();
 		
@@ -139,7 +133,7 @@ class lumise {
 			   str_replace("'", "&#39;", stripslashes($this->cfg->lang_storage[strtolower($s)])) : $s;
 		}
 
-		if (isset($this->connector->platform) &&$this->connector->platform == 'woocommerce'){
+		if (isset($this->connector->platform) && $this->connector->platform == 'woocommerce'){
 			if(is_admin() && isset($this->cfg->lang_storage_backend[strtolower($s)])){
 				$s = str_replace("'", "&#39;", stripslashes($this->cfg->lang_storage_backend[strtolower($s)]));
 			}
@@ -181,15 +175,15 @@ class lumise {
 			?>
 			<html>
 				<head>
-					<title>Lumise design</title>
+					<title><?php __('Lumise design', 'lumise') ?></title>
 				</head>
 				<body>
-					<center>Browser will direct in 5 second</center>
+					<center><?php __('Browser will direct in 5 second', 'lumise'); ?></center>
 					<script>
 						var bleed = prompt("Enter bleed range in mimilet (Typically it is 2mm)", "2");
 						if (bleed != null) {
-							window.location.href = '<?php echo $link; ?>'+'&bleed='+bleed;
-							// window.location.replace('<?php echo $link; ?>'+'&bleed='+bleed);
+							window.location.href = '<?php echo esc_url($link); ?>'+'&bleed='+bleed;
+							// window.location.replace('<?php echo esc_url($link); ?>'+'&bleed='+bleed);
 						}
 					</script>
 				</body>
@@ -217,11 +211,6 @@ class lumise {
 				$this->vendor_id
 			)
 		);
-
-	}
-
-	private function install() {
-
 	}
 
 	public function get_db() {
@@ -233,7 +222,7 @@ class lumise {
 		if (empty($url))
 			return;
 		if($this->connector->platform == 'php' || $use_header)
-			@header("location: " . $url);
+			header("location: " . $url);
 		else
 			echo '<script type="text/javascript">window.location = "'.htmlspecialchars_decode($url).'";</script>';
 		exit();
@@ -242,13 +231,13 @@ class lumise {
 	
 	public function securityFrom() {
 
-		echo '<input type="hidden" value="' . $this->cfg->security_code . '" name="' . $this->cfg->security_name . '"/>';
+		echo '<input type="hidden" value="' . esc_attr($this->cfg->security_code) . '" name="' . esc_attr($this->cfg->security_name) . '"/>';
 	}
 
 	public function display($view = '') {
 
-		if (is_callable(array(&$this->views, $view))) {
-			call_user_func_array(array(&$this->views, $view), array());
+		if (is_callable(array($this->views, $view))) {
+			call_user_func_array(array($this->views, $view), array());
 		}
 
 	}
@@ -257,7 +246,7 @@ class lumise {
 
 		if (empty($this->cfg->upload_path))
 			return $this->lang('The upload folder is not defined, please report to the administrator');
-		if (!is_dir($this->cfg->upload_path) && !mkdir($this->cfg->upload_path, 0755))
+		if (!is_dir($this->cfg->upload_path) && !wp_mkdir_p($this->cfg->upload_path))
 			return $this->lang('Could not create upload folder, please report to the administrator').': '.$this->cfg->upload_path;
 		if (!is_writable($this->cfg->upload_path))
 			return $this->lang('The upload folder write permission denied, please report to the administrator').': '.$this->cfg->upload_path;
@@ -286,10 +275,10 @@ class lumise {
 				  </head><body></body></html>';
 
 		foreach ($args as $arg) {
-			if (!is_dir($this->cfg->upload_path.$arg) && !mkdir($this->cfg->upload_path.$arg, 0755)) {
+			if (!is_dir($this->cfg->upload_path.$arg) && !wp_mkdir_p($this->cfg->upload_path.$arg)) {
 				return $this->lang('Could not create sub folder upload, please report to the administrator').': '.$this->cfg->upload_path.$arg;
 			}else if(!file_exists($this->cfg->upload_path.$arg.DS.'index.html'))
-				@file_put_contents($this->cfg->upload_path.$arg.DS.'index.html', $index);
+				lw_file_put_contents($this->cfg->upload_path.$arg.DS.'index.html', $index);
 		}
 
 		return 1;
@@ -373,7 +362,7 @@ class lumise {
 			"SELECT `value` FROM `%s` WHERE `author`='%s' AND `key`='%s'",
 			$this->db->prefix.'settings',
 			$this->vendor_id,
-            $this->lib->sql_esc($key)
+            esc_sql($key)
         );
 			
 		$result = $this->db->rawQuery($query);
@@ -390,13 +379,13 @@ class lumise {
 			return 0;
 
 		if (is_array($val) || is_object($val))
-			$val = json_encode($val);
+			$val = wp_json_encode($val);
 
 		$query = sprintf(
 			"SELECT `value` FROM `%s` WHERE `author`='%s' AND `key`='%s'",
 			$this->db->prefix.'settings',
 			$this->vendor_id,
-            $this->lib->sql_esc($key)
+            esc_sql($key)
         );
 			
 		$result = $this->db->rawQuery($query);
@@ -407,17 +396,17 @@ class lumise {
 			$query = sprintf(
 				"UPDATE `%s` SET `value`='%s' WHERE `author`='%s' AND `key`='%s'",
 				$this->db->prefix.'settings',
-	            $this->lib->sql_esc($val),
+	            esc_sql($val),
 	            $this->vendor_id,
-	            $this->lib->sql_esc($key)
+	            esc_sql($key)
 	        );
 	       $this->db->rawQuery($query);
 		}else{
 			$query = sprintf(
 				"INSERT INTO `%s` (`id`, `key`, `value`, `author`, `created`, `updated`) VALUES (NULL, '%s', '%s', '%s', '%s', '%s')",
 	            $this->db->prefix.'settings',
-	            $this->lib->sql_esc($key),
-	            $this->lib->sql_esc($val),
+	            esc_sql($key),
+	            esc_sql($val),
 	            $this->vendor_id,
 	            $time,
 	            $time

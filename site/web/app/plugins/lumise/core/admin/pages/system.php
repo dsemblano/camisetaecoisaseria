@@ -6,7 +6,7 @@
 <div class="lumise_wrapper">
 	<div class="lumise_content">
 		<div class="lumise_header">
-			<h2><?php echo $lumise->lang('System status'); ?></h2>	
+			<h2><?php echo esc_html($lumise->lang('System status')); ?></h2>	
 		</div>
 		<ul class="system-status">
 		<?php
@@ -26,6 +26,6 @@
 		?>
 		</ul>
 		<br>
-		<p style="font-size: 15px;"><?php echo $lumise->lang('Check our document for more details about the system status'); ?>. <a href="https://docs.lumise.com/system-status/?utm_source=client-site&utm_medium=text&utm_campaign=system-page&utm_term=links&utm_content=<?php echo $lumise->connector->platform; ?>" target=_blank><?php echo $lumise->lang('Click here'); ?> &#10230;</a></p>
+		<p style="font-size: 15px;"><?php echo esc_html($lumise->lang('Check our document for more details about the system status')); ?>. <a href="<?php echo esc_url('https://docs.lumise.com/system-status/?utm_source=client-site&utm_medium=text&utm_campaign=system-page&utm_term=links&utm_content=woocommerce'); ?>" target=_blank><?php echo esc_html($lumise->lang('Click here')); ?> &#10230;</a></p>
 	</div>
 </div>

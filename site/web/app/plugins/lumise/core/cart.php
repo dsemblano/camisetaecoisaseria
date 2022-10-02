@@ -1,7 +1,7 @@
 <?php
 	
-@set_time_limit(0);
-@ini_set('memory_limit','5000M');
+set_time_limit(0);
+ini_set('memory_limit','5000M');
 
 /**
  *
@@ -41,8 +41,8 @@ class lumise_cart extends lumise_lib
         
         //check none
 		$nonce = isset( $_POST['nonce'] ) ? explode( ":", htmlspecialchars($_POST['nonce'])) : array('', '');
-
-		if ( !lumise_secure::check_nonce($nonce[0], $nonce[1]) ){
+		
+		if ( !wp_verify_nonce( $nonce[1], 'lumise_security' ) ){
 			header('HTTP/1.0 403 Forbidden');
 			exit;
 		}
@@ -50,7 +50,7 @@ class lumise_cart extends lumise_lib
         //loop through all cart items
         foreach ($_FILES as $cart_id => $file) {
         	
-        	$item = @file_get_contents($file['tmp_name']);
+        	$item = lw_file_get_contents($file['tmp_name']);
         	
         	if (empty($item) || $item === null)
         		continue;
@@ -96,7 +96,7 @@ class lumise_cart extends lumise_lib
 	                ) {
 		                
 	                    $tol = 0;
-	                    $_val = @json_decode($val);
+	                    $_val = json_decode($val);
 	                    
 	                    if (is_object($_val)) {
 		                    foreach ($_val as $k => $v) {
@@ -181,7 +181,7 @@ class lumise_cart extends lumise_lib
 	                if (!isset($stage->screenshot) || empty($stage->screenshot)) {
 		                $stage->screenshot = 'data:image/'.(
 		                	strpos($stage->image, '.png') !== false ? 'png' : 'jpg'
-		                ).';base64,'.base64_encode(@file_get_contents($stage->image));
+		                ).';base64,'.base64_encode(lw_file_get_contents($stage->image));
 	                }
 	                
 					$screenshorts[$s] = $stage->screenshot;
@@ -403,7 +403,7 @@ class lumise_cart extends lumise_lib
 	                ) {
 		                
 	                    $tol = 0;
-	                    $_val = @json_decode($val);
+	                    $_val = json_decode($val);
 	                    
 	                    if (is_object($_val)) {
 		                    foreach ($_val as $k => $v) {
@@ -488,7 +488,7 @@ class lumise_cart extends lumise_lib
 	                if (!isset($stage->screenshot) || empty($stage->screenshot)) {
 		                $stage->screenshot = 'data:image/'.(
 		                	strpos($stage->image, '.png') !== false ? 'png' : 'jpg'
-		                ).';base64,'.base64_encode(@file_get_contents($stage->image));
+		                ).';base64,'.base64_encode(lw_file_get_contents($stage->image));
 	                }
 	                
 					$screenshorts[$s] = $stage->screenshot;
@@ -774,7 +774,7 @@ class lumise_cart extends lumise_lib
     }
 
     public function printing_calc( $item, $qty ){
-    	
+
     	global $lumise;
     	
     	$print_price = 0;
@@ -806,7 +806,7 @@ class lumise_cart extends lumise_lib
 			$keys = array_keys($rules);
 			
 			$ind_stage = 0;
-			
+
 			foreach ($states_data as $s => $options){
 				
 				$is_multi = $calc['multi'];
@@ -850,7 +850,7 @@ class lumise_cart extends lumise_lib
 				
 				
 				$total_res = 0;
-				
+;
 				foreach ($options as $key => $val) {
 					
 					$unit 	= $val;
@@ -871,7 +871,7 @@ class lumise_cart extends lumise_lib
 						$key == 'character' && 
 						is_object($val)	
 					){
-						$val = json_decode( json_encode($val), true );
+						$val = json_decode( wp_json_encode($val), true );
 						foreach($val as $k => $v){
 							$character = array_sum($v);
 							$opt = $character.'-character';
@@ -884,17 +884,17 @@ class lumise_cart extends lumise_lib
 						$key == 'line' && 
 						is_object($val)	
 					){
-						$val = json_decode( json_encode($val), true );
+						$val = json_decode( wp_json_encode($val), true );
 						foreach($val as $k => $v){
 							$opt = $v.'-line';
 							$print_price += ((isset($rule[$opt]) && $cfgpricing) ? floatval($rule[$opt]) : floatval($rule['ppu'])) * $v;
 						}
 					}
 
-					if ($calc['type'] != 'color' && isset($rule[$option]))
-						// $print_price += floatval($rule[$option]*$unit);
-						$print_price += floatval(floatval($rule[$option]) * floatval($unit));
-					
+					if ( $calc['type'] != 'color' && isset( $rule[ $option ] ) ) {
+						$print_price += ( ( isset( $rule[ $option ] ) && $cfgpricing ) ? floatval( $rule[ $option ] ) : floatval( $rule['ppu'] ) ) * floatval( $unit );
+					}
+
 					if (!is_array($val) && !is_object($val))
 						$total_res += $unit;
 				}
@@ -904,7 +904,6 @@ class lumise_cart extends lumise_lib
 					&& $total_res > 0
 				){
 					$print_price += floatval( $rule['price'] );
-					//if( !$is_multi ) return $print_price;
 				}
 				
 				if(
@@ -914,7 +913,6 @@ class lumise_cart extends lumise_lib
 				){
 					$acreage = $options->sizes->width * $options->sizes->height;
 					$print_price += floatval($acreage) * floatval( $rule['price'] );
-					//if( !$is_multi ) return $print_price;
 				}
 				
 				if(
@@ -924,8 +922,6 @@ class lumise_cart extends lumise_lib
 				){
 					$product_size  = $options->sizes->size;				
 					$print_price += (isset($rule[$product_size]) && $cfgpricing) ? floatval( $rule[ $product_size ] ) : floatval( $rule['ppu'] );
-					
-					//if ( !$is_multi ) return $print_price;
 				}
 			}              
         }
@@ -994,13 +990,13 @@ class lumise_cart extends lumise_lib
 				<meta http-equiv="Content-Type"content="text/html; charset=utf-8"/>
 				<meta name="viewport"content="width=device-width">
 					<meta name='robots'content='noindex,follow'/>
-					<title>Checkout Error</title>
+					<title><?php _e('Checkout Error','lumise') ?></title>
 					<style type="text/css">html{background:#f1f1f1}body{background:#fff;color:#444;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;margin:2em auto;padding:1em 2em;max-width:700px;-webkit-box-shadow:0 1px 3px rgba(0,0,0,.13);box-shadow:0 1px 3px rgba(0,0,0,.13)}h1{border-bottom:1px solid#dadada;clear:both;color:#666;font-size:24px;margin:30px 0 0;padding:0 0 7px}#error-page{margin-top:50px}#error-page p{font-size:14px;line-height:1.5;margin:25px 0 20px}#error-page code{font-family:Consolas,Monaco,monospace}ul li{margin-bottom:10px;font-size:14px}a{color:#0073aa}a:active,a:hover{color:#00a0d2}a:focus{color:#124964;-webkit-box-shadow:0 0 0 1px#5b9dd9,0 0 2px 1px rgba(30,140,190,.8);box-shadow:0 0 0 1px#5b9dd9,0 0 2px 1px rgba(30,140,190,.8);outline:0}.button{background:#f7f7f7;border:1px solid#ccc;color:#555;display:inline-block;text-decoration:none;font-size:13px;line-height:26px;height:28px;margin:0;padding:0 10px 1px;cursor:pointer;-webkit-border-radius:3px;-webkit-appearance:none;border-radius:3px;white-space:nowrap;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;-webkit-box-shadow:0 1px 0#ccc;box-shadow:0 1px 0#ccc;vertical-align:top}.button.button-large{height:30px;line-height:28px;padding:0 12px 2px}.button:focus,.button:hover{background:#fafafa;border-color:#999;color:#23282d}.button:focus{border-color:#5b9dd9;-webkit-box-shadow:0 0 3px rgba(0,115,170,.8);box-shadow:0 0 3px rgba(0,115,170,.8);outline:0}.button:active{background:#eee;border-color:#999;-webkit-box-shadow:inset 0 2px 5px-3px rgba(0,0,0,.5);box-shadow:inset 0 2px 5px-3px rgba(0,0,0,.5);-webkit-transform:translateY(1px);-ms-transform:translateY(1px);transform:translateY(1px)}</style>
 				</head>
 				<body id="error-page">
-					<p class="msg">Looks like an error has occurred, please notify the administrator. 
+					<p class="msg"><?php _e('Looks like an error has occurred, please notify the administrator.','lumise'); ?>
 						<font color="red">
-							<?php echo $msg; ?>
+							<?php echo esc_html($msg); ?>
 						</font>
 					</p>
 				</body>

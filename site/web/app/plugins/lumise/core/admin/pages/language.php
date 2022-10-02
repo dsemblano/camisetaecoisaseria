@@ -33,9 +33,16 @@
 		),
 	), 'languages');
 
+	$form_action = add_query_arg(
+		array(
+			'lumise-page' => $section,
+			'callback' => isset($_GET['callback']) ? sanitize_text_field(wp_unslash($_GET['callback'])) : null
+		),
+		$lumise->cfg->admin_url
+	);
 ?>
 
-<div class="lumise_wrapper" id="lumise-<?php echo $section; ?>-page">
+<div class="lumise_wrapper" id="lumise-<?php echo esc_attr($section); ?>-page">
 	<div class="lumise_content">
 		<?php
 			$lumise->views->detail_header(array(
@@ -44,19 +51,17 @@
 				'page' => $section
 			));
 		?>
-		<form action="<?php echo $lumise->cfg->admin_url; ?>lumise-page=<?php
-			echo $section.(isset($_GET['callback']) ? '&callback='.$_GET['callback'] : '');
-		?>" id="lumise-clipart-form" method="post" class="lumise_form" enctype="multipart/form-data">
+		<form action="<?php echo esc_url($form_action); ?>" id="lumise-clipart-form" method="post" class="lumise_form" enctype="multipart/form-data">
 
 			<?php $lumise->views->tabs_render($fields); ?>
 
 			<div class="lumise_form_group lumise_form_submit">
-				<input type="submit" class="lumise-button lumise-button-primary" value="<?php echo $lumise->lang('Save Translate Text'); ?>"/>
+				<input type="submit" class="lumise-button lumise-button-primary" value="<?php echo esc_html($lumise->lang('Save Translate Text')); ?>"/>
 				<input type="hidden" name="do" value="action" />
-				<a class="lumise_cancel" href="<?php echo $lumise->cfg->admin_url;?>lumise-page=<?php echo $section; ?>s">
-					<?php echo $lumise->lang('Cancel'); ?>
+				<a class="lumise_cancel" href="<?php echo esc_url($lumise->cfg->admin_url);?>lumise-page=<?php echo esc_attr($section); ?>s">
+					<?php echo esc_html($lumise->lang('Cancel')); ?>
 				</a>
-				<input type="hidden" name="lumise-section" value="<?php echo $section; ?>">
+				<input type="hidden" name="lumise-section" value="<?php echo esc_attr($section); ?>">
 			</div>
 		</form>
 	</div>
@@ -120,16 +125,16 @@
 			$lumise_msg = array('status' => 'error', 'errors' => $errors);
 			$lumise->connector->set_session('lumise_msg', $lumise_msg);
 			if (!empty($data_id)) {
-				$lumise->redirect($lumise->cfg->admin_url . "lumise-page=language&id=".$data_id);
+				wp_safe_redirect($lumise->cfg->admin_url . "lumise-page=language&id=".$data_id);
 			} else {
-				$lumise->redirect($lumise->cfg->admin_url . "lumise-page=language");
+				wp_safe_redirect($lumise->cfg->admin_url . "lumise-page=language");
 			}
 			exit;
 
 		}
 
 		if (isset($id) && $id == true ) {
-			$lumise->redirect($lumise->cfg->admin_url . "lumise-page=language&id=".$id);
+			wp_safe_redirect($lumise->cfg->admin_url . "lumise-page=language&id=".$id);
 			exit;
 		}
 
@@ -148,12 +153,12 @@
 			<?php
 
 				if (!empty($data['id'])) {
-					echo '<h2>'.$lumise->lang('Edit Translate Text').'</h2><a href="'.$lumise->cfg->admin_url.'lumise-page=language" class="add-new lumise-button">'.$lumise->lang('Add New Language').'</a>';
+					echo '<h2>'.$lumise->lang('Edit Translate Text').'</h2><a href="'.esc_url($lumise->cfg->admin_url).'lumise-page=language" class="add-new lumise-button">'.$lumise->lang('Add New Language').'</a>';
 				} else {
 					echo '<h2>'.$lumise->lang('Add Translate Text').'</h2>';
 				}
-				$lumise_page = isset($_GET['lumise-page']) ? $_GET['lumise-page'] : '';
-				echo $lumise_helper->breadcrumb($lumise_page);
+				$lumise_page = isset($_GET['lumise-page']) ? sanitize_text_field( wp_unslash( $_GET['lumise-page'] ) ) : '';
+				echo wp_kses_post($lumise_helper->breadcrumb($lumise_page));
 
 			?>
 		</div>
@@ -178,7 +183,7 @@
 
 				<div class="lumise_message">
 					<?php
-						echo '<em class="lumise_suc"><i class="fa fa-check"></i> '.$lumise->lang('Your data has been successfully saved').'</em>';
+						echo '<em class="lumise_suc"><i class="fa fa-check"></i> '.esc_html($lumise->lang('Your data has been successfully saved')).'</em>';
 						$lumise_msg = array('status' => '');
 						$lumise->connector->set_session('lumise_msg', $lumise_msg);
 					?>
@@ -187,22 +192,22 @@
 			<?php }
 
 		?>
-		<form action="<?php echo $lumise->cfg->admin_url;?>lumise-page=language" method="post" class="lumise_form">
+		<form action="<?php echo esc_url($lumise->cfg->admin_url);?>lumise-page=language" method="post" class="lumise_form">
 			<div class="lumise_form_group">
-				<span><?php echo $lumise->lang('Translate Text'); ?><em class="required">*</em></span>
+				<span><?php echo esc_html($lumise->lang('Translate Text')); ?><em class="required">*</em></span>
 				<div class="lumise_form_content">
 					<input type="text" name="text" value="<?php echo !empty($data['text']) ? $data['text'] : '' ?>">
 					<input type="hidden" name="name_temp" value="<?php echo !empty($data['text']) ? $data['text'] : '' ?>">
 				</div>
 			</div>
 			<div class="lumise_form_group">
-				<span><?php echo $lumise->lang('Original text'); ?><em class="required">*</em></span>
+				<span><?php echo esc_html($lumise->lang('Original text')); ?><em class="required">*</em></span>
 				<div class="lumise_form_content">
 					<input type="text" name="original_text" value="<?php echo !empty($data['original_text']) ? $data['original_text'] : '' ?>">
 				</div>
 			</div>
 			<div class="lumise_form_group">
-				<span><?php echo $lumise->lang('Language'); ?></span>
+				<span><?php echo esc_html($lumise->lang('Language')); ?></span>
 				<div class="lumise_form_content">
 					<select name="lang">
 						<?php
@@ -217,13 +222,13 @@
 			</div>
 			<div class="lumise_form_group lumise_form_submit">
 				<input type="hidden" name="id" value="<?php echo !empty($data['id']) ? $data['id'] : '' ?>"/>
-				<input type="submit" class="lumise-button lumise-button-primary" value="<?php echo $lumise->lang('Save Language'); ?>"/>
+				<input type="submit" class="lumise-button lumise-button-primary" value="<?php echo esc_attr($lumise->lang('Save Language')); ?>"/>
 				<input type="hidden" name="save_language" value="true">
-				<a class="lumise_cancel" href="<?php echo $lumise->cfg->admin_url;?>lumise-page=languages">
-					<?php echo $lumise->lang('Cancel'); ?>
+				<a class="lumise_cancel" href="<?php echo esc_url($lumise->cfg->admin_url);?>lumise-page=languages">
+					<?php echo esc_html($lumise->lang('Cancel')); ?>
 				</a>
 			</div>
-			<?php $lumise->securityFrom();?>
+			<?php wp_nonce_field( 'lumise_security_form', 'lumise_security_form_nonce' );?>
 		</form>
 	</div>
 </div>
