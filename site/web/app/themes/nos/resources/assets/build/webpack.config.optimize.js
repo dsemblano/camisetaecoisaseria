@@ -8,7 +8,7 @@ const glob = require('glob-all');
 const PurgecssPlugin = require('purgecss-webpack-plugin');
 const whitelister = require('purgecss-whitelister');
 
-const HtmlCriticalWebpackPlugin = require("html-critical-webpack-plugin");
+// const HtmlCriticalWebpackPlugin = require("html-critical-webpack-plugin");
 
 const config = require('./config');
 
@@ -76,28 +76,28 @@ module.exports = {
       whitelistPatternsChildren: [/^gfield/, /^gform/, /^woocommerce-product-gallery/, /^ysm-search-widget/, /^ginput/, /^banner/, /^nav-primary/, /^hamburger/],
     }),
 
-    new HtmlCriticalWebpackPlugin({
-      base: config.paths.dist,
-      src: config.devUrl,
-      dest: "styles/critical-home.css",
-      ignore: ["@font-face", /url\(/],
-      inline: false,
-      minify: true,
-      extract: false,
-      dimensions: [
-        {
-          width: 360,
-          height: 640,
-        },
-        {
-          width: 1920,
-          height: 1080,
-        },
-      ],
-      penthouse: {
-        blockJSRequests: false,
-        timeout: 160000
-      },
-    }),
+    // new HtmlCriticalWebpackPlugin({
+    //   base: config.paths.dist,
+    //   src: config.devUrl,
+    //   dest: "styles/critical-home.css",
+    //   ignore: ["@font-face", /url\(/],
+    //   inline: false,
+    //   minify: true,
+    //   extract: false,
+    //   dimensions: [
+    //     {
+    //       width: 360,
+    //       height: 640,
+    //     },
+    //     {
+    //       width: 1920,
+    //       height: 1080,
+    //     },
+    //   ],
+    //   penthouse: {
+    //     blockJSRequests: false,
+    //     timeout: 160000
+    //   },
+    // }),
   ],
 };

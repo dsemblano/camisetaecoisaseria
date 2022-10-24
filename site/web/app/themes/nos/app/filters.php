@@ -155,3 +155,4 @@ $billing_fields['billing_phone']['required'] = false;
 $billing_fields['billing_email']['required'] = false;
 $billing_fields['billing_address_2']['required'] = false;
 return $billing_fields;
+}
