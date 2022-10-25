@@ -146,13 +146,13 @@ add_filter('woobe_filter_include_children', function($include, $tax) {
 add_filter( 'woocommerce_terms_is_checked_default', '__return_true' );
 
 // For billing email and phone - Make them not required
-add_filter( 'woocommerce_billing_fields', 'filter_billing_fields', 20, 1 );
-function filter_billing_fields( $billing_fields ) {
+add_filter( 'woocommerce_billing_fields', function ($billing_fields) {
 // Only on checkout page
-if( ! is_checkout() ) return $billing_fields;
-
-$billing_fields['billing_phone']['required'] = false;
-$billing_fields['billing_email']['required'] = false;
-$billing_fields['billing_address_2']['required'] = false;
-return $billing_fields;
-}
+    if( ! is_checkout() ) {
+        return $billing_fields;
+    }
+    $billing_fields['billing_phone']['required'] = false;
+    $billing_fields['billing_email']['required'] = false;
+    $billing_fields['billing_address_2']['required'] = false;
+    return $billing_fields;
+}, 20, 1 );
