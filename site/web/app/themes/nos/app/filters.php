@@ -151,7 +151,7 @@ add_filter( 'woocommerce_billing_fields', function ($billing_fields) {
     if( ! is_checkout() ) {
         return $billing_fields;
     }
-    $billing_fields['billing_phone']['required'] = false;
+    // $billing_fields['billing_phone']['required'] = false;
     $billing_fields['billing_email']['required'] = false;
     $billing_fields['billing_address_2']['required'] = false;
     return $billing_fields;
