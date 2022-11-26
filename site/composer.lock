@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "afd0f62ddaf2d85db76726c3459de7cb",
+    "content-hash": "9fe24e012939f14805fa895756995d0b",
     "packages": [
         {
             "name": "composer/installers",
@@ -1284,6 +1284,24 @@
             },
             "type": "wordpress-plugin",
             "homepage": "https://wordpress.org/plugins/sassy-social-share/"
+        },
+        {
+            "name": "wpackagist-plugin/schema-and-structured-data-for-wp",
+            "version": "1.9.104",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/schema-and-structured-data-for-wp/",
+                "reference": "tags/1.9.104"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/schema-and-structured-data-for-wp.1.9.104.zip"
+            },
+            "require": {
+                "composer/installers": "^1.0 || ^2.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/schema-and-structured-data-for-wp/"
         },
         {
             "name": "wpackagist-plugin/smart-slider-3",

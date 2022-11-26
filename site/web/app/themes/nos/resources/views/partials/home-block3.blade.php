@@ -10,7 +10,7 @@
         </div>
       </figure> --}}
   </div>
-  <div class="blockhome3-right flex flex-wrap -mx-2 overflow-hidden sm:-mx-4">
+  <div class="animate__animated animate__fadeInUp blockhome3-right flex flex-wrap -mx-2 overflow-hidden sm:-mx-4">
     {{-- @foreach ($sub_categories as $sub)
       @php
         $destaques_produtos = wc_get_products(array(
@@ -50,7 +50,7 @@
         </div>
       </figure>
     </div>
-    <div class="blockhome3-right flex flex-wrap -mx-2 overflow-hidden sm:-mx-4">
+    <div class="animate__animated animate__fadeInUp blockhome3-right flex flex-wrap -mx-2 overflow-hidden sm:-mx-4">
       {{-- @foreach ($sub_categories as $sub)
       @php
         $destaques_produtos = wc_get_products(array(
