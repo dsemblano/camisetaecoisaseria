@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c1a38e33ae6d6fd08b59eae073642757",
+    "content-hash": "ec9f67483e2c0cdb779b69c94e163070",
     "packages": [
         {
             "name": "composer/installers",
@@ -1160,6 +1160,24 @@
             "homepage": "https://wordpress.org/plugins/fatal-error-notify/"
         },
         {
+            "name": "wpackagist-plugin/instagram-feed",
+            "version": "6.1",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/instagram-feed/",
+                "reference": "tags/6.1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/instagram-feed.6.1.zip"
+            },
+            "require": {
+                "composer/installers": "^1.0 || ^2.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/instagram-feed/"
+        },
+        {
             "name": "wpackagist-plugin/loco-translate",
             "version": "2.6.3",
             "source": {
@@ -1302,6 +1320,24 @@
             },
             "type": "wordpress-plugin",
             "homepage": "https://wordpress.org/plugins/tawkto-live-chat/"
+        },
+        {
+            "name": "wpackagist-plugin/wd-instagram-feed",
+            "version": "1.4.34",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/wd-instagram-feed/",
+                "reference": "tags/1.4.34"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/wd-instagram-feed.1.4.34.zip"
+            },
+            "require": {
+                "composer/installers": "^1.0 || ^2.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/wd-instagram-feed/"
         },
         {
             "name": "wpackagist-plugin/woo-boleto-paghiper",
