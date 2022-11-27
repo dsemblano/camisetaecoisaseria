@@ -220,13 +220,13 @@ function the_url($url)
 add_filter('login_headerurl', 'the_url');
 
 // Remove dashicons in frontend for unauthenticated users
-// add_action('wp_enqueue_scripts', 'bs_dequeue_dashicons');
-// function bs_dequeue_dashicons()
-// {
-//     if (! is_user_logged_in()) {
-//         wp_deregister_style('dashicons');
-//     }
-// }
+add_action('wp_enqueue_scripts', 'bs_dequeue_dashicons');
+function bs_dequeue_dashicons()
+{
+    if (! is_user_logged_in()) {
+        wp_deregister_style('dashicons');
+    }
+}
 
 add_action( 'wp_enqueue_scripts', function() {
     wp_enqueue_style( 'dashicons' );
