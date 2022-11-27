@@ -31,6 +31,6 @@
   <meta name="msapplication-TileImage" content="@asset('images/favicon/ms-icon-144x144.png')">
   <meta name="msapplication-navbutton-color" content="#1ebe85">
   <meta name="theme-color" content="#1ebe85">
-  @include('partials.analytics')
+  @include('partials.gtaghead')
   @php wp_head() @endphp
 </head>
