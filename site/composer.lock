@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9fe24e012939f14805fa895756995d0b",
+    "content-hash": "c1a38e33ae6d6fd08b59eae073642757",
     "packages": [
         {
             "name": "composer/installers",
@@ -1160,24 +1160,6 @@
             "homepage": "https://wordpress.org/plugins/fatal-error-notify/"
         },
         {
-            "name": "wpackagist-plugin/instagram-feed",
-            "version": "6.1",
-            "source": {
-                "type": "svn",
-                "url": "https://plugins.svn.wordpress.org/instagram-feed/",
-                "reference": "tags/6.1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/instagram-feed.6.1.zip"
-            },
-            "require": {
-                "composer/installers": "^1.0 || ^2.0"
-            },
-            "type": "wordpress-plugin",
-            "homepage": "https://wordpress.org/plugins/instagram-feed/"
-        },
-        {
             "name": "wpackagist-plugin/loco-translate",
             "version": "2.6.3",
             "source": {
@@ -1268,24 +1250,6 @@
             "homepage": "https://wordpress.org/plugins/regenerate-thumbnails/"
         },
         {
-            "name": "wpackagist-plugin/sassy-social-share",
-            "version": "3.3.43",
-            "source": {
-                "type": "svn",
-                "url": "https://plugins.svn.wordpress.org/sassy-social-share/",
-                "reference": "trunk"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/sassy-social-share.zip?timestamp=1662023903"
-            },
-            "require": {
-                "composer/installers": "^1.0 || ^2.0"
-            },
-            "type": "wordpress-plugin",
-            "homepage": "https://wordpress.org/plugins/sassy-social-share/"
-        },
-        {
             "name": "wpackagist-plugin/schema-and-structured-data-for-wp",
             "version": "1.9.104",
             "source": {
@@ -1302,24 +1266,6 @@
             },
             "type": "wordpress-plugin",
             "homepage": "https://wordpress.org/plugins/schema-and-structured-data-for-wp/"
-        },
-        {
-            "name": "wpackagist-plugin/smart-slider-3",
-            "version": "3.5.1.12",
-            "source": {
-                "type": "svn",
-                "url": "https://plugins.svn.wordpress.org/smart-slider-3/",
-                "reference": "tags/3.5.1.12"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/smart-slider-3.3.5.1.12.zip"
-            },
-            "require": {
-                "composer/installers": "^1.0 || ^2.0"
-            },
-            "type": "wordpress-plugin",
-            "homepage": "https://wordpress.org/plugins/smart-slider-3/"
         },
         {
             "name": "wpackagist-plugin/smart-woocommerce-search",
