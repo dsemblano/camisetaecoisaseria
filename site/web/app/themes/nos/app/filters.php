@@ -169,8 +169,8 @@ add_filter('script_loader_tag', function ($url) {
 /**
  * Disable WooCommerce block styles (front-end).
  */
-add_action('wp_enqueue_scripts', function() {
-    wp_dequeue_style( 'wc-blocks-style' );
-});
+// add_action('wp_enqueue_scripts', function() {
+//     wp_dequeue_style( 'wc-blocks-style' );
+// });
 
-add_filter( 'woocommerce_enqueue_styles', '__return_empty_array' );
+// add_filter( 'woocommerce_enqueue_styles', '__return_empty_array' );
