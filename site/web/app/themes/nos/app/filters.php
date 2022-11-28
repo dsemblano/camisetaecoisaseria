@@ -172,3 +172,5 @@ add_filter('script_loader_tag', function ($url) {
 add_action('wp_enqueue_scripts', function() {
     wp_dequeue_style( 'wc-blocks-style' );
 });
+
+add_filter( 'woocommerce_enqueue_styles', '__return_empty_array' );
