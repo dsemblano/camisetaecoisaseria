@@ -165,3 +165,10 @@ add_filter('script_loader_tag', function ($url) {
     if ( strpos( $url, 'jquery.js' ) ) return $url;
     return str_replace( ' src', ' defer src', $url );
 });
+
+/**
+ * Disable WooCommerce block styles (front-end).
+ */
+add_action('wp_enqueue_scripts', function() {
+    wp_dequeue_style( 'wc-blocks-style' );
+});
