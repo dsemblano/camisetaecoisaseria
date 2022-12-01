@@ -158,6 +158,11 @@ add_filter( 'woocommerce_billing_fields', function ($billing_fields) {
     return $billing_fields;
 }, 20, 1 );
 
+add_filter( 'woocommerce_checkout_fields', function ($fields) {
+    unset( $fields['billing']['billing_phone'] );
+	return $fields;
+});
+
 // Defer js
 add_filter('script_loader_tag', function ($url) {
     if ( is_user_logged_in() ) return $url; //don't break WP Admin
