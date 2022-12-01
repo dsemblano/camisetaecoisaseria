@@ -42,7 +42,6 @@ if (file_exists($root_dir . '/.env')) {
  * Default: production
  */
 define('WP_ENV', env('WP_ENV') ?: 'production');
-define('WP_MEMORY_LIMIT', '128M');
 
 /**
  * URLs
