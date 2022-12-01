@@ -326,11 +326,11 @@ add_action ('wpo_wcpdf_before_billing_address', function ($template_type, $order
       $invoice = wcpdf_get_document ('invoice', $order);
       // if cnpj exists, show it
       if ( !empty($invoice-> get_custom_field ('billing_cnpj') ) ) {
-        echo '<br>CNPJ: ' . $invoice-> get_custom_field ('billing_cnpj') . '<br>';
+        echo '<br>CNPJ: ' . $invoice-> get_custom_field ('billing_cnpj');
   
       // otherwise, show the cpf
       } else {
-        echo '<br>CPF: '. $invoice-> get_custom_field ('billing_cpf') . '<br>';
+        echo '<br>CPF: '. $invoice-> get_custom_field ('billing_cpf');
       }
     }
   }, 10, 2);
