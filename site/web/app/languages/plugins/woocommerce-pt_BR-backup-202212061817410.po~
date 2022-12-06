@@ -4795,8 +4795,7 @@ msgstr "Digite um endereço diferente"
 #: templates/cart/cart-shipping.php:64
 msgid "Enter your address to view shipping options."
 msgstr ""
-"Clique em \"Calcular entrega\" abaixo, digite seu CEP e depois \"Calcular "
-"frete\""
+"Clique em \"Calcular entrega\", digite seu CEP e depois \"Calcular frete\""
 
 #. Translators: $s shipping destination.
 #: templates/cart/cart-shipping.php:52
