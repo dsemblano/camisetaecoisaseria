@@ -319,8 +319,7 @@ function yourtheme_setup()
 //     }
 
 // }
-
-add_action('woocommerce_email_customer_details', 'cpf_email', 30, 3 );
+// add_action('woocommerce_email_customer_details', 'cpf_email', 30, 3 );
 
 add_action('woocommerce_email_customer_details', function ( $order ) {
     if ($order->billing_cpf){
