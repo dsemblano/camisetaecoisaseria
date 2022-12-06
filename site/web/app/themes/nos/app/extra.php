@@ -309,17 +309,17 @@ function yourtheme_setup()
 // // }
 
 // // CPF email
-function cpf_email( $order, $sent_to_admin, $plain_text ) {
+// function cpf_email( $order, $sent_to_admin, $plain_text ) {
 
-    if ($order->billing_cpf){
-        echo '<br><p> <strong>CPF: </strong>'. $order->billing_cpf.'</p>';
-    }
-    if ($order->billing_cnpj){
-        echo '<br><p> <strong>CNPJ: </strong>'. $order->billing_cnpj. '</p>';
-    }
+//     if ($order->billing_cpf){
+//         echo '<br><p> <strong>CPF: </strong>'. $order->billing_cpf.'</p>';
+//     }
+//     if ($order->billing_cnpj){
+//         echo '<br><p> <strong>CNPJ: </strong>'. $order->billing_cnpj. '</p>';
+//     }
 
-}
-add_action('woocommerce_email_customer_details', 'cpf_email', 30, 3 );
+// }
+// add_action('woocommerce_email_customer_details', 'cpf_email', 30, 3 );
 
 // add_action ('wpo_wcpdf_before_billing_address', function ($template_type, $order) {
 //     if ($template_type == 'invoice') {
