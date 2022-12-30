@@ -24,10 +24,4 @@
         </div>
       </div>
     </div>
-{{--
-    <div class="citacao text-center tracking-sm md:tracking-xl py-4 text-sm md:text-1xl text-white bg-pureblack">
-      <span>IMAGINE - INVENTE - IMPRIMA </span>
-    </div>
-  </div> --}}
-
 </section>
